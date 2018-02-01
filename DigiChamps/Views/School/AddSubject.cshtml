@@ -1,0 +1,85 @@
+﻿@model DigiChamps.Models.SchoolModel.CreateSubject
+@{
+    string pageTitle = "Add Subject";
+    Layout = "~/Views/Shared/_SchoolLayout.cshtml";
+    if (Model.Id != Guid.Empty)
+    {
+        ViewBag.Title = "Edit Subject";
+        pageTitle = "Edit Subject";
+    }
+    else
+    {
+        ViewBag.Title = "Add Subject";
+    }
+    
+}
+@{
+    string message = TempData.ContainsKey("Message") ? TempData["Message"].ToString() : string.Empty;
+    string styleDisplayValue = "none";
+    string MessageType = "danger";
+    string mode = "";
+    if (!string.IsNullOrEmpty(message))
+    {
+        //MessageType = ViewBag.MessageType.ToString();
+        styleDisplayValue = "block";
+    }
+    else
+    {
+        styleDisplayValue = "none";
+    }
+}
+
+
+
+
+@using (Html.BeginForm("AddSubject", "School", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+<form class="form-horizontal" id="validation-form">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-title">
+                    <h3><i class="fa fa-file"></i> @pageTitle</h3>
+
+                </div>
+                @if (!string.IsNullOrEmpty(@message))
+                {
+                    <div class="alert alert-dismissable alert-@MessageType" style="display:@styleDisplayValue">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                        @message
+                    </div>
+                }
+                <div class="box-content">
+
+                    <div class="form-group">
+                        <label for="textfield5" class="col-sm-3  control-label">Create Subject<span class="asterisk">*</span></label>
+                        <div class="col-sm-9  controls">
+                            <input type="hidden" name="SubjectId" id="SubjectId" value="@Model.SubjectId" class="form-control" />
+                            <input type="text" name="SubjectName" id="SubjectName" value="@Model.SubjectName" class="form-control" data-rule-required="true" data-msg-required="Please enter subject" />
+
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="form-group last box-tooll">
+                        <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                            <a href="@Url.Action("SchoolDashBoard", "School", new { id = new Guid(Session["id"].ToString()) })" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                            <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span> Submit</span></button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+}
+<script src="~/Student_assets/crop/scripts/jquery.min.js"></script>
+
+<script>
+  
+</script>

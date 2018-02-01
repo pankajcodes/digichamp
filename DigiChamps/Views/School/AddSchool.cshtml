@@ -35,6 +35,7 @@
 
                     </h3>
                 </div>
+
                 @using (Html.BeginForm("AddSchool", "School", FormMethod.Post, new {@enctype = "multipart/form-data" , @id = "validation - form", @class = "form-horizontal" }))
                 {
                     @Html.AntiForgeryToken()

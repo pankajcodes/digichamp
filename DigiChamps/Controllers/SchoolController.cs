@@ -13,8 +13,7 @@ namespace DigiChamps.Controllers
 {
     public class SchoolController : Controller
     {
-        //
-        // GET: /School/
+        
         DigiChampsEntities DbContext = new DigiChampsEntities();
 
         public ActionResult Index()
@@ -401,7 +400,319 @@ namespace DigiChamps.Controllers
         }
         #endregion
 
+        #region Subject
+        public ActionResult GetSubjectList()
+        {
+            SchoolAPIController obj = new SchoolAPIController();
+            List<SchoolModel.CreateSubject> objOutput = new List<SchoolModel.CreateSubject>();
+            SchoolModel.InputModel objInput = new SchoolModel.InputModel();
+            objInput.SchoolId = new Guid(Session["id"].ToString());
+            objOutput = obj.GetSubjectList(objInput);
+            //  objOutput.HomeWork = objOutput;
 
+            return View(objOutput);
+        }
+
+        public ActionResult AddSubject(Guid? Id)//CreateOrEditSubject
+        {
+            SchoolModel.CreateSubject objCreateSubject = new SchoolModel.CreateSubject();
+            if (Id != null && Id != Guid.Empty)
+            {
+                var subject = DbContext.tbl_DC_School_Subject.Where(x => x.SubjectId == Id).SingleOrDefault();
+                if (subject != null)
+                {
+                    objCreateSubject.SubjectId = subject.SubjectId;
+                    objCreateSubject.SubjectName = subject.SubjectName;
+                }
+            }
+            return View(objCreateSubject);
+        }
+        [HttpPost]
+        public ActionResult AddSubject(SchoolModel.CreateSubject objCreateSubject)
+        {
+            try
+            {
+                Guid schoolId = new Guid(Session["id"].ToString());
+                if (objCreateSubject.SubjectId != null && objCreateSubject.SubjectId != Guid.Empty)
+                {
+                    var subject = DbContext.tbl_DC_School_Subject.Where(x => x.SubjectId == objCreateSubject.SubjectId && x.SchoolId == schoolId).FirstOrDefault();
+                    if (subject != null)
+                    {
+                        subject.SubjectId = objCreateSubject.SubjectId;
+                        subject.SubjectName = objCreateSubject.SubjectName;
+                        DbContext.SaveChanges();
+                    }
+                    TempData["Message"] = "Subject Updated Successfully.";
+                }
+                else
+                {
+                    //Check subject name already exist
+                    if (DbContext.tbl_DC_School_Subject.Where(x => x.SubjectName.ToLower() == objCreateSubject.SubjectName.ToLower() && x.SchoolId == schoolId).Any())
+                    {                        
+                        TempData["Message"] = "Subject Aready Exist.";
+                        return View(objCreateSubject);
+                    }
+                    //Else save subject
+                    objCreateSubject.Id = Guid.NewGuid();
+                    objCreateSubject.SchoolId = new Guid(Session["id"].ToString());
+                    tbl_DC_School_Subject objtbl_DC_School_Subject = new tbl_DC_School_Subject();
+                    objtbl_DC_School_Subject.SubjectId = objCreateSubject.Id;
+                    objtbl_DC_School_Subject.SchoolId = objCreateSubject.SchoolId;
+                    objtbl_DC_School_Subject.SubjectName = objCreateSubject.SubjectName;
+                    objtbl_DC_School_Subject.CreatedDate = DateTime.Now;
+                    objtbl_DC_School_Subject.IsActive = true;
+                    var status = false;
+
+                    DbContext.tbl_DC_School_Subject.Add(objtbl_DC_School_Subject);
+                    var id = DbContext.SaveChanges();
+                    if (id != null)
+                    {
+                        status = true;                        
+                    }
+                    TempData["Message"] = "Subject Added Successfully.";                 
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return RedirectToAction("GetSubjectList", "School");
+
+        }
+
+        #endregion
+
+        #region ExamType
+        public ActionResult GetExamType()
+        {
+            SchoolAPIController obj = new SchoolAPIController();
+            List<SchoolModel.ExamTypeModel> objOutput = new List<SchoolModel.ExamTypeModel>();
+            SchoolModel.InputModel objInput = new SchoolModel.InputModel();
+            objInput.SchoolId = new Guid(Session["id"].ToString());
+            objOutput = obj.GetExamTypeList(objInput);
+            //  objOutput.HomeWork = objOutput;
+
+            return View(objOutput);
+        }
+
+        public ActionResult ExamType(Guid? Id)
+        {
+            SchoolModel.ExamType objExamType = new SchoolModel.ExamType();
+
+            if (Id != null && Id != Guid.Empty)
+            {
+                var examType = DbContext.tbl_DC_School_ExamType.Where(x => x.ExamTypeId == Id).FirstOrDefault();
+                if (examType != null)
+                {
+                    objExamType.ExamTypeId = examType.ExamTypeId;
+                    objExamType.ExamTypenname = examType.ExamTypeName;
+                }
+            }
+            return View(objExamType);
+        }
+
+        [HttpPost]
+        public ActionResult ExamType(SchoolModel.ExamType objExamType)
+        {
+            try
+            {
+                Guid schoolId = new Guid(Session["id"].ToString());
+                if (objExamType.ExamTypeId != null && objExamType.ExamTypeId != Guid.Empty)
+                {
+                    var examType = DbContext.tbl_DC_School_ExamType.Where(x => x.ExamTypeId == objExamType.ExamTypeId && x.SchoolId == schoolId).FirstOrDefault();
+                    if (examType != null)
+                    {
+                        examType.ExamTypeId = objExamType.ExamTypeId;
+                        examType.ExamTypeName = objExamType.ExamTypenname;
+
+                        DbContext.SaveChanges();
+                        TempData["Message"] = "Exam Type Updated Successfully.";
+                    }
+                }
+                else
+                {                    
+                    tbl_DC_School_ExamType objExmam = new tbl_DC_School_ExamType();
+
+                    //check exam type already exist
+                    if (DbContext.tbl_DC_School_ExamType.Any(x => x.ExamTypeName.ToLower() == objExamType.ExamTypenname.ToLower() && x.SchoolId == schoolId))
+                    {
+                        TempData["Message"] = "Exam Type Aready Exist.";
+                        return View(objExamType);                    
+                    }
+                    //Else add record.
+                    objExmam.ExamTypeName = objExamType.ExamTypenname;
+                    objExmam.IsActive = true;
+                    objExmam.ExamTypeId = Guid.NewGuid();
+                    objExmam.SchoolId = new Guid(Session["id"].ToString());
+
+                    DbContext.tbl_DC_School_ExamType.Add(objExmam);
+                    DbContext.SaveChanges();
+                    TempData["Message"] = "Exam Type Added Successfully.";
+                }
+
+                //  DbContext();
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = "There is some error please contact admin.";
+            }
+            return RedirectToAction("GetExamType", "School");
+        }
+
+        public ActionResult DeleteExamType(Guid id)
+        {
+
+            try
+            {
+                // get data for same id 
+                var result = DbContext.tbl_DC_School_ExamType.Where(x => x.ExamTypeId == id && x.IsActive == true).FirstOrDefault();
+                //                  //Set status false for delete
+                result.IsActive = false;
+                DbContext.SaveChanges();
+                //data = result.UserRole;
+
+            }
+
+            catch (Exception ex)
+            {
+
+            }
+
+            return RedirectToAction("GetExamType", "School");
+        }
+
+        
+
+
+        #endregion
+
+        #region Exam
+        
+        public ActionResult GetExam()
+        {
+            SchoolAPIController obj = new SchoolAPIController();
+            List<SchoolModel.CreateExamModel> objOutput = new List<SchoolModel.CreateExamModel>();
+            SchoolModel.InputModel objInput = new SchoolModel.InputModel();
+            objInput.SchoolId = new Guid(Session["id"].ToString());
+            objOutput = obj.GetExamListList(objInput);
+            //  objOutput.HomeWork = objOutput;
+
+            return View(objOutput);
+        }
+                
+        public ActionResult CreateOrEditCreateExam(Guid? Id)
+        {
+            SchoolModel.CreateExamModel objCreateExamModel = new SchoolModel.CreateExamModel();
+            if (Id != null && Id != Guid.Empty)
+            {
+                var exam = DbContext.tbl_DC_School_ExamSchedule.Where(x => x.ExamScheduleId == Id).FirstOrDefault();
+                {
+                    objCreateExamModel.Id = exam.ExamScheduleId;
+                    objCreateExamModel.ClassId = (Guid)exam.ClassId;
+                    if (exam.DateOfExam != null) ;
+                    objCreateExamModel.StartDate = (DateTime)exam.DateOfExam;
+                    objCreateExamModel.SubjectId = (Guid)exam.SubjectId;
+                    objCreateExamModel.ExamType = (Guid)exam.ExamTypeId;
+
+
+                }
+            }
+            ViewBag.Class_Id = new SelectList(DbContext.tbl_DC_School_Class.Where(x => x.IsActive == true), "ClassId", "ClassName");
+            ViewBag.ExamType_Id = new SelectList(DbContext.tbl_DC_School_ExamType.Where(x => x.IsActive == true), "ExamTypeId", "ExamTypeName");
+            ViewBag.Subject_Id = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true), "SubjectId", "SubjectName");
+
+            return View(objCreateExamModel);
+        }
+        [HttpPost]
+        public ActionResult CreateOrEditCreateExam(SchoolModel.CreateExamModel objCreateExamModel)
+        {
+            try
+            {
+                Guid schoolId = new Guid(Session["id"].ToString());
+                if (objCreateExamModel.Id != null && objCreateExamModel.Id != Guid.Empty)
+                {
+                    var exam = DbContext.tbl_DC_School_ExamSchedule.Where(x => x.ExamScheduleId == objCreateExamModel.Id).FirstOrDefault();
+                    {
+                        exam.ExamScheduleId = objCreateExamModel.Id;
+                        exam.ClassId = objCreateExamModel.ClassId;
+                        exam.DateOfExam = objCreateExamModel.StartDate;
+                        exam.SubjectId = objCreateExamModel.SubjectId;
+                        exam.ExamTypeId = objCreateExamModel.ExamType;
+
+                        DbContext.SaveChanges();
+                        TempData["Message"] = "Exam Updated Successfully.";
+                    }
+                }
+                else
+                {
+                    tbl_DC_School_ExamSchedule objexam = new tbl_DC_School_ExamSchedule();
+                    //school objam= new objam();
+
+                    //check exam already exist
+                    //if (DbContext.tbl_DC_School_ExamSchedule.Any(x => x.ToLower() == objExamType.ExamTypenname.ToLower() && x.SchoolId == schoolId))
+                    //{
+                    //    TempData["Message"] = "Exam Type Aready Exist.";
+                    //    return View(objExamType);
+                    //}
+
+                    objexam.ClassId = objCreateExamModel.ClassId;
+                    //  objexam.se = objCreateExamModel.SectionId;
+                    objexam.ExamScheduleId = objCreateExamModel.Id;
+                    objexam.IsActive = true;
+                    objexam.DateOfExam = DateTime.Now;
+                    objexam.TimeSlot = "";
+                    objexam.TotalMarks = objCreateExamModel.TotalMarks.ToString(); ;
+                    objexam.SubjectId = objCreateExamModel.SubjectId;
+                    objexam.SchoolId = new Guid(Session["id"].ToString());
+                    objexam.ExamTypeId = objexam.ExamTypeId;
+                    objexam.CreatedDate = DateTime.Now;
+                    DbContext.tbl_DC_School_ExamSchedule.Add(objexam);
+                    var id = DbContext.SaveChanges();
+                    TempData["Message"] = "Exam Added Successfully.";
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return RedirectToAction("GetExam", "School");
+        }
+
+        public ActionResult DeleteExam(Guid id)
+        {
+
+            try
+            {
+                // get data for same id 
+                var result = DbContext.tbl_DC_School_ExamSchedule.Where(x => x.ExamScheduleId == id && x.IsActive == true).FirstOrDefault();
+                //                  //Set status false for delete
+                result.IsActive = false;
+                DbContext.SaveChanges();
+                //data = result.UserRole;
+
+            }
+
+            catch (Exception ex)
+            {
+
+            }
+
+            return RedirectToAction("GetExam", "School");
+        }
+        #endregion
+
+        #region HomeWork
+        public ActionResult GetHomeWorkList()
+        {
+            SchoolAPIController obj = new SchoolAPIController();
+            List<SchoolModel.HomeWorkModel> objOutput = new List<SchoolModel.HomeWorkModel>();
+            SchoolModel.InputModel objInput = new SchoolModel.InputModel();
+            objInput.SchoolId = new Guid(Session["id"].ToString());
+            objOutput = obj.GetHomeWorkList(objInput);
+            //  objOutput.HomeWork = objOutput;
+
+            return View(objOutput);
+        }
 
         /// <summary>SubjectId
         /// Create home work form
@@ -446,188 +757,27 @@ namespace DigiChamps.Controllers
             }
             return RedirectToAction("GetHomeWorkList", "School");
         }
-        /// <summary>
-        /// Create exam form
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public ActionResult CreateOrEditCreateExam(Guid? Id)
+        #endregion
+
+        #region StudyMaterial
+        public ActionResult GetStudyMterial()
         {
-            SchoolModel.CreateExamModel objCreateExamModel = new SchoolModel.CreateExamModel();
-            if (Id != null && Id != Guid.Empty)
-            {
-                var exam = DbContext.tbl_DC_School_ExamSchedule.Where(x => x.ExamScheduleId == Id).SingleOrDefault();
-                {
-                    objCreateExamModel.Id = exam.ExamScheduleId;
-                    objCreateExamModel.ClassId = (Guid)exam.ClassId;
-                    if (exam.DateOfExam != null) ;
-                    objCreateExamModel.StartDate = (DateTime)exam.DateOfExam;
-                    objCreateExamModel.SubjectId = (Guid)exam.SubjectId;
-                    objCreateExamModel.ExamType = (Guid)exam.ExamTypeId;
+            SchoolAPIController obj = new SchoolAPIController();
+            List<SchoolModel.StudyMaterialModel> objOutput = new List<SchoolModel.StudyMaterialModel>();
+            SchoolModel.InputModel objInput = new SchoolModel.InputModel();
+            objInput.SchoolId = new Guid(Session["id"].ToString());
+            objOutput = obj.GetStudyMaterialList(objInput);
+            //  objOutput.HomeWork = objOutput;
 
-
-                }
-            }
-            ViewBag.Class_Id = new SelectList(DbContext.tbl_DC_School_Class.Where(x => x.IsActive == true), "ClassId", "ClassName");
-            ViewBag.ExamType_Id = new SelectList(DbContext.tbl_DC_School_ExamType.Where(x => x.IsActive == true), "ExamTypeId", "ExamTypeName");
-            ViewBag.Subject_Id = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true), "SubjectId", "SubjectName");
-
-            return View(objCreateExamModel);
-        }
-        [HttpPost]
-        public ActionResult CreateOrEditCreateExam(SchoolModel.CreateExamModel objCreateExamModel)
-        {
-            try
-            {
-                if (objCreateExamModel.Id != null && objCreateExamModel.Id != Guid.Empty)
-                {
-                    var exam = DbContext.tbl_DC_School_ExamSchedule.Where(x => x.ExamScheduleId == objCreateExamModel.Id).SingleOrDefault();
-                    {
-                        exam.ExamScheduleId = objCreateExamModel.Id;
-                        exam.ClassId = objCreateExamModel.ClassId;
-                        exam.DateOfExam = objCreateExamModel.StartDate;
-                        exam.SubjectId = objCreateExamModel.SubjectId;
-                        exam.ExamTypeId = objCreateExamModel.ExamType;
-
-                        DbContext.SaveChanges();
-                    }
-                }
-                else
-                {
-                    tbl_DC_School_ExamSchedule objexam = new tbl_DC_School_ExamSchedule();
-                    //school objam= new objam();
-
-                    objexam.ClassId = objCreateExamModel.ClassId;
-                    //  objexam.se = objCreateExamModel.SectionId;
-                    objexam.ExamScheduleId = objCreateExamModel.Id;
-                    objexam.IsActive = true;
-                    objexam.DateOfExam = DateTime.Now;
-                    objexam.TimeSlot = "";
-                    objexam.TotalMarks = objCreateExamModel.TotalMarks.ToString(); ;
-                    objexam.SubjectId = objCreateExamModel.SubjectId;
-                    objexam.SchoolId = new Guid(Session["id"].ToString());
-                    objexam.ExamTypeId = objexam.ExamTypeId;
-                    objexam.CreatedDate = DateTime.Now;
-                    DbContext.tbl_DC_School_ExamSchedule.Add(objexam);
-                    var id = DbContext.SaveChanges();
-                }
-
-
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return RedirectToAction("GetExam", "School");
-        }
-        /// <summary>
-        /// Create Message Creation
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public ActionResult CreateOrEditMessageCreation(string Id = "")
-        {
-            SchoolModel.MessageCreation objMessageCreation = new SchoolModel.MessageCreation();
-            if (string.IsNullOrEmpty(Id))
-            {
-
-            }
-            ViewBag.Class_Id = new SelectList(DbContext.tbl_DC_School_Class.Where(x => x.IsActive == true), "ClassId", "ClassName");
-            ViewBag.Section_Id = new SelectList(DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true), "SectionId", "SectionName");
-            return View(objMessageCreation);
+            return View(objOutput);
         }
 
-        [HttpGet]
-        public JsonResult IsEmailExist(string eMail)
-        {
-
-            // bool isExist = DbContext.tbl_DC_SchoolUser.Where(u => u.UserEmailAddress.ToLowerInvariant().Equals(eMail.ToLower()))).FirstOrDefault() != null;
-            bool isExist = DbContext.tbl_DC_SchoolUser.Where(x => x.UserEmailAddress.Equals(eMail) && x.IsActive == true).FirstOrDefault() != null; ; ;
-
-            return Json(!isExist, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public ActionResult CreateOrEditMessageCreation(SchoolModel.MessageCreation objMessageCreation)
-        {
-            try
-            {
-                tbl_DC_School_MessageCreation objmsg = new tbl_DC_School_MessageCreation();
-                objmsg.MessageId = Guid.NewGuid();
-                objmsg.SchoolId = new Guid(Session["id"].ToString());
-                objmsg.MassageDisplay = objMessageCreation.Message;
-                objmsg.IsActive = true;
-                objmsg.MassageDisplayDate = DateTime.Now;
-                objmsg.CreatedDate = DateTime.Now;
-                DbContext.tbl_DC_School_MessageCreation.Add(objmsg);
-                var id = DbContext.SaveChanges();
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return RedirectToAction("GetMessageList", "School");
-        }
         /// <summary>
         /// Insert Exam type
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
 
-        public ActionResult ExamType(Guid? Id)
-        {
-            SchoolModel.ExamType objExamType = new SchoolModel.ExamType();
-
-            if (Id != null && Id != Guid.Empty)
-            {
-                var examType = DbContext.tbl_DC_School_ExamType.Where(x => x.ExamTypeId == Id).SingleOrDefault();
-                if (examType != null)
-                {
-                    objExamType.ExamTypeId = examType.ExamTypeId;
-                    objExamType.ExamTypenname = examType.ExamTypeName;
-                }
-            }
-            return View(objExamType);
-        }
-        [HttpPost]
-
-        public ActionResult ExamType(SchoolModel.ExamType objExamType)
-        {
-            try
-            {
-                if (objExamType.ExamTypeId != null && objExamType.ExamTypeId != Guid.Empty)
-                {
-                    var examType = DbContext.tbl_DC_School_ExamType.Where(x => x.ExamTypeId == objExamType.ExamTypeId).SingleOrDefault();
-                    if (examType != null)
-                    {
-                        examType.ExamTypeId = objExamType.ExamTypeId;
-                        examType.ExamTypeName = objExamType.ExamTypenname;
-
-                        DbContext.SaveChanges();
-                    }
-                }
-                else
-                {
-                    tbl_DC_School_ExamType objExmam = new tbl_DC_School_ExamType();
-                    objExmam.ExamTypeName = objExamType.ExamTypenname;
-                    objExmam.IsActive = true;
-                    objExmam.ExamTypeId = Guid.NewGuid();
-                    objExmam.SchoolId = new Guid(Session["id"].ToString());
-
-                    DbContext.tbl_DC_School_ExamType.Add(objExmam);
-                    DbContext.SaveChanges();
-                }
-
-                //  DbContext();
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return RedirectToAction("GetExamType", "School");
-        }
 
 
         /// <summary>
@@ -738,6 +888,22 @@ namespace DigiChamps.Controllers
             };
 
         }
+
+
+        #endregion
+
+        #region TopperWay
+        public ActionResult GetToppersWay()
+        {
+            SchoolAPIController obj = new SchoolAPIController();
+            List<SchoolModel.ToppersWayModel> objOutput = new List<SchoolModel.ToppersWayModel>();
+            SchoolModel.InputModel objInput = new SchoolModel.InputModel();
+            objInput.SchoolId = new Guid(Session["id"].ToString());
+            objOutput = obj.GetToppersWay(objInput);
+            //  objOutput.HomeWork = objOutput;
+
+            return View(objOutput);
+        }
         public ActionResult CreateOrEditToppersWay(string Id = "")
         {
             SchoolModel.ToppersWayModel objToppersWayModel = new SchoolModel.ToppersWayModel();
@@ -822,63 +988,62 @@ namespace DigiChamps.Controllers
         }
 
 
-        public ActionResult CreateOrEditSubject(Guid? Id)
+        #endregion
+
+
+        /// <summary>
+        /// Create Message Creation
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ActionResult CreateOrEditMessageCreation(string Id = "")
         {
-            SchoolModel.CreateSubject objCreateSubject = new SchoolModel.CreateSubject();
-            if (Id != null && Id != Guid.Empty)
+            SchoolModel.MessageCreation objMessageCreation = new SchoolModel.MessageCreation();
+            if (string.IsNullOrEmpty(Id))
             {
-                var subject = DbContext.tbl_DC_School_Subject.Where(x => x.SubjectId == Id).SingleOrDefault();
-                if (subject != null)
-                {
-                    objCreateSubject.SubjectId = subject.SubjectId;
-                    objCreateSubject.SubjectName = subject.SubjectName;
-                }
+
             }
-            return View(objCreateSubject);
+            ViewBag.Class_Id = new SelectList(DbContext.tbl_DC_School_Class.Where(x => x.IsActive == true), "ClassId", "ClassName");
+            ViewBag.Section_Id = new SelectList(DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true), "SectionId", "SectionName");
+            return View(objMessageCreation);
         }
+
+        [HttpGet]
+        public JsonResult IsEmailExist(string eMail)
+        {
+
+            // bool isExist = DbContext.tbl_DC_SchoolUser.Where(u => u.UserEmailAddress.ToLowerInvariant().Equals(eMail.ToLower()))).FirstOrDefault() != null;
+            bool isExist = DbContext.tbl_DC_SchoolUser.Where(x => x.UserEmailAddress.Equals(eMail) && x.IsActive == true).FirstOrDefault() != null; ; ;
+
+            return Json(!isExist, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
-        public ActionResult CreateOrEditSubject(SchoolModel.CreateSubject input)
+        public ActionResult CreateOrEditMessageCreation(SchoolModel.MessageCreation objMessageCreation)
         {
             try
             {
-                if (input.SubjectId != null && input.SubjectId != Guid.Empty)
-                {
-                    var subject = DbContext.tbl_DC_School_Subject.Where(x => x.SubjectId == input.SubjectId).SingleOrDefault();
-                    if (subject != null)
-                    {
-                        subject.SubjectId = input.SubjectId;
-                        subject.SubjectName = input.SubjectName;
-                        DbContext.SaveChanges();
-                    }
-                }
-                else
-                {
+                tbl_DC_School_MessageCreation objmsg = new tbl_DC_School_MessageCreation();
+                objmsg.MessageId = Guid.NewGuid();
+                objmsg.SchoolId = new Guid(Session["id"].ToString());
+                objmsg.MassageDisplay = objMessageCreation.Message;
+                objmsg.IsActive = true;
+                objmsg.MassageDisplayDate = DateTime.Now;
+                objmsg.CreatedDate = DateTime.Now;
+                DbContext.tbl_DC_School_MessageCreation.Add(objmsg);
+                var id = DbContext.SaveChanges();
 
-                    input.Id = Guid.NewGuid();
-                    input.SchoolId = new Guid(Session["id"].ToString());
-                    tbl_DC_School_Subject objtbl_DC_School_Subject = new tbl_DC_School_Subject();
-                    objtbl_DC_School_Subject.SubjectId = input.Id;
-                    objtbl_DC_School_Subject.SchoolId = input.SchoolId;
-                    objtbl_DC_School_Subject.SubjectName = input.SubjectName;
-                    objtbl_DC_School_Subject.CreatedDate = DateTime.Now;
-                    objtbl_DC_School_Subject.IsActive = true;
-                    var status = false;
-
-                    DbContext.tbl_DC_School_Subject.Add(objtbl_DC_School_Subject);
-                    var id = DbContext.SaveChanges();
-                    if (id != null)
-                    {
-                        status = true;
-                    }
-                }
             }
             catch (Exception ex)
             {
 
             }
-            return RedirectToAction("GetSubjectList", "School");
-
+            return RedirectToAction("GetMessageList", "School");
         }
+       
+       
+
+       
         public ActionResult CreateOrEditClass(Guid? Id)
         {
             SchoolModel.CreateClass objCreateClass = new SchoolModel.CreateClass();
@@ -1128,12 +1293,6 @@ namespace DigiChamps.Controllers
 
         }
 
-        #region GetListingrid
-
-
-
-
-
 
 
         public ActionResult DeleteUserList(Guid id)
@@ -1165,40 +1324,10 @@ namespace DigiChamps.Controllers
                 return RedirectToAction("GetSchoolPrincipleList", "School");
         }
 
-        public ActionResult GetHomeWorkList()
-        {
-            SchoolAPIController obj = new SchoolAPIController();
-            List<SchoolModel.HomeWorkModel> objOutput = new List<SchoolModel.HomeWorkModel>();
-            SchoolModel.InputModel objInput = new SchoolModel.InputModel();
-            objInput.SchoolId = new Guid(Session["id"].ToString());
-            objOutput = obj.GetHomeWorkList(objInput);
-            //  objOutput.HomeWork = objOutput;
+        
+        
 
-            return View(objOutput);
-        }
-        public ActionResult GetStudyMterial()
-        {
-            SchoolAPIController obj = new SchoolAPIController();
-            List<SchoolModel.StudyMaterialModel> objOutput = new List<SchoolModel.StudyMaterialModel>();
-            SchoolModel.InputModel objInput = new SchoolModel.InputModel();
-            objInput.SchoolId = new Guid(Session["id"].ToString());
-            objOutput = obj.GetStudyMaterialList(objInput);
-            //  objOutput.HomeWork = objOutput;
-
-            return View(objOutput);
-        }
-
-        public ActionResult GetToppersWay()
-        {
-            SchoolAPIController obj = new SchoolAPIController();
-            List<SchoolModel.ToppersWayModel> objOutput = new List<SchoolModel.ToppersWayModel>();
-            SchoolModel.InputModel objInput = new SchoolModel.InputModel();
-            objInput.SchoolId = new Guid(Session["id"].ToString());
-            objOutput = obj.GetToppersWay(objInput);
-            //  objOutput.HomeWork = objOutput;
-
-            return View(objOutput);
-        }
+        
 
         public ActionResult GetClassList()
         {
@@ -1223,47 +1352,11 @@ namespace DigiChamps.Controllers
             return View(objOutput);
         }
 
-        public ActionResult GetSubjectList()
-        {
-            SchoolAPIController obj = new SchoolAPIController();
-            List<SchoolModel.CreateSubject> objOutput = new List<SchoolModel.CreateSubject>();
-            SchoolModel.InputModel objInput = new SchoolModel.InputModel();
-            objInput.SchoolId = new Guid(Session["id"].ToString());
-            objOutput = obj.GetSubjectList(objInput);
-            //  objOutput.HomeWork = objOutput;
+        
 
-            return View(objOutput);
-        }
-
-        public ActionResult GetExamType()
-        {
-            SchoolAPIController obj = new SchoolAPIController();
-            List<SchoolModel.ExamTypeModel> objOutput = new List<SchoolModel.ExamTypeModel>();
-            SchoolModel.InputModel objInput = new SchoolModel.InputModel();
-            objInput.SchoolId = new Guid(Session["id"].ToString());
-            objOutput = obj.GetExamTypeList(objInput);
-            //  objOutput.HomeWork = objOutput;
-
-            return View(objOutput);
-        }
-        /// <summary>
-        /// get the exam list
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult GetExam()
-        {
-            SchoolAPIController obj = new SchoolAPIController();
-            List<SchoolModel.CreateExamModel> objOutput = new List<SchoolModel.CreateExamModel>();
-            SchoolModel.InputModel objInput = new SchoolModel.InputModel();
-            objInput.SchoolId = new Guid(Session["id"].ToString());
-            objOutput = obj.GetExamListList(objInput);
-            //  objOutput.HomeWork = objOutput;
-
-            return View(objOutput);
-        }
+      
 
 
-        #endregion
         public ActionResult DeleteHomeWork(Guid id)
         {
 
@@ -1289,49 +1382,7 @@ namespace DigiChamps.Controllers
 
 
 
-        public ActionResult DeleteExamType(Guid id)
-        {
-
-            try
-            {
-                // get data for same id 
-                var result = DbContext.tbl_DC_School_ExamType.Where(x => x.ExamTypeId == id && x.IsActive == true).FirstOrDefault();
-                //                  //Set status false for delete
-                result.IsActive = false;
-                DbContext.SaveChanges();
-                //data = result.UserRole;
-
-            }
-
-            catch (Exception ex)
-            {
-
-            }
-
-            return RedirectToAction("GetExamType", "School");
-        }
-
-        public ActionResult DeleteExam(Guid id)
-        {
-
-            try
-            {
-                // get data for same id 
-                var result = DbContext.tbl_DC_School_ExamSchedule.Where(x => x.ExamScheduleId == id && x.IsActive == true).FirstOrDefault();
-                //                  //Set status false for delete
-                result.IsActive = false;
-                DbContext.SaveChanges();
-                //data = result.UserRole;
-
-            }
-
-            catch (Exception ex)
-            {
-
-            }
-
-            return RedirectToAction("GetExam", "School");
-        }
+        
 
         public ActionResult DeleteSubject(Guid id)
         {

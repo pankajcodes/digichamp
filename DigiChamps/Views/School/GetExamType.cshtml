@@ -4,6 +4,22 @@
     ViewBag.Title = "GetSchoolAdminList";
     Layout = "~/Views/Shared/_SchoolLayout.cshtml";
 }
+@{
+    string message = TempData.ContainsKey("Message") ? TempData["Message"].ToString() : string.Empty;
+    string styleDisplayValue = "none";
+    string MessageType = TempData.ContainsKey("MessageType") ? TempData["MessageType"].ToString() : "success";
+    string mode = "";
+    
+    if (!string.IsNullOrEmpty(message))
+    {
+        //MessageType = ViewBag.MessageType.ToString();
+        styleDisplayValue = "block";
+    }
+    else
+    {
+        styleDisplayValue = "none";
+    }
+}
 
 <form class="form-horizontal" id="validation-form">
 
@@ -19,6 +35,13 @@
                         <a class="btn btn-primary" href="/School/ExamType/"><i class="fa fa-plus"></i><span> Add Exam</span></a>
                     </div>
                 </div>
+                @if (!string.IsNullOrEmpty(@message))
+                {
+                    <div class="alert alert-dismissable alert-@MessageType" style="display:@styleDisplayValue">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                        @message
+                    </div>
+                }
                 <div class="box-content">
                     <div class="table-responsive">
                         <table class="table table-advance" id="table1">
