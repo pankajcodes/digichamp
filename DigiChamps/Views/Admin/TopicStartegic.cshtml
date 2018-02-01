@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "Topic strategic";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using (Html.BeginForm("TopicStartegic", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    <div class="page-content-wrap">
+
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active">@ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        @if (ViewBag.pagetitle != null)
+                        {
+                            <h3><i class="fa fa-file"></i> @ViewBag.pagetitle Topic strategic Details</h3>
+                        }
+                    </div>
+                    <div class="box-content">
+                        <div class="form-group voffset3">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Choose Topic Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <input type="hidden" name="hide_id" value="@ViewBag.hid" />
+                                <select name="topic_id" data-rule-required="true" data-msg-required="Please selecet Topic" class="form-control chosen">
+                                    <option value="">Select Topic</option>
+                                    @if (ViewBag.getalltopic != null)
+                                    {
+
+                                        foreach (var v in ViewBag.getalltopic)
+                                        {
+                                            if (v.Topic_ID == ViewBag.Topicname_p)
+                                            {
+                                                <option selected="selected" value="@v.Topic_ID">@v.Topic_Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@v.Topic_ID">@v.Topic_Name</option>
+                                            }
+
+                                        }
+                                    }
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="form-group voffset3">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Select Percentage<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <select id="start" name="percentage" data-rule-required="true" data-msg-required="Please selecet percentage" class="form-control chosen">
+                                    <option value="">Select Perecentage</option>
+                                    @foreach (var v in ViewBag.percentage)
+                                    {
+                                        <option value="@v.ID">@v.Start_P to @v.END_P</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group voffset3">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Remark<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <textarea data-rule-required="true" name="remark" data-msg-required="Please enter remark" class="form-control">@ViewBag.remark_p</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("ShowTopicStartegic", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back </span></a>
+                                <button id="btnSearch" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span> Submit</span></button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#start option[value="@ViewBag.start_p"]').attr('selected', 'selected');
+            $('#start').trigger('chosen:updated');
+
+            @*$('#end option[value="@ViewBag.end_p"]').attr('selected', 'selected');
+            $('#end').trigger('chosen:updated');*@
+        });
+    </script>
+}

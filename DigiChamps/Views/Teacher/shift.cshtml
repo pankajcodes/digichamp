@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = " My Shift";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+<form id="Ticke_form" class="form-horizontal">
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-table"></i>My Shift</h3>
+                        <div class="box-tool box-tooll">
+                            <a class="btn btn-large btn-primary" title="Refresh" href="/Teacher/shift"><i class="fa fa-refresh"></i> <span>Refresh</span> </a>
+                        </div>
+                    </div>
+                    <div class="box-content">
+                        <div class="btn-toolbar pull-right clearfix">
+                            @* <div class="btn-group">
+                                                            <a class="btn btn-circle show-tooltip" title="Refresh" href="/Teacher/Viewticekts"><i class="fa fa-refresh"></i></a>
+                                    <a class="btn btn-circle show-tooltip" title="My tickets" href="/Teacher/mytickets"><i class="fa fa-filter"></i></a>
+                                </div>*@
+                        </div>
+                        <br /><br />
+                        <div class="clearfix"></div>
+                        <div class="table-responsive" style="border:0">
+                            <table class="table table-advance table-hover" id="table1">
+                                <thead>
+                                    <tr>
+                                        <th hidden>Sl no</th>
+                                        <th>Day</th>
+                                        <th hidden></th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Effective Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.shift != null)
+                                    {
+                                        int i = 0;
+                                        foreach (var item in ViewBag.shift)
+                                        {
+                                            <tr>
+                                                <td hidden>@(i += 1)</td>
+
+                                                <td>@item.Shift_Days</td>
+                                                <td hidden>
+                                                    @{
+                                            int shift = Convert.ToInt32(item.ShiftMst_ID);
+                                            DigiChamps.Models.DigiChampsEntities db = new DigiChamps.Models.DigiChampsEntities();
+                                            var data = db.tbl_DC_Shift_Mst.Where(x => x.ShiftMst_ID == shift).FirstOrDefault();
+                                            DateTime dt = Convert.ToDateTime(item.Efective_Date);
+                                                    }
+                                                </td>
+                                                <td>@data.Shift_From_Time</td>
+                                                <td>@data.Shift_To_Time</td>
+                                                <td>@dt.ToShortDateString()</td>
+                                                <td>
+
+                                                    @if (item.Is_Deleted = true && item.Is_Active == false)
+                                                    {
+                                                        <span>Inactive</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Active</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</form>

@@ -1,0 +1,133 @@
+﻿@{
+    ViewBag.Title = "Test Result";
+    Layout = "~/Views/Shared/_ParentLayout.cshtml";
+}
+
+@section header{
+    <div class="col-md-8 pull-left">
+        <i class="ion-clipboard page_header_icon"></i>
+        <span class="main-text">Exam Details</span>
+    </div>
+}
+    <div class="row">
+        <div class="col-md-6 nopad-right">
+            <div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Online Test
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Total No of Tests</th>
+                                <td>@ViewBag.online1 nos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="">
+                        @Html.ActionLink("View Result", "resultview", "Parent", new { @id = 5 }, new { @class = "btn btn-primary voffset3 starttest", @title = "Result View" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <div class="col-md-6">
+            <div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Pre-Requisite Test
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Total No of Tests</th>
+                                <td>@ViewBag.test1 nos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="">
+                        @Html.ActionLink("View Result", "resultview", "Parent", new { @id = 1 }, new { @class = "btn btn-primary voffset3 starttest", @title = "Result View" })
+                    </div>
+                </div>
+            </div>
+          </div>
+            <!-- panel -->
+            <div class="col-md-6 nopad-right">
+              <div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Practice Test
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Total No of Tests</th>
+                                <td>@ViewBag.test2 nos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="">
+                        @Html.ActionLink("View Result", "resultview", "Parent", new { @id = 3 }, new { @class = "btn btn-primary voffset3 starttest", @title = "Result View" })
+                    </div>
+                </div>
+                <!-- sparkline-widget -->
+            </div>
+        </div>
+            <!-- panel -->
+            @if (ViewBag.retestassign != null)
+            {
+             <div class="col-md-6">
+                <div class="panel panel-ntspl">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Re-Test
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-hover">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Total No of Tests</th>
+                                    <td>@ViewBag.test3 nos</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="">
+                            @Html.ActionLink("View Result", "resultview", "Parent", new { @id = 2 }, new { @class = "btn btn-primary voffset3 starttest", @title = "Result View" })
+                        </div>
+                    </div>
+                    <!-- sparkline-widget -->
+                </div>
+            </div>
+            }
+          <div class="col-md-6 nopad-right">
+            <div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Global Test
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Total No of Tests</th>
+                                <td>@ViewBag.global nos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="">
+                        @Html.ActionLink("View Result", "resultview", "Parent", new { @id = 4 }, new { @class = "btn btn-primary voffset3 starttest", @title = "Result View" })
+                    </div>
+                </div>
+                <!-- sparkline-widget -->
+            </div>
+        </div>
+            <!-- panel -->
+        </div>

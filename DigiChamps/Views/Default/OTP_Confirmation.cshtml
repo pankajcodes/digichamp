@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "OTP_Confirmation";
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!--base css styles-->
+    <link rel="stylesheet" href="~/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assets/font-awesome/css/font-awesome.min.css">
+    <!--page specific css styles-->
+    <!--flaty css styles-->
+    <link rel="stylesheet" href="~/css/flaty.css">
+    <link rel="stylesheet" href="~/css/flaty-responsive.css">
+    <link rel="shortcut icon" href="~/img/favicon.html">
+</head>
+<body class="error-page">
+    <!-- BEGIN Main Content -->
+    <div class="error-wrapper">
+        <h4>Confirm OTP<span><img src="~/Images/digi1.jpg" height="40" width="40" /></span></h4>
+        <p>OTP is valid for 1 hour.<br />Please enter confirm password same as password given below.</p>
+        <br />
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <div style="font-size: 13px; color:#5ead34;"><i class="fa fa-check-circle"></i> @TempData["SuccessMessage"]</div>
+            </div>
+        }
+        @if (@TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <div style="font-size: 13px;"><i class="fa fa-times-circle"></i> @TempData["ErrorMessage"]</div>
+            </div>
+        }
+        @if (@TempData["WarningMessage"] != null)
+        {
+            <div class="alert alert-warning" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <div style="font-size: 13px; color:#ffaf36;"><i class="fa fa-exclamation-circle"></i> @TempData["WarningMessage"]</div>
+            </div>
+        }
+
+        @using (Html.BeginForm("OTP_Confirmation", "Student", FormMethod.Post, new { @id = "validation-form" }))
+        {
+            <p>OTP has been delivered to your preferred channel (SMS).</p>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" placeholder="OTP" class="form-control" name="Mobile_OTP" data-rule-required="true" data-msg-required="Enter OTP" maxlength="6" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="password" placeholder="Password" class="form-control" name="New_Password" id="New_Password" data-rule-required="true" data-rule-minlength="6" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="password" placeholder="Confirm Password" class="form-control" name="Confirm_Password" data-rule-required="true" data-rule-minlength="6" data-rule-equalto="#New_Password" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group" id="resend">
+                <div class="input-group">
+                    <p>Did not receive OTP? <button class="btn btn-xs" id="click-count"> Resend</button></p>
+                </div>
+            </div>
+        }
+        <hr />
+        <p class="clearfix">
+            <a href="/Student/Login" class="pull-left">← Back to login page</a>
+        </p>
+    </div>
+    <!-- END Main Content -->
+    <!--basic scripts-->
+    <script src="~/assets/jquery/jquery-2.1.1.min.js"></script>
+    <script src="~/assets/bootstrap/js/bootstrap.min.js"></script>    
+    <!--Validation scripts-->
+    <script type="text/javascript" src="~/assets/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/assets/jquery-validation/dist/additional-methods.min.js"></script>
+    <script type="text/javascript" src="~/assets/chosen-bootstrap/chosen.jquery.min.js"></script>
+</body>
+</html>
+    <script>
+        $(document).ready(function () {
+            var count = 0;
+            $(document).on('click', "#click-count", function (e) {
+                e.preventDefault();
+                count++;
+                $.ajax({
+                    url: "/Student/Resend_OTP",
+                    Method:"Post",
+                    data: { count: count },
+                    datatype: "json",
+                    success: function (result) {
+                        if(result == "0")
+                        {
+                            alert("OTP cant send more than 3 times.");
+                        }
+                        else if (result == "-1") {
+                            alert("Invalid user details.");
+                        }
+                        else {
+                            alert("OTP has been Resent");
+                        }
+                    }
+                });
+            });
+        });
+        
+            
+    </script>

@@ -1,0 +1,203 @@
+﻿@model DigiChamps.Models.SchoolModel.SchoolAdminOrPrincipleModel
+
+@{
+    if (Model.SchoolId != Guid.Empty)
+    {
+        ViewBag.Title = "Edit School Admin";
+    }
+    else
+    {
+        ViewBag.Title = "Add School Admin";
+    }   
+    Layout = "~/Views/Shared/_SchoolLayout.cshtml";
+}
+<style>
+    .input-validation-error {
+        border-color: #b94a48;
+    }
+
+    .field-validation-error {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        color: #C62626;
+    }
+</style>
+<script src="~/Student_assets/crop/scripts/jquery.min.js"></script>
+
+
+<form class="form-horizontal" id="validation-form">
+    <div id="breadcrumbs">
+        
+    </div>
+    
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> Admin Profile</h3>
+
+                    </div>
+                    <div >
+                        <div class="box-content">
+                            <div class="form-group" style="display:none;">
+                                <label for="textfield5" class="col-sm-3  control-label">Select School<span class="asterisk"></span></label>
+                                <div class="col-sm-9  controls">
+                                    @(Html.DropDownListFor(x => x.SchoolId, ViewBag.School_Id as SelectList, "Please Select School", new { @class = "form-control chosen", data_rule_required = "true", data_msg_required = "Please select school", @id = "ddlschool" }))
+
+
+                                    @*<input type="text" name="FirstName" id="FirstName" value="@Model.FirstName" class="form-control" data-rule-required="true" data-msg-required="Please enter user name" />*@
+
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3  control-label">First Name<span class="asterisk">*</span></label>
+                                <div class="col-sm-9  controls">
+                                    <input type="hidden" name="Id" id="Id" value="@Model.Id" class="form-control"  />
+
+                                    <input type="text" name="FirstName" id="FirstName" value="@Model.FirstName" class="form-control" data-rule-required="true" data-msg-required="Please enter first name" />
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3  control-label">Last Name<span class="asterisk">*</span></label>
+                                <div class="col-sm-9  controls">
+
+                                    <input type="text" name="LastName" id="LastName" value="@Model.LastName" class="form-control" data-rule-required="true" data-msg-required="Please enter last name" />
+
+                                </div>
+                            </div>
+                            <div class="form-group input-cont">
+                                <label for="textfield5" class="col-sm-3  control-label">Email Address<span class="asterisk">*</span></label>
+                                <div class="col-sm-9  controls">
+                                    <input type="text" name="EmailAddress" id="EmailAddress" value="@Model.EmailAddress" class="form-control" data-rule-required="true" data-msg-required="Please enter email" onchange="return checkEmail();">
+                                    <p id="spnError" style="display:none;"></p>
+                                </div>
+                            </div>
+
+                            <div class="form-group input-cont">
+                                <label for="textfield5" class="col-sm-3  control-label">Password<span class="asterisk">*</span></label>
+                                <div class="col-sm-9  controls">
+
+                                    <input type="password" name="Password" id="Password" value="@Model.Password" class="form-control" data-rule-required="true" data-msg-required="Please enter password">
+
+                                </div>
+                            </div>
+                            @*<div class="form-group input-cont">
+                                <label for="textfield5" class="col-sm-3  control-label">Confirm Password<span class="asterisk">*</span></label>
+                                <div class="col-sm-9  controls">
+                                    <input type="password" name="ConfirmPassword" id="ConfirmPassword" value="@Model.ConfirmPassword" class="form-control" data-rule-required="true" data-msg-required="Please enter confirm password">
+                                </div>
+                            </div>*@
+
+
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3  control-label">Upload Picture<span class="asterisk"></span></label>
+                                <div class="col-sm-9  controls">
+                                    <input type="file" value="Chofileose a " accept="image/*" id="AdminImage" />
+                                </div>
+                            </div>
+
+                           
+
+                            <div class="form-group last box-tooll">
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                    <a href="@Url.Action("GetSchoolAdminList", "School", new { id = new Guid(Session["id"].ToString()) })" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                                    <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span> Submit</span></button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+</form>
+
+<script>
+
+    function checkEmail() {
+        
+        var email = $('#EmailAddress').val();
+        var filter = /^([a-zA-Z0-9_\.\-])+\@@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if (!filter.test(email)) {
+            $("#spnError").html('Please provide a valid email address').css("display", "block").addClass("customerror");
+           // alert('');
+            //email.focus;
+            return false;
+        }
+        else {
+            $("#spnError").html('').css("display", "none").removeClass("customerror");
+            return true;
+        }
+    }
+    $('#validation-form').submit(function (e) {
+        var status = true;
+        var fileData = new FormData();
+
+        fileData.append('FirstName', $("#FirstName").val())
+        fileData.append('LastName', $("#LastName").val())
+        fileData.append('EmailAddress', $("#EmailAddress").val())
+        fileData.append('Password', $("#Password").val())
+        fileData.append('Id', $("#Id").val())
+
+        if ($("#AdminImage").val() != '') {
+            var fileUpload = $("#AdminImage").get(0);
+            var files = fileUpload.files;
+            fileData.append('Image', files[0])
+        }
+        debugger;
+        var email = $('#EmailAddress').val();
+        var filter = /^([a-zA-Z0-9_\.\-])+\@@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        
+        if ($("#FirstName").val() == "" || $("#LastName").val() == "" || $("#EmailAddress").val()=="" || $("#Password").val()=="")
+        {
+            status = false;
+
+            if (!filter.test(email)) {
+                $("#spnError").html('Please provide a valid email address').css("display", "block").addClass("customerror");
+                // alert('');
+                //email.focus;
+                status = false;
+
+            }
+        }
+        if (!filter.test(email)) {
+            $("#spnError").html('Please provide a valid email address').css("display", "block").addClass("customerror");
+            // alert('');
+            //email.focus;
+            status = false;
+
+        }
+        //var status = Validation();
+        if (status) {
+            $(".loader-ajax-container").css("display", "block");
+            $.ajax({
+                type: 'POST',
+                url: "/School/AddSchoolAdmin",
+                contentType: false, // Not to set any content header
+                processData: false,
+                data: fileData,
+                success: function (data) {
+                    console.log(data);
+                    $(".loader-ajax-container").css("display", "none");                    if (data) {
+                       // debugger;
+                        window.location.href = '/School/GetSchoolAdminList/';
+                    }
+                }
+            });
+        }
+        else
+        {
+            return false;
+        }
+
+    });
+</script>

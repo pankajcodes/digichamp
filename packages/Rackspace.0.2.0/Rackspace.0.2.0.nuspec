@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Rackspace</id>
+    <version>0.2.0</version>
+    <title>Rackspace .NET SDK</title>
+    <authors>carolynvs</authors>
+    <owners>carolynvs</owners>
+    <licenseUrl>https://github.com/rackspace/rackspace-net-sdk/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://rackspace.github.io/rackspace-net-sdk/</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/rackspace/rackspace-net-sdk/master/build/rackspace-logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Automating all things Rackspace</description>
+    <summary />
+    <releaseNotes>https://github.com/rackspace/rackspace-net-sdk/releases/v0.2.0</releaseNotes>
+    <copyright>2015 Rackspace, Inc.</copyright>
+    <tags>openstack rackspace rackconnect</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="openstack.net" version="[1.5.0.1, 2.0)" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

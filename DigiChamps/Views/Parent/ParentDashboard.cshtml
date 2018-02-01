@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "Parent Dashboard";
+    Layout = "~/Views/Shared/_ParentLayout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-12 nopad-right">
+        <div class="dashboard-stats">
+            <div class="left">
+                <h3 class="flatBluec counter" data-to="@ViewBag.packagecount" data-speed="4000">@ViewBag.packagecount</h3>
+                <h4>Packages Purchased</h4>
+            </div>
+            <div class="right flatBlue">
+                <i class="ion ion-ios-heart-outline"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="dashboard-stats">
+            <div class="left">
+                  <h3 class="flatOrangec counter" data-to="@ViewBag.exams" data-speed="8000">@ViewBag.exams</h3>
+                <h4>Tests Appeared</h4>
+            </div>
+            <div class="right flatOrange">
+                <i class="ion ion-ios-analytics-outline"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- row -->
+
+<div class="row">
+ <div class="col-md-6 padding-r-5">
+     <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">Package Purchase</h3>
+            </div>
+     <div class="panel-body">
+     @if (ViewBag.packagename != null)
+     { 
+        foreach (var item in ViewBag.packagename)
+        {
+
+                <div class="alert alert-success alert-dismissable new-package">
+                    @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>*@
+                    <h3>@item.Package_Name</h3>
+                    <p>@item.Package_Desc</p>
+                    @*<a href="#fakelink" class="btn btn-info btn-wide">Turn it off now</a>
+                    <a href="#fakelink" class="btn btn-primary btn-wide">It’s ok</a>*@
+                </div>
+        }
+}
+         </div>
+     </div>
+ </div>
+    <div class="col-md-6">
+        <!-- panel -->
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                   Exam Wise Performance
+                    @*<span class="panel-options">
+                        <a href="#" class="panel-refresh">
+                            <i class="icon ti-reload"></i>
+                        </a>
+                        <a href="#" class="panel-minimize">
+                            <i class="icon ti-angle-up"></i>
+                        </a>
+                        <a href="#" class="panel-close">
+                            <i class="icon ti-close"></i>
+                        </a>
+                    </span>*@
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div id="multiline-bar" class="ct-chart ct-golden-section"></div>
+            </div>
+        </div>
+        <!-- /panel -->
+    </div>
+    </div>
+
+        <!-- /Right-bar -->
+        @section scripts
+{
+            <script src='~/Student_assets/assets/js/chartist.min.js'></script>
+            <script src='~/Student_assets/assets/js/CustomChart.js'></script>
+<script>
+    $(document).ready(function () {
+        new Chartist.Bar('#multiline-bar', {
+            labels: ['Online Test', ' Pre-Requisite Test', 'Practice Test', 'Re-Test'],
+            series: [
+              [@ViewBag.onlinetest1, @ViewBag.prereqtest1, @ViewBag.practicetest1, @ViewBag.retest1],
+              [@ViewBag.onlinetest2, @ViewBag.prereqtest2, @ViewBag.practicetest2, @ViewBag.retest2],
+              [@ViewBag.onlinetest3, @ViewBag.prereqtest3, @ViewBag.practicetest3, @ViewBag.retest3]
+            ]
+        }, {
+            seriesBarDistance: 10,
+            axisX: {
+                offset: 60
+            },
+            axisY: {
+                offset: 80,
+                labelInterpolationFnc: function (value) {
+                    return value + '%'
+                },
+                scaleMinSpace: 15
+            }
+        });
+    })
+</script>
+        }

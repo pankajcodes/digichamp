@@ -1,0 +1,482 @@
+﻿@{
+    ViewBag.Title = "Admin Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/assets/bootstrap-datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="~/assets/bootstrap-daterangepicker/daterangepicker.css" />
+
+<div class="box">
+    <div class="box-title">
+        <h3><i class="fa fa-dashboard"></i> Dashboard</h3>
+        <div class="box-tool">
+        </div>
+    </div>
+    <div class="box-content">
+        @*<div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input type="text" class="form-control" id="date_range" placeholder="From Date - To Date" />
+                    </div>
+                </div>
+            </div>
+        </div>*@
+        <!-- BEGIN Tiles -->
+        <div class="row">
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="tile tile-dark-blue">
+                            <div class="img">
+                                <i class="fa fa-inr"></i>
+                            </div>
+                            <div class="content">
+                                <p class="big">+@ViewBag.sales</p>
+                                <p class="title">Total Sales</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="tile tile-orange">
+                            <div class="img">
+                                <i class="fa fa-user"></i>
+                            </div>
+                            <div class="content">
+                                <p class="big">@ViewBag.totalstu</p>
+                                <p class="title">Total Students</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-12 tile-active">
+                                <div class="tile tile-magenta">
+                                    <div class="img img-center">
+                                        <i class="fa fa-shopping-cart"></i>
+                                    </div>
+                                    <p class="title text-center">Total Orders : @ViewBag.orders</p>
+                                </div>
+                                <div class="tile tile-blue">
+                                    <p class="title">Sales Amount</p>
+                                    <p><i class="fa fa-inr"></i>@string.Format("{0:0.00}", @ViewBag.price)</p>
+                                    <div class="img img-bottom">
+                                        <i class="fa fa-desktop"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="tile">
+                                    <p class="title">Admin Users and Teachers</p>
+                                    <p>Admin Registered : @ViewBag.total_user <br /> Teachers Registered : @ViewBag.total_teach</p>
+                                    <div class="img img-bottom">
+                                        <i class="fa fa-users"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Tiles -->
+        <!-- BEGIN Main Content -->
+        <div class="row">
+            <div class="col-md-7">
+
+                <!-- BEGIN Sales Chart -->
+                <div class="box box-blue">
+                    <div class="box-title">
+                        <h3><i class="fa fa-bar-chart-o"></i> Sales Chart (@ViewBag.month)</h3>
+                        <div class="box-tool">
+                        </div>
+                    </div>
+                    <div class="box-content">
+                        <div id="orderchart" style="height:350px;"></div>
+                        <div class="btn-toolbar">
+                            <P>X-axis : Ordered Date <br/>
+                                Y-axis : No of Orders </P>
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- END Chart -->
+
+            </div>
+            <div class="col-md-5">
+                <div class="box box-blue">
+                    <div class="box-title">
+                        <h3><i class="fa fa-ticket"></i>Tickets</h3>
+                        <div class="box-tool">
+                        </div>
+                    </div>
+                    <div class="box-content">
+                        <ul class="weekly-stats">
+                            @{
+                                DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                                var totaltkt = DbContext.tbl_DC_Ticket.Where(x => x.Is_Active == true && x.Is_Deleted == false).ToList();
+                                var pendingtkt = totaltkt.Where(x => x.Status == "O").ToList().Count();
+                                var totaltkts = totaltkt.ToList().Count();
+                                var rejecttkt = totaltkt.Where(x => x.Status == "R").ToList().Count();
+                                var duetkt = totaltkt.Where(x => x.Status == "D").ToList().Count();
+                                var closetkt = totaltkt.Where(x => x.Status == "C").ToList().Count();
+                            }
+                            <li>
+                                <i class="fa fa-th light-orange"></i>
+                                Total Tickets:<span class="light-orange"><b> @totaltkts</b></span>
+                            </li>
+
+                            <li>
+                                <i class="fa fa-minus light-blue"></i>
+                                Open Tickets: <span class="light-blue"><b> @pendingtkt</b></span>
+                            </li>
+                            <li>
+                                <i class="fa fa-ban light-red"></i>
+                                Reject Tickets: <span class="light-red"><b> @rejecttkt</b></span>
+                            </li>
+                            <li>
+                                <i class="fa fa-clock-o light-red"></i>
+                                Overdue Tickets: <span class="light-red"><b> @duetkt</b></span>
+                            </li>
+                            <li>
+                                <i class="fa fa-times light-green"></i>
+                                Closed Tickets: <span class="light-green"><b> @closetkt</b></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="box box-black">
+                    <div class="box-title">
+                        <h3><i class="fa fa-gift"></i>Top Selling Packages</h3>
+                        <div class="box-tool">
+                        </div>
+                    </div>
+                    @if (ViewBag.pkg != null)
+                    {
+                        <div class="box-content">
+                            <ul class="things-to-do weekly-changes">
+                                @foreach(var pkg in ViewBag.pkg)
+                                {
+                                    int pid = Convert.ToInt16(pkg);
+                                    var pkgcount = DbContext.tbl_DC_Order_Pkg.Where(x => x.Is_Active == true && x.Is_Deleted == false && x.Package_ID == pid).ToList().Count();
+                                    var pkghname = DbContext.tbl_DC_Package.Where(x => x.Is_Active == true && x.Is_Deleted == false && x.Package_ID == pid).Select(x=> x.Package_Name).FirstOrDefault();
+                                <li>
+                                    <p>
+                                        <i class="fa fa-dropbox"></i>
+                                        <span class="light-green">@pkgcount</span>
+                                        @pkghname
+                                        @if (Session["ROLE_CODE"] != null)
+                                        { 
+                                            if (Session["ROLE_CODE"].ToString() == "A")
+                                            {
+                                            <a class="btn btn-success" href="/Admin/AddNewPackage/@pid">Details</a>
+                                            }
+                                            else { 
+                                            <a class="btn btn-success" href="#">Details</a>
+                                            }
+                                        }
+                                    </p>
+                                </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="box box-orange">
+                    <div class="box-title">
+                        <h3><i class="glyphicon glyphicon-shopping-cart"></i>Last Orders</h3>
+                    </div>
+                    <div class="box-content">
+                        <ul class="weekly-changes">
+                            <li>
+                                <p>
+                                    <i class="fa fa-cart-plus light-green"></i>
+                                    <span class="light-green">@ViewBag.neword</span>
+                                    New Orders (Last 30 days)
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <i class="fa fa-cart-arrow-down light-blue"></i>
+                                    <span class="light-blue">@ViewBag.cartitm</span>
+                                    Total Cart Items
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <i class="fa fa-shopping-cart light-red"></i>
+                                    <span class="light-red">@ViewBag.exppkg</span>
+                                    Expired Ordered Packages
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Main Content -->
+        <a id="btn-scrollup" class="btn btn-circle btn-lg" href="#"><i class="fa fa-chevron-up"></i></a>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="~/assets/bootstrap-daterangepicker/date.js"></script>
+    <script type="text/javascript" src="~/assets/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="~/assets/flot/jquery.flot.js"></script>
+    <script src="~/assets/flot/jquery.flot.resize.js"></script>
+    <script>
+        //------------------------ Date Range Picker ------------------------//
+        if (jQuery().daterangepicker) {
+            //Date Range Picker
+            $('#date_range').daterangepicker();
+        }
+
+        var vmonth  =  '@ViewBag.month';
+        var month = vmonth.replace(/"/g,"");
+        google.charts.load('current', { 'packages': ['line'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Date');
+
+            data.addColumn('number', month);
+
+
+            data.addRows([
+                [0,0],
+             @ViewBag.finaloredr
+            ]);
+
+            var options = {
+                hAxis: {
+                    title: 'Date'
+                },
+                vAxis: {
+                    title: 'Order'
+                },
+                chart: {
+                    title: 'Sales chart for this Month',
+               
+                
+                },
+           
+            };
+
+            var chart = new google.charts.Line(document.getElementById('orderchart'));
+
+            chart.draw(data, options);
+        }
+    //@*$(function() {
+
+
+        //----------------------------- Charts -----------------------------------//
+        if (jQuery().plot) {
+            // used by plot functions
+            var data = [];
+            var totalPoints = 250;
+
+            // random data generator for plot charts
+            function getRandomData() {
+                if (data.length > 0) data = data.slice(1);
+                // do a random walk
+                while (data.length < totalPoints) {
+                    var prev = data.length > 0 ? data[data.length - 1] : 50;
+                    var y = prev + Math.random() * 10 - 5;
+                    if (y < 0) y = 0;
+                    if (y > 100) y = 100;
+                    data.push(y);
+                }
+                // zip the generated y values with the x values
+                var res = [];
+                for (var i = 0; i < data.length; ++i) res.push([i, data[i]])
+                return res;
+            }
+
+
+
+            //bars with controls
+            function chart5() {
+                if ($("#chart_5").size() == 0) {
+                    return;
+                }
+                var d1 = [];
+                //for (var i = 0; i <= 10; i += 1)
+                d1.push(@ViewBag.finaloredr);
+
+                //var d2 = [];
+                //for (var i = 0; i <= 10; i += 1)
+                //d2.push([i, parseInt(Math.random() * 30)]);
+
+                //var d3 = [];
+                //for (var i = 0; i <= 10; i += 1)
+                //d3.push([i, parseInt(Math.random() * 30)]);
+
+                var stack = 0,
+                    bars = false,
+                    lines = true,
+                    steps = false;
+
+                function plotWithOptions() {
+                    $.plot($("#chart_5"), [d1], {
+                        series: {
+                            stack: stack,
+                            lines: {
+                                show: lines,
+                                fill: true,
+                                steps: steps
+                            },
+                            bars: {
+                                show: bars,
+                                barWidth: 0.6
+                            }
+                        }
+                    });
+                }
+
+                $(".stackControls input").click(function (e) {
+                    e.preventDefault();
+                    stack = $(this).val() == "With stacking" ? true : null;
+                    plotWithOptions();
+                });
+                $(".graphControls input").click(function (e) {
+                    e.preventDefault();
+                    bars = $(this).val().indexOf("Bars") != -1;
+                    lines = $(this).val().indexOf("Lines") != -1;
+                    steps = $(this).val().indexOf("steps") != -1;
+                    plotWithOptions();
+                });
+
+                plotWithOptions();
+            }
+
+            //graph
+            function graphs() {
+                if ($("#graph_1").size() == 0) {
+                    return;
+                }
+
+                var graphData = [];
+                var series = Math.floor(Math.random() * 10) + 1;
+                for (var i = 0; i < series; i++) {
+                    graphData[i] = {
+                        label: "Series" + (i + 1),
+                        data: Math.floor((Math.random() - 1) * 100) + 1
+                    }
+                }
+
+                $.plot($("#graph_1"), graphData, {
+                    series: {
+                        pie: {
+                            show: true,
+                            radius: 1,
+                            label: {
+                                show: true,
+                                radius: 1,
+                                formatter: function (label, series) {
+                                    return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+                                },
+                                background: {
+                                    opacity: 0.8
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        show: false
+                    }
+                });
+
+
+                $.plot($("#graph_2"), graphData, {
+                    series: {
+                        pie: {
+                            show: true,
+                            radius: 1,
+                            label: {
+                                show: true,
+                                radius: 3 / 4,
+                                formatter: function (label, series) {
+                                    return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+                                },
+                                background: {
+                                    opacity: 0.5
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        show: false
+                    }
+                });
+
+                $.plot($("#graph_3"), graphData, {
+                    series: {
+                        pie: {
+                            show: true
+                        }
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true
+                    }
+                });
+                $("#graph_3").bind("plothover", pieHover);
+                $("#graph_3").bind("plotclick", pieClick);
+
+                function pieHover(event, pos, obj) {
+                    if (!obj) return;
+                    percent = parseFloat(obj.series.percent).toFixed(2);
+                    $("#hover").html('<span style="font-weight: bold; color: ' + obj.series.color + '">' + obj.series.label + ' (' + percent + '%)</span>');
+                }
+
+                function pieClick(event, pos, obj) {
+                    if (!obj) return;
+                    percent = parseFloat(obj.series.percent).toFixed(2);
+                    alert('' + obj.series.label + ': ' + percent + '%');
+                }
+
+                $.plot($("#graph_4"), graphData, {
+                    series: {
+                        pie: {
+                            innerRadius: 0.5,
+                            show: true
+                        }
+                    }
+                });
+            }
+
+            // chart1();
+            //  chart2();
+            //  //chart3();
+            // chart4();
+            chart5();
+            graphs();
+        }
+
+        //----------------------------- Calanedar --------------------------------//
+
+    });*@
+
+        </script>
+}
+
+

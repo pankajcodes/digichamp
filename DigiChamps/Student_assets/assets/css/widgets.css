@@ -1,0 +1,743 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito:400,300);
+/************theme fonts********************/
+/***********************theme colors*****************************/
+/*****************theme parametres*******************/
+/*sidebar-parametres*/
+/****************************************************
+      Dashboard Calander
+      ****************************************************/
+.calendar-dashboard {
+  font-family: 'Nunito', sans-serif;
+}
+.calendar-dashboard .bic_calendar {
+  border-width: 0;
+  background-color: #FFFFFF;
+}
+.calendar-dashboard .calendar-head {
+  background-color: #FFFFFF;
+  vertical-align: middle;
+  color: #5d9bfb;
+}
+.calendar-dashboard .calendar-head i {
+  position: absolute;
+  font-size: 18px !important;
+  color: #707780;
+  padding: 10px;
+}
+.calendar-dashboard .calendar-head .fa-angle-left {
+  left: 30px;
+  top: 70px;
+}
+.calendar-dashboard .calendar-head .fa-angle-right {
+  right: 20px;
+  top: 70px;
+}
+.calendar-dashboard .table {
+  padding: 5px;
+  margin-top: 0px !important;
+  margin-bottom: 0px;
+  background-color: #FFFFFF;
+  padding-bottom: 10px;
+}
+.calendar-dashboard .table a {
+  font-size: 12px ;
+  cursor: pointer;
+}
+.calendar-dashboard .table a.current {
+  background-color: red !important;
+  border-radius: 0px;
+  color: #FFFFFF;
+  padding: 10px 7px;
+}
+.calendar-dashboard .table a .event {
+  font-size: 8px;
+  display: block;
+}
+.calendar-dashboard .table a:hover {
+  text-decoration: none;
+}
+.calendar-dashboard .table thead {
+  font-weight: bold;
+}
+.calendar-dashboard .table td {
+  padding: 6px;
+  text-align: center;
+}
+.calendar-dashboard .table td.domingo {
+  background-color: #f9fafb;
+}
+.calendar-dashboard .table .dias_semana td {
+  background-color: transparent;
+  border-top: 1px solid #d7dce5;
+  border-bottom: 1px solid #d7dce5;
+}
+.calendar-dashboard .table > thead > tr > th,
+.calendar-dashboard .table > tbody > tr > th,
+.calendar-dashboard .table > tfoot > tr > th,
+.calendar-dashboard .table > thead > tr > td,
+.calendar-dashboard .table > tbody > tr > td,
+.calendar-dashboard .table > tfoot > tr > td {
+  border-top: 0px solid #dddddd;
+}
+/****************************************************
+      Dashboard Music Player
+      ****************************************************/
+.ntspl-music-player {
+  min-height: 220px;
+}
+.ntspl-music-player .track-info {
+  background: url(../images/player.jpg);
+  background-size: cover;
+  min-height: 190px;
+  padding: 20px;
+}
+.ntspl-music-player .track-info a > i {
+  font-size: 30px;
+  color: #fb5d5d;
+}
+.ntspl-music-player .track-info h3 {
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+  color: #FFFFFF;
+}
+.ntspl-music-player .track-info p {
+  font-family: 'Nunito', sans-serif;
+  color: #FFFFFF;
+}
+.ntspl-music-player .track-info .track-time {
+  margin-top: 30px;
+}
+.ntspl-music-player .track-info .track-time .start-time {
+  float: left;
+  margin-bottom: 0px;
+}
+.ntspl-music-player .seek-bar .progress {
+  margin-bottom: 0px;
+  max-height: 4px;
+  border-radius: 0px;
+}
+.ntspl-music-player .seek-bar .progress .progress-bar {
+  border-radius: 0px;
+  background: #fb5d5d;
+}
+.ntspl-music-player .audio-controls {
+  background: #000;
+  min-height: 0px;
+}
+.ntspl-music-player .audio-controls .control-buttons {
+  padding: 10px;
+  padding-bottom: 5px;
+}
+.ntspl-music-player .audio-controls .control-buttons ul {
+  padding: 0px;
+  text-align: center;
+  margin-bottom: 0;
+}
+.ntspl-music-player .audio-controls .control-buttons ul li {
+  display: inline;
+  padding: 10px 15px;
+}
+.ntspl-music-player .audio-controls .control-buttons ul li a {
+  text-decoration: none;
+  color: #FFFFFF;
+}
+.ntspl-music-player .audio-controls .control-buttons ul li a i {
+  font-size: 22px;
+}
+.ntspl-music-player .audio-controls .control-buttons ul li a i.ion-stop {
+  font-size: 18px;
+}
+.ntspl-music-player .audio-controls .control-buttons ul li a:hover {
+  color: #fb5d5d;
+}
+.ntspl-music-player .list-group .badge {
+  margin-top: 5px;
+  font-size: 12px;
+  font-weight: 100;
+}
+/****************************************************
+      Dashboard Login
+      ****************************************************/
+.ntspl-login {
+  min-height: 298px;
+  background: #FFFFFF;
+  padding: 0px;
+}
+.ntspl-login .header ul {
+  margin-top: 30px;
+  padding: 0;
+  text-align: center;
+}
+.ntspl-login .header ul li {
+  display: inline-block;
+}
+.ntspl-login .header ul li .btn {
+  min-width: 80px;
+  padding: 0;
+  padding: 8px 20px;
+  padding-top: 10px;
+  border-radius: 3px;
+  margin: 5px;
+  border: 1px solid transparent;
+  -webkit-transition: all 300ms ease-out;
+  -moz-transition: all 300ms ease-out;
+  transition: all 300ms ease-out;
+}
+.ntspl-login .header ul li a > i {
+  font-size: 20px;
+  color: #FFFFFF;
+}
+.ntspl-login .form-section {
+  padding: 0px 30px;
+  margin-top: 50px;
+}
+.ntspl-login .form-section .form-control {
+  border-radius: 0px;
+}
+.ntspl-login .form-section .form-control:focus {
+  border-color: #b8c1d1 !important;
+  box-shadow: none !important;
+  outline: none;
+}
+.ntspl-login .form-section input {
+  background: #FFFFFF;
+  border-color: #d7dce5;
+  color: #8b8d90;
+  height: 50px;
+}
+.ntspl-login .form-section .input-group {
+  margin: 10px 0px;
+}
+.ntspl-login .form-section .input-group .input-group-addon {
+  border-radius: 0px;
+  background: #e9ecf2;
+  color: #606468;
+  border: 1px solid #d7dce5;
+  border-right-width: 0;
+  padding: 6px 20px;
+}
+.ntspl-login .btn {
+  border-radius: 0px;
+  padding: 10px 0px;
+  font-family: 'Nunito', sans-serif;
+  background-color: #5d9bfb;
+  color: #FFFFFF;
+}
+.ntspl-login p {
+  text-align: center;
+  margin-bottom: 0px;
+  margin-top: 10px;
+  font-size: 14px;
+  font-family: 'Nunito', sans-serif;
+  color: #606468;
+}
+.ntspl-login p strong {
+  color: #d8d8d8;
+}
+.facebook {
+  background-color: #dfe6f3 !important;
+}
+.facebook i {
+  color: #3b5998 !important;
+}
+.facebook:hover {
+  border: 1px solid #bbc8e4 !important;
+}
+.google {
+  background-color: #f9e1de !important;
+}
+.google i {
+  color: #dd4b39 !important;
+}
+.google:hover {
+  border: 1px solid #f2bab3 !important;
+}
+.twitter {
+  background-color: #e0f0fc !important;
+}
+.twitter i {
+  color: #55acee !important;
+}
+.twitter:hover {
+  border: 1px solid #a8d5f6 !important;
+}
+/*charts widgets*/
+.monthly-earning-chart.chart-height {
+  height: 240px;
+  overflow: hidden;
+}
+.website-visits.chart-height {
+  height: 275px;
+  overflow: hidden;
+}
+.market_info_holder {
+  margin: 20px 0px;
+}
+.market_info_holder li .market_info {
+  border-right: 1px solid #d7dce5;
+}
+.market_info_holder li:last-child .market_info {
+  border-right-width: 0;
+}
+.market_info_holder .market_info {
+  text-align: center;
+}
+.market_info_holder .market_info h2 {
+  font-size: 14px;
+  font-weight: 400;
+  color: #707780;
+  margin-top: 0;
+}
+.market_info_holder .market_info .status {
+  font-weight: 400;
+  font-family: 'Nunito', sans-serif;
+}
+.main-chart-parent {
+  position: relative;
+  /*height: 300px;
+	background: yellow;*/
+}
+.main-chart-parent .chart-height {
+  height: 420px;
+  overflow: hidden;
+}
+.main-chart-parent .ct-chart .ct-line {
+  stroke-width: 2px;
+}
+.main-chart-parent .ct-chart .ct-grid {
+  stroke: rgba(142, 142, 142, 0.2) !important;
+  stroke-width: 1px;
+  stroke-dasharray: 0px;
+}
+.main-chart-parent .ct-chart .ct-point {
+  stroke-width: 6px;
+  stroke-linecap: round;
+}
+.main-chart-parent .ct-chart .ct-series.ct-series-b .ct-bar,
+.main-chart-parent .ct-chart .ct-series.ct-series-b .ct-line,
+.main-chart-parent .ct-chart .ct-series.ct-series-b .ct-point,
+.main-chart-parent .ct-chart .ct-series.ct-series-b .ct-slice.ct-donut {
+  stroke: #5d9bfb;
+}
+.main-chart-parent .ct-chart .ct-series.ct-series-a .ct-bar,
+.main-chart-parent .ct-chart .ct-series.ct-series-a .ct-line,
+.main-chart-parent .ct-chart .ct-series.ct-series-a .ct-point,
+.main-chart-parent .ct-chart .ct-series.ct-series-a .ct-slice.ct-donut {
+  stroke: #6fd64b;
+}
+.small-bar-chart .ct-chart .ct-series.ct-series-a .ct-bar,
+.small-bar-chart .ct-chart .ct-series.ct-series-a .ct-line,
+.small-bar-chart .ct-chart .ct-series.ct-series-a .ct-point,
+.small-bar-chart .ct-chart .ct-series.ct-series-a .ct-slice.ct-donut {
+  stroke: #5d9bfb;
+}
+.small-bar-chart .ct-chart .ct-series.ct-series-b .ct-bar,
+.small-bar-chart .ct-chart .ct-series.ct-series-b .ct-line,
+.small-bar-chart .ct-chart .ct-series.ct-series-b .ct-point,
+.small-bar-chart .ct-chart .ct-series.ct-series-b .ct-slice.ct-donut {
+  stroke: #8fbafc;
+}
+.small-bar-chart .ct-chart .ct-series.ct-series-c .ct-bar,
+.small-bar-chart .ct-chart .ct-series.ct-series-c .ct-line,
+.small-bar-chart .ct-chart .ct-series.ct-series-c .ct-point,
+.small-bar-chart .ct-chart .ct-series.ct-series-c .ct-slice.ct-donut {
+  stroke: #c1d8fd;
+}
+.small-bar-chart .info_section {
+  padding-left: 20px;
+  line-height: 24px;
+  text-align: center;
+  color: #9398a0;
+  font-weight: 400;
+}
+.small-bar-chart .info_section .circle {
+  width: 10px;
+  height: 10px;
+  border: 1px solid #e9ecf2;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 10px;
+}
+.small-bar-chart .info_section .flatBluec {
+  background: #5d9bfb;
+}
+.small-bar-chart .info_section .flatBluec2 {
+  background: #8fbafc;
+}
+.small-bar-chart .info_section .flatBluec3 {
+  background: #c1d8fd;
+}
+.small_pie_chart {
+  padding: 0px 20px;
+}
+.small_pie_chart .ct-chart .ct-series.ct-series-c .ct-area,
+.small_pie_chart .ct-chart .ct-series.ct-series-c .ct-slice:not(.ct-donut) {
+  fill: #dcdcdc;
+}
+.small_pie_chart .ct-chart .ct-series.ct-series-a .ct-area,
+.small_pie_chart .ct-chart .ct-series.ct-series-a .ct-slice:not(.ct-donut) {
+  fill: #1d97f9;
+}
+.small_pie_chart .ct-chart .ct-series.ct-series-b .ct-area,
+.small_pie_chart .ct-chart .ct-series.ct-series-b .ct-slice:not(.ct-donut) {
+  fill: #ef9f2e;
+}
+.small_pie_chart .ct-chart .ct-slice {
+  opacity: 0.9;
+  transition: all 0.2s ease-in-out;
+  transform-origin: center center;
+}
+.small_pie_chart .ct-chart .ct-slice:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+.small_pie_chart .ct-chart .ct-series.ct-series-d .ct-area,
+.small_pie_chart .ct-chart .ct-series.ct-series-d .ct-slice:not(.ct-donut) {
+  fill: #6fd64b;
+}
+.small_pie_chart .info_section {
+  line-height: 24px;
+  padding-top: 10px;
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+}
+.small_pie_chart .info_section li {
+  padding-right: 10px;
+  color: #9398a0;
+}
+/*mail-widget*/
+.mail_widget .tab {
+  border-bottom: 1px solid #e9ecf2;
+}
+.mail_widget .tab a {
+  font-size: 12px !important;
+  font-weight: 400;
+}
+.mail_widget .mail_list {
+  position: relative;
+  max-height: 372px;
+  background: #FFFFFF;
+  overflow-y: scroll;
+  padding-top: 10px;
+}
+.mail_widget .mail_list .mails_holder {
+  padding: 0px;
+  max-height: 799px;
+  overflow: auto;
+  position: relative;
+  z-index: 0;
+  margin-bottom: 0;
+}
+.mail_widget .mail_list .mails_holder li a {
+  display: inline-block;
+  width: 100%;
+  border-bottom: 1px solid #e9ecf2;
+  text-decoration: none;
+  padding: 0px 0px;
+  background: #FFFFFF;
+}
+.mail_widget .mail_list .mails_holder li a:last-child {
+  border-bottom-width: 0;
+}
+.mail_widget .mail_list .mails_holder li a .message_list_block {
+  position: relative;
+  padding: 20px;
+}
+.mail_widget .mail_list .mails_holder li a .message_list_block.starred:before {
+  content: "\f2fc";
+  position: absolute;
+  left: 0;
+  font-family: "Ionicons";
+  color: #f7941d;
+  top: 35px;
+}
+.mail_widget .mail_list .mails_holder li a .message_list_block.unread {
+  background: #f3f4f8;
+}
+.mail_widget .mail_list .mails_holder li a .message_list_block.read {
+  opacity: 0.5;
+}
+.mail_widget .mail_list .mails_holder li a .message_list_block.active {
+  background-color: #2196f3;
+}
+.mail_widget .mail_list .mails_holder li a .message_list_block.active .right {
+  margin-left: 60px;
+}
+.mail_widget .mail_list .mails_holder li a .message_list_block.active .right .name,
+.mail_widget .mail_list .mails_holder li a .message_list_block.active .right .right_details,
+.mail_widget .mail_list .mails_holder li a .message_list_block.active .right h4 {
+  color: #FFFFFF;
+}
+.mail_widget .mail_list .mails_holder li a .message_list_block.active .message_info {
+  color: #FFFFFF;
+}
+.mail_widget .mail_list .mails_holder li a .left .avatar_holder {
+  width: 50px;
+  height: 50px;
+  float: left;
+}
+.mail_widget .mail_list .mails_holder li a .left .avatar_holder img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid #e9ecf2;
+}
+.mail_widget .mail_list .mails_holder li a .right {
+  margin-left: 60px;
+}
+.mail_widget .mail_list .mails_holder li a .right .name {
+  font-size: 14px;
+  color: #2196F3;
+  display: inline-block;
+  width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.mail_widget .mail_list .mails_holder li a .right .right_details {
+  color: #b8c1d1;
+  font-size: 12px;
+}
+.mail_widget .mail_list .mails_holder li a .right .right_details i {
+  font-size: 14px;
+}
+.mail_widget .mail_list .mails_holder li a .right .right_details i.status {
+  font-size: 10px;
+}
+.mail_widget .mail_list .mails_holder li a .right .right_details li {
+  padding: 2px;
+}
+.mail_widget .mail_list .mails_holder li a .right h4 {
+  margin: 0;
+  font-size: 13px;
+  color: #707780;
+  height: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: 300;
+  text-overflow: ellipsis;
+}
+@media (max-width: 760px) {
+  .mail_widget .tabs a {
+    font-size: 9px !important;
+  }
+}
+.todo_widget {
+  position: relative;
+  background: transparent;
+  box-shadow: none;
+}
+.todo_widget .todo_heading {
+  background: #FFFFFF;
+  /*display: table;*/
+  width: 100%;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+}
+.todo_widget .todo_heading .left-icon {
+  float: left;
+}
+.todo_widget .todo_heading .right-icon {
+  float: right;
+}
+.todo_widget .todo_heading .left-icon,
+.todo_widget .todo_heading .right-icon {
+  padding: 0px 15px;
+  background: #2196f3;
+  color: #FFFFFF;
+  font-size: 20px;
+}
+.todo_widget .list-todo {
+  position: relative;
+}
+.todo_widget .list-todo:before {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 50px;
+  overflow: hidden;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #f6f6f6, 0 9px 1px -3px rgba(0, 0, 0, 0.2), 0 16px 0 -6px #f6f6f6, 0 17px 2px -6px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #f6f6f6, 0 9px 1px -3px rgba(0, 0, 0, 0.2), 0 16px 0 -6px #f6f6f6, 0 17px 2px -6px rgba(0, 0, 0, 0.2);
+}
+.todo_widget .list-todo:hover li {
+  background-color: #FFFFFF;
+}
+.todo_widget .list-todo label {
+  color: #707780;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+.todo_widget .list-todo label span {
+  margin-right: 10px;
+}
+.todo_widget .list-todo .list-group-item.completed label {
+  opacity: 0.2 !important;
+  text-decoration: line-through;
+}
+.todo_widget .list-todo .notification {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  font-size: 18px;
+}
+.ios-profile-widget {
+  position: relative;
+}
+.ios-profile-widget .header_cover {
+  min-height: 100px;
+  text-align: center;
+  padding: 20px 0px;
+  color: #FFFFFF;
+  font-family: 'Nunito', sans-serif;
+  background-image: url(../images/playerBg.jpg);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.ios-profile-widget .header_cover img {
+  width: 50px;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 auto;
+  clear: both;
+}
+.ios-profile-widget .header_cover .more {
+  font-size: 25px;
+  padding-right: 20px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+.ios-profile-widget .header_cover .more a {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+.ios-profile-widget .header_cover .more a:hover {
+  color: #2196f3;
+}
+.ios-profile-widget .interactive_btn {
+  margin: 0;
+  background: #FFFFFF;
+}
+.ios-profile-widget .interactive_btn li {
+  display: inline-block;
+  width: 32%;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+.ios-profile-widget .interactive_btn li a {
+  border-right: 1px solid #d7dce5;
+  display: inline-block;
+  width: 100%;
+  padding: 15px 0px;
+  padding-top: 20px;
+  font-size: 14px;
+  text-decoration: none;
+  color: #9398a0;
+  -webkit-transition: all 300ms ease-out;
+  /* Android 2.1+, Chrome 1-25, iOS 3.2-6.1, Safari 3.2-6  */
+  -moz-transition: all 300ms ease-out;
+  /* Android 2.1+, Chrome 1-25, iOS 3.2-6.1, Safari 3.2-6  */
+  transition: all 300ms ease-out;
+  /* Chrome 26, Firefox 16+, iOS 7+, IE 10+, Opera, Safari 6.1+  */
+}
+.ios-profile-widget .interactive_btn li a i {
+  font-size: 25px;
+  display: block;
+  line-height: 0;
+}
+.ios-profile-widget .interactive_btn li a:hover,
+.ios-profile-widget .interactive_btn li a.active {
+  color: #f7941d;
+}
+.ios-profile-widget .interactive_btn li:last-child a {
+  border-right-width: 0;
+}
+.ios-profile-widget .badge {
+  background: #f7941d;
+  padding: 5px 7px;
+}
+/*sparkline widget*/
+.sparkline-widget .heading-info {
+  padding: 10px 25px;
+  overflow: hidden;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+.sparkline-widget .heading-info .right {
+  line-height: 0;
+}
+.sparkline-widget .heading-info .right i {
+  font-size: 20px;
+}
+.sparkline-widget .info-bottom {
+  background: #FFFFFF;
+  text-align: center;
+  display: table;
+  width: 100%;
+}
+.sparkline-widget .info-bottom .left,
+.sparkline-widget .info-bottom .right {
+  background: #FFFFFF;
+  font-size: 16px;
+  font-family: 'Nunito', sans-serif;
+  padding: 10px 15px;
+  font-weight: 400;
+  color: #707780;
+  padding-top: 20px;
+}
+.sparkline-widget .info-bottom .left p,
+.sparkline-widget .info-bottom .right p {
+  font-size: 16px;
+}
+.sparkline-widget .info-bottom .left {
+  border-right: 1px solid #e9ecf2;
+}
+.sparkline-widget svg {
+  display: block;
+}
+.sparkline-widget svg.sparkline {
+  height: 100px !important;
+  font-size: 14px;
+  background: transparent !important;
+  color: #FFFFFF !important;
+}
+.sparkline-widget svg.sparkline .nvd3.nv-sparklineplus .nv-hoverValue line {
+  stroke: #FFFFFF;
+  stroke-width: 2px;
+}
+.sparkline-widget svg.sparkline .nvd3.nv-sparkline path {
+  fill: none;
+  stroke-width: 2px;
+  stroke: #FFFFFF !important;
+}
+.sparkline-widget .svg-holder {
+  position: relative;
+  padding-bottom: 30px;
+  -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+  z-index: 9;
+}
+.sparkline-widget .svg-holder .line {
+  position: absolute;
+  width: 100%;
+  border-bottom: 1px #FFFFFF dashed;
+  transform: scaleY(0.9);
+  opacity: 0.5;
+  top: 50%;
+}
+.weather-widget .weeks {
+  display: block;
+  margin-bottom: 20px;
+}
+.timeline-widget {
+  overflow: hidden;
+}

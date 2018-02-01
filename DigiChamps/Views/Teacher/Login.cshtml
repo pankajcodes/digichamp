@@ -1,0 +1,154 @@
+﻿@{
+    ViewBag.Title = "Teacher login";
+}
+
+<!DOCTYPE html>
+<html>
+<!-- Mirrored from themes.shamsoft.net/flaty/extra_login.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 02 Sep 2014 04:38:05 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Teacher Login | Digichamps</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!--base css styles-->
+    <link rel="stylesheet" href="~/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assets/font-awesome/css/font-awesome.min.css">
+    <!--page specific css styles-->
+    <!--flaty css styles-->
+    <link rel="stylesheet" href="~/css/flaty.css">
+    <link rel="stylesheet" href="~/css/flaty-responsive.css">
+    <link rel="shortcut icon" href="~/img/favicon.html">
+    <style>
+        #form-register {
+            display: none;
+        }
+
+        #form-forgot {
+            display: none;
+        }
+    </style>
+</head>
+<body class="login-page">
+    <!-- BEGIN Main Content -->
+    <div class="login-wrapper">
+        <!-- BEGIN Student Login Form -->
+        @using (Html.BeginForm("Login", "Teacher", FormMethod.Post, new { @id = "form-login", autocomplete = "off" }))
+        {
+            <h3><img src="~/Images/digi1.jpg" height="40" width="40" />Login to your account</h3>
+            if (TempData["ErrorMessage"] != null)
+            {
+                <div style="font-size: 13px; color: red;">@TempData["ErrorMessage"]</div>
+            }
+            <hr />
+            <div class="form-group">
+                <div class="controls">
+                    @if (ViewBag.user != null)
+                    {
+                        <input type="text" placeholder="Username" class="form-control" name="User_name" maxlength="40" value='@ViewBag.user' />
+                    }
+                    else
+                    {
+                        <input type="text" placeholder="Username" class="form-control" name="User_name" maxlength="40" />
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="controls">
+                    @if (ViewBag.Password != null)
+                    {
+                        <input type="password" placeholder="Password" class="form-control" name="password" maxlength="20" value="@ViewBag.Password" />
+                    }
+                    else
+                    {
+                        <input type="password" placeholder="Password" class="form-control" name="password" maxlength="20" />
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="controls">
+                    <label class="checkbox">
+                        @if (ViewBag.user != null)
+                        {
+                            <input type="checkbox" name="checkbox" id="remember" value="true" checked="checked" />
+                        }
+                        else
+                        {
+                            <input type="checkbox" name="checkbox" id="remember" value="true" />
+                        }
+                        Remember me
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary form-control">Sign In</button>
+                </div>
+            </div>
+            <hr />
+            <p class="clearfix">
+                <a href="#" class="goto-forgot pull-left">Forgot Password?</a>
+            </p>
+        }
+        <!-- END Login Form -->
+        <!-- BEGIN Student Forgot Password Form -->
+
+        <form id="form-forgot" name="validation-form">
+            <h3><img src="~/Images/digi1.jpg" height="40" width="40" />Password Recovery</h3>
+            <hr />
+            <div class="form-group">
+                <div class="controls">
+                    <input type="email" id="t_mail" placeholder="Email" class="form-control" data-rule-required="true" data-msg-required="Please enter emailid" />
+                    <div style="font-size: 13px; color:#ffaf36;" id="dlt_msg"></div>
+                    <span></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="controls" id="errormsg">
+                    <button type="submit" id=" btn_forgot" class="btn btn-primary form-control"> Recover </button>
+                </div>
+            </div>
+            <hr />
+            <p class="clearfix">
+                <a href="#" class="goto-login pull-left">← Back to login form</a>
+            </p>
+        </form>
+        <!-- END Forgot Password Form -->
+
+    </div>
+    <!-- END Main Content -->
+    <!--basic scripts-->
+    <script src="~/assets/jquery/jquery-2.1.1.min.js"></script>
+    <script src="~/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        function goToForm(form) {
+            $('.login-wrapper > form:visible').fadeOut(500, function () {
+                $('#form-' + form).fadeIn(500);
+            });
+        }
+        $(function () {
+            $('.goto-login').click(function () {
+                goToForm('login');
+            });
+            $('.goto-forgot').click(function () {
+                goToForm('forgot');
+            });
+        });
+        $("#form-forgot").submit(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Teacher/ForgotPassword",
+                data: { email: $('#t_mail').val() },
+                datatype: "json",
+                success: function (data) {
+                    $("#dlt_msg").html("<i class='fa fa-exclamation-circle'></i> "+ data);
+                    $("#validation-form").get(0).reset();
+                    goToForm('login');
+                }
+            });
+        })
+
+    </script>
+</body>
+</html>

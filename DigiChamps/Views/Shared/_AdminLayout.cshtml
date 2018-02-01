@@ -1,0 +1,1398 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title> @ViewBag.Title | DIGICHAMPS</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/Student_assets/images/fav-icon.jpg" rel="shortcut icon" />
+    <link rel="stylesheet" href="~/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/chosen-bootstrap/chosen.min.css">
+    <link rel="stylesheet" href="~/assets/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/assets/Education_freebie/stylesheet.css">
+    <link href="~/assets/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/assets/fullcalendar/fullcalendar/fullcalendar.css" rel="stylesheet" />
+    <link href="~/assets/datepicker/css/datepicker.css" rel="stylesheet" />
+    <link href="~/css/flaty-responsive.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/flaty.css">
+    <link rel="shortcut icon" href="~/img/favicon.html">
+    <link href="~/assets/data-tables/bootstrap3/dataTables.bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/assets/bootstrap-fileupload/bootstrap-fileupload.css" />
+    <link href="~/css/croppie.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/manual.css">
+
+    @*<script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-93241591-1', 'auto');
+        ga('send', 'pageview');
+    </script>*@
+</head>
+<body class="skin-blue">
+    <div class="loader-ajax-container">
+        <div class="cssload-container">
+            <div class="cssload-loading"><i></i><i></i><i></i><i></i></div>
+        </div>
+    </div>
+
+    <!-- BEGIN Theme Setting -->
+    <!-- END Theme Setting -->
+    <!-- BEGIN Navbar -->
+    <div id="navbar" class="navbar">
+        <button type="button" class="navbar-toggle navbar-btn collapsed" data-toggle="collapse" data-target="#sidebar">
+            <span class="fa fa-bars"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+            <img src="~/Images/Digichamps_logo.png" />
+        </a>
+        <!-- BEGIN Navbar Buttons -->
+        <ul class="nav flaty-nav pull-right">
+
+            <li class="hidden-xs">
+                <a data-toggle="dropdown" class="dropdown-toggle noti" href="#">
+                    <i class="fa fa-bell"></i>
+                    <span class="badge badge-important count"></span>
+                </a>
+                <!-- BEGIN Notifications Dropdown -->
+                <ul class="dropdown-navbar dropdown-menu" id="notiContent">
+                    @*
+                    <li class="nav-header">
+                        <i class="fa fa-warning"></i>
+                        5 Notifications
+                    </li>*@
+                    @*
+                    <li class="notify">
+                        <a href="#">
+                            <i class="fa fa-comment orange"></i>
+                            <p>New Tickets</p>
+                            <span class="badge badge-warning">4</span>
+                        </a>
+                    </li>*@
+                </ul>
+                <!-- END Notifications Dropdown -->
+            </li>
+
+            <li class="user-profile">
+                <a data-toggle="dropdown" href="#" class="user-menu dropdown-toggle">
+                    <img class="nav-user-photo" src="~/Images/images.png" alt="Penny's Photo" />
+                    <span class="hhh" id="user_info">
+                        @Html.Raw(Convert.ToString(Session["username"]).Trim().ToUpper())
+                    </span>
+                    <i class="fa fa-caret-down"></i>
+                </a>
+                <!-- BEGIN User Dropdown -->
+                <ul class="dropdown-menu dropdown-navbar" id="user_menu">
+                    <li class="nav-header">
+
+                        Logined From @Session["Time"]
+                    </li>
+                    <li>
+                        <a href="/Admin/ChangePassword">
+                            <i class="fa fa-cog"></i>
+                            Change Password
+                        </a>
+                    </li>
+                    @*
+                    <li>
+                        <a href="/Admin/EditProfile">
+                            <i class="fa fa-user"></i>
+                            Edit Profile
+                        </a>
+                    </li>*@
+                    <li class="divider visible-xs"></li>
+                    <li class="visible-xs">
+                        <a href="#">
+                            <i class="fa fa-tasks"></i>
+                            Tasks
+                            <span class="badge badge-warning">4</span>
+                        </a>
+                    </li>
+                    <li class="visible-xs">
+                        <a href="#">
+                            <i class="fa fa-bell"></i>
+                            Notifications
+                            <span class="badge badge-important">8</span>
+                        </a>
+                    </li>
+                    <li class="visible-xs">
+                        <a href="#">
+                            <i class="fa fa-envelope"></i>
+                            Messages
+                            <span class="badge badge-success">5</span>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="@Url.Action("logout", "Admin" )"><i class="fa fa-off"></i>Logout</a>
+                    </li>
+                </ul>
+                <!-- BEGIN User Dropdown -->
+            </li>
+            <!-- END Button User -->
+        </ul>
+        <!-- END Navbar Buttons -->
+    </div>
+
+    <div>
+        <!-- BEGIN Sidebar -->
+        @if (ViewBag.permission1 > 0)
+        {
+        <div id="sidebar" class="navbar-collapse collapse">
+            <!-- BEGIN Navlist -->
+            @if (ViewBag.permission !=null)
+            {
+                foreach(var item in ViewBag.permission)
+                {
+                    if (item.Menu_Key_ID == 1)
+                    {
+                        ViewBag.one = "1";
+                    }
+                    if (item.Menu_Key_ID == 2)
+                    {
+                        ViewBag.one2 = "2";
+                    }
+                    if (item.Menu_Key_ID == 3)
+                    {
+                        ViewBag.one3 = "3";
+                    }
+                    if (item.Menu_Key_ID == 4)
+                    {
+                        ViewBag.one4 = "4";
+                    }
+                    if (item.Menu_Key_ID == 5)
+                    {
+                        ViewBag.one5 = "5";
+                    }
+                    if (item.Menu_Key_ID == 6)
+                    {
+                        ViewBag.one6 = "6";
+                    }
+                    if (item.Menu_Key_ID == 7)
+                    {
+                        ViewBag.one7 = "7";
+                    }
+                    if (item.Menu_Key_ID == 8)
+                    {
+                        ViewBag.one8 = "8";
+                    }
+                    if (item.Menu_Key_ID == 9)
+                    {
+                        ViewBag.one9 = "9";
+                    }
+                    if (item.Menu_Key_ID == 10)
+                    {
+                        ViewBag.one10 = "10";
+                    }
+                    if (item.Menu_Key_ID == 11)
+                    {
+                        ViewBag.one11 = "11";
+                    }
+                    if (item.Menu_Key_ID == 12)
+                    {
+                        ViewBag.one12 = "12";
+                    }
+                    if (item.Menu_Key_ID == 13)
+                    {
+                        ViewBag.one13 = "13";
+                    }
+                    if (item.Menu_Key_ID == 14)
+                    {
+                        ViewBag.one14 = "14";
+                    }
+                    if (item.Menu_Key_ID == 15)
+                    {
+                        ViewBag.one15 = "15";
+                    }
+                    if (item.Menu_Key_ID == 16)
+                    {
+                        ViewBag.one16 = "16";
+                    }
+                    if (item.Menu_Key_ID == 17)
+                    {
+                        ViewBag.one17 = "17";
+                    }
+                    if (item.Menu_Key_ID == 18)
+                    {
+                        ViewBag.one18 = "18";
+                    }
+                    if (item.Menu_Key_ID == 19)
+                    {
+                        ViewBag.one19 = "19";
+                    }
+                    if (item.Menu_Key_ID == 20)
+                    {
+                        ViewBag.one20 = "20";
+                    }
+                    if (item.Menu_Key_ID == 21)
+                    {
+                        ViewBag.one21 = "21";
+                    }
+                    if (item.Menu_Key_ID == 22)
+                    {
+                        ViewBag.one22 = "22";
+                    }
+                    if (item.Menu_Key_ID == 23)
+                    {
+                        ViewBag.one23 = "23";
+                    }
+                    if (item.Menu_Key_ID == 24)
+                    {
+                        ViewBag.one24 = "24";
+                    }
+                    if (item.Menu_Key_ID == 25)
+                    {
+                        ViewBag.one25 = "25";
+
+                    }
+                    if (item.Menu_Key_ID == 26)
+                    {
+                        ViewBag.one25 = "26";
+                    }
+                    if (item.Menu_Key_ID == 27)
+                    {
+                        ViewBag.one25 = "27";
+                    }
+                    if (item.Menu_Key_ID == 28)
+                    {
+                        ViewBag.one28 = "28";
+
+                    }
+                    if (item.Menu_Key_ID == 29)
+                    {
+                        ViewBag.one29 = "29";
+                    }
+                    if (item.Menu_Key_ID == 30)
+                    {
+                        ViewBag.one30 = "30";
+                    }
+                    if (item.Menu_Key_ID == 31)
+                    {
+                        ViewBag.one31 = "31";
+                    }
+                }
+            <ul class="nav nav-list">
+
+                <li class="active">
+                    <a href="/Admin/AdminDashboard">
+                        <i class="fa fa-dashboard"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fa fa-cog"></i>
+                        <span>Settings</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                    <!-- BEGIN Submenu -->
+                            @if (ViewBag.setting != null)
+                            {
+                                <ul class="submenu" style="display:block">
+                                    @if (ViewBag.one != null)
+                                    {
+                                        <li><a href="/Admin/BoardMaster"><span>Academic</span></a></li>
+                                    }
+                                    @if (ViewBag.one2 != null)
+                                    {
+                                        <li><a href="/Admin/Registration">User Registration</a></li>
+                                    }
+                                    @if (ViewBag.one3 != null)
+{
+    <li><a href="/Admin/Group">Group Creation</a></li>
+}
+                                    @if (ViewBag.one3 != null)
+                                    {
+                                        <li><a href="/Admin/ViewRoleType">Role Creation</a></li>
+                                    }
+                                    @*
+                                        <li><a href="/Admin/UserCreation">User</a></li>*@
+                                </ul>
+                            }
+                            else
+                            {
+                                <ul class="submenu" style="display:none">
+                                    @if (ViewBag.one != null)
+                                    {
+                                        <li><a href="/Admin/BoardMaster"><span>Academic</span></a></li>
+                                    }
+                                    @if (ViewBag.one2 != null)
+                                    {
+                                        <li><a href="/Admin/Registration">User Registration</a></li>
+                                    }
+                                    @if (ViewBag.one3 != null)
+{
+    <li><a href="/Admin/Group">Group Creation</a></li>
+}
+                                    @if (ViewBag.one3 != null)
+                                    {
+                                        <li><a href="/Admin/ViewRoleType">Group Creation</a></li>
+                                    }
+                                    @*
+                                        <li><a href="/Admin/UserCreation">User</a></li>*@
+                                </ul>
+                            }
+                    
+                    <!-- END Submenu -->
+                </li>
+
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fa fa-video-camera"></i>
+                        <span>Video</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                    <!-- BEGIN Submenu -->
+                    <ul class="submenu">
+                        @if (ViewBag.one4 != null)
+                        {
+                        <li><a href="/Admin/ViewModule">Modules</a></li>
+                        }
+                        @*
+                        <li><a href="/Admin/PackageCreate">Packages</a></li>*@
+                    </ul>
+                    <!-- END Submenu -->
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fa fa-ticket"></i>
+                        <span>Ticket System</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                    <!-- BEGIN Submenu -->
+                    <ul class="submenu">
+                        @if (ViewBag.one5 != null)
+                        {
+                        <li><a href="/Admin/Ticket">Ticket</a></li>
+                        }
+                    </ul>
+                    <!-- END Submenu -->
+                </li>
+
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fa fa-check-circle"></i>
+                        <span>Exam</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                    <!-- BEGIN Submenu -->
+                    <ul class="submenu">
+                        @*
+                        <li><a href="/Admin/Exam">Exam</a></li>*@
+                        @if (ViewBag.one6 != null)
+                        {
+                        <li><a href="/Admin/QuestionBank">Question Bank</a></li>
+                        }
+                    </ul>
+                    <!-- END Submenu -->
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fa fa-envelope"></i>
+                        <span>General</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                        @if (ViewBag.general != null)
+                        {
+                            <ul class="submenu" style="display:block">
+@if (ViewBag.one23 != null)
+                                {
+                                if (ViewBag.coupons != null)
+                                {
+                                    <li class="active"><a href="@Url.Action("coupontype", "Admin" )"> Coupon Type</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@Url.Action("coupontype", "Admin" )"> Coupon Type</a></li>
+                                }
+                                }
+                                @if (ViewBag.one24 != null)
+                                {
+
+                                if(ViewBag.viewcouponcode!=null)
+                                {
+                                <li class="active"><a href="@Url.Action("viewcouponcode", "Admin" )"> Coupon</a></li>
+                                }
+                                else
+                                {
+                                <li><a href="@Url.Action("viewcouponcode", "Admin" )"> Coupon</a></li>
+                                }
+                                }
+                                @if (ViewBag.one25 != null)
+                                {
+                                 if (ViewBag.viewsampleimage != null)
+                                 {
+                                    <li class="active"><a href="@Url.Action("viewsampleimage", "Admin" )"> Sample Image</a></li>
+                                 }
+                                 else
+                                 {
+                                <li><a href="@Url.Action("viewsampleimage", "Admin" )"> Sample Image</a></li>
+                                 }
+                                 }
+                                
+                                @if (ViewBag.one7 != null)
+                                {
+                                    if (ViewBag.smtpconfiguration != null)
+                                    {
+                                        <li class="active"><a href="@Url.Action("smtpconfiguration", "Admin" )"> SMTP</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="@Url.Action("smtpconfiguration", "Admin" )"> SMTP</a></li>
+                                    }
+
+                                }
+                                @if (ViewBag.one8 != null)
+                                {
+                                    if (ViewBag.view_smsapi != null)
+                                    {
+                                        <li class="active"><a href="@Url.Action("view_smsapi", "Admin" )"> Sms</a></li>
+                                    }
+                                    else
+                                    {
+
+                                        <li><a href="@Url.Action("view_smsapi", "Admin" )"> Sms</a></li>
+                                     }
+
+                                }
+                                @if (ViewBag.one9 != null)
+                                {
+                                    if (ViewBag.viewtaxtypemaster != null)
+                                    {
+                                        <li class="active"><a href="@Url.Action("viewtaxtypemaster", "Admin" )"> Tax </a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="@Url.Action("viewtaxtypemaster", "Admin" )"> Tax </a></li>
+                                    }
+
+                                }
+                                @if (ViewBag.one19 != null)
+                                {
+                                    if (ViewBag.view_security_question != null)
+                                    {
+                                        <li class="active"><a href="@Url.Action("view_security_question", "Admin")">Security Question</a></li>
+                                    }
+                                    else
+                                    {
+
+                                        <li><a href="@Url.Action("view_security_question", "Admin")">Security Question</a></li>
+                                    }
+
+                                }
+                                @if (ViewBag.one26 != null)
+                                {
+                                    if (ViewBag.ourteam != null)
+                                    {
+                                        <li class="active"><a href="@Url.Action("viewteamdetails", "admin")">Our Team</a></li>
+                                    }
+                                    else
+                                    {
+
+                                        <li><a href="@Url.Action("viewteamdetails", "admin")">Our Team</a></li>
+                                    }
+
+                                }
+                                @if (ViewBag.one27 != null)
+                                {
+                                    if (ViewBag.blog != null)
+                                    {
+                                        <li class="active"><a href="@Url.Action("viewblogdetails", "admin")">Marketing Blog</a></li>
+                                    }
+                                    else
+                                    {
+
+                                        <li><a href="@Url.Action("viewblogdetails", "admin")">Marketing Blog</a></li>
+                                    }
+
+                                }
+                                @if (ViewBag.one28 != null)
+                                {
+                                    if (ViewBag.faq != null)
+                                    {
+                                        <li class="active"><a href="@Url.Action("faq", "Admin")">FAQs</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="@Url.Action("faq", "Admin")">FAQs</a></li>
+                                    }
+                                  
+                                  
+                                }
+                                @if (ViewBag.one29 != null)
+                                {
+                                    if (ViewBag.career != null)
+                                    {
+                                        <li class="active"><a href="@Url.Action("career", "Admin")">Career</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="@Url.Action("career", "Admin")">Career</a></li>
+                                    }
+                                }
+                                @if (ViewBag.one30 != null)
+                                {
+                                    if (ViewBag.banner != null)
+                                    {
+                                        <li class="active"><a href="@Url.Action("viewbanner", "Admin")">Banner</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="@Url.Action("viewbanner", "Admin")">Banner</a></li>
+                                    }
+                                }
+                                @if (ViewBag.one31!= null)
+                                    {
+                                        if (ViewBag.about != null)
+                                        {
+                                            <li class="active"><a href="@Url.Action("about_us", "Admin")">About Us</a></li>
+                                        }
+                                        else
+                                        {
+
+                                            <li><a href="@Url.Action("about_us", "Admin")">About Us</a></li>
+                                        }
+
+                                    }
+                               @if (ViewBag.one20 != null)
+                                {
+                                    if (ViewBag.StateMaster != null)
+                                    {
+                                        <li class="active"><a href="@Url.Action("StateMaster", "Admin")">State and City</a></li>
+                                    }
+                                    else
+                                    {
+
+                                        <li><a href="@Url.Action("StateMaster", "Admin")">State and City</a></li>
+                                    }
+                                
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="submenu" style="display:none">
+							    @if (ViewBag.one23 != null)
+                                {
+                                <li><a href="@Url.Action("coupontype", "Admin" )"> Coupon Type</a></li>
+								} 
+                                @if (ViewBag.one24 != null)
+                                {
+                                <li><a href="@Url.Action("viewcouponcode", "Admin" )"> Coupon</a></li>
+								}
+								@if (ViewBag.one25 != null)
+                                {
+                                <li><a href="@Url.Action("viewsampleimage", "Admin" )"> Sample Image</a></li>
+								}
+                                @if (ViewBag.one7 != null)
+                                {
+                                    <li><a href="@Url.Action("smtpconfiguration", "Admin" )"> SMTP</a></li>
+                                }
+                                @if (ViewBag.one8 != null)
+                                {
+                                    <li><a href="@Url.Action("view_smsapi", "Admin" )"> Sms</a></li>
+                                }
+                                @if (ViewBag.one9 != null)
+                                {
+                                    <li><a href="@Url.Action("viewtaxtypemaster", "Admin" )"> Tax </a></li>
+                                }
+                                @if (ViewBag.one19 != null)
+                                {
+                                    <li><a href="@Url.Action("view_security_question", "Admin")">Security Question</a></li>
+                                }
+                                @if (ViewBag.one26 != null)
+                                {
+                                    <li><a href="@Url.Action("viewteamdetails", "Admin")">Our Team</a></li>
+                                }
+                                @if (ViewBag.one27 != null)
+                                {
+                                    <li><a href="@Url.Action("viewblogdetails", "Admin")">Marketing Blog</a></li>
+                                }
+                                @if (ViewBag.one28 != null)
+                                {
+                                    <li><a href="@Url.Action("faq", "Admin")">FAQs</a></li>
+                                }
+                                @if (ViewBag.one29 != null)
+                                {
+                                    <li><a href="@Url.Action("career", "Admin")">Career</a></li>
+                                }
+                                @if (ViewBag.one30 != null)
+                                {
+                                    <li><a href="@Url.Action("viewbanner", "Admin")">Banner</a></li>
+                                }
+                                @if (ViewBag.one31 != null)
+                                {
+                                    <li><a href="@Url.Action("about_us", "Admin")">About Us</a></li>
+                                }
+                                 @if (ViewBag.one20 != null)
+                                {
+                                    <li><a href="@Url.Action("StateMaster", "Admin")">State and City</a></li>
+                                }
+                            </ul>
+                        }
+                    
+                    <!-- END Submenu -->
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="glyphicon glyphicon-list-alt"></i>
+                        <span>Order</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                    <!-- BEGIN Submenu -->
+                    <ul class="submenu">
+                        @if (ViewBag.one21 != null)
+                        {
+                            <li><a href="/Admin/offlinebook">Manual Order</a></li>
+                        }
+                        
+                    </ul>
+                    <!-- END Submenu -->
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="glyphicon glyphicon-list-alt"></i>
+                        <span>Report</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                    <!-- BEGIN Submenu -->
+                        @if (ViewBag.report != null)
+                        {
+                            <ul class="submenu" style="display:block">
+                                @if (ViewBag.one10 != null)
+                                {
+                                    if (ViewBag.prebook_user != null)
+                                    {
+                                        <li class="active"><a href="/Admin/prebook_user">Pre-book Customers</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="/Admin/prebook_user">Pre-book Customers</a></li>
+                                    }
+
+                                }
+                                @if (ViewBag.one11 != null)
+                                {
+                                    if (ViewBag.Shift_Report != null)
+                                    {
+                                        <li class="active"><a href="/Admin/Shift_Report">Shift Report</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="/Admin/Shift_Report">Shift Report</a></li>
+                                    }
+
+                                }
+                                @if (ViewBag.one12 != null)
+                                {
+                                    if (ViewBag.DailySales != null)
+                                    {
+                                        <li class="active"><a href="/Admin/DailySales">Daily Report</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="/Admin/DailySales">Daily Report</a></li>
+                                    }
+
+                                }
+                                @if (ViewBag.one13 != null)
+                                {
+                                    if (ViewBag.orderdetails != null)
+                                    {
+                                        <li class="active"><a href="/Admin/orderdetails">Order Details</a></li>
+                                    }
+                                    else
+                                    {
+
+                                        <li><a href="/Admin/orderdetails">Order Details</a></li>}
+
+                                }
+                                @if (ViewBag.one14 != null)
+                                {
+                                    if (ViewBag.UserReport != null)
+                                    {
+                                        <li class="active"><a href="/Admin/UserReport">User Report</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="/Admin/UserReport">User Report</a></li>
+                                    }
+
+                                }
+                                @if (ViewBag.one18 != null)
+                                {
+                                    if (ViewBag.examreport != null)
+                                    {
+                                        <li class="active"><a href="/Admin/examreport">Exam Report</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="/Admin/examreport">Exam Report</a></li>
+
+                                    }
+
+                                }
+                                @if (ViewBag.one15 != null)
+                                {
+                                    if (ViewBag.ViewTeacherReportDetail != null)
+                                    {
+                                        <li class="active"><a href="/Admin/ViewTeacherReportDetail">Teacher Report</a></li>
+                                    }
+                                    else{
+                                        <li><a href="/Admin/ViewTeacherReportDetail">Teacher Report</a></li>
+                                    }
+                                    
+                                }
+                                @if (ViewBag.one16 != null)
+                                {
+                                    if (ViewBag.Attendance_Report != null)
+                                    {
+                                        <li class="active"><a href="/Admin/Attendance_Report">Attendance Report</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="/Admin/Attendance_Report">Attendance Report</a></li>
+                                    }
+
+                                }
+                                @if (ViewBag.one17 != null)
+                                {
+                                    if (ViewBag.ViewFeedback != null)
+                                    {
+                                        <li class="active"> <a href="/Admin/ViewFeedback">Feedback Report</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="/Admin/ViewFeedback">Feedback Report</a></li>
+                                    }
+
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="submenu" style="display:none">
+                                @if (ViewBag.one10 != null)
+                                {
+                                    <li><a href="/Admin/prebook_user">Pre-book Customers</a></li>
+                                }
+                                @if (ViewBag.one11 != null)
+                                {
+                                    <li><a href="/Admin/Shift_Report">Shift Report</a></li>
+                                }
+                                @if (ViewBag.one12 != null)
+                                {
+                                    <li><a href="/Admin/DailySales">Daily Report</a></li>
+                                }
+                                @if (ViewBag.one13 != null)
+                                {
+                                    <li><a href="/Admin/orderdetails">Order Details</a></li>
+                                }
+                                @if (ViewBag.one14 != null)
+                                {
+                                    <li><a href="/Admin/UserReport">User Report</a></li>
+                                }
+                                @if (ViewBag.one18 != null)
+                                {
+                                    <li><a href="/Admin/examreport">Exam Report</a></li>
+                                }
+                                @if (ViewBag.one15 != null)
+                                {
+                                    <li><a href="/Admin/ViewTeacherReportDetail">Teacher Report</a></li>
+                                }
+                                @if (ViewBag.one16 != null)
+                                {
+                                    <li><a href="/Admin/Attendance_Report">Attendance Report</a></li>
+                                }
+                                @if (ViewBag.one17 != null)
+                                {
+                                    <li><a href="/Admin/ViewFeedback">Feedback Report</a></li>
+                                }
+                            </ul>
+                        }
+                    
+                    <!-- END Submenu -->
+                </li>
+
+
+                <li>
+                    <a href="javascript:void(0)" class="dropdown-toggle">
+                        <i class="glyphicon glyphicon-list-alt"></i>
+                        <span>School</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                    <!-- BEGIN Submenu -->
+                    <ul class="submenu" style="display:none">                       
+                        <li><a href="/School/GetSchoolList">School Listing</a></li>
+                        <li><a href="@Url.Action("AddSchool","School")">Add School</a></li>
+                    </ul>
+                    <!-- END Submenu -->
+                </li>
+
+
+            </ul>
+
+            }
+            <div id="sidebar-collapse" class="visible-lg">
+                <i class="fa fa-angle-double-left"></i>
+            </div>
+            <!-- END Sidebar Collapse Button -->
+        </div>
+        }
+        else
+        {
+        <div id="sidebar" class="navbar-collapse collapse">
+            <!-- BEGIN Navlist -->
+
+            <ul class="nav nav-list">
+
+                <li class="active">
+                    <a href="/Admin/AdminDashboard">
+                        <i class="fa fa-dashboard"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fa fa-cog"></i>
+                        <span>Settings</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                    <!-- BEGIN Submenu -->
+                    @if (ViewBag.setting != null)
+                    {
+                        <ul class="submenu" style="display:block">
+                            <li><a href="/Admin/BoardMaster"><span>Academic</span></a></li>
+                            <li><a href="/Admin/Registration">User Registration</a></li>
+                            <li><a href="/Admin/Group">Group Creation</a></li>
+                            <li><a href="/Admin/ViewRoleType">Role Creation</a></li>
+                            @*
+                                <li><a href="/Admin/UserCreation">User</a></li>*@
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="submenu" style="display:none">
+                            <li><a href="/Admin/BoardMaster"><span>Academic</span></a></li>
+                            <li><a href="/Admin/Registration">User Registration</a></li>
+                            <li><a href="/Admin/Group">Group Creation</a></li>
+                            <li><a href="/Admin/ViewRoleType">Role Creation</a></li>
+                            @*
+                                <li><a href="/Admin/UserCreation">User</a></li>*@
+                        </ul>
+                    }
+                    
+                    <!-- END Submenu -->
+                </li>
+
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fa fa-video-camera"></i>
+                        <span>Video</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                    <!-- BEGIN Submenu -->
+                    <ul class="submenu">
+                        <li><a href="/Admin/ViewModule">Modules</a></li>
+                        @*
+                        <li><a href="/Admin/PackageCreate">Packages</a></li>*@
+                    </ul>
+                    <!-- END Submenu -->
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fa fa-ticket"></i>
+                        <span>Ticket System</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                    <!-- BEGIN Submenu -->
+                    <ul class="submenu">
+                        <li><a href="/Admin/Ticket">Ticket</a></li>
+                    </ul>
+                    <!-- END Submenu -->
+                </li>
+
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fa fa-check-circle"></i>
+                        <span>Exam</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                    <!-- BEGIN Submenu -->
+                    <ul class="submenu">
+                        @*
+                        <li><a href="/Admin/Exam">Exam</a></li>*@
+                        <li><a href="/Admin/QuestionBank">Question Bank</a></li>
+                    </ul>
+                    <!-- END Submenu -->
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fa fa-envelope"></i>
+                        <span>General</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                        @if (ViewBag.general != null)
+                        {
+                            <ul class="submenu" style="display:block">
+                                @if (ViewBag.coupons != null)
+                                {
+                                    <li class="active"><a href="@Url.Action("coupontype", "Admin")">Coupon Type</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@Url.Action("coupontype", "Admin")">Coupon Type</a></li>
+                                }
+                                
+                                @if (ViewBag.viewcouponcode != null)
+                                {
+                                     <li class="active"><a href="@Url.Action("viewcouponcode", "Admin")">Coupons</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@Url.Action("viewcouponcode", "Admin")">Coupons</a></li>
+                                }
+                               @if (ViewBag.viewsampleimage != null)
+                               {
+                                <li class="active"><a href="@Url.Action("viewsampleimage", "Admin")">Sample Image</a></li>
+                               }
+                               else
+                               {
+                                <li><a href="@Url.Action("viewsampleimage", "Admin")">Sample Image</a></li>
+                               }
+                                @if (ViewBag.smtpconfiguration != null)
+                                {
+                                    <li class="active"><a href="@Url.Action("smtpconfiguration", "Admin" )"> SMTP</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@Url.Action("smtpconfiguration", "Admin" )"> SMTP</a></li>
+                                }
+                               @if (ViewBag.view_smsapi != null)
+                               {
+                                <li class="active"><a href="@Url.Action("view_smsapi", "Admin" )"> Sms</a></li>
+                               }
+                               else
+                               {
+                                <li><a href="@Url.Action("view_smsapi", "Admin" )"> Sms</a></li>
+                               }
+                                @if (ViewBag.viewtaxtypemaster != null)
+                                {
+                                    <li class="active"><a href="@Url.Action("viewtaxtypemaster", "Admin" )"> Tax </a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@Url.Action("viewtaxtypemaster", "Admin" )"> Tax </a></li>
+                                }
+                                @if (ViewBag.view_security_question != null)
+                                {
+                                    <li class="active"><a href="@Url.Action("view_security_question", "Admin")">Security Question</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@Url.Action("view_security_question", "Admin")">Security Question</a></li>
+                                }
+                                @if (ViewBag.ourteam != null)
+                                {
+                                    <li class="active"><a href="@Url.Action("viewteamdetails", "Admin")">Our Team</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@Url.Action("viewteamdetails", "Admin")">Our Team</a></li>
+                                }
+                                @if (ViewBag.blog != null)
+                                {
+                                    <li class="active"><a href="@Url.Action("viewblogdetails", "Admin")">Marketing Blog</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@Url.Action("viewblogdetails", "Admin")">Marketing Blog</a></li>
+                                }
+
+                                @if (ViewBag.faq != null)
+                                {
+                                    <li class="active"><a href="@Url.Action("faq", "Admin")">FAQs</a></li>
+                                }
+                                else
+                                {
+                                <li><a href="@Url.Action("faq", "Admin")">FAQs</a></li>
+                                }
+                                @if (ViewBag.career != null)
+                                {
+                                    <li class="active"><a href="@Url.Action("career", "Admin")">Career</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@Url.Action("career", "Admin")">Career</a></li>
+                                }
+                                @if (ViewBag.banner != null)
+                                {
+                                    <li class="active"><a href="@Url.Action("viewbanner", "Admin")">Banner</a></li>
+                                }
+                                else
+                                {
+                                <li><a href="@Url.Action("viewbanner", "Admin")">Banner</a></li>
+                                }
+                                @if (ViewBag.about != null)
+                                {
+                                    <li class="active"><a href="@Url.Action("about_us", "Admin")">About Us</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@Url.Action("about_us", "Admin")">About Us</a></li>
+                                }
+                               @if (ViewBag.StateMaster != null)
+                               {
+                                <li class="active"><a href="@Url.Action("StateMaster", "Admin")">State and City</a></li>
+                               }
+                               else
+                               {
+
+                                <li><a href="@Url.Action("StateMaster", "Admin")">State and City</a></li>
+                               }
+                                
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="submenu" style="display:none">
+                                <li><a href="@Url.Action("coupontype", "Admin")">Coupon Type</a></li>
+                                <li><a href="@Url.Action("viewcouponcode", "Admin")">Coupons</a></li>
+                                <li><a href="@Url.Action("viewsampleimage", "Admin")">Sample Image</a></li>
+                                <li><a href="@Url.Action("smtpconfiguration", "Admin" )"> SMTP</a></li>
+                                <li><a href="@Url.Action("view_smsapi", "Admin" )"> Sms</a></li>
+                                <li><a href="@Url.Action("viewtaxtypemaster", "Admin" )"> Tax </a></li>
+                                <li><a href="@Url.Action("view_security_question", "Admin")">Security Question</a></li>
+                                <li><a href="@Url.Action("viewteamdetails", "Admin")">Our Team</a></li>
+                                <li><a href="@Url.Action("viewblogdetails", "Admin")">Marketing Blog</a></li>                               
+                                <li><a href="@Url.Action("faq", "Admin")">FAQs</a></li>                              
+                                <li><a href="@Url.Action("career", "Admin")">Career</a></li>                              
+                                <li><a href="@Url.Action("viewbanner", "Admin")">Banner</a></li>                               
+                                <li><a href="@Url.Action("about_us", "Admin")">About Us</a></li>            
+                                <li><a href="@Url.Action("StateMaster", "Admin")">State and City</a></li>
+                            </ul>
+                        }
+                                            
+                    <!-- END Submenu -->
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="glyphicon glyphicon-list-alt"></i>
+                        <span>Order</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                    <!-- BEGIN Submenu -->
+                    <ul class="submenu">                   
+                            <li><a href="/Admin/offlinebook">Manual Order</a></li>                     
+                    </ul>
+                    <!-- END Submenu -->
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="glyphicon glyphicon-list-alt"></i>
+                        <span>Report</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                    <!-- BEGIN Submenu -->
+                            @if (ViewBag.report != null)
+                            {
+                                <ul class="submenu" style="display:block">
+                                    @if (ViewBag.prebook_user != null)
+                                    {
+                                        <li class="active"><a href="/Admin/prebook_user">Pre-book Customers</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="/Admin/prebook_user">Pre-book Customers</a></li>
+                                    }
+                                    @if (ViewBag.Shift_Report != null)
+                                    {
+                                        <li class="active"><a href="/Admin/Shift_Report">Shift Report</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="/Admin/Shift_Report">Shift Report</a></li>
+                                    }
+                                    @if (ViewBag.DailySales != null)
+                                    {
+                                        <li class="active"><a href="/Admin/DailySales">Daily Report</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="/Admin/DailySales">Daily Report</a></li>
+                                    }
+                                    @if (ViewBag.orderdetails != null)
+                                    {
+                                        <li class="active"><a href="/Admin/orderdetails">Order Details</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="/Admin/orderdetails">Order Details</a></li>
+                                    }
+                                   
+                                  @if (ViewBag.UserReport != null)
+                                  {
+                                    <li class="active"><a href="/Admin/UserReport">User Report</a></li>
+                                  }
+                                  else
+                                  {
+                                    <li><a href="/Admin/UserReport">User Report</a></li>
+                                  }
+                                    @if (ViewBag.examreport != null)
+                                    {
+                                        <li class="active"><a href="/Admin/examreport">Exam Report</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="/Admin/examreport">Exam Report</a></li>
+                                    }
+                                   @if (ViewBag.ViewTeacherReportDetail != null)
+                                   {
+                                    <li class="active"><a href="/Admin/ViewTeacherReportDetail">Teacher Report</a></li>
+                                   }
+                                   else
+                                   {
+                                       
+                                    <li><a href="/Admin/ViewTeacherReportDetail">Teacher Report</a></li>
+                                   }
+                                    @if (ViewBag.Attendance_Report != null)
+                                    {
+                                        <li class="active"><a href="/Admin/Attendance_Report">Attendance Report</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="/Admin/Attendance_Report">Attendance Report</a></li>
+                                    }
+                                  @if (ViewBag.ViewFeedback != null)
+                                  {
+                                    <li class="active"><a href="/Admin/ViewFeedback">Feedback Report</a></li>
+                                  }
+                                  else
+                                  {
+
+                                    <li><a href="/Admin/ViewFeedback">Feedback Report</a></li>
+                                  }
+                                    
+                                </ul>
+                            }
+                            else
+                            {
+                                <ul class="submenu" style="display:none">
+                                    <li><a href="/Admin/prebook_user">Pre-book Customers</a></li>
+                                    <li><a href="/Admin/Shift_Report">Shift Report</a></li>
+                                    <li><a href="/Admin/DailySales">Daily Report</a></li>
+                                    <li><a href="/Admin/orderdetails">Order Details</a></li>
+                                    <li><a href="/Admin/UserReport">User Report</a></li>
+                                    <li><a href="/Admin/examreport">Exam Report</a></li>
+                                    <li><a href="/Admin/ViewTeacherReportDetail">Teacher Report</a></li>
+                                    <li><a href="/Admin/Attendance_Report">Attendance Report</a></li>
+                                    <li><a href="/Admin/ViewFeedback">Feedback Report</a></li>
+                                </ul>
+                            }
+                    
+                    <!-- END Submenu -->
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="dropdown-toggle">
+                        <i class="glyphicon glyphicon-list-alt"></i>
+                        <span>School</span>
+                        <b class="arrow fa fa-angle-right"></b>
+                    </a>
+                    <!-- BEGIN Submenu -->
+                    <ul class="submenu" style="display:none">                        
+                        <li><a href="/School/GetSchoolList">School Listing</a></li> 
+                        <li><a href="@Url.Action("AddSchool","School")">Add School</a></li>                      
+                    </ul>
+                    <!-- END Submenu -->
+                </li>
+
+            </ul>
+
+            <div id="sidebar-collapse" class="visible-lg">
+                <i class="fa fa-angle-double-left"></i>
+            </div>
+            <!-- END Sidebar Collapse Button -->
+        </div>
+        }
+        <!-- END Sidebar -->
+        <!-- BEGIN Content -->
+        <div id="main-content">
+            @if (TempData["SuccessMessage"] != null)
+            {
+            <div class="alert alert-success" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <div style="font-size: 13px; color:#5ead34;"><i class="fa fa-check-circle"></i> @TempData["SuccessMessage"]</div>
+            </div>
+            }
+            @if (@TempData["ErrorMessage"] != null)
+            {
+            <div class="alert alert-danger" role="alert" id="errormsg">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <div style="font-size: 13px;"><i class="fa fa-times-circle"></i> @TempData["ErrorMessage"]</div>
+            </div>
+            }
+            @if (@TempData["WarningMessage"] != null)
+            {
+            <div class="alert alert-warning" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <div style="font-size: 13px; color:#ffaf36;"><i class="fa fa-exclamation-circle"></i> @TempData["WarningMessage"]</div>
+            </div>
+            }
+
+            <!-- BEGIN Session check -->
+            @if (Session["USER_CODE"] != null)
+            {
+            if (Session["ROLE_CODE"].ToString() == "A" || Session["ROLE_CODE"].ToString() == "S")
+            {
+            @RenderBody()
+            }
+            else
+            {
+            Response.Redirect("~/Admin/Logout");
+            }
+            }
+            else
+            {
+            Response.Redirect("~/Admin/Logout");
+            }
+            <!-- END Session check -->
+            <footer>
+                <p>2016 © Designed by NTSPL.</p>
+            </footer>
+            <a id="btn-scrollup" class="btn btn-circle btn-lg" href="#"><i class="fa fa-chevron-up"></i></a>
+        </div>
+
+    </div>
+    <script src="~/assets/jquery/jquery-2.1.1.min.js"></script>
+    <script src="~/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/assets/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/assets/jquery-cookie/jquery.cookie.js"></script>
+
+    <script src="~/assets/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/assets/datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/assets/data-tables/jquery.dataTables.js"></script>
+    <script src="~/assets/data-tables/bootstrap3/dataTables.bootstrap.js"></script>
+    <!--Validation scripts-->
+    <script type="text/javascript" src="~/assets/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/assets/jquery-validation/dist/additional-methods.min.js"></script>
+    <script type="text/javascript" src="~/assets/chosen-bootstrap/chosen.jquery.min.js"></script>
+    <!--flaty scripts-->
+    <script src="~/js/flaty.js"></script>
+    <script src="~/js/flaty-demo-codes.js"></script>
+
+    @*<script src="~/Student_assets/assets/js/jquery.signalR-2.2.0.min.js"></script>*@
+    @*<script type="text/javascript" src="~/signalr/hubs"></script>*@
+    <script>
+        $('.datepicker').datepicker().on('changeDate', function (e) {
+            $(this).datepicker('hide');
+        });
+        $(function () {
+
+            // Click on notification icon for show notification
+            $('.noti').click(function (e) {
+                e.stopPropagation();
+                x = 3;
+                var count = 0;
+                count = parseInt($('span.count').html()) || 0;
+                //only load notification if not already loaded
+                if (count >= 0) {
+                    updateNotification();
+                }
+                else {
+                    $('#notiContent').empty();
+                    $('#notiContent').append($('<li class="notify"><a href="#"><i class="fa fa-comment orange"></i>' +
+                                                '<p>No Tickets Available</p>' +
+                                                '<span class="badge badge-warning">0</span></a></li>'));
+                    $('span.count').html(0);
+
+                }
+                $('#notiContent').show();
+            })
+
+            // hide notifications
+            $('html').click(function () {
+                $('#notiContent').hide();
+            })
+
+            // update notification
+            function updateNotification() {
+                $('#notiContent').empty();
+                $('#notiContent').append($('<li>Loading...</li>'));
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/Admin/GetNotification',
+                    datatype: "json",
+                    traditional: true,
+                    success: function (response) {
+                        $('#notiContent').empty();
+
+                        if (response.length == 0) {
+
+                            $('#notiContent').append($('<li class="notify"><a href="#"><i class="fa fa-comment orange"></i>' +
+                                                        '<p>No Tickets Available</p>' +
+                                                        '</a></li>'));
+                        }
+                            //for (var i = 0; i < data.length; i++) {
+
+                            //    $("#notiContent").append($('<li>New package : ' + data[i].Package_Name + ' (' + data[i].Package_Name + ') added</li>'));
+                            //}
+                        else {
+                            $.each(response, function (index, value) {
+                                var date = ToJavaScriptDate(value.Inserted_Date);
+
+                                $('#notiContent').append($('<li class="notify"><a href="/Admin/Ticket"><i class="fa fa-comment orange"></i>' +
+                                                            '<p>' + value.Ticket_No + ' raised by Student</p>' +
+                                                            '<span class="badge badge-warning">' + date + '</span></a></li>'));
+
+                            });
+                        }
+                        $('span.count').html(response.length);
+                        //$('#notiContent li:lt('+x+')').show();
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+            function ToJavaScriptDate(value) {
+                var pattern = /Date\(([^)]+)\)/;
+                var results = pattern.exec(value);
+                var dt = new Date(parseFloat(results[1]));
+                return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+            }
+
+            // update notification count
+            function updateNotificationCount() {
+                debugger;
+                var count = 0;
+                count = parseInt($('span.count').html()) || 0;
+                count++;
+                $('span.count').html(count);
+            }
+
+            // signalr js code for start hub and send receive notification
+            //var notificationHub = $.connection.notificationHub;
+            //$.connection.hub.start().done(function () {
+            //    //console.log('Notification hub started');
+            //});
+
+            ////signalr method for push server message to client
+            //notificationHub.client.notify = function (message) {
+            //    if (message && message.toLowerCase() == "added") {
+            //        updateNotificationCount();
+            //    }
+            //}
+
+        })
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>

@@ -1,0 +1,112 @@
+﻿@{
+    ViewBag.Title = "career";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content-wrap">
+    <div class="page-title">
+        <div>
+            <h1>
+                <i class="fa fa-graduation-cap"></i> Career
+               
+            </h1>
+
+        </div>
+    </div>
+    <div id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="~/Admin/AdminDashboard">Home</a>
+                <span class="divider"><i class="fa fa-angle-right"></i></span>
+            </li>
+            @*@if (ViewBag.Breadcrumb != null)
+            {
+                <li class="active">@ViewBag.Breadcrumb</li>
+            }*@
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+
+                <div class="box-title">
+                    <h3><i class="fa fa-file-text"></i>Career Details</h3>
+                    <div class="box-tool box-tooll">
+                        <a href="/Admin/addcareer" class="btn btn-primary"><i class="fa fa-plus"></i><span> Add New</span> </a>
+                    </div>
+                </div>
+                <div class="box-content">
+
+                    <div class="table-responsive voffset3">
+                        <table class="table table-advance" id="table1">
+
+                            <thead>
+                                <tr>
+                                    <th>Sl No.</th>
+                                    @*<th hidden="hidden">Id</th>*@
+                                    <th>Career Name</th>
+                                    <th>No Of Vacancy</th>
+                                    <th>Experience</th>
+                                    <th>Location</th>
+                                    <th>Qualification</th>
+                                    <th>Opening_Date</th>
+                                    <th>Close Date</th>
+                                    <th>Walk in Time</th>
+                                    <th hidden></th>
+                                    <th>Phone</th>
+                                    <th>Job Description</th>
+                                    <th style="width: 10%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.career != null)
+                                {
+                                    int rowNo = 0;
+                                    foreach (var item in ViewBag.career)
+                                    {
+                                        <tr>
+                                            <td>@(rowNo += 1)</td>
+                                            <td hidden="hidden">@item.Career_ID</td>
+                                            <td>@item.career_Name</td>
+                                            <td>@item.No_of_vacancy</td>
+                                            <td>@item.Experience</td>
+                                            <td>@item.Location</td>
+                                            <td>@item.Qualification</td>
+                                            <td>
+
+                                                @{
+                                        DateTime opdt = Convert.ToDateTime(item.Opening_Date);
+                                                }
+                                                @opdt.ToShortDateString()
+
+                                            </td>
+                                            <td>
+                                                @{
+                                        DateTime dtclose = Convert.ToDateTime(item.Close_Date);
+                                                }
+                                                @dtclose.ToShortDateString()
+                                            </td>
+                                            <td>@item.Walk_in_Time</td>
+                                            <td>@item.Phone</td>
+                                            <td>@item.Job_Description</td>
+                                                                                       
+                                            <td>
+
+                                                @Html.ActionLink(" ", "addcareer", "Admin", new { id = @item.Career_ID }, new { @class = "btn btn-sm btn-primary show-tooltip fa fa-edit", @title = "Edit" })
+
+
+                                                @Html.ActionLink(" ", "Deletecareer", "Admin", new { id = @item.Career_ID }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the career?')", @data_original_title = "Delete", @title = "Delete" })
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

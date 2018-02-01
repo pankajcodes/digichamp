@@ -1,0 +1,103 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsClassModel
+@{
+    ViewBag.Title = "choose_board";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-title">
+                <h3><i class="fa fa-list-ul"></i>Choose Board</h3>
+            </div>
+            <form class="form-horizontal" id="choose_board">
+                <div class="box-content">
+                    <div class="form-group">
+                        <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Board<span class="asterisk">*</span></label>
+                        <div class="col-sm-9 col-lg-7 controls">
+                            @(Html.DropDownListFor(x => x.Board_Id, ViewBag.Board_Id as SelectList, "Please Select Board", new { @class = "form-control chosen", data_rule_required = "true", data_msg_required = "Please enter board", @id = "ddlboard" }))
+                        </div>
+                    </div>
+                </div>
+                <div class="box-content" id="choose_class" hidden>
+                    <div class="form-group">
+                        <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Class<span class="asterisk">*</span></label>
+                        <div class="col-sm-9 col-lg-7 controls">
+                            @Html.HiddenFor(x => x.Board_Id, new { @id = "brid" })
+                            @(Html.DropDownListFor(x => x.Class_Id, new List<SelectListItem>(), "Please Select class", new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter class", @id = "ddlclass" }))
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group last" id="started" hidden>
+                    <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                        <button id="btnSearch" type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Get Started</button>
+                        <a href="@Url.Action("login", "Student")" class="btn btn-inverse dropdown-toggle"><i class="fa fa-caret-left"></i> Back </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $('#ddlboard').change(function () {
+            if ($('#ddlclass').closest('.form-group').find('.ajax-loader').length) {
+                // do nothing
+            } else {
+                $('#ddlclass').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+            }
+            $('#ddlclass').closest('.form-group').addClass('display-loader');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllClass",
+                data: { brdId: $('#ddlboard').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta = "<select id='ddlclass'>";
+                    sta = sta + '<option value="">Please Select Class</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    sta = sta + '</select>';
+                    $("#choose_class").show();
+                    $('#ddlclass').html(sta);
+                    setTimeout(function () {
+                        $('#ddlclass').closest('.form-group').removeClass('display-loader');
+                    }, 800);
+                }
+            });
+        });
+
+        $('#ddlclass').change(function () {
+            if ($('#ddlclass').val() != "")
+            {
+                $("#started").show();
+            }
+        });
+
+        // submit form after class
+        $('#choose_board').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "/Student/startboarding",
+                data: { board: $('#ddlboard').val(), classid: $('#ddlclass').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var message = data.Board_Name;
+                    if (message == "0") {
+                        alert("Please enter board and class.");
+                    }
+                    else if (message == "-1") {
+                        alert("Invalid User Details.");
+                    }
+                    else {
+                        location.href = "/Student/studentdetails";
+                    }
+                }
+            });
+        });
+    </script>
+}

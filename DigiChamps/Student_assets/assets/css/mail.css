@@ -1,0 +1,342 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito:400,300);
+/************theme fonts********************/
+/***********************theme colors*****************************/
+/*****************theme parametres*******************/
+/*sidebar-parametres*/
+.no_padding {
+  padding: 0;
+}
+.no_pad_right {
+  padding-right: 0;
+}
+.mail_holder .mail_menu_block .mail_menu {
+  background-color: #373943;
+  padding: 20px;
+  min-height: 800px;
+  max-height: 800px;
+  overflow-y: auto;
+}
+.mail_holder .mail_menu_block .mail_menu .compose_block {
+  text-align: left;
+  padding-bottom: 30px;
+}
+.mail_holder .mail_menu_block .mail_menu .compose_block .btn {
+  padding: 0px 40px;
+  height: 35px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.70px;
+  font-size: 13px;
+  line-height: 35px;
+  border-radius: 2px;
+  background-color: #2196f3;
+  border-width: 0;
+}
+.mail_holder .mail_menu_block .mail_menu .compose_block .btn i {
+  padding-right: 10px;
+}
+.mail_holder .mail_menu_block .mail_menu ul.menu_list li a {
+  color: #FFFFFF;
+  display: inline-block;
+  width: 100%;
+  line-height: 45px;
+  text-align: left;
+  text-decoration: none;
+  border-bottom: 1px solid #3b3e46;
+  font-weight: 300;
+  font-size: 13px;
+  padding-left: 15px;
+}
+.mail_holder .mail_menu_block .mail_menu ul.menu_list li a i {
+  color: #FFFFFF;
+  font-size: 16px;
+  display: inline-block;
+  padding-right: 15px;
+  padding-left: 15px;
+  float: right;
+  padding-top: 15px;
+}
+.mail_holder .mail_menu_block .mail_menu ul.menu_list li a:hover {
+  background-color: #3b3e46;
+}
+.mail_holder .mail_menu_block .mail_menu ul.menu_list li:last-child a {
+  border-bottom-width: 0;
+}
+.mail_holder .mail_menu_block .mail_menu ul.recent_activity .heading {
+  font-size: 16px;
+  color: #9398a0;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  border-bottom: 1px dotted #3b3e46;
+}
+.mail_holder .mail_menu_block .mail_menu ul.recent_activity .heading span a {
+  text-decoration: none;
+  font-size: 14px;
+  padding-right: 15px;
+  color: #9398a0;
+}
+.mail_holder .mail_menu_block .mail_menu ul.recent_activity .heading span a:hover {
+  color: #ffffff;
+}
+.mail_holder .mail_menu_block .mail_menu ul.recent_activity li a {
+  text-decoration: none;
+}
+.mail_holder .mail_menu_block .mail_menu ul.recent_activity li a .img_holder {
+  width: 30px;
+}
+.mail_holder .mail_menu_block .mail_menu ul.recent_activity li a .img_holder img {
+  width: 100%;
+  border-radius: 50%;
+  float: left;
+}
+.mail_holder .mail_menu_block .mail_menu ul.recent_activity li a h2,
+.mail_holder .mail_menu_block .mail_menu ul.recent_activity li a p {
+  margin-left: 40px;
+  font-size: 12px;
+}
+.mail_holder .mail_menu_block .mail_menu ul.recent_activity li a h2 {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #FFFFFF;
+  margin-top: 0;
+}
+.mail_holder .mail_menu_block .mail_menu ul.recent_activity li a p {
+  color: #a1a5ac;
+  white-space: wrap;
+  font-weight: 300;
+  overflow: hidden;
+  display: block;
+  max-width: 190px;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+.mail_holder .mail_body .mail_list {
+  border-right: 1px solid #d7dce5;
+  position: relative;
+  min-height: 800px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #d7dce5;
+}
+.mail_holder .mail_body .mail_list .search_bar_block {
+  display: inline-block;
+  height: 100px;
+  background: #ffffff;
+  min-height: 80px;
+  border-top: 1px solid #d7dce5;
+  border-bottom: 1px solid #d7dce5;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 99;
+}
+.mail_holder .mail_body .mail_list .search_bar_block .search_icon_block {
+  padding: 0px 20px;
+  position: relative;
+}
+.mail_holder .mail_body .mail_list .search_bar_block .search_icon_block input {
+  max-width: 300px;
+  margin: 0 auto;
+  margin-top: 30px;
+  border-radius: 30px;
+  border-width: 0;
+  position: relative;
+  border: 1px solid #d7dce5;
+  padding-right: 40px;
+  box-shadow: none;
+}
+.mail_holder .mail_body .mail_list .search_bar_block .search_icon_block span {
+  width: 100%;
+  max-width: 300px ;
+  position: relative;
+  text-align: right;
+  padding-right: 20px;
+  color: #c8cedb;
+  font-size: 18px;
+  float: none;
+  margin: 0 auto;
+  margin-top: -35px;
+}
+.mail_holder .mail_body .mail_list .search_bar_block .search_icon_block .form-control:focus {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  border: 1px solid #b8c1d1;
+}
+.mail_holder .mail_body .mail_list .mails_holder {
+  padding: 0px;
+  max-height: 799px;
+  overflow: auto;
+  position: relative;
+  z-index: 0;
+  padding-top: 99px;
+  margin-bottom: 0;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a {
+  display: inline-block;
+  width: 100%;
+  border-bottom: 1px solid #e9ecf2;
+  text-decoration: none;
+  padding: 0px 0px;
+  background: #FFFFFF;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a:last-child {
+  border-bottom-width: 0;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .message_list_block {
+  padding: 20px;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .message_list_block.unread {
+  background: #f3f4f8;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .message_list_block.read {
+  opacity: 0.5;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .message_list_block.active {
+  background-color: #2196f3;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .message_list_block.active .right {
+  margin-left: 60px;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .message_list_block.active .right .name,
+.mail_holder .mail_body .mail_list .mails_holder li a .message_list_block.active .right .right_details,
+.mail_holder .mail_body .mail_list .mails_holder li a .message_list_block.active .right h4 {
+  color: #FFFFFF;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .message_list_block.active .message_info {
+  color: #FFFFFF;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .left .avatar_holder {
+  width: 50px;
+  height: 50px;
+  float: left;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .left .avatar_holder img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid #e9ecf2;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .right {
+  margin-left: 60px;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .right .name {
+  font-size: 14px;
+  color: #2196f3;
+  display: inline-block;
+  width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .right .right_details {
+  color: #b8c1d1;
+  font-size: 12px;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .right .right_details i {
+  font-size: 14px;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .right .right_details i.status {
+  font-size: 10px;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .right .right_details li {
+  padding: 2px;
+}
+.mail_holder .mail_body .mail_list .mails_holder li a .right h4 {
+  margin: 0;
+  font-size: 13px;
+  color: #707780;
+  height: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: 300;
+  text-overflow: ellipsis;
+}
+.mail_holder .mail_body .mail_brief_holder {
+  background: #FFFFFF;
+  border: 1px solid #d7dce5;
+  border-left-width: 0;
+  min-height: 800px;
+  max-height: 800px;
+  overflow-y: auto;
+}
+.mail_holder .mail_body .mail_brief_holder img {
+  width: 100%;
+  margin-bottom: 15px;
+}
+.mail_holder .mail_body .mail_brief_holder .heading_block {
+  min-height: 99px;
+  border-bottom: 1px solid #d7dce5;
+  padding: 10px 20px;
+  padding-top: 30px;
+  display: table;
+  width: 100%;
+}
+.mail_holder .mail_body .mail_brief_holder .heading_block h1 {
+  margin: 0;
+  font-size: 20px;
+  border-left: 4px solid #2196f3;
+  padding-left: 15px;
+  float: left;
+  margin-bottom: 10px;
+  margin-top: 5px;
+  color: #000000;
+}
+.mail_holder .mail_body .mail_brief_holder .heading_block h1 span {
+  font-size: 12px;
+  display: block;
+  padding-top: 5px;
+}
+.mail_holder .mail_body .mail_brief_holder .heading_block .action_buttons .btn:hover {
+  background-color: #e9ecf2;
+}
+.mail_holder .mail_body .mail_brief_holder .heading_block .action_buttons i {
+  font-size: 18px;
+  color: #6b7d9f;
+}
+.mail_holder .mail_body .mail_brief_holder .mail_brief_body {
+  padding: 20px;
+  color: #9398a0;
+}
+.mail_holder .mail_body .mail_brief_holder .mail_brief_body h2,
+.mail_holder .mail_body .mail_brief_holder .mail_brief_body h1,
+.mail_holder .mail_body .mail_brief_holder .mail_brief_body h2,
+.mail_holder .mail_body .mail_brief_holder .mail_brief_body h3,
+.mail_holder .mail_body .mail_brief_holder .mail_brief_body h4,
+.mail_holder .mail_body .mail_brief_holder .mail_brief_body h5,
+.mail_holder .mail_body .mail_brief_holder .mail_brief_body h6 {
+  color: #707780;
+}
+.mail_holder .mail_body .mail_brief_holder .mail_brief_body .attachment li {
+  border-width: 0;
+  padding: 0;
+}
+.mail_holder .mail_body .mail_brief_holder .mail_brief_body .attachment li a {
+  display: block;
+  text-decoration: none;
+  background: #FFFFFF;
+  padding: 10px 20px;
+  border: 1px solid #d7dce5;
+  color: #707780;
+}
+.mail_holder .mail_body .mail_brief_holder .mail_brief_body .attachment li a i {
+  font-size: 16px;
+  padding-right: 5px;
+}
+.mail_holder .mail_body .mail_brief_holder .mail_brief_body .attachment li a:hover {
+  background-color: #f6f7fa;
+  color: #2196f3;
+}
+.mail_holder .mail_body .mail_brief_holder .mail_brief_body .attachment li a span i {
+  font-size: 16px;
+  float: right;
+  line-height: 1;
+}
+.mail_holder .mail_body .mail_brief_holder .mail_brief_body textarea {
+  background: #f9fafb;
+  resize: none;
+}
+.mail_holder .mail_body .mail_brief_holder .mail_brief_body .reply {
+  margin-top: 10px;
+  float: right;
+  font-size: 14px;
+}

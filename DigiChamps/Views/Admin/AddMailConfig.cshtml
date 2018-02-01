@@ -1,0 +1,221 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsMAILConfigModel
+@{
+    ViewBag.Title = "Mail Config";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!--page specific css styles-->
+<link href="~/assets/bootstrap-wysihtml5/bootstrap-wysihtml5.css" rel="stylesheet" />
+
+@using (Html.BeginForm("AddMailConfig", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    @Html.AntiForgeryToken();
+    <div class="page-content-wrap">
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active"> @ViewBag.pagetitle @ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> MAIL Configuration</h3>
+                        
+                    </div>
+                    <div class="box-content">
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Alert Name<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @if (ViewBag.alert != null)
+                                    { 
+                                        @(Html.DropDownListFor(x => x.EmailConf_AlertName, ViewBag.EmailType_ID as SelectList, "Please Select Name", new { @class = "form-control ", data_rule_required = "true", data_msg_required = "Please select alert name", @readonly = "readonly" }))
+                                    }
+                                    else
+                                    {
+                                        @(Html.DropDownListFor(x => x.EmailConf_AlertName, ViewBag.EmailType_ID as SelectList, "Please Select Name", new { @class = "form-control ", data_rule_required = "true", data_msg_required="Please select alert name" }))
+                                    }
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Sender Name<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @(Html.DropDownListFor(x => x.SMTP_ID, ViewBag.SMTP as SelectList, "Please Select Name", new { @class = "form-control ", data_rule_required = "true", data_msg_required = "Please select sender name" }))
+                                    
+                                    @*<select data-placeholder="Please Select Sender Name" id="ShiftMst_ID" name="ShiftMst_ID" class="form-control chosen" tabindex="6" data-rule-required="true" data-msg-required="select sender name">
+                                        <option value=""></option>
+                                        @if (ViewBag.data != null)
+                                            {
+                                                foreach (var v in ViewBag.data)
+                                                {
+                                                    if (Convert.ToString(@v.EmailConf_ID))
+                                                    {
+                                                        <option selected="selected" value="@v.EmailConf_ID">@v.EmailConf_Alert</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@v.EmailConf_ID">@v.EmailConf_Alert</option>
+                                                    }
+                                                }
+                                            }
+                                    </select>*@
+                                </div>
+                            </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Subject<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.TextBoxFor(m => m.Subject, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter subject" })
+                            </div>
+                        </div>
+
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Alert Body<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <textarea class="form-control wysihtml5" name="msg_body" placeholder="Reply to this mail" rows="5" data-rule-required="true" data-msg-required="Please enter mail description">@ViewBag.EmailBody</textarea>
+                                </div>
+                            </div>
+                            <input type="hidden" value="@ViewBag.mail_id" name="emailid" id="emailid" />
+                            <div class="form-group last box-tooll">
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                    <a href="@Url.Action("MailConfiguration", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i><span> Back</span> </a>
+                                    <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span> Submit</span></button>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> Keywords</h3>
+                    </div>
+                    <div class="box-content">
+                        <h5>Use the keyword for bind the database value automaticaly in email contents.So what ever to data to bind in your email contents so use the key words as per example bellow . Example:{{username}} use for bind User Name from database. </h5>
+                        <div class="form-group">
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <h4><u>Package Expire Notification</u></h4>
+                                <ul>
+                                    <li> {{name}} - Name</li>
+                                    <li> {{pkgname}} - Expire Package name</li>
+                                    <li> {{day}} - No of days remaining</li>
+                                </ul>
+                                <h4><u>Ticket Assign</u></h4>
+                                <ul>
+                                    <li>{{user_name}} - User Name</li>
+
+                                </ul>
+                                <h4><u>Ticket Answer</u></h4>
+                                <ul>
+                                    <li>{{user_name}} - User Name</li>
+                                    <li>{{ticket_no}} - Answered Ticket No</li>
+                                </ul>
+                                <h4><u>Ticket Close</u></h4>
+                                <ul>
+                                    <li>{{user_name}} - User Name</li>
+                                    <li>{{ticket_no}} - Closed Ticket No</li>
+                                </ul>
+                                <h4><u>Ticket Open</u></h4>
+                                <ul>
+                                    <li>{{user_name}} - User Name</li>
+                                    <li>{{ticket_no}} - Opened Ticket No</li>
+                                </ul>
+                                <h4><u>Parent Registration</u></h4>
+                                <ul>
+                                    <li> {{name}}-Name</li>
+                                    <li>{{username}} - Parent Login User Name</li>
+                                    <li>{{password}} - Parent Login Password</li>
+                                </ul>
+                                <h4><u>Change Password</u></h4>
+                                <ul>
+                                    <li> {{name}} - Name</li>
+
+                                </ul>
+                                <h4><u>Student Registration</u></h4>
+                                <ul>
+                                    <li> {{name}} - Student Name</li>
+                                    <li>{{OTP}} - Sent OTP</li>
+                                </ul>
+                                <h4><u>Student Forgot Password</u></h4>
+                                <ul>
+                                    <li> {{name}} - Student Name</li>
+                                    <li>{{OTP}} - Sent OTP</li>
+                                </ul>
+                                <h4><u>Order Cancel</u></h4>
+                                <ul>
+                                    <li> {{name}} - Student Name</li>
+
+                                </ul>
+                                <h4><u>Order Confirmation</u></h4>
+                                <ul>
+                                    <li> {{name}} - Student Name</li>
+                                    <li>{{orderno}} - Placed Order No</li>
+                                    <li>{{orderdate}} - Ordered Date</li>
+                                    <li>{{packagedetails}} - Package Details</li>
+                                    <li> {{totalamt}} - Total Package Amount</li>
+                                    <li>{{taxamt}} - Applicable Tax Amount</li>
+                                    <li>{{totalpbl}} - Total Payble Amount</li>
+                                </ul>
+                                <h4><u>Student Ticket Assign</u></h4>
+                                <ul>
+                                    <li>{{date}} - Assign Date</li>
+                                    <li>{{ticketno}} - Assigned Ticket No</li>
+                                    <li>{{teacher}} - Teacher Name</li>
+                                    <li>{{name}} - Student Name</li>
+
+                                </ul>
+                                <h4><u>Ticket Generate</u></h4>
+                                <ul>
+                                    <li>{{date}} - Date</li>
+                                    <li>{{ticketno}} - Ticket No</li>
+                                    <li>{{name}} - Name</li>
+                                </ul>
+                                <h4><u>Teacher Shift Creation</u></h4>
+                                <ul>
+                                    <li> {{name}} - Teacher Name</li>
+                                    <li>{{shift}} - Name of the shift assigned</li>
+                                    <li>{{effdate}} - effective date of the shift</li>
+                                </ul>
+                                <h4><u>Teacher Registration</u></h4>
+                                <ul>
+                                    <li> {{name}} - Teacher Name</li>
+                                    <li>{{username}} - Login User Name</li>
+                                    <li>{{password}} - Login Password</li>
+                                </ul>
+                                <h4><u>Exam Appeared</u></h4>
+                                <ul>
+                                    <li> {{name}} - Student Name</li>
+                                    <li>{{correctno}} - No of Correct Answers</li>
+                                    <li>{{url}} - URL to open</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+}
+@section scripts
+{
+<script src="~/assets/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
+<script src="~/assets/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+
+
+
+
+
+
+
+}
+
+
+
+

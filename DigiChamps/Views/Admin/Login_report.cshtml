@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Login Report";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-title">
+                <h3><i class="fa fa-list-ul"></i>Search Login Status</h3>
+            </div>
+            <div class="box-content">
+                <div class="page-content-wrap">
+                    <div class="row">
+                        <div class="">
+                            @using (Html.BeginForm("Login_report", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+                            {
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">From Date<span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                        <input type="text" placeholder="@DateTime.Now.ToShortDateString()" autocomplete="off" data-rule-required="true" data-msg-required="Please select From date" name="f_Date" class="datepicker form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">To Date<span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                        <input type="text" placeholder="@DateTime.Now.ToShortDateString()" autocomplete="off" data-rule-required="true" data-msg-required="Please select To date" name="t_Date" class="datepicker form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group last box-tooll">
+                                    <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                        <button id="btnadd" type="submit" class="btn btn-primary"><i class="fa fa-search"></i><span> Search</span></button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-list-ul"></i>Login Status</h3>
+                        <div class="box-tool box-tooll">
+                            <a href="@Url.Action("Shift_Report", "Admin")" class="btn btn-primary dropdown-toggle"><i class="fa fa-caret-left"></i><span>Back</span></a>
+                            <a href="@Url.Action("Login_report", "Admin")" class="btn btn-primary dropdown-toggle"><i class="fa fa-refresh"></i><span>Refresh</span></a>
+                            <a href="#" class="btn btn-primary dropdown-toggle" onclick="$('#table1').tableExport({ type: 'excel', escape: 'false' });"><i class="fa fa-file-excel-o"></i><span>XLS</span></a>
+                            @*<a href="#" class="btn btn-inverse dropdown-toggle" onclick="$('#table1').tableExport({ type: 'pdf', escape: 'false' });"><i class="fa fa-file-pdf-o"></i> PDF</a>*@
+                        </div>
+                    </div>
+
+                    <div class="box-content">
+
+                        <div class="table-responsive" id="log_in">
+                            <table class="table table-advance" id="table1">
+
+                                <thead>
+                                    <tr>
+                                        <th>Sl No.</th>
+                                        <th>Name</th>
+                                        <th>Login Date</th>
+                                        <th>Logout Date</th>
+                                        <th>IP Address</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @if (ViewBag.login_Status != null)
+                                    {
+                                        int rowNo = 0;
+                                        foreach (var v in ViewBag.login_Status)
+                                        {
+
+                                            <tr>
+                                                <td>@(rowNo += 1)</td>
+                                                <td>@v.Login_By</td>
+                                                <td>@v.Login_DateTime</td>
+                                                <td>@v.Logout_DateTime</td>
+                                                <td>@v.Login_IPAddress</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    @section scripts{
+        <script src="~/js/plugins/tableexport/jspdf/libs/base64.js"></script>
+        <script src="~/js/plugins/tableexport/jspdf/libs/sprintf.js"></script>
+        <script src="~/js/plugins/tableexport/jspdf/jspdf.js"></script>
+        <script src="~/js/plugins/tableexport/html2canvas.js"></script>
+        <script src="~/js/plugins/tableexport/jquery.base64.js"></script>
+        <script src="~/js/plugins/tableexport/tableExport.js"></script>
+    }

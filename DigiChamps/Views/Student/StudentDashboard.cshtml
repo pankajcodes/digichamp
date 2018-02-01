@@ -1,0 +1,530 @@
+﻿@{
+    ViewBag.Title = "Student Dashboard | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+<!-- Class select -->
+<link href="~/css/jquery.countdownTimer.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/chartist/chartist.min.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/widgets.css" rel="stylesheet" />
+
+<div class="row row-right-margin">
+    @*<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 nopad-right">
+        <div class="dashboard-stats">
+            <div class="left">
+                <h3 class="flatBluec counter" data-to="@ViewBag.participants" data-speed="4000">@ViewBag.participants</h3>
+                <h4>Total Participants</h4>
+            </div>
+            <div class="right flatBlue">
+                <i class="ion ion-ios-personadd-outline "></i>
+            </div>
+        </div>
+    </div>*@
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 nopad-right">
+        <div class="dashboard-stats">
+            <div class="left">
+                   
+                <h3 class="flatGreenc counter" data-to="@ViewBag.exams" data-speed="4000">@ViewBag.exams </h3>
+                <h4 class='top-15'><span>Total</span><span>Exams Appeared</span></h4>
+            </div>
+            <div class="right flatGreen">
+                <i class="ion ion-ios-compose-outline"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 nopad-right">
+        <div class="dashboard-stats">
+            <div class="left">
+                <h3 class="flatRedc counter" data-to="@ViewBag.totalchapters" data-speed="4000">@ViewBag.totalchapters</h3>
+                <h4  class='top-15'><span>Total</span><span>Chapters</span></h4>
+            </div>
+            <div class="right flatRed">
+                <i class="ion-clipboard"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 nopad-right">
+        <!-- panel -->
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Doubt Analysis (Doubt Asked= @ViewBag.Raised)
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row small_pie_chart">
+                    <div class="content-holder">
+                        <div id="market1" class="col-md-12 no_padding">
+                            @if (ViewBag.Raised > 0)
+                            {
+                                <div class="ct-chart ct-golden-section chart-height website-visits" id="small_pie_chart"></div>
+                                 <ul class="list-unstyled  info_section list-inline">
+                                    <li>
+                                        <i class="ion ion-record flatGreyc"></i> Rejecetd Doubt
+                                    </li>
+                                    <li>
+                                        <i class="ion ion-record flatBluec"></i> Open Doubt
+                                    </li>
+                                    <li>
+                                        <i class="ion ion-record flatOrangec"></i> Closed Doubt
+                                    </li>
+                                </ul>
+                            }
+                            else
+                            {
+                                <div class="no-content-notification">You have not asked any doubt yet.</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <!-- /row -->
+            </div>
+
+        </div>
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Package Details
+                   
+                </h3>
+            </div>
+            <div class="panel-body">
+                @if (ViewBag.packagedetail != null)
+                {
+                    if (ViewBag.pkgdtl >1)
+                    { 
+int i = 1; int j = 0;
+                    <div class="owl-carousel" id="student-packager">
+                    @foreach (var item in ViewBag.packagedetail)
+{
+                        if(i % 4 == 0)
+    {
+        j = 1;               
+        @*<div class='table-cont bd-clr-1'>*@
+
+           }
+
+         
+
+           if (i % 4 == 1)
+           {
+               j = 2;
+           }
+            @*<div class='table-cont bd-clr-2'>*@
+
+               
+                if(i % 4 == 2)
+                {
+                    j = 3;
+                }          
+                    @*<div class='table-cont bd-clr-3'>*@
+
+
+                                            if (i % 4 == 3)
+                                            {
+                                                j = 4;
+                                            }
+                                             <div class="bd-clr-@j">
+
+                        <div class="panel panel-ntspl inner-panel">
+                            <div class="panel-body test-panel-body pannel-padding">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" class="td-width-one">Package Name</th>
+                                            <td class="right-td td-width-two">@item.Package_Name</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="td-width-one">Subjects</th>
+                                            <td class="right-td td-width-two">@item.subjects</td>
+                                        </tr>
+                                        @*<tr>
+                                            <td>Chapters</td>
+                                            <td class="right-td">@item.Chapters</td>
+                                        </tr>*@
+                                        <tr>
+                                            <td>Expire Date</td>
+                                            <td class="right-td">@item.Expiry_Date</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Price</td>
+                                            <td class="price-color small-bolt">INR @string.Format("{0:0.00}", item.Total) </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="panel-heading header-style div-show new-border">
+                                    <a href="/student/viewpackagedetail/@item.Package_ID" class="pull-right">
+                                                <button type="button" class="btn btn-icon-block btn-icon-blockleft btn-orange pull-right"><i class="ion ion-checkmark bg-deepblue"></i> <span>View Details</span></button>
+                                                <div class="clearfix"></div>
+                                            </a><div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>  
+
+</div>
+    i++;
+            
+                    }
+                        </div>  
+                    
+                }    
+                
+                else
+                    {
+                        int i = 0; int j = 0;
+                        <div  id="student-packager">
+                    @foreach (var item in ViewBag.packagedetail)
+{
+                         if(i % 4 == 0)
+    {
+        j = 1;               
+        @*<div class='table-cont bd-clr-1'>*@
+
+           }
+
+         
+
+           
+                                             <div class="bd-clr-@j">
+
+                        <div class="panel panel-ntspl inner-panel">
+                            <div class="panel-body test-panel-body pannel-padding">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" class="td-width-one">Package Name</th>
+                                            <td class="right-td td-width-two">@item.Package_Name</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="td-width-one">Subjects</th>
+                                            <td class="right-td td-width-two">@item.subjects</td>
+                                        </tr>
+                                        @*<tr>
+                                            <td>Chapters</td>
+                                            <td class="right-td">@item.Chapters</td>
+                                        </tr>*@
+                                        <tr>
+                                            <td>Expire Date</td>
+                                            <td class="right-td">@item.Expiry_Date</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Price</td>
+                                            <td class="price-color small-bolt">INR @string.Format("{0:0.00}", item.Total) </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="panel-heading header-style div-show new-border">
+                                    <a href="/student/viewpackagedetail/@item.Package_ID" class="pull-right">
+                                                <button type="button" class="btn  btn-orange pull-right"> <span>View Details</span></button>
+                                                <div class="clearfix"></div>
+                                            </a><div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>    
+                                                 </div>
+    i++;     
+                    }
+                        </div>
+
+                    } 
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-md-12 questions-cont text-center">
+                           
+							<div class="no-content-notification">You have not subscribed any package.</div>
+                             
+                                @*<img src="images/cartimg.png" class="img-responsive voffset3">*@
+                                @{
+                    DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                    var list = DbContext.tbl_DC_Sample_Image.Where(x => x.Image_Type == "Package" && x.Is_Active == true && x.Is_Deleted == false).FirstOrDefault();
+                    ViewBag.list = list.Image_URL;
+                            <img src="~/Images/SampleImage/@ViewBag.list"  class="img-responsive voffset3" />
+                                }
+
+                                <div class="foraddbtn">
+                                    <a href="/student/packagepreview"><button type="button" class="btn btn-primary addbtn">BUY NOW</button></a>
+                                </div>
+                            </div>
+
+                       
+                    </div>
+                }
+
+            </div>
+        </div>
+        <!-- /panel -->
+    </div>
+    <!-- col-md-6 -->
+    <div class="col-md-6 nopad-right">
+        <!-- panel -->
+        <div class="panel panel-ntspl coundown-timer">
+            <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Schedule Test
+                    </h3>
+            </div>
+            @if (ViewBag.time != null)
+{
+    <div class="panel-body recenttest-cont">
+                @if (ViewBag.ord_customer > 0)
+                {
+                    int i = 0; int j = 0;
+            <form>
+               
+                @foreach (var item in ViewBag.time)
+                {
+                    if (i % 4 == 0)
+                    {
+                        j = 1;
+                        @*<div class='table-cont bd-clr-1'>*@
+
+                    }
+
+
+
+                    if (i % 4 == 1)
+                    {
+                        j = 2;
+                    }
+                    @*<div class='table-cont bd-clr-2'>*@
+
+
+                    if (i % 4 == 2)
+                    {
+                        j = 3;
+                    }
+                    @*<div class='table-cont bd-clr-3'>*@
+
+
+                    if (i % 4 == 3)
+                    {
+                        j = 4;
+                    }
+                    <div class="bd-clr-@j pnl-learn sheduletest ">
+                        <div class="panel panel-ntspl inner-panel ">
+
+                            <div class="panel-heading">
+                                <div class="s-test">
+                                    <a href="#" class="plain-link @item.Exam_ID disabled" id="startexam" value="@item.Exam_ID" time="@item.Time">
+                                        <h3 class="panel-title">
+                                           
+                                            <h4>@item.Exam_Name</h4>
+                                            <span class="timeremain">Time Remaining</span>
+                                            <span  id="@item.Exam_ID"></span>
+
+                                            @{
+                    DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                    DateTime today = DigiChamps.Models.DigiChampsModel.datetoserver();
+                    var time = (from a in DbContext.tbl_DC_Exam.Where(x => x.Exam_type == 4 && x.Is_Active == true && x.Is_Deleted == false)
+                                select a).ToList();
+
+                    ViewBag.time = time.ToList();
+                    string date = Convert.ToDateTime(item.Shedule_date).ToString("yyyy/MM/dd");
+                    string tim = item.Shedule_time;
+                    string acctualtime = date + " " + tim + ":00";
+                    string now_date = today.ToString("yyyy/MM/dd") + " " + DateTime.Now.ToLongTimeString().ToString().Replace("PM", "").Replace("AM", "");
+                    ViewBag.nowtime = now_date;
+                    ViewBag.examstarttime = acctualtime;
+
+                                <script>
+
+                                    $(function () {
+
+                                        $('#' +@item.Exam_ID +'').countdowntimer({
+                                            startDate: "@ViewBag.nowtime",
+                                            dateAndTime: "@ViewBag.examstarttime",
+                                            size: "lg",
+                                            timeUp: timeisUp
+                                        });
+
+                                        function timeisUp() {
+                                            //alert("Now your global exam started");
+                                            $('.' +@item.Exam_ID +'').removeClass("disabled");
+                                            // var url = "/Student/test/"+$('.'+@item.Exam_ID+'').attr("value");;
+                                            $("." +@item.Exam_ID +"").attr('href', "/Student/test/" + $('.' +@item.Exam_ID +'').attr("value"));
+                                        }
+                                    });
+                                </script>
+                                            }
+                                        </h3>
+                                    </a>
+
+                                    </div>
+                                </div>
+
+                        </div>
+                    </div>
+                    i++;
+                }
+                @*<div class="dashboard-stats countdown-timer student-s-test">
+                    <div class="left">
+
+                        <h4>Time Remaining</h4>
+                        <span class="given_date" id="@item.Exam_ID"></span>
+                        <div class="s-test"><a href="#" class="btn btn-success @item.Exam_ID disabled" id="startexam" value="@item.Exam_ID" time="@item.Time">@item.Exam_Name</a></div>
+                    </div>
+                </div>*@
+
+                
+
+            </form>
+        }
+        else
+        {
+            <h4>Buy package to appear Global exam.</h4>
+        }
+    </div>
+}
+else
+{
+               <div class="panel-body">
+                    <div class="left">
+                        
+						<div class="no-content-notification">No test scheduled for this week.</div>
+                    </div>
+                </div>
+            }
+        </div>
+        <!-- /panel -->
+        @*Test appear panel*@
+        <div class="panel panel-ntspl coundown-timer">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Recent Test Result
+                </h3>
+            </div>
+            <div class="panel-body recenttest-cont">
+                @if (ViewBag.test != null)
+                {
+                    int i = 0; int j = 0;
+                    foreach (var item in ViewBag.test)
+                    {
+                         if(i % 4 == 0)
+    {
+        j = 1;               
+        @*<div class='table-cont bd-clr-1'>*@
+
+           }
+
+         
+
+           if (i % 4 == 1)
+           {
+               j = 2;
+           }
+            @*<div class='table-cont bd-clr-2'>*@
+
+               
+                if(i % 4 == 2)
+                {
+                    j = 3;
+                }          
+                    @*<div class='table-cont bd-clr-3'>*@
+
+
+                if (i % 4 == 3)
+                {
+                    j = 4;
+                }
+                        @*<div class="sheduletest-box">
+                            <div class="dashboard-stats countdown-timer student-s-test padding-left0">
+                                <div class="">
+                                    <div class="row all-test">
+                                        <div class="col-md-12">
+                                            <div class="borderbottom">
+                                                    <div class="row">
+                                                    <div class="col-md-6">    
+                                                        <h2>@item.Exam_Name</h2>
+                                                    </div>
+                                                    <div class="col-md-6">    
+                                                        <a href="/Student/Testresult/@item.Result_ID" class="btn btn-icon-block btn-icon-blockleft btn-primary pull-right" id="startexam">
+                                                            <i class="ion ion-checkmark bg-deepblue"></i>  
+                                                            <span>See Result</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+                    
+                      <div class="bd-clr-@j pnl-learn">
+                    <div class="panel panel-ntspl inner-panel ">
+
+                        <div class="panel-heading">
+                            <a href="/Student/Testresult/@item.Result_ID" class="plain-link">
+                                <h3 class="panel-title">
+                                    @*<a @Html.ActionLink(" ", "ChapterDetails", new { @id = @item.Chapter_ID, @class = "plain-link" })>*@
+                                    <div class="clearfix">@item.Exam_Name</div>
+                                    @*<span class="chapter-sec">@ViewBag.video Amazing Videos</span>
+                                    <span class="chapter-sec">@ViewBag.pdf Study Material</span>*@
+
+                                </h3>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+ i++;
+                    }
+                   
+                }
+                else
+                {
+   
+                   <div class="no-content-notification">You have not appeared any test yet.</div>
+               
+
+
+          }
+                
+            </div>
+        </div>
+
+
+    </div>
+    <!-- col-md-6 -->
+</div>
+
+
+
+
+@section scripts
+{
+    <script src="~/Student_assets/assets/js/chartist.min.js"></script>
+    <script src="~/Student_assets/assets/js/sparkline.js"></script>
+    <script src="~/Student_assets/assets/js/CustomChart.js"></script>
+    <script src="~/js/jquery.countdownTimer.js"></script>
+    <script>
+        $("div.page_header").hide();
+        if (!$('#student-packager').length)         // if package purchased to check small_pie_chart
+        {
+            $.gritter.add({
+                title: 'Happy Learning!',
+                // (string | mandatory) the text inside the notification
+                text: 'You have not subscribed any package yet. Subscribe package to enjoy FUN + EDUCATION. You can appear tests for the chapters exist in subscribed packages.',
+                sticky: true,
+                //class_name: "warning"
+            });
+        }
+       
+        //chart for ticket
+        var data = {
+            series: [@ViewBag.open, @ViewBag.Closed,@ViewBag.Reject]
+        }
+
+        var sum = function (a, b) { return a + b };
+
+        new Chartist.Pie('#small_pie_chart', data, {
+            labelInterpolationFnc: function (value) {
+                return Math.round(value / data.series.reduce(sum) * 100) + '%';
+            }
+        });
+
+        
+    </script>
+}

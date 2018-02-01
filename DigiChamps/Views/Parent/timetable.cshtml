@@ -1,0 +1,134 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsBatchModel
+@{
+    ViewBag.Title = "Parent Time Table";
+    Layout = "~/Views/Shared/_ParentLayout.cshtml";
+}
+@section header
+{
+    <i class="fa fa-clock-o page_header_icon"></i>
+    <span class="main-text">Time Table</span>
+}
+
+
+<div class="page-content-wrap">
+    @using (Html.BeginForm("timetable", "Parent", FormMethod.Post, new { @class = "form-horizontal", @id = "validation-form" }))
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <!-- START NEW RECORD -->
+                <div class="panel panel-default">
+                    <div class="panel-body input-box">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <h5>From Date <span class="asterisk">*</span></h5>
+                                <div class="input-group">
+                                    <input type="date" class="form-control datepicker" name="f_Date" autocomplete="off" data-rule-required="true" data-msg-required="Please select From date" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>To Date <span class="asterisk">*</span></h5>
+                                <div class="input-group">
+                                    <input type="date" class="form-control datepicker" name="t_Date" autocomplete="off" data-rule-required="true" data-msg-required="Please select To date" />
+                                </div>
+                            </div>
+                            <div class="col-md-2 vtop">
+                                <div class="pull-left">
+                                    <button id="btnSearch" type="submit" value="search" name="submit" class="btn btn-primary btn-icon-primary btn-icon-block btn-icon-blockleft btn-buttom  voffset2 dropdown-toggle"><i class="fa fa-search"></i> Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-ntspl">
+                <!--form-heading-->
+                <div class="panel-heading">
+                    <h3 class="panel-title">TimeTable Details</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box">
+                                <div class="box-content">
+                                    <div class="table-responsive voffset3">
+                                        @if (ViewBag.TimeTable_Details_parent != null)
+                                    {
+                                        int rowNo = 0;
+                                        //if (ViewBag.TimeTable_Details_parent.count > 0)
+                                        //{
+                                    <table class="table table-advance" id="table1">
+
+                                        <thead>
+                                            <tr>
+                                                <th>Sl No.</th>
+                                                <th hidden="hidden">Id</th>
+                                                <th>Batch Name</th>
+                                                <th>From Time</th>
+                                                <th>To Time</th>
+                                                <th>Days</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in ViewBag.TimeTable_Details_parent)
+                                                {
+                                            <tr>
+                                                <td>@(rowNo += 1)</td>
+                                                <td hidden="hidden">@item.Batch_Id</td>
+                                                <td>@item.Batch_Name</td>
+                                                <td>
+
+                                                    @{
+                                                    DateTime dtf = Convert.ToDateTime(item.Batch_From_Time);
+                                                    }
+                                                    @dtf.ToShortTimeString()
+
+                                                </td>
+
+                                                <td>
+                                                    @{
+                                                    DateTime dt = Convert.ToDateTime(item.Batch_To_Time);
+                                                    }
+                                                    @dt.ToShortTimeString()
+                                                </td>
+
+                                                <td>@item.Batch_Days</td>
+                                            </tr>
+                                                }
+                                        </tbody>
+                                    </table>
+                                    @*}
+                                        else {
+                                            <h4> No Time Table has been Assigned Yet.</h4>
+                                        }*@
+                                    }
+                                    else
+                                    {
+                                    <h4> No Time Table has been Assigned Yet.</h4>
+                                    }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+

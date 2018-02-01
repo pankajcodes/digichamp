@@ -1,0 +1,154 @@
+﻿@{
+    ViewBag.Title = "CreateOrEditClass";
+}
+
+<h2>CreateOrEditClass</h2>
+@model DigiChamps.Models.SchoolModel.CreateClass
+
+@{
+    ViewBag.Title = "School Admin Profile";
+    Layout = "~/Views/Shared/_SchoolLayout.cshtml";
+}
+<script src="../Student_assets/crop/scripts/jquery.min.js"></script>
+
+
+<form class="form-horizontal" id="validation-form">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-title">
+                    <h3><i class="fa fa-file"></i> Create Class</h3>
+
+                </div>
+                <div class="box-content">
+
+                    <input type="hidden" id="hdnsectionName" value="@Model.SectionName">
+                    <input type="hidden" id="hdnClassId" value="@Model.Id">
+                    <div class="form-group">
+                        <label for="textfield5" class="col-sm-3  control-label">Create Class<span class="asterisk">*</span></label>
+                        <div class="col-sm-9  controls">
+                            @Html.DropDownListFor(m => m.ClassName, Model.Class, new { @class = "form", @Id = "ddlClassName" })
+                            @*<input type="text" name="FirstName" id="FirstName" value="@Model.ClassName" class="form-control" data-rule-required="true" data-msg-required="Please enter user name" />*@
+                            <span id="errorClass" class="error"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="textfield5" class="col-sm-3  control-label">Add Section<span class="asterisk">*</span></label>
+                        <div class="col-sm-9  controls">
+                            <div style="height:200px;overflow:scroll;width:200px;" id="chkSection">
+                                @foreach (var item in Model.Section)
+                                {
+                                    <input type="checkbox" id="@item.Text" name="chxBxGroupName" value="@item.Text" />
+                                    <label for="@item.Text">@item.Value</label>
+                                    <br /><br />
+                                }
+                            </div>
+                            @*@Html.ListBoxFor(m => m.SectionName, Model.Section, new { @class = "listbox" })*@
+                            <span id="errorSection" class="error"></span>
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                    @*Crop image in modal*@
+
+
+                    <div class="form-group last box-tooll">
+                        <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                            <a href="@Url.Action("Registration", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                            <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span> Submit</span></button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<script>
+    $('#validation-form').submit(function (e) {
+
+
+        //console.log($(this).serialize());
+        var selected = [];
+        $('#chkSection input:checked').each(function () {
+            selected.push($(this).attr('value'));
+        });
+        var join = selected.join()
+        var status = true;
+        var classId = $("#ddlClassName").val();
+        var sectionId = $("#ddlSectionName").val();
+        //   var teacherId = $("#ddlTeacherName").val();
+        if (classId == null || classId == "") {
+            $("#errorClass").html("Please enter required field.");
+            status = false;
+        }
+        if (join == null || join == "") {
+            $("#errorSection").html("Please enter section.");
+            status = false;
+        }
+        //if (teacherId == null || teacherId == "") {
+        //    $("#errorTeacher").html("Please enter required field.");
+        //    status = false;
+        //}
+
+        if (status) {
+            //showloader();
+            var fileData = new FormData();
+
+            fileData.append('ClassName', $("#ddlClassName").val());
+            fileData.append('SectionName', selected.join());
+            fileData.append('EmailAddress', $("#EmailAddress").val());
+            fileData.append('Id', $("#hdnClassId").val());
+            // fileData.append('LastName', $("#ConfirmPassword").val())
+
+            // fileData.append('SchoolName', $("#txSchoolName").val())
+
+            var a = fileData;
+
+
+            //var status = Validation();
+
+            $(".loader-ajax-container").css("display", "block");
+            $.ajax({
+                type: 'POST',
+                url: "/School/AddClass",
+                contentType: false, // Not to set any content header
+                processData: false,
+                data: fileData,
+                success: function (data) {
+                    console.log(data.Data);
+                    if (data.Data)
+                        window.location.reload();
+                }
+            });
+        }
+        else {
+            return false;
+        }
+    });
+
+    $(document).ready(function () {
+        
+        var sectionName = $("#hdnsectionName").val();
+        var section = sectionName.split(",")
+        if (section != null) {
+            for (var item = 0; item < section.length; item++) {
+                //document.getElementById(item[0]).checked = true;
+                $("#" + section[item]).attr("checked", true);
+            }
+        }
+
+
+
+    });
+</script>

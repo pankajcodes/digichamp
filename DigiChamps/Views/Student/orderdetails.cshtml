@@ -1,0 +1,128 @@
+﻿@model IEnumerable<DigiChamps.Models.SP_DC_Order_Details_Result>
+@{
+    ViewBag.Title = "Order Details | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+<!-- Page Header -->
+@section header{
+    <i class="menu-icons order-detail-icon doubt-icon page_header_icon"></i>
+    <span class="main-text">Order Details</span>
+}
+<!-- /pageheader -->
+
+<div class="row">
+    <div class="col-md-12 questions-cont">
+        <!-- Question Panel Starts -->
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Your Order Details
+                </h3>
+            </div>
+            <div class="panel-body">
+                @if (Model.Count() != 0)
+                {
+
+                    int i = 0; int j = 0;
+                    foreach (var item in Model)
+                        
+                    {
+                        
+                         if(i % 4 == 0)
+    {
+        j = 1;               
+        @*<div class='table-cont bd-clr-1'>*@
+
+           }
+
+         
+
+           if (i % 4 == 1)
+           {
+               j = 2;
+           }
+            @*<div class='table-cont bd-clr-2'>*@
+
+               
+                if(i % 4 == 2)
+                {
+                    j = 3;
+                }          
+                    @*<div class='table-cont bd-clr-3'>*@
+
+
+                if (i % 4 == 3)
+                {
+                    j = 4;
+                }
+                         <div class="bd-clr-@j">
+                        <div class="panel panel-ntspl inner-panel">
+                            <div class="panel-heading header-style">
+                                <h3 class="panel-title">
+                                    Order Number #@item.Order_No
+                                    <span class="panel-options resbtn">
+                                        <a href="/student/viewpackagedetail/@item.Package_ID">
+                                            <button type="button" class="btn btn-blue btn-xs">View Package Details</button>
+                                        </a>
+                                    </span>
+                                </h3>
+                            </div>
+                            <div class="panel-body test-panel-body pannel-padding">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" class="td-width-one">Package Name</th>
+                                            <td class="right-td td-width-two">@item.Package_Name</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="td-width-one">Subjects</th>
+                                            <td class="right-td td-width-two">@item.subjects</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Chapters</td>
+                                            <td class="right-td">@item.Chapters</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Expire Date</td>
+                                            <td class="right-td">@item.Expiry_Date</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Price</td>
+                                            <td class="price-color small-bolt">INR @string.Format("{0:0.00}", item.Total) </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                </div>
+                        i++;
+                    }
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-md-12 questions-cont text-center">
+                            <div class="ful-hi-wi">
+                               <div class="no-content-notification">There are no ordered items.</div>
+                                @*<img src="images/cartimg.png">*@
+                                @{
+                    DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                    var list = DbContext.tbl_DC_Sample_Image.Where(x => x.Image_Type == "Order" && x.Is_Active == true && x.Is_Deleted == false).FirstOrDefault();
+                    ViewBag.list = list.Image_URL;
+                            <img src="~/Images/SampleImage/@ViewBag.list" style="width:100%" class="img-responsive voffset3" />
+                                }
+
+                                <div class="foraddbtn">
+                                    <a href="/student/packagepreview"><button type="button" class="btn btn-primary addbtn">BUY NOW</button></a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+        <!-- Question Panel Ends -->
+    </div>
+</div>

@@ -1,0 +1,847 @@
+﻿@model DigiChamps.Models.View_All_Student_Details
+@{
+    ViewBag.Title = "Profile | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+@section header{
+    <i class="fa fa-user page_header_icon"></i>
+    <span class="main-text">Profile</span>
+    <!-- /pageheader -->
+}
+
+<link href="~/css/croppie.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 nopad-right">
+        <!-- Question Panel Starts -->
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Your Personal Details
+                </h3>
+            </div>
+            <div class="panel-body">
+                <form class="form" id="validation-form">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 nopad-right">
+                            <div class="form-group">
+                                <label class="control-label">Mobile Number</label>
+                                @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Alternate Number</label>
+                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Enter Your Alternate No.", data_rule_minlength = "10", data_rule_maxlength = "15" })
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 nopad-right">
+                            <div class="form-group">
+                                <label class="control-label">Email Id</label>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter Your Email", type = "email", data_rule_maxlength = "150" })
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Name</label>
+                                @Html.TextBoxFor(m => m.Customer_Name, new { @class = "form-control", placeholder = "Enter Your Name", data_rule_required = "true", data_msg_required = "Please enter name", data_rule_minlength = "2" })
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 nopad-right">
+                            <div class="form-group">
+                                <label class="control-label">Select Board</label>
+                                @(Html.DropDownListFor(x => x.Board_Id, ViewBag.board as SelectList, "Please Select Board", new { @class = "form-control", @id = "ddlboard", data_rule_required = "true", data_msg_required = "Please select board" }))
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Select Class</label>
+                                @(Html.DropDownListFor(x => x.Class_ID, new List<SelectListItem>(), "Please Select Class", new { @class = "form-control ", @id = "ddlclass", data_rule_required = "true", data_msg_required = "Please select class" }))
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 nopad-right">
+                            <div class="form-group">
+                                <label class="control-label">School Name</label>
+                                @Html.TextBoxFor(m => m.Organisation_Name, new { @class = "form-control", placeholder = "Enter Your School Name", data_rule_required = "true", data_msg_required = "Please enter school name", data_rule_minlength = "2" })
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Pincode</label>
+                                @Html.TextBoxFor(m => m.Pincode, new { @class = "form-control", placeholder = "Enter Your Pincode.", data_rule_maxlength = "15" })
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Address</label>
+                                @Html.TextAreaFor(m => m.Address, new { @class = "form-control text-area", cols = "30", rows = "10" })
+                            </div>
+
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-right">
+                            <div class="btn-div">
+                                <button class="btn btn-green btn-icon-green btn-icon-block btn-icon-blockleft">
+                                    <i class="ion ion-checkmark"></i>
+                                    <span>Save Changes</span>
+                                </button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <!-----Guardian Credential-->
+        @{
+            DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+            Boolean isAuthorized = DbContext.tbl_DC_Order.Any(x => x.Regd_ID == Model.Regd_ID);}
+        @if (isAuthorized)
+        {
+            <div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Guardian Profile Details
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form" id="validation-form3">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 nopad-right">
+                                <div class="form-group">
+                                    <label class="control-label"> Parent/Guardian </label>
+                                    @*<input type="text" placeholder="Enter Your Parent Name" class="form-control" autocomplete="off" name="parent_nm" id="parent_nm" data-rule-required="true" data-msg-required="Please enter parent name" />*@
+                                    @Html.TextBoxFor(m => m.Praent_Name, new { @class = "form-control", placeholder = "Enter Your Parent Name", data_rule_required = "true", data_msg_required = "Please enter parent name" })
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label"> Email </label>
+                                    @*<input type="email" placeholder="Enter Your Email" class="form-control" autocomplete="off" name="email" id="email" data-rule-required="true" data-rule-minlength="6" data-msg-required="Please enter email" />*@
+                                    @Html.TextBoxFor(m => m.Parent_Mail, new { @class = "form-control", placeholder = "Enter Your Email", data_rule_required = "true", data_msg_required = "Please enter email" })
+
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 nopad-right">
+                                <div class="form-group">
+                                    <label class="control-label"> Relation </label>
+                                    @*<input type="text" placeholder="Enter Your Relation" onkeypress="return isNumberKey(event);" autocomplete="off" class="form-control" name="Relation" id="Relation" data-rule-required="true" data-msg-required="Please enter relation" />*@
+                                    @Html.TextBoxFor(m => m.P_Relation, new { @class = "form-control", placeholder = "Enter Your Relation", data_rule_required = "true", data_msg_required = "Please enter relation", onkeypress = "return isNumberKey(event);" })
+
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label"> Mobile </label>
+                                    @*<input type="text" placeholder="Enter Your Mobile Number" class="form-control" name="mobile" autocomplete="off" id="mobile" data-rule-required="true" maxlength="10" data-msg-required="Please enter mobile number" />*@
+                                    @if (Model.Parent_Mobile != null)
+                                    {
+                                        @Html.TextBoxFor(m => m.Parent_Mobile, new { @class = "form-control", disabled = "disabled", placeholder = "Enter Your Mobile Number", data_rule_required = "true", data_msg_required = "Please enter mobile number" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => m.Parent_Mobile, new { @class = "form-control", placeholder = "Enter Your Mobile Number", data_rule_required = "true", data_msg_required = "Please enter mobile number", maxlength = 10 })
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="btn-div">
+                                <button class="btn btn-green btn-icon-green btn-icon-block btn-icon-blockleft">
+                                    <i class="ion ion-checkmark"></i>
+                                    <span>Submit</span>
+                                </button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+        <!-- Question Panel Ends -->
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Set Password
+                </h3>
+            </div>
+            <div class="panel-body">
+                <form class="form" id="validation-form1">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 nopad-right">
+                            <div class="form-group">
+                                <label class="control-label">Current Password</label>
+                                <input type="password" placeholder="Enter Your Current Password" class="form-control" name="Old_Password" id="Old_Password" data-rule-required="true" data-rule-minlength="6" data-msg-required="Please enter current password" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 nopad-right">
+                            <div class="form-group">
+                                <label class="control-label">New Password</label>
+                                <input type="password" placeholder="Enter Your New Password" class="form-control" name="New_Password" id="New_Password" data-rule-required="true" data-rule-minlength="6" data-msg-required="Please enter new password" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Confirm Password</label>
+                                <input type="password" placeholder="Re-Enter Your New Password" class="form-control" name="Conf_Password" id="Conf_Password" data-rule-required="true" data-rule-minlength="6" data-rule-equalto="#New_Password" data-msg-required="Please enter confirm password" />
+                            </div>
+                        </div>
+                        <div class="btn-div">
+                            <button class="btn btn-green btn-icon-green btn-icon-block btn-icon-blockleft">
+                                <i class="ion ion-checkmark"></i>
+                                <span>Submit</span>
+                            </button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Alert -->
+        <div class="docs-alert">
+            <span class="warning message"></span>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 profile-right">
+        <div class="piluku-panel no-pad panel">
+            <div class="ios-profile-widget">
+                <div class="header_cover">
+                    <div class="more">
+                        <a href="javascript:void(0)" class="uploadFileImg">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </a>
+                    </div>
+
+                    @if (ViewBag.image == null)
+                    {
+                        <img id="my-cropped-image" src="~/Student_assets/assets/images/avatar/one.png" alt="" />
+                    }
+                    else
+                    {
+                        <img id="my-cropped-image" src="~/Images/Profile/@ViewBag.image" alt="" />
+                    }
+                    <h3>@Html.DisplayFor(x => x.Customer_Name)</h3>
+                </div>
+                <!-- cover -->
+                <span class="error-messages"></span>
+
+            </div>
+
+            <!-- ios-profile -->
+        </div>
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title resfont-18">
+                    Profile Completion Status
+                </h3>
+            </div>
+            <div class="ios-profile-widget">
+                <ul class="list-group">
+                    <li class="list-group-item border-top">
+                        <span class="badge badge-green"><i class="fa fa-check"></i></span>
+                        Password Set
+                    </li>
+                    <li class="list-group-item">
+                        @if (@ViewBag.classid != null)
+                        {
+                            <span class="badge badge-green"><i class="fa fa-check"></i></span>
+
+
+                        }
+                        else
+                        {
+                            <span id="redcolor1" class="badge bage-color"><i class="fa fa-times"></i></span>
+                            @*<span id="redcolor2" hidden class="badge badge-green"><i class="fa fa-check"></i></span>*@
+
+                        }
+                        Syllabus Set
+                    </li>
+                    <li class="list-group-item">
+                        @if (@ViewBag.school != null)
+                        {
+                            <span class="badge badge-green"><i class="fa fa-check"></i></span>
+                        }
+                        else
+                        {<span class="badge bage-color"><i class="fa fa-times"></i></span>}
+                        School Details
+                    </li>
+                    <li class="list-group-item broder-bottom">
+                        @if (@ViewBag.personal != null && @ViewBag.email != null && @ViewBag.alterno != null)
+                        {
+                            <span class="badge badge-green"><i class="fa fa-check"></i></span>
+                        }
+                        else
+                        {<span class="badge bage-color"><i class="fa fa-times"></i></span>}
+                        General Details
+                    </li>
+                </ul>
+                <div class="progress progress-bar-mini p-progress-bar">
+                    <div id="progress1" class="progress-bar progress-bar-success right progress-bar-striped active" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.progress%">
+                        @ViewBag.progress % Completed
+                    </div>
+                    <div id="progress2" hidden class="progress-bar progress-bar-success right progress-bar-striped active" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title resfont-18">
+                    Security Question
+                </h3>
+            </div>
+            <div class="panel-body">
+                <form class="form" id="validation-form4">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 profile-right">
+                            <div class="form-group">
+                                <label class="control-label">Question</label>
+                                @(Html.DropDownListFor(x => x.Secure_Id, ViewBag.secure as SelectList, "Please Select Secure Question", new { @class = "form-control ", @id = "ddlseure", data_rule_required = "true", data_msg_required = "Please select secure question" }))
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Answer</label>
+                                @Html.TextBoxFor(m => m.Answer, new { @class = "form-control", placeholder = "Enter Answer", data_rule_required = "true", data_rule_minlength="2", data_msg_required="Please enter answer", maxlength = 98 })
+                            </div>
+
+                            <div class="btn-div">
+                                <button class="btn btn-green btn-icon-green btn-icon-block btn-icon-blockleft">
+                                    <i class="ion ion-checkmark"></i>
+                                    <span>Submit</span>
+                                </button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+            <!-- Profile Image Modal -->
+           
+            </div>
+@*<div class="modal fade" id="defaultmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                <h4 class="modal-title" id="myModalLabel">Profile Image</h4>
+            </div>
+            <div class="modal-body">
+                <div class="demo-wrap upload-demo">
+                    <div class="ask_dbt">
+                        <div class="grid">
+                            <div hidden>
+                                <div class="actions">
+                                    <input type="file" id="upload" style="visibility: hidden;" value="Choose a file" accept="image/*" />
+                                    @*<button class="upload-result" type="button">Result</button>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="upload-msg">
+                                    Upload a file to start cropping
+                                </div>
+                                <div class="upload-demo-wrap" style="width:100%;height:100%">
+                                    <div id="upload-demo">
+                                        <img src="" id="img">
+                                    </div>
+                                    <input type="hidden" name="imgX1" id="imgX1" />
+                                    <input type="hidden" name="imgY1" id="imgY1" />
+                                    <input type="hidden" name="imgWidth" id="imgWidth" />
+                                    <input type="hidden" name="imgHeight" id="imgHeight" />
+                                    <input type="hidden" name="imgCropped" id="imgCropped" />
+                                    <canvas id="canvas" class="upload-image-div" hidden></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <input type="button" id="btnCrop" class="btn btn-primary upload-result" value="Crop" style="display: none" />
+                <input type="button" id="btnCrop1" class="btn btn-danger" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</div>*@
+            <div class="welcome-wrapper one" id="welcomestu">
+                <div class="welcome-popup">
+                    <span class="close-popup c-hover"><i class="ti-close"></i></span>
+                    <div class="welcome-text">Welcome</div>
+                    <div class="clearfix"></div>
+                    <div class="welcome-container">
+                        <img class="welcome-profile-image" src="" />
+                        <div class="clearfix"></div>
+                        <h3>@ViewBag.newuser</h3>
+                        <p>Welcome To The World Of <span>Funducation</span></p>
+                    
+                        <a class="popup-player" ><button class="take-a-tour">Take A Tour</button></a>
+                    </div>
+                </div>
+            </div>
+         
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Take a Tour</h4>
+            </div>
+            <div class="modal-body">
+
+               
+              <video controls="controls" width="568px">
+                    <source src="~/Videos/web_demo_video-v001.mp4" type="video/mp4" />
+                </video>
+                @*<div id="" class="vidoscls" style="height: 350px; position: relative;"></div>*@
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default close">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="defaultmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                <h4 class="modal-title" id="myModalLabel">Profile Image <label id="msg"></label></h4>
+            </div>
+            <div class="modal-body">
+                <div class="demo-wrap upload-demo">
+                    <div class="ask_dbt">
+                        <div class="grid">
+                            <div hidden>
+                                <div class="actions">
+                                    <input type="file" id="upload" style="visibility: hidden;" value="Choose a file" accept="image/*" />
+                                    @*<button class="upload-result" type="button">Result</button>*@
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="upload-msg">
+                                    Upload a file to start cropping
+                                </div>
+                                <div class="upload-demo-wrap" style="width:100%;height:100%">
+                                    <div id="upload-demo">
+                                        <img src="" id="img">
+                                    </div>
+                                    <input type="hidden" name="imgX1" id="imgX1" />
+                                    <input type="hidden" name="imgY1" id="imgY1" />
+                                    <input type="hidden" name="imgWidth" id="imgWidth" />
+                                    <input type="hidden" name="imgHeight" id="imgHeight" />
+                                    <input type="hidden" name="imgCropped" id="imgCropped" />
+                                    <canvas id="canvas" class="upload-image-div" hidden></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                @* <input type="text" name="id" value="10">
+                    <p>Scroll mouse to zoom-in and zoom-out.</p>*@
+                <input type="button" id="btnCrop" class="btn btn-primary upload-result" value="Crop" style="display: none" />
+                @*<input type="button" id="btnCrop1" class="btn btn-danger" value="Cancel" />*@
+            </div>
+        </div>
+    </div>
+</div>
+            @section scripts
+{
+                <!--crop image-->
+                @*<script src="~/js/croppie.min.js"></script>
+                <script src="~/js/exif.js"></script>*@
+
+    <script src="~/Student_assets/crop/scripts/jquery.imgareaselect.js"></script>
+    <script src="~/Student_assets/crop/scripts/jquery.imgareaselect.min.js"></script>
+    <script src="~/Student_assets/crop/scripts/jquery.imgareaselect.pack.js"></script>
+    <link href="~/Student_assets/crop/imgareaselect-deprecated.css" rel="stylesheet" />
+    <link href="~/Student_assets/crop/imgareaselect-default.css" rel="stylesheet" />
+    <link href="~/Student_assets/crop/imgareaselect-animated.css" rel="stylesheet" />
+
+
+                <script>
+
+                    $('#defaultmodal').modal({ backdrop: 'static', keyboard: false, show: false })
+
+                    // welcome modal close start
+                    $(".close-popup").on('click', function () {
+                        $(".welcome-wrapper").fadeOut();
+                        $(".welcome-back-wrapper").fadeOut();
+                    });
+                    // welcome modal close end
+
+                    //Dropdownlist Casceding
+                    $('#ddlboard').change(function () {
+                        if ($('#ddlclass').closest('.form-group').find('.ajax-loader').length) {
+                            // do nothing
+                        } else {
+                            $('#ddlclass').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+                        }
+                        $('#ddlclass').closest('.form-group').addClass('display-loader');
+                        $.ajax({
+                            type: "POST",
+                            url: "/Admin/GetAllClass",
+                            data: { brdId: $('#ddlboard').val() },
+                            datatype: "json",
+                            traditional: true,
+                            success: function (data) {
+                                var sta = sta + '<option value="">Please Select Class</option>';
+                                for (var i = 0; i < data.length; i++) {
+                                    sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                                }
+                                $('#ddlclass').html(sta);
+                                setTimeout(function () {
+                                    $('#ddlclass').closest('.form-group').removeClass('display-loader');
+                                }, 800);
+                            }
+                        });
+                    });
+
+                    @if (@ViewBag.classid != null)
+        {<text>
+                    var classid = '@ViewBag.classid';
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/GetAllClass",
+                        data: { brdId: $("#ddlboard").val() },
+                        datatype: "json",
+                        traditional: true,
+                        success: function (data) {
+                            var fst = fst + '<option value="">Please Select Class</option>';
+                            for (var i = 0; i < data.length; i++) {
+                                if (data[i].Value == classid) {
+                                    fst = fst + '<option selected="selected"  value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                                } else {
+                                    fst = fst + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                                }
+                            }
+                            $('#ddlclass').html(fst);
+
+                        }
+                    });
+                    </text>}
+                    @if (ViewBag.newuser != null)
+        {
+              <text>$('#welcomestu').css('display', 'block');
+                    var desimg = $(".avatar-holder img").attr("src");
+                    $(".welcome-profile-image").attr("src", desimg);
+                </text>
+        }
+
+                    function isNumberKey(evt) {
+                        var charCode = (evt.which) ? evt.which : event.keyCode
+                        if (charCode > 31 && (charCode < 48 || charCode > 57))
+                            return true;
+
+                        return false;
+                    }
+
+                    $('#validation-form1').submit(function (e) {
+                        e.preventDefault();
+                        if ($(this).valid()) {
+                            $(".loader-ajax-container").css("display", "block");
+                            $.ajax({
+                                type: 'POST',
+                                url: "/Student/ChangePassword",
+                                data: $(this).serialize(),
+                                success: function (data) {
+                                    if (data == "0") {
+                                        $.noty.closeAll();
+                                        generate('top', 'error', "Current password is wrong.");
+                                    }
+                                    else if (data == "-1") {
+                                        $.noty.closeAll();
+                                        generate('top', 'warning', "The new password & confirm password are not matching.");
+                                    }
+                                    else if (data == "1") {
+                                        $.noty.closeAll();
+                                        generate('top', 'success', "Password changed successfully.");
+                                        $("#validation-form1").get(0).reset();
+                                    }
+                                    else if (data == "-2") {
+                                        location.href = "/student/logout";
+                                    }
+                                    else {
+                                        $.noty.closeAll();
+                                        generate('top', 'error', data);
+                                    }
+                                    setTimeout(function () {
+                                        $(".loader-ajax-container").css("display", "none");
+                                    }, 2000);
+
+                                }
+                            });
+                        }
+                    });
+
+                    $('#validation-form').submit(function (e) {
+                        $.noty.closeAll();
+                        e.preventDefault();
+                        if ($(this).valid()) {
+                            $(".loader-ajax-container").css("display", "block");
+                            $.ajax({
+                                type: 'POST',
+                                url: "/Student/EditProfile",
+                                data: $(this).serialize(),
+                                success: function (data) {
+                                    if (data == "0") {
+                                        generate('top', 'warning', "Please enter required details.");
+
+                                    }
+                                    else if (data == "-1") {
+                                        generate('top', 'error', "Invalid user details.");
+                                    }
+                                    else if (data.message == "1") {
+                                        $('#progress1').hide();
+                                        $('#progress2').css("width", data.Percentage + '%')
+                                        $('#progress2').html(data.Percentage + '% Completed')
+                                        $('#progress2').show();
+                                        generate('top', 'success', "Information saved successfully.");
+                                    }
+                                    else if (data == "-2") {
+                                        location.href = "/student/logout";
+                                    }
+                                    else {
+                                        generate('top', 'error', data);
+                                    }
+                                    setTimeout(function () {
+                                        $(".loader-ajax-container").css("display", "none");
+                                        $.noty.closeAll();
+                                    }, 2000);
+                                }
+                            });
+                        }
+                    });
+
+                    $('#validation-form3').submit(function (e) {
+                        e.preventDefault();
+                        if ($(this).valid()) {
+                            $(".loader-ajax-container").css("display", "block");
+                            $.ajax({
+                                type: 'POST',
+                                url: "/Student/GuardianCredential",
+                                data: $(this).serialize(),
+                                success: function (data) {
+                                    if (data == "1") {
+                                        $.noty.closeAll();
+                                        $("input[id='Parent_Mobile']").attr("disabled", 'disabled');
+                                        generate('top', 'success', "Information saved successfully.");
+                                    }
+                                    else {
+                                        $.noty.closeAll();
+                                        generate('top', 'error', data);
+                                    }
+                                    setTimeout(function () {
+                                        $(".loader-ajax-container").css("display", "none");
+                                    }, 2000);
+                                }
+                            });
+                        }
+                    });
+
+                    $('#validation-form4').submit(function (e) {
+                        e.preventDefault();
+                        if ($(this).valid()) {
+                            $(".loader-ajax-container").css("display", "block");
+                            $.ajax({
+                                type: 'POST',
+                                url: "/Student/editsecurityqstn",
+                                data: $(this).serialize(),
+                                success: function (data) {
+                                    if (data == "-1") {
+                                        $.noty.closeAll();
+                                        generate('top', 'warning', "Enter all details properly.");
+                                    }
+                                    else if (data == "0") {
+                                        $.noty.closeAll();
+                                        generate('top', 'error', "Something went wrong.");
+                                    }
+                                    else if (data == "1") {
+                                        $.noty.closeAll();
+                                        generate('top', 'success', "Security details saved successfully.");
+                                    }
+                                    else {
+                                        $.noty.closeAll();
+                                        generate('top', 'error', data);
+                                    }
+                                    setTimeout(function () {
+                                        $(".loader-ajax-container").css("display", "none");
+                                    }, 2000);
+                                }
+                            });
+                        }
+                    });
+
+                    //************************************** JavaScript for cropping of image *****************************************
+                    $(".uploadFileImg").on('click', function () {
+                        $("#upload").trigger('click');
+                        setTimeout(function () {
+                            $('#defaultmodal').modal('show');
+                        }, 1700);
+                    });
+                    $('#upload').on('change', function () {
+                        readFile(this);
+                    });
+                    function output(node) {
+                        var existing = $('#result .croppie-result');
+                        if (existing.length > 0) {
+                            existing[0].parentNode.replaceChild(node, existing[0]);
+                        }
+                        else {
+                            $('#result')[0].appendChild(node);
+                        }
+                    }
+
+                    var $uploadCrop;
+					 var widths;
+                    var heights;
+                    var actualh = 800;
+                    var actualw = 600;
+                    function readFile(input) {
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+
+                            reader.onload = function (e) {
+                                $('.upload-demo').addClass('ready');
+                               
+                                $('#img').attr('src', e.target.result);
+								
+								getImageSize1($('#img'), function (width, height) {
+                                                widths = width;
+                                                heights = height;
+                                                if (actualh < heights && actualw < widths) {
+                                                    alert("Image should not exceed the size of 800 x 600");
+                                                    $('#btnCrop').hide();
+                                                    location.reload();
+                                                }
+                                            });
+                                            function getImageSize1(img, callback) {
+                                                var $img = $(img);
+
+                                                var wait = setInterval(function () {
+                                                    var w = $img[0].naturalWidth,
+                                                        h = $img[0].naturalHeight;
+                                                    if (w && h) {
+                                                        clearInterval(wait);
+                                                        callback.apply(this, [w, h]);
+                                                    }
+                                                }, 0);
+                                            } 
+                            }
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                        else {
+                            alert("Please select image less than 2 Mb.");
+                        }
+                    }
+
+                    $("#img").imgAreaSelect({
+                        aspectRatio: '2:2', handles: true, onSelectEnd: function (img, selection) {
+                            $('#imgX1').val(selection.x1);
+                            $('#imgY1').val(selection.y1);
+                            $('#imgWidth').val(selection.width);
+                            $('#imgHeight').val(selection.height);
+                            $('#btnCrop').show();
+                        }
+                    });
+
+                
+
+                    $('.close').click(function () {
+
+                        $('#defaultmodal').modal('hide');
+                        $('.imgareaselect-outer').hide();
+                        $('.imgareaselect-border4').hide();
+                        $('.imgareaselect-border3').hide();
+                        $('.imgareaselect-border2').hide();
+                        $('.imgareaselect-border1').hide();
+                        $('.imgareaselect-handle').hide();
+                        $("#img").attr('src', "");
+
+                    }
+            );
+
+
+                    $('#btnCrop').click(function () {
+                        debugger;
+                        $("#canvas").show();
+                        var x1 = $('#imgX1').val();
+                        var y1 = $('#imgY1').val();
+                        var width = $('#imgWidth').val();
+                        var height = $('#imgHeight').val();
+                        var canvas = $("#canvas")[0];
+                        var context = canvas.getContext('2d');
+                        var img = new Image();
+                        img.onload = function () {
+                            canvas.height = height;
+                            canvas.width = width;
+                            var s = img;
+                            context.drawImage(img, x1, y1, width, height, 0, 0, width, height);
+                            $('#imgCropped').val(canvas.toDataURL());
+                          
+                            $.ajax({
+                                type: "POST",
+                                url: "/Student/Edit_ProfileImg",
+                                data: { img: $('#imgCropped').val() },
+                                datatype: "json",
+                                traditional: true,
+                                success: function (data) {
+                                    if (data[0] == "0") {
+                                        $.noty.closeAll();
+                                        generate('top', 'error', "Invalid Image Selection, Please Try Again.");
+                                    }
+                                    else if (data[0] == "-1") {
+                                        location.href = "/Student/Logout";
+                                    }
+                                    else if (data[0] == "1") {
+                                        $.noty.closeAll();
+                                        generate('top', 'success', "Profile Image Updated Successfully.");
+                                        var src = "/Images/Profile/" + data[1];
+                                        $("#my-cropped-image").attr("src", src);
+                                        location.reload();
+                                    }
+                                }
+                            });
+                            // $('[id*=btnUpload]').show();
+                        };
+                        img.src = $('#img').attr("src");
+                        //$('#hidans_img').val($('#imgCropped').val());
+                        $('#defaultmodal').modal('hide');
+                        $('.imgareaselect-outer').hide();
+                        $('.imgareaselect-border4').hide();
+                        $('.imgareaselect-border3').hide();
+                        $('.imgareaselect-border2').hide();
+                        $('.imgareaselect-border1').hide();
+                        $('.imgareaselect-handle').hide();
+                        
+
+                    
+                    });
+                    $('.popup-player').click(function () {
+                     
+                        $('#myModal').modal('show');
+
+                    });
+                 
+                    $('.close').click(function () {
+                        location.reload();
+                        $('#myModal').modal('hide');
+                        $('#welcomestu').hide();
+                    });
+
+                </script>
+                <script src="~/js/DC_Imagecrop.js"></script>
+
+
+            }
+

@@ -1,0 +1,97 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito:400,300);
+/************theme fonts********************/
+/***********************theme colors*****************************/
+/*****************theme parametres*******************/
+/*sidebar-parametres*/
+/****************************************************
+                        Pricing Header
+****************************************************/
+.pricing-header {
+  background-color: #3b414a;
+  color: #ffffff;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 400;
+  font-size: 23px;
+  letter-spacing: 0.50px;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 26px;
+  position: relative;
+}
+.pricing-header .pricing-recommended {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.pricing-header .pricing-recommended i {
+  background-color: #6fd64b;
+  padding: 10px;
+  color: #ffffff;
+  font-size: 16px;
+}
+.pricing-header.pricing-header-two {
+  background-color: #515760;
+  border: 1px solid #60656e;
+  width: 100%;
+}
+.pricing-header.pricing-header-two .pricing-price-two {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 0.50px;
+  text-transform: uppercase;
+  text-align: center;
+  padding-top: 10px;
+}
+.pricing-header.pricing-header-two .pricing-price-two span {
+  font-size: 12px;
+}
+/****************************************************
+                        Pricing Price
+****************************************************/
+.pricing-price {
+  background-color: #5d9bfb;
+  color: #ffffff;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 0.50px;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 15px;
+}
+.pricing-price span {
+  font-size: 12px;
+}
+/****************************************************
+                        Pricing Features
+****************************************************/
+.pricing-features {
+  background-color: #ffffff;
+  border: 1px solid #e9ecf2;
+  padding: 26px;
+}
+.pricing-features li {
+  color: #9398a0;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  letter-spacing: 0.20px;
+  line-height: 26px;
+  text-transform: capitalize;
+  text-align: center;
+}
+.pricing-features li span {
+  color: #707780;
+  font-weight: 400;
+}
+.pricing-features li:last-child {
+  padding-top: 26px;
+}
+.pricing-features.features-two {
+  width: 100%;
+}
+.pricing > .col-md-2 {
+  padding-left: 0px;
+  padding-right: 0px;
+}

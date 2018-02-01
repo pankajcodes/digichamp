@@ -1,0 +1,130 @@
+﻿@{
+    ViewBag.Title = "Result View";
+    Layout = "~/Views/Shared/_ParentLayout.cshtml";
+}
+
+@section header
+{
+    <i class="fa fa-clock-o page_header_icon"></i>
+    <span class="main-text">View student result </span>
+}
+
+
+<div class="panel panel-ntspl">
+    <div class="panel-heading">
+        <h3 class="panel-title">Exams Details</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-content">
+
+                        <div class="table-responsive voffset3">
+                            <table class="table table-advance table-hover table-bordered" id="table1">
+
+                                <thead>
+                                    <tr>
+                                        <th>Sl No.</th>
+                                        <th hidden>res_id</th>
+                                        <th>Exam Name</th>
+                                        <th>Result</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.exams != null)
+                                    {
+                                        if ((ViewBag.exams).Count > 0)
+                                        {
+                                            int rowNo = 0;
+                                            foreach (var item in ViewBag.exams)
+                                            {
+                                                <tr>
+                                                    <td>@(rowNo += 1)</td>
+                                                    <td hidden="hidden">@item.Result_ID</td>
+                                                    <td>@item.Exam_Name</td>
+                                                    <td>
+                                                        <button class="btn btn-success btn-round resultbtn btn-icon-green btn-icon-block voffset3 btn-icon-blockleft"><i class="ion-android-checkmark-circle"></i> Result</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        else { 
+                                        <tr>
+                                            <td colspan="4">There is no exams in this exam type.</td>
+                                        </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $('#table1 tbody').on('click', '.resultbtn', function () {
+            var $this = $(this).closest("tr");
+            var data = $(this).closest('tr').find('td:eq(1)').text();
+            $(".accordion").hide();
+            $.ajax({
+                type: 'POST',
+                url: "/Parent/answerdetail",
+                data: { id: data },
+                success: function (data) {
+                    debugger
+                    if (data != null) {
+                        var inner = "";
+                        for(var i = 0; i< data.length ; i++)
+                        {
+                            inner += '<tr><td>' + data[i].Question_Nos + '</td><td>' + data[i].Question_Attempted + '</td><td>' + data[i].Total_Correct_Ans + '</td><td>' + data[i].percenatge + '</td>' +
+                                '<td><a class="btn btn-wrning btn-round exdetails" href="/Parent/examtopicdetails/'+ data[i].Result_ID + '">Details</a></td></tr>';
+                        }
+                        var tr = '<tr class="accordion">' +
+                                    '<td colspan="4">'+
+                                        '<table class="table table-striped result1">' +
+                                            '<thead>'+
+                                                '<tr>' +
+                                                    '<th>No of Questions</th>'+
+                                                    '<th>Question Attempts</th>'+
+                                                    '<th>Total Correct Answer</th>'+
+                                                    '<th>Percentage</th>' +
+                                                    '<th>Show Details</th>' +
+                                                '</tr></thead>'+
+                                                '<tbody>'+
+                                                    inner
+                                                '</tbody>' +
+                                            '</tbody>'+
+                                        '</table>'+
+                                    '</td>'+
+                                 '</tr>';
+                       $this.after(tr);
+                    }
+                    else {
+                        $.noty.closeAll();
+                        generate('top', 'error', "Something went wrong");
+                    }
+                }
+            });
+        });
+
+        //$('.result1 tbody').on('click', '.exdetails', function () {
+        //    var data = $this.find('td:eq(0)').text();
+        //    $.ajax({
+        //        type: 'POST',
+        //        url: "/Parent/examtopicdetails",
+        //        data: { id: data },
+        //        success: function (data) {
+                   
+        //        }
+        //    });
+        //});
+    </script>
+    }

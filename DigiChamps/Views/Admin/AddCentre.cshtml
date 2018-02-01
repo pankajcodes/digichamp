@@ -1,0 +1,160 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsCentreModel
+@{
+    ViewBag.Title = "Add Centre";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("AddCentre", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    <div class="page-content-wrap">
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active"> @ViewBag.pagetitle @ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3>
+                            <i class="fa fa-file"></i>
+                            @if (ViewBag.pagetitle != null)
+                            {
+                                @ViewBag.pagetitle
+                            }
+                            Centre
+                        </h3>
+                    </div>
+
+
+                    <div class="box-content">
+                        <div class="form-group voffset3">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Centre Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <input type="hidden" id="centre_id" name="centre_id" value="@ViewBag.Centre_Id" />
+                                <input type="text" placeholder="Enter Centre Name" id="Centre_Name" name="Centre_Name" class="form-control" data-rule-required="true" data-msg-required="Please enter centre name" value="@ViewBag.Centre_Name" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Centre Code<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <input type="text" placeholder="Enter Centre Code" value="@ViewBag.Centre_Code" id="Centre_Code" name="Centre_Code" class="form-control" data-msg-required="Please enter centre code" data-rule-required="true" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">State<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                            @if (ViewBag.State_name==null)
+                            {
+                            @(Html.DropDownListFor(x => x.State_Id, ViewBag.State_Id as SelectList, "Select state", new { @class = "form-control ", data_rule_required = "true", data_msg_required = "Please select state", @id = "ddlstate" }))@Html.ValidationMessageFor(x => x.State_Id)
+                            }
+                            else
+                            {
+                            @(Html.DropDownListFor(x => x.State_Id, ViewBag.State_name as SelectList, new { @class = "form-control ", data_rule_required = "true", data_msg_required = "Please select state", @id = "ddlstate",@Readonly="true" }))@Html.ValidationMessageFor(x => x.State_Id)
+                            }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">City<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                            @if (ViewBag.city_Name!=null)
+                            {
+                            @(Html.DropDownListFor(x => x.City_Id, ViewBag.city_Name as SelectList, new { @class = "form-control ", data_rule_required = "true", data_msg_required = "Please select city", @id = "ddlcity", @Readonly = "true" }))@Html.ValidationMessageFor(x => x.City_Id)
+                            }
+                            else
+                            {
+                            @(Html.DropDownListFor(x => x.City_Id, new List<SelectListItem>(), "Select City", new { @class = "form-control ", data_rule_required = "true", data_msg_required = "Please select city", @id = "ddlcity" }))@Html.ValidationMessageFor(x => x.City_Id)
+                            }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Address Line.1<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.address1!=null)
+                            {
+                            <textarea placeholder="Enter Address" rows="3" id="" name="Address1" class="form-control" data-msg-required="Please enter address" data-rule-required="true">@ViewBag.address1</textarea>
+                            }
+                            else
+                            {
+                            <textarea placeholder="Enter Address" rows="3" id="" name="Address1" class="form-control" data-msg-required="Please enter address" data-rule-required="true"></textarea>
+                            }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Address Line.2</label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.address2!=null)
+                            {
+                            <textarea placeholder="Enter Address" rows="3" id="" name="Address2" class="form-control">@ViewBag.address2</textarea>
+                            }
+                            else
+                            {
+                            <textarea placeholder="Enter Address" rows="3" id="" name="Address2" class="form-control"></textarea>
+                            }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Pin Code<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.pin!=null)
+                            {
+                            <input type="text" placeholder="Enter Pin Code" value="@ViewBag.pin" id="" name="pincode" class="form-control" data-msg-required="Please enter pincode" data-rule-required="true" />
+                            }
+                            else
+                            {
+                            <input type="text" placeholder="Enter Pin Code" value="" id="" name="pincode" class="form-control" data-msg-required="Please enter pincode" data-rule-required="true" />
+                            }
+                            </div>
+                        </div>
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("CentreMaster", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i><span>Back</span>  </a>
+                                <button id="btnSearch" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span>Submit</span> </button>
+                                
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+}
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#ddlstate').change(function () {
+                //debugger;
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/GetCity",
+                    data: { StaId: $('#ddlstate').val() },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        var sta = "<select id='ddlcity'>";
+                        sta = sta + '<option value="">--Please Select city--</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                        }
+                        sta = sta + '</select>';
+                        $('#ddlcity').html(sta);
+                    }
+                });
+            });
+         });
+
+    </script>
+}
+ 

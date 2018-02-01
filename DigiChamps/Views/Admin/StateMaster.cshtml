@@ -1,0 +1,288 @@
+﻿@model DigiChamps.Models.DigiChampsModel.state_entry
+@{
+    ViewBag.Title = "StateMaster";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using(Html.BeginForm("StateMaster","Admin",FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", @id = "validation-form" }))
+{ 
+    
+    <div class="alert alert-warning" role="alert" hidden id="errormsg">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <div style="font-size: 13px; color:#ffaf36;" id="dlt_msg"></div>
+    </div>
+    <div class="alert alert-success" role="alert" hidden id="successmsg">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <div style="font-size: 13px; color: #5ead34;" id="alt_msg"></div>
+    </div>
+    @*@Html.AntiForgeryToken()*@
+    <div class="page-content-wrap">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> State Master</h3>
+                       
+                    </div>
+                    <div class="box-content">
+
+                       
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">State Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+
+                                <input type="text" name="sname" id="sname"  class="form-control" data-rule-required="true" data-msg-required="Please enter State" >
+                               
+                            </div>
+                        </div>
+
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("AdminDashboard", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                                <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i> <span>Submit</span></button>
+                               
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}  
+
+@using (Html.BeginForm("CityMaster", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", @id = "validation-form1" }))
+   
+{
+     <div class="page-content-wrap">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> City Master</h3>
+                       
+                    </div>
+                    <div class="box-content">
+
+                        <div class="form-group voffset3">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">State Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+
+                               
+                               @Html.DropDownListFor(x => x.stateid, ViewBag.state as SelectList, "--Select--", new { @id="ddlstate",@class="form-control",@required="required", data_msg_required = "Please select state"})
+                                
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">City Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+
+                                <input type="text" name="cname" id="cname"  class="form-control" data-rule-required="true" data-msg-required="Please enter State" >
+
+                            </div>
+                        </div>
+
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("AdminDashboard", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                                <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i> <span>Submit</span></button>
+                               
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-title">
+                            <h3><i class="fa fa-file-text"></i>Details</h3>
+                            <div class="box-tool box-tooll">
+                                <a href="/Admin/StateMaster" class="btn btn-primary"><i class="fa fa-plus"></i><span> Add New</span></a>
+                            </div>
+                        </div>
+                        <div class="box-content">
+                            <div class="tabbable">
+                                <ul id="myTab1" class="nav nav-tabs">
+                                    <li class="active"><a href="#home1" data-toggle="tab"><i class="fa fa-user"></i> State</a></li>
+                                    <li ><a href="#profile1" data-toggle="tab"><i class="fa fa-user"></i> City</a></li>
+                                </ul>
+
+                                <div id="myTabContent1" class="tab-content">
+                                    <div class="tab-pane fade active in" id="home1">
+                                        <div class="table-responsive voffset3">
+                                            <table class="table table-advance" id="table1">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sl No.</th>
+                                                        <th hidden="hidden">Id</th>
+                                                        <th>State</th>
+
+                                                        <th style="width: 20%;">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{   int i = 1;
+                                                    }
+                                                    @if (ViewBag.statelist != null)
+                                                    {
+                                                        foreach (var b in ViewBag.statelist)
+                                                        {
+                                                            <tr tabindex="1">
+                                                                <td>@Html.Raw(i++)</td>
+                                                                <td hidden="hidden">@b.State_Id</td>
+                                                                <td>@b.State_Name</td>
+                                                              
+
+                                                                <td>
+                                                                    @*@Html.ActionLink(" ", "EditRegistration", "Admin", new { id = @b.Teach_ID, type = "T" }, new { @class = "btn btn-sm show-tooltip btn-primary fa fa-edit", @title = "Edit" })*@
+
+                                                                    @Html.ActionLink(" ", "deletestate", "Admin", new { id = @b.State_Id}, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the State?')", @data_original_title = "Delete", @title = "Delete" })
+
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="profile1">
+                                        <div class="table-responsive voffset3">
+                                            <table class="table table-advance" id="table2">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sl No.</th>
+                                                        <th hidden="hidden">Id</th>
+                                                        <th>City</th>
+                                                        <th>State</th>
+                                                        <th style="width: 20%;">Action</th>
+                                                        
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{   int j = 1;
+                                                    }
+                                                    @if (ViewBag.city != null)
+                                                    {
+                                                        foreach (var b in ViewBag.city)
+                                                        {
+                                                            <tr tabindex="1">
+                                                                <td>@Html.Raw(j++)</td>
+                                                                <td hidden="hidden">@b.id</td>
+                                                                <td>@b.c_name</td>
+                                                                <td>@b.statename</td>
+                                                                <td>
+                                                                    @*@Html.ActionLink(" ", "EditRegistration", "Admin", new { id = @b.Teach_ID, type = "T" }, new { @class = "btn btn-sm show-tooltip btn-primary fa fa-edit", @title = "Edit" })*@
+
+                                                                    @Html.ActionLink(" ", "deletecity", "Admin", new { id = @b.id }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the City?')", @data_original_title = "Delete", @title = "Delete" })
+
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+}
+@section scripts
+{
+    <script>
+            if (jQuery().validate) {
+                var removeSuccessClass = function (e) {
+                    $(e).closest('.form-group').removeClass('has-success');
+                }
+                var $validator = $('#validation-form1').validate({
+                    errorElement: 'span', //default input error message container
+                    errorClass: 'help-block', // default input error message class
+                    errorPlacement: function (error, element) {
+                        if (element.parent('.input-group').length) {
+                            error.insertAfter(element.parent());
+                        } else if (element.next('.chosen-container').length) {
+                            error.insertAfter(element.next('.chosen-container'));
+                        } else {
+                            error.insertAfter(element);
+                        }
+                    },
+                    focusInvalid: false, // do not focus the last invalid input
+                    ignore: "",
+
+                    invalidHandler: function (event, validator) { //display error alert on form submit              
+                        var el = $(validator.errorList[0].element);
+                        if ($(el).hasClass('chosen')) {
+                            $(el).trigger('chosen:activate');
+                        } else {
+                            $(el).focus();
+                        }
+                    },
+
+                    highlight: function (element) { // hightlight error inputs
+                        $(element).closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+                    },
+
+                    unhighlight: function (element) { // revert the change dony by hightlight
+                        $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
+                        setTimeout(function () { removeSuccessClass(element); }, 2000);
+                    },
+
+                    success: function (label) {
+                        label.closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                    }
+                });
+            }
+
+        $('#table2').dataTable({
+            "aLengthMenu": [
+                [10, 15, 25, 50, 100, -1],
+                [10, 15, 25, 50, 100, "All"]
+            ],
+            "iDisplayLength": 10,
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ Records per page",
+                "sInfo": "_START_ - _END_ of _TOTAL_",
+                "sInfoEmpty": "0 - 0 of 0",
+                "oPaginate": {
+                    "sPrevious": "Prev",
+                    "sNext": "Next"
+                }
+            },
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }]
+        });
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+

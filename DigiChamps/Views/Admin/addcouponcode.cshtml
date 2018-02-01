@@ -1,0 +1,297 @@
+﻿@model  DigiChamps.Models.tbl_DC_CouponCode
+@{
+    ViewBag.Title = "Add Coupon Code";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("addcouponcode", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", id = "validation-form" }))
+{
+    @Html.AntiForgeryToken();
+    <div class="page-content-wrap">
+
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active"> @ViewBag.pagetitle @ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row ">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> Add New</h3>
+                       @Html.HiddenFor(x=>x.Code_Id)
+                    </div>
+                    <div class="box-content">
+                        <div class="form-group voffset4 ">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Coupon Type<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @(Html.DropDownListFor(x => x.Coupon_Type, ViewBag.coupon as SelectList, "Please Select Coupon Type", new { @class = "form-control", @id = "ddlcoupon", data_rule_required = "true", data_msg_required = "Please select coupon type" }))                                  
+                              
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Coupon Code<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                               
+                                @Html.TextBoxFor(m => m.Coupon_Code, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter coupon code" })
+                                @Html.ValidationMessageFor(x => x.Coupon_Code)
+                                
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Discount Percent <span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.percent != null)
+                                {
+                                    @Html.TextBoxFor(m => m.Discount_Percent, new { @class = "form-control", @id = "percent", data_rule_required = "true", data_msg_required = "Please enter discount percent" })
+
+                                }
+                                else  if (ViewBag.price != null)
+                                {@Html.TextBoxFor(m => m.Discount_Percent, new { @class = "form-control", @id = "percent", data_rule_required = "true", data_msg_required = "Please enter discount percent", @type = "number", @min = "1", disabled = "disable" })
+                                    @Html.ValidationMessageFor(x => x.Discount_Percent)
+								}
+								else
+                                {
+                                    @Html.TextBoxFor(m => m.Discount_Percent, new { @class = "form-control", @id = "percent", data_rule_required = "true", data_msg_required = "Please enter discount percent", @type = "number", @min = "1" })
+                                    @Html.ValidationMessageFor(x => x.Discount_Percent)
+                                }
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Discount Price <span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if(ViewBag.price!=null)
+                                {
+                                @Html.TextBoxFor(m => m.Discount_Price, new { @class = "form-control", @id = "price", data_rule_required = "true", data_msg_required = "Please enter discount price" })
+                             
+                                }
+                                else if (ViewBag.percent != null)
+                                { @Html.TextBoxFor(m => m.Discount_Price, new { @class = "form-control", @id = "price", data_rule_required = "true", data_msg_required = "Please enter discount price", @type = "number", @min = "1",disabled = "disable" })
+                                    @Html.ValidationMessageFor(x => x.Discount_Price)
+								}else
+                                {
+                                    @Html.TextBoxFor(m => m.Discount_Price, new { @class = "form-control", @id = "price", data_rule_required = "true", data_msg_required = "Please enter discount price", @type = "number", @min = "1"  })
+                                    @Html.ValidationMessageFor(x => x.Discount_Price)
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Valid From<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.TextBoxFor(m => m.Valid_From, new {@id="txtfromdate", @class = "form-control datepicker", data_rule_required = "true", data_msg_required = "Please enter valid from", value = "@DateTime.Now.ToShortDateString()" })
+                                @Html.ValidationMessageFor(x => x.Valid_From)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Valid To<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.TextBoxFor(m => m.Valid_To, new { @id = "txttodate", @class = "form-control datepicker", data_rule_required = "true", data_msg_required = "Please enter valid to", value = "@DateTime.Now.ToShortDateString()" })
+                                @Html.ValidationMessageFor(x => x.Valid_To)
+                            </div>
+                        </div>
+                        
+                        @*<div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Port <span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.TextBoxFor(m => m.Valid_From, new { @class = "form-control chosenn", data_rule_required = "true", data_rule_digits = "true", maxlength = "4", data_required_message = "Please enter port no." })
+                            </div>
+                        </div>*@
+                        <div class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">Is_Default</label>
+                            <div class="col-sm-9 col-lg-10 controls">
+                                <label  >
+                                  @Html.CheckBox("Is_Default", new { @class = "checkbox1",@id="chkdefault" })
+                                    @*@if (TempData["chkor"] != null)
+                                    {
+                                        if (TempData["chkor"].ToString() == "True")
+                                        {
+                                            @Html.CheckBox("Is_Default", true, new { @class = "checkbox1" })
+                                        }
+                                        else
+                                        {
+                                            @Html.CheckBox("Is_Default", false, new { @class = "checkbox1" })
+                                        }
+
+                                    }
+                                    @if (TempData["chkor"] == null)
+                                    {
+                                        @Html.CheckBox("Is_Default", false, new { @class = "checkbox1" })
+                                    }*@
+                                </label>
+                            </div>
+                        </div>
+                        <div id="percent_div">
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Price Range From<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(m => m.Pricerange_From, new { @class = "form-control", @type = "number", @min = "1" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Price Range To <span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+
+                                    @Html.TextBoxFor(m => m.Pricertange_To, new { @class = "form-control", @type = "number", @min = "1" })
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("viewcouponcode", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i> <span> Back</span>  </a>
+                                <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span>Submit</span> </button>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}
+
+@section scripts
+{
+    <script>
+       
+        $(function () {
+            //var regExp = /[a-z]/i;
+            //$('#txtfromdate').on('keydown keyup', function (e) {
+            //    debugger;
+            //    var value = String.fromCharCode(e.which) || e.key;
+
+            //    // No letters
+            //    if (regExp.test(value)) {
+            //        e.preventDefault();
+            //        return false;
+            //    }
+            //});
+            //$('#txttodate').on('keydown keyup', function (e) {
+            //    debugger;
+            //    var value = String.fromCharCode(e.which) || e.key;
+
+            //    // No letters
+            //    if (regExp.test(value)) {
+            //        e.preventDefault();
+            //        return false;
+            //    }
+            //});
+            $('#txttodate').keypress(function (e) {
+                e.preventDefault();
+            });
+            $('#txtfromdate').keypress(function (e) {
+                e.preventDefault();
+            });
+        });
+      
+        $('body').on("change", '.checkbox1', function () {
+            debugger;
+            if ($(this).is(":checked")) {
+           
+                $('#percent_div').hide();
+              
+            }
+            else {
+                $('#percent_div').show();
+             
+            }
+        });
+       
+        if ($('.checkbox1').is(":checked")) {
+            $('#percent_div').hide();
+
+        }
+        else {
+            $('#percent_div').show();
+           
+        }
+       
+       
+        //$(document).ready(function () {
+   
+        var content1 = $('#percent').val();
+
+        $('#percent').change(function () {
+            var content2 = $('#percent').val();
+            debugger;
+            if ($('#percent').val() != content1) {
+                ////content1 = $('#price').val();
+                //$('#percent').prop('disabled', true);
+                //$('#percent').removeAttr('required')
+
+                if ($('#percent').val() == content2) {
+                    if ($('#percent').val() != "") {
+                        //content1 = $('#price').val();
+                        $('#price').prop('disabled', true);
+                        $('#price').removeAttr('required')
+                    } else {
+                        //content1 = $('#price').val();
+                        $('#price').prop('disabled', false);
+                        $('#price').removeAttr('required')
+                    }
+                }
+                else {
+                    $("#price").prop('disabled', false);
+                    $("#price").attr("required", "true");
+                }
+            }
+
+            else {
+                $("#price").prop('disabled', false);
+                $("#price").attr("required", "true");
+            }
+
+
+        });
+     
+        var content1 = $('#price').val();
+        
+        $('#price').change(function () {
+            var content2 = $('#price').val();
+            debugger;
+            if ($('#price').val() != content1) {
+                ////content1 = $('#price').val();
+                //$('#percent').prop('disabled', true);
+                //$('#percent').removeAttr('required')
+
+                if ($('#price').val() == content2) {
+                    if ($('#price').val() != "") {
+                        //content1 = $('#price').val();
+                        $('#percent').prop('disabled', true);
+                        $('#percent').removeAttr('required')
+                    } else {
+                        //content1 = $('#price').val();
+                        $('#percent').prop('disabled', false);
+                        $('#percent').removeAttr('required')
+                    }
+                }
+                else {
+                    $("#percent").prop('disabled', false);
+                    $("#percent").attr("required", "true");
+                }
+            }
+          
+            else {
+                $("#percent").prop('disabled', false);
+                $("#percent").attr("required", "true");
+            }
+
+           
+        });
+        //});
+    </script>
+    }

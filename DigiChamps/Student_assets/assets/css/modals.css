@@ -1,0 +1,58 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito:400,300);
+/************theme fonts********************/
+/***********************theme colors*****************************/
+/*****************theme parametres*******************/
+/*sidebar-parametres*/
+/****************************************************
+                        modals
+****************************************************/
+.modal {
+  z-index: 9999999999999999999999999999999999999999999;
+  border-radius: 0px;
+}
+.modal .modal-content {
+  border-radius: 0px;
+}
+.modal .modal-content .modal-header {
+  border-radius: 0px;
+  color: #707780;
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  line-height: 24px;
+  border-bottom: 1px solid #e9ecf2;
+}
+.modal .modal-content .modal-header span {
+  font-size: 16px;
+}
+.modal .modal-content .modal-body {
+  color: #9398a0;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.25px;
+  line-height: 24px;
+}
+.modal .modal-content .modal-body .long-modal {
+  width: 100%;
+}
+.modal .modal-content .modal-body .long-modal img {
+  width: 100%;
+  height: auto;
+}
+.modal .modal-content .modal-body .responsive-bottom {
+  padding-bottom: 10px;
+}
+.modal .modal-content .modal-footer {
+  border-top: 1px solid #e9ecf2;
+}
+@media (min-width: 768px) {
+  .modal-full-pad {
+    padding: 20px;
+  }
+  .modal-full-pad .modal-full {
+    width: 100%;
+    margin: 30px auto;
+  }
+}

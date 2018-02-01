@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "View Tickect Detail";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+@using (Html.BeginForm("ViewTickectDetail", "Teacher", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="page-content-wrap">
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> View Ticket Details</h3>
+                    </div>
+@if (ViewBag.viewticket != null)
+{
+    foreach (var v in ViewBag.viewticket)
+    {
+                    <div class="box-content">
+                        <div class="row">
+                        <div class="form-group">                          
+                            
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Student Name<span class="asterisk">*</span></label>
+                                
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                    <input type="text" id="Student_Name" value="@v.Customer_Name" name="Student_Name" class="form-control" readonly />
+                               
+                            </div>
+                                <div class="col-sm-2">
+                                    <div class="ajax-loader">
+                                        <div class="loader"></div>
+                                    </div>
+                                </div>
+                            
+                       </div>
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Board Name <span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+
+                                <input type="text" id="Class_Name" name="Class_Name" value="@v.Board_Name" class="form-control" readonly />
+                            </div>
+                        </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Class Name <span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                  
+<input type="text" id="Class_Name" name="Class_Name" value="@v.Class_Name" class="form-control" readonly />
+                                </div>
+                            </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Subject Name <span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+
+                                <input type="text" id="Class_Name" name="Class_Name" value="@v.Subject" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Chapter Name <span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+
+                                <input type="text" id="Class_Name" name="Class_Name" value="@v.Chapter" class="form-control" readonly />
+                            </div>
+                        </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Question Detail<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <textarea class="form-control" rows="8" id="Question_Detail" name="Question_Detail" readonly>@v.Question</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Question Image<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @if (v.Question_Image != null)
+                                        {
+                                            <img id="Qst_Img" height="150" src="~/Images/Qusetionimages/@v.Question_Image" width="350" />
+                                        }
+                                    else
+                                    {
+                                        <img id="Qst_Img" width="350" height="150" src="~/Images/-text.png" />
+                                    }
+                                </div>
+                            </div>
+
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2 btn-last">
+                                @if (@v.Status=="R")
+                                {
+                          <a class="btn btn-large btn-primary btn-danger" title="Reject Details" href="/Teacher/RejectTicket/@v.Ticket_ID"><i class="fa fa-times red-i"></i> <span>View Rejection Details</span></a> 
+                                }
+                                else if (@v.Status=="C")
+                                {
+                          <a class="btn btn-large btn-primary btn-success" title="Give Answer" href="/Teacher/AnswerTicket/@v.Ticket_ID"><i class="fa fa-check green-i"></i> <span>View Thread</span></a>
+                                }
+                                else if (@v.Status=="O")
+                                {
+                                    if (ViewBag.chkans==null)
+                                    {
+                                      <a class="btn btn-large btn-primary btn-success" title="Give Answer" href="/Teacher/AnswerTicket/@v.Ticket_ID"><i class="fa fa-check green-i"></i> <span>Answer Question</span></a>
+                                    }
+                                    else
+                                    {
+                                        
+                                      <a class="btn btn-large btn-primary btn-success" title="Give Answer" href="/Teacher/AnswerTicket/@v.Ticket_ID"><i class="fa fa-check green-i"></i> <span>View Thread</span></a>
+                                    }
+                              
+                                <a class="btn btn-large btn-primary btn-danger" title="Reject" href="/Teacher/RejectTicket/@v.Ticket_ID"><i class="fa fa-times red-i"></i> <span>Reject</span></a>
+                                }
+                                else if (@v.Status == "D")
+                                {
+                                <a class="btn btn-large btn-primary btn-success" title="Give Answer" href="/Teacher/AnswerTicket/@v.Ticket_ID"><i class="fa fa-check green-i"></i> <span>Answer Question</span></a>
+                                <a class="btn btn-large btn-primary btn-danger" title="Reject" href="/Teacher/RejectTicket/@v.Ticket_ID"><i class="fa fa-times red-i"></i> <span>Reject</span></a>
+                                }
+                                <a class="btn btn-large btn-primary" title="Back To List" href="@Url.Action("Viewticekts", "Teacher")"><i class="fa fa-undo"></i> <span>Back</span></a>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+    }
+}
+                </div>
+  
+            </div>
+    
+
+        </div>
+
+    </div>
+}
+
+
+

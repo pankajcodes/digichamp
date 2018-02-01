@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Cancel Payment | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<div class="panel panel-ntspl">
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                <blockquote>
+                    <p class="sucess-message">Order Cancelation!</p>
+                    <p>Your order has been cancelled, And you can find the cancelled order in your cart to buy again.</p>
+                </blockquote>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+               
+            </div>
+            <div></div>
+        </div>
+    </div>
+</div>
+
+<div class="">
+        <div class="row">
+            <div class="col-md-12 questions-cont">
+                <!-- Question Panel Starts -->
+                <div class="panel panel-ntspl">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Order Details
+                        </h3>
+                    </div>
+                    @if (ViewBag.cartitems != null)
+            {
+                foreach (var item in ViewBag.cartitems)
+                {
+                            <div class="panel-body">
+                                <div class="panel panel-ntspl inner-panel">
+                                    <div class="panel-heading header-style">
+                                        <h3 class="panel-title">
+                                            @item.Package_Name
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body test-panel-body pannel-padding">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                                @*<tr>
+                                                        <th scope="row" class="td-width-one">Subjects</th>
+                                                        <td class="right-td td-width-two">Science and Mathematics</td>
+                                                    </tr>*@
+                                                <tr>
+                                                    <th scope="row" class="td-width-one">Package Name</th>
+                                                    <td class="right-td td-width-two">@item.Package_Name</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Duration</td>
+                                                    <td class="right-td">@item.Subscripttion_Period Days</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Price</td>
+                                                    <td class="price-color small-bolt">Rs. @string.Format("{0:0.00}", item.Price)</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <!-- Question Panel Ends -->
+        </div>
+</div>

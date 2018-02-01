@@ -1,0 +1,140 @@
+﻿@model DigiChamps.Models.View_All_Student_Details
+@{
+    ViewBag.Title = "View Student";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content-wrap">
+    <div class="page-title">
+        <div>
+            <h1>
+                <i class="fa fa-file-o"></i> Student Details
+            </h1>
+        </div>
+    </div>
+    <div id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="~/Admin/AdminDashboard">Home</a>
+                <span class="divider"><i class="fa fa-angle-right"></i>Reports</span>
+                <span class="divider"><i class="fa fa-angle-right"></i></span>
+            </li>
+            @if (ViewBag.Breadcrumb != null)
+            {
+                <li class="active">@ViewBag.Breadcrumb</li>
+            }
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-title">
+                    <h3><i class="fa fa-file"></i> Details View</h3>
+                </div>
+                <div class="box-content">
+                    <div class="row">
+                        <div class="col-md-3 profile_img">
+                            @if (ViewBag.pfimage != null)
+                            {
+                                <img class="img-responsive img-thumbnail" src="~/images/Profile/@ViewBag.pfimage" alt="profile picture">@*//Student Image*@
+                            }
+                            else
+                            {
+                            <img class="img-responsive img-thumbnail" src="~/Images/Profile/four.png" alt="profile picture">@*//Student Image*@
+                            }
+                            
+                            <br><br>
+                        </div>
+                        <div id="myTabContent1" class="col-md-9 user-profile-info box-tooll">
+                            <table class="table" style=" background: #ffffff; font-family: Vani; border-collapse: initial !important;">
+                                <tr>
+                                    <td colspan="3" style="border-top:none;">
+                                        <table class="table">
+                                            <tr>
+                                                <td> Name </td>
+                                                <td> : </td>
+                                                <td> @Html.DisplayFor(x => x.Customer_Name) </td>
+                                            </tr>
+                                            <tr>
+                                                <td> Reg. No </td>
+                                                <td> : </td>
+                                                <td> @Html.DisplayFor(x => x.Regd_No) </td>
+                                            </tr>
+                                            <tr>
+                                                <td> Mobile No </td>
+                                                <td> : </td>
+                                                <td> @Html.DisplayFor(x => x.Mobile) </td>
+                                            </tr>
+                                            <tr>
+                                                <td> Email Id </td>
+                                                <td> : </td>
+                                                <td> <a href="mailto:#">@Html.DisplayFor(x => x.Email)</a> </td>
+                                            </tr>
+                                            <tr>
+                                                <td> Organisation_Name </td>
+                                                <td> : </td>
+                                                <td> @Html.DisplayFor(x => x.Organisation_Name) </td>
+                                            </tr>
+                                            <tr>
+                                                <td> Board </td>
+                                                <td> : </td>
+                                                <td> @Html.DisplayFor(x => x.Board_Name) </td>
+                                            </tr>
+                                            <tr>
+                                                <td> Class </td>
+                                                <td> : </td>
+                                                <td> @Html.DisplayFor(x => x.Class_Name) </td>
+                                            </tr>
+                                            <tr>
+                                                <td> Address </td>
+                                                <td> : </td>
+                                                <td> @Html.DisplayFor(x => x.Address) </td>
+                                            </tr>
+                                            <tr>
+                                                <td> Pincode </td>
+                                                <td> : </td>
+                                                <td> @Html.DisplayFor(x => x.Pincode) </td>
+                                            </tr>
+                                            <tr>
+                                                <td> Registered Date </td>
+                                                <td> : </td>
+                                                <td> @Html.DisplayFor(x => x.Inserted_Date) </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            @*<p><span>Name:</span> @Html.DisplayFor(x => x.Customer_Name)</p>
+            <p><span>Reg. No:</span> @Html.DisplayFor(x => x.Regd_No)</p>
+            <p><span>Mobile No:</span> @Html.DisplayFor(x => x.Mobile)</p>
+            <p><span>Email Id:</span> <a href="mailto:#">@Html.DisplayFor(x => x.Email)</a></p>
+            <p><span>Organisation_Name :</span> @Html.DisplayFor(x => x.Organisation_Name)</p>
+            <p><span>Board:</span> @Html.DisplayFor(x => x.Board_Name)</p>
+            <p><span>Class:</span> @Html.DisplayFor(x => x.Class_Name)</p>
+            <p><span>Address:</span> @Html.DisplayFor(x => x.Address)</p>
+            <p><span>Pincode:</span> @Html.DisplayFor(x => x.Pincode)</p>*@
+                            <a href="#" class="btn btn-primary btn-invoice-primary" onclick="return divPrint()">
+                                <i class="fa fa-print"></i>
+                                <span> Print</span>
+                            </a>
+                            <a href="@Url.Action("UserReport", "Admin")" class="btn btn-primary dropdown-toggle btn-invoice-primary"><i class="fa fa-reply"></i><span>Back</span></a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $('#myTab1 li:first').addClass('active');
+        function divPrint() {
+            window.print();
+        }
+    </script>
+}

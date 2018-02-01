@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Offer";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+<link href="~/css/croppie.css" rel="stylesheet" />
+
+@section header
+{
+    <i class="menu-icons package-icon page_header_icon"></i>
+    <span class="main-text">Offers</span>
+
+
+    <div class='row'>
+        <div class='col-md-6 col-lg-6 col-sm-6'>
+            <!-- Nav tabs -->
+            @*<ul class="tabs">
+                <li class="tab"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true" class="active">Ask Doubts</a></li>
+                <li class="tab"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">Doubt History</a></li>
+            </ul>*@
+            <!-- Tab panes -->
+        </div>
+    </div>
+
+
+
+}
+<div class="row">
+    <div class="tab-content piluku-tab-content">
+        <div role="tabpanel" class="tab-pane active" id="home">
+            <div class="col-lg-12">
+                <div class="panel panel-ntspl pannel-border">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Recent Offers
+                        </h3>
+                    </div>
+                    @if ((ViewBag.offer).Count > 0)
+                    {
+                        
+                    foreach (var v in ViewBag.offer)
+                                        {
+
+                        <div class="row">
+                            <div class="col-md-12 questions-cont text-center">
+                                <div class="ful-hi-wi">
+
+                                
+                            
+                                            <img src="~/Images/Banner/@v.Image_URL" class="img-responsive voffset3" />
+                <div class="foraddbtn">
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                                        }
+                    }
+                   
+                </div>
+            </div>
+        </div>
+</div>
+</div>

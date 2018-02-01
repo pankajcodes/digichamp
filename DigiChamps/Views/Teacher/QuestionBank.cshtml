@@ -1,0 +1,164 @@
+﻿
+@{
+    ViewBag.Title = "Question Bank";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+<div class="page-content-wrap">
+    <div class="page-title">
+        <div>
+            <h1>
+                <i class="fa fa-question"></i> Question Bank
+            </h1>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-title ">
+
+                    <h3><i class="fa fa-question"></i>Questions</h3>
+                    <div class="box-tool box-tooll">
+                        <a href="/Teacher/Add_New_Question" class="btn btn-large btn-primary"><i class="fa fa-plus"></i> <span>Add New</span></a>
+                    </div>
+                </div>
+                <div class="box-content">
+
+                    <div class="table-responsive voffset3">
+                        <table class="table table-advance" id="table1">
+                            <thead>
+                                <tr>
+                                    <th>Sl No.</th>
+                                    <th>Topic</th>
+                                    <th>Chapter</th>
+                                    <th>Power</th>
+                                    <th style ="width: 40%;">Question</th>
+                                    <th style="width: 20%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int i = 0;
+                                }
+                                @if (ViewBag.Question != null)
+                                {
+                                    foreach (var v in ViewBag.Question)
+                                    {
+                                        <tr>
+                                            <td>@(i += 1)</td>
+                                            @{
+                                        DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                                        int sid = Convert.ToInt32(v.Topic_ID);
+                                        var topic_snm = DbContext.tbl_DC_Topic.Where(x => x.Topic_ID == sid).Select(x => x.Topic_Name).FirstOrDefault();
+                                        string topic = Convert.ToString(topic_snm);
+                                            }
+                                            <td>@topic</td>
+                                            @{
+                                        int chid = Convert.ToInt32(v.Chapter_Id);
+                                        var chapterobj = DbContext.tbl_DC_Chapter.Where(x => x.Chapter_Id == chid).Select(x => x.Chapter).FirstOrDefault();
+                                        string chaptername = Convert.ToString(chapterobj);
+                                            }
+                                            <td>@chaptername</td>
+                                            @{
+                                        int pid = Convert.ToInt32(v.Power_ID);
+                                        var powerobj = DbContext.tbl_DC_Power_Question.Where(x => x.Power_Id == pid).Select(x => x.Power_Type).FirstOrDefault();
+                                        string powername = Convert.ToString(powerobj);
+                                            }
+                                            <td>@powername</td>
+                                            <td>
+                                                <span>@{string qst = Convert.ToString(v.Question);
+                                                            }</span>
+                                                @if(qst.Length>90)
+                                                {
+                                                    @qst.Substring(0,80) <text>...</text>
+                                                }
+                                                else
+                                                {
+                                                 @qst   
+                                                }
+                                           
+                                           </td>
+                                            <td>
+
+                                                @Html.ActionLink(" ", "Edit_Question", "Teacher", new { id = @v.Question_ID }, new { @class = "btn btn-sm btn-primary show-tooltip fa fa-edit", @title = "Edit" })
+
+
+                                                @Html.ActionLink(" ", "Delete_Question", "Teacher", new { id = @v.Question_ID }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the question?')", @data_original_title = "Delete", @title = "Delete" })
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="box-title voffset3">
+                    <h3><i class="fa fa-question"></i>Questions Per Subject</h3>
+                </div>
+                <div class="box-content">
+                    <div class="table-responsive voffset3">
+                        <table class="table table-advance" id="table2">
+                            <thead>
+                                <tr>
+                                    <th>Sl No.</th>
+                                    <th>Board</th>
+                                    <th>Class</th>
+                                    <th>Subject</th>
+                                    <th>No. of Question</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int j = 0;
+                                }
+                                @if (ViewBag.Count_Que != null)
+                                {
+                                    foreach (var v in ViewBag.Count_Que)
+                                    {
+                                        <tr>
+                                            <td>@(j += 1)</td>
+                                            <td>@v.Board_Name</td>
+                                        <td>@v.Class_Name</td>
+                                        <td>@v.Subject</td>
+                                        <td>@v.No_Questions</td>
+                                    </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $('#table2').dataTable({
+            "aLengthMenu": [
+                [10, 15, 25, 50, 100, -1],
+                [10, 15, 25, 50, 100, "All"]
+            ],
+            "iDisplayLength": 10,
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ Records per page",
+                "sInfo": "_START_ - _END_ of _TOTAL_",
+                "sInfoEmpty": "0 - 0 of 0",
+                "oPaginate": {
+                    "sPrevious": "Prev",
+                    "sNext": "Next"
+                }
+            },
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }]
+        });
+    </script>
+}

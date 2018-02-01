@@ -1,0 +1,260 @@
+﻿
+@{
+    ViewBag.Title = "View Feedback";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<link href="~/css/rateit.css" rel="stylesheet" />
+
+<div class="page-content-wrap">
+    <div class="page-title">
+        <div>
+            <h1>
+                <i class="fa fa-file-o"></i> View Feedback
+                <div class="btn-toolbar pull-right">
+                    <div class="box-tool">
+                        <a class="btn btn-primary show-tooltip" href="/Admin/ViewTaxTypeMaster" data-toggle="tooltip" data-placement="top" title="Tax Type"><span>T</span></a>
+                    </div>
+                </div>
+            </h1>
+
+        </div>
+    </div>
+    <div id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="~/Admin/AdminDashboard">Home</a>
+                <span class="divider"><i class="fa fa-angle-right"></i>Reports</span>
+                <span class="divider"><i class="fa fa-angle-right"></i></span>
+            </li>
+            @if (ViewBag.Breadcrumb != null)
+            {
+                <li class="active">@ViewBag.Breadcrumb</li>
+            }
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-black">
+                <div class="box-title">
+                    <h3><i class="fa fa-table"></i> Feedback Report</h3>
+					 <div class="box-tool box-tooll">
+                     
+                           <a href="#" class="btn btn-primary dropdown-toggle" id="XLS" ><i class="fa fa-file-excel-o"></i> XLS</a>
+                    
+                   </div>
+                   
+                </div>
+                <div class="box-content">
+                    <div class="btn-toolbar pull-right">
+                        <div class="btn-group">
+                            <a class="btn btn-circle show-tooltip" title="Print details" href="#" data-original-title="Print"><i class="fa fa-print"></i></a>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="table-responsive">
+                        <div class="tabbable">
+                            <ul id="myTab1" class="nav nav-tabs">
+                                <li class="active"><a href="#home1" data-toggle="tab"><i class="fa fa-user"></i> Teacher Rating</a></li>
+                                <li><a href="#profile1" data-toggle="tab"><i class="fa fa-file-o"></i> Chapter Rating</a></li>
+                                <li><a href="#profile2" data-toggle="tab"><i class="fa fa-android"></i> Android Apps Rating</a></li>
+                            </ul>
+
+                            <div id="myTabContent1" class="tab-content">
+                                <div class="tab-pane fade in active" id="home1">
+                                    <table class="table table-advance" id="table1">
+                                        <thead>
+                                            <tr>
+                                                <th>Sl.No</th>
+                                                <th>Student</th>
+                                                <th>Class</th>
+                                                <th class="text-center" style="width:130px">Feedback</th>
+                                                <th>Teacher-Name</th>
+                                                <th>Teacher Rating</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{   int i = 1;}
+                                            @if (ViewBag.Teach_feed != null)
+                                            {
+                                                foreach (var item in ViewBag.Teach_feed)
+                                                {
+                                                    <tr>
+                                                        <td>@Html.Raw(i++)</td>
+                                                        <td>@item.Customer_Name</td>
+                                                        <td>@item.Class_Name</td>
+                                                        <td>
+                                                        @{string qst = Convert.ToString(item.Feedback);}
+                                                            @if (qst.Length > 100)
+                                                            {
+                                                                @qst.Substring(0, 90) <text>...</text>
+                                                            }
+                                                            else
+                                                            {
+                                                                @qst
+                                                            }
+
+                                                        </td>
+                                                        <td>@item.Teacher_Name</td>
+                                                        <td>
+                                                            <div class="rateit" data-rateit-value="@item.Teach_Rating" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade" id="profile1">
+                                    <table class="table table-advance" id="table2">
+                                        <thead>
+                                            <tr>
+                                                <th>Sl.No</th>
+                                                <th>Student</th>
+                                                <th>Class</th>
+                                                <th>Chapter</th>
+                                                <th>Chapter Rating</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @if (ViewBag.ch_feed != null)
+                                            {
+                                                int sl = 0;
+                                                foreach (var item in ViewBag.ch_feed)
+                                                {
+                                                    <tr>
+                                                        <td>@(sl += 1)</td>
+                                                        <td>@item.Customer_Name</td>
+                                                        <td>@item.Class_Name</td>
+
+                                                        <td>@item.Chapter</td>
+                                                        <td>
+                                                            <div class="rateit" data-rateit-value="@item.Ch_Rating" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+
+
+
+
+                                </div>
+                                <div class="tab-pane fade" id="profile2">
+                                    <table class="table table-advance" id="table3">
+                                        <thead>
+                                            <tr>
+                                                <th>Sl.No</th>
+                                                <th>Student</th>
+                                                <th>Mobile</th>
+                                                <th>Email</th>                                              
+                                                <th>Feedback</th>
+                                                <th>Rating</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @if (ViewBag.ch_feed != null)
+                                            {
+                                                int sl = 0;
+                                                foreach (var item in ViewBag.feedback)
+                                                {
+                                                    <tr>
+                                                        <td>@(sl += 1)</td>
+                                                        <td>@item.Customer_Name</td>
+                                                        <td>@item.Mobile</td>
+                                                        <td>@item.Email</td>
+                                                        
+                                                        <td>@item.Remark</td>
+                                                        <td>
+                                                           @item.Rating
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+  {
+<script src="~/js/jquery.rateit.min.js"></script>
+<script>
+    $('#table2').dataTable({
+        "aLengthMenu": [
+            [10, 15, 25, 50, 100, -1],
+            [10, 15, 25, 50, 100, "All"]
+        ],
+        "iDisplayLength": 10,
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ Records per page",
+            "sInfo": "_START_ - _END_ of _TOTAL_",
+            "sInfoEmpty": "0 - 0 of 0",
+            "oPaginate": {
+                "sPrevious": "Prev",
+                "sNext": "Next"
+            }
+        },
+        "aoColumnDefs": [{
+            'bSortable': false,
+            'aTargets': [0]
+        }]
+    });
+
+    $('#table3').dataTable({
+        "aLengthMenu": [
+            [10, 15, 25, 50, 100, -1],
+            [10, 15, 25, 50, 100, "All"]
+        ],
+        "iDisplayLength": 10,
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ Records per page",
+            "sInfo": "_START_ - _END_ of _TOTAL_",
+            "sInfoEmpty": "0 - 0 of 0",
+            "oPaginate": {
+                "sPrevious": "Prev",
+                "sNext": "Next"
+            }
+        },
+        "aoColumnDefs": [{
+            'bSortable': false,
+            'aTargets': [0]
+        }]
+    });
+    $('#XLS').click(function () {
+        debugger;
+
+        $("#myTabContent1 .active").find(".dataTable").tableExport({ type: 'excel', escape: 'false' });
+
+        $('.dataTable').each(function () {
+            debugger;
+            var id = this.id
+
+        });
+      
+       
+    });
+
+    </script>
+ <script src="~/js/plugins/tableexport/jspdf/libs/base64.js"></script>
+   <script src="~/js/plugins/tableexport/jspdf/libs/sprintf.js"></script>
+   <script src="~/js/plugins/tableexport/jspdf/jspdf.js"></script>
+   <script src="~/js/plugins/tableexport/html2canvas.js"></script>
+   <script src="~/js/plugins/tableexport/jquery.base64.js"></script>
+   <script src="~/js/plugins/tableexport/tableExport.js"></script>
+}

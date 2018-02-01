@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = "Topic Startegic";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+    <div class="page-content-wrap">
+        <div class="page-title">
+            <div>
+                <h1>
+                    <i class="fa fa-graduation-cap"></i> Academic
+                    <div class="btn-toolbar pull-right">
+                        <div class="box-tool">
+                            <a class="btn btn-primary show-tooltip" href="/Admin/BoardMaster" data-toggle="tooltip" data-placement="top" title="Board"><span>B</span></a>
+                            <a class="btn btn-primary show-tooltip" href="/Admin/ClassMaster" data-toggle="tooltip" data-placement="top" title="Class" data-original-title="Class"><span>C</span></a>
+                            <a class="btn btn-primary show-tooltip" href="/Admin/SubjectMaster" data-toggle="tooltip" data-placement="top" title="Subject"><span>S</span></a>
+                            <a class="btn btn-primary show-tooltip" href="/Admin/ChapterMaster" data-toggle="tooltip" data-placement="top" title="Chapter"><span>C</span></a>
+                            <a class="btn btn-primary show-tooltip" href="/Admin/Topics" data-toggle="tooltip" data-placement="top" title="Topics"><span>T</span></a>
+                            <a class="btn btn-primary show-tooltip" href="/Admin/CentreMaster" data-toggle="tooltip" data-placement="top" title="Centre"><span>C</span></a>
+                            <a class="btn btn-primary show-tooltip" href="/Admin/BatchMaster" data-toggle="tooltip" data-placement="top" title="Batch"><span>B</span></a>
+                            <a class="btn btn-primary show-tooltip" href="/Admin/Power" data-toggle="tooltip" data-placement="top" title="Power"><span>P</span></a>
+                            <a class="btn btn-primary show-tooltip" href="/Admin/Showall" data-toggle="tooltip" data-placement="top" title="Percentage Entry" data-original-title="Percentage Entry"><span>P</span></a>
+
+                        </div>
+                    </div>
+                </h1>
+
+            </div>
+        </div>
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+               
+                    <li class="active">Topic Startegic</li>
+                
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+
+                    <div class="box-title">
+                        <h3><i class="fa fa-file-text"></i>Startegic Details</h3>
+                        <div class="box-tool box-tooll">
+                            @*<a href="@Url.Action("BoardMaster", "Admin")" class="btn btn-inverse dropdown-toggle"><i class="fa fa-caret-left"></i> Back </a>*@
+                            <a href="/Admin/TopicStartegic" class="btn btn-primary"><i class="fa fa-plus"></i><span> Add New</span></a>
+                        </div>
+                    </div>
+
+                    <div class="box-content">
+                        <div class="table-responsive">
+                            <table class="table table-advance" id="table1">
+
+                                <thead>
+                                    <tr>
+                                        <th>Sl No.</th>
+                                        <th>Topic Name</th>
+                                        <th>From Percentage</th>
+                                        <th>To Percentage</th>
+                                        <th>Remark</th>
+                                        <th style="width: 20%;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.Topicstartegic != null)
+                                    {
+                                        int rowNo = 0;
+                                        foreach (var item in ViewBag.Topicstartegic)
+                                        {
+                                            <tr>
+                                                <td>@(rowNo += 1)</td>
+                                                @{
+                                            DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                                            int topicid = Convert.ToInt32(@item.Topic_ID);
+                                            var name = DbContext.tbl_DC_Topic.Where(x => x.Topic_ID == topicid && x.Is_Active == true && x.Is_Deleted == false).Select(x => x.Topic_Name).FirstOrDefault();
+                                                }
+                                                <td>@name</td>
+                                                <td>@item.Start_Percentage</td>
+                                                <td>@item.End_Percentage</td>
+                                                <td>@item.Remark</td>
+                                                <td>
+                                                    @*@Html.ActionLink(" ", "TopicStartegic", "Admin", new { id = @item.Report_ID }, new { @class = "btn btn-sm btn-primary show-tooltip fa fa-edit", @title = "Edit" })*@
+
+                                                    @Html.ActionLink(" ", "Deletestartegic", "Admin", new { id = @item.Report_ID }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the topic startegic?')", @data_original_title = "Delete", @title = "Delete" })
+
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+

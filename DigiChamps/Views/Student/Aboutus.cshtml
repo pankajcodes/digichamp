@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "Aboutus";
+    Layout = "~/Views/Shared/_StudentIndex.cshtml";
+}
+
+<section class="inner-banner background about-us-sec">
+    <div class="inner-banner-patter-screen">
+        <span class="shape-one"></span>
+        <span class="shape-two"></span>
+        <span class="shape-thre"></span>
+        <span class="shape-four"></span>
+        <div class="content-a">
+            <div class="content-b">
+                <div class="caption_contain">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                              
+                                <h2>About us</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Banner Section End-->
+
+<section class="content-area contact-us career-sec">
+    <div class="container">
+      
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pri-policy">
+                @if (ViewBag.about != null)
+                {
+                    foreach (var b in ViewBag.about)
+                    {
+                        <p>
+                            @b.Aboutus
+                        </p>
+                    }
+                }
+
+
+                <!-- container -->
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</section>
+

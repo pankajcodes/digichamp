@@ -1,0 +1,61 @@
+﻿@model DigiChamps.Models.tbl_DC_Sms_Template
+@{
+    ViewBag.Title = "SMS Template Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("add_Smstemplate", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    @Html.AntiForgeryToken();
+    <div class="page-content-wrap">
+        <div class="row ">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> Create SMS Template</h3>
+                        @Html.HiddenFor(x => x.Sms_Id)
+                    </div>
+                    <div class="box-content">
+                        <div class="form-group voffset4 ">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">API Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if(@ViewBag.smstemp != null)
+                                { 
+                                @(Html.DropDownListFor(x => x.Api_Id, ViewBag.smstemp as SelectList, "Please Select API name", new { @class = "form-control chosen", data_rule_required = "true", data_msg_required = "Please Select API name" }))
+                                }
+                                else{
+                                @(Html.DropDownListFor(x => x.Api_Id, ViewBag.smstemplate as SelectList, "Please Select API name", new { @class = "form-control chosen", data_rule_required = "true", data_msg_required = "Please Select API name" }))
+                                }
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Alert Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.TextBoxFor(m => m.Sms_Alert_Name, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter alert name", data_rule_maxlength = "10" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Sms Body<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.TextAreaFor(m => m.Sms_Body, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter sms body", rows = "4" })
+                            </div>
+                        </div>
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("sms_templates", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                                <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span> Submit</span></button>
+                              
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}
+
+

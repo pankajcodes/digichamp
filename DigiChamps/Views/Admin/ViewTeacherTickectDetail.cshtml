@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "View Teacher Tickect";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("ViewTeacherTickectDetail", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="page-content-wrap">
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> View Teacher Ticket Details</h3>
+                    </div>
+                    @if (ViewBag.viewticket != null)
+                    {
+                        foreach (var v in ViewBag.viewticket)
+                        {
+                            <div class="box-content">
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Student Name<span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+
+                                        <input type="text" id="Student_Name" value="@v.Customer_Name" name="Student_Name" class="form-control" readonly />
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="ajax-loader">
+                                            <div class="loader"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Board Name <span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+
+                                        <input type="text" id="Class_Name" name="Class_Name" value="@v.Board_Name" class="form-control" readonly />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Class Name <span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+
+                                        <input type="text" id="Class_Name" name="Class_Name" value="@v.Class_Name" class="form-control" readonly />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Subject Name <span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+
+                                        <input type="text" id="Class_Name" name="Class_Name" value="@v.Subject" class="form-control" readonly />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Chapter Name <span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+
+                                        <input type="text" id="Class_Name" name="Class_Name" value="@v.Chapter" class="form-control" readonly />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Question Detail<span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                        <textarea class="form-control" rows="8" id="Question_Detail" name="Question_Detail" readonly>@v.Question</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Question Image<span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                        @if (v.Question_Image != null)
+                                        {
+                                            <img id="Qst_Img" height="230" src="~/Images/Qusetionimages/@v.Question_Image" width="220" />
+                                        }
+                                        else
+                                        {
+                                            <img id="Qst_Img" height="230" src="~/Images/-text.png" width="220" />
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="form-group last">
+                                    <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+
+                                        <a href="@Url.Action("TeacherTicket", "Teacher")" title="Ticket list" class="btn  btn-inverse dropdown-toggle"><i class="fa fa-caret-left"></i>Back to List</a>
+                                        @Html.ActionLink(" ", "TeacherAnswerTicket", "Teacher", new { id = @v.Ticket_ID }, new { @class = "btn  btn-success btn-group  fa fa-check", @title = "Answer Ticket and Thread" })
+                                        @*@Html.ActionLink(" ", "RejectTicket", "Teacher", new { id = @v.Ticket_ID }, new { @class = "btn  btn-danger btn-group fa fa-times", @title = "Reject Ticket" })*@
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+                    }
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+}

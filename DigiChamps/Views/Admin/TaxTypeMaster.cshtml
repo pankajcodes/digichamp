@@ -1,0 +1,118 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsTaxTypeMasterModel
+@{
+    ViewBag.Title = "Tax-Type Master";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("TaxTypeMaster", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    <div class="page-content-wrap">
+
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active"> @ViewBag.pagetitle @ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> Add Tax</h3>
+                    </div>
+                    <div class="box-content">
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Tax Type<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @(Html.TextBoxFor(m => m.Tax_Type, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter taxtype", @id = "txt_tax_type" }))
+                                <input type="hidden" value="@ViewBag.taxtypee" id="hdtaxtypeid" name="hdtaxtypeid" />
+                                @Html.ValidationMessageFor(x => x.Tax_Type)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Tax Code<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                               @if (ViewBag.Taxcode != null)
+                                {
+                                    @(Html.TextBoxFor(m => m.TAX_CODE, new { @class = "form-control", @readonly = "readonly", data_rule_required = "true", Value = @ViewBag.Taxcode, data_msg_required = "Please enter taxcode", @id = "txt_tax_code" }))
+                                    @Html.ValidationMessageFor(m => m.TAX_CODE)
+                                }
+                                else
+                                {
+                                    @(Html.TextBoxFor(m => m.TAX_CODE, new { @class = "form-control", @readonly = "readonly", data_rule_required = "true", data_msg_required = "Please enter taxcode", @id = "txt_tax_code" }))
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Tax Short Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @(Html.TextBoxFor(m => m.Tax_Type_Short, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter tax shortname", @id = "txt_tax_shortname" }))
+                                @Html.ValidationMessageFor(m => m.Tax_Type_Short)
+                            </div>
+                        </div>
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("ViewTaxTypeMaster", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i><span> Back </span></a>
+                                <button id="btnSearch" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span> Submit</span></button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btn_clr').click(function () {
+                $("#txt_tax_type").val("");
+                $("#txt_tax_code").val("");
+                $("#txt_tax_shortname").val("");
+            });
+            $('.delete').click(function (e) {
+                debugger;
+                e.preventDefault();
+                var id = $(this).data('id');
+                $('#item-to-delete').val(id);
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/DeleteTaxTypevalue",
+                    data: { id: id },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+
+                    }
+                });
+            });
+            $('.mySubmit').click(function () {
+                debugger;
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/DeleteTaxType",
+                    data: { id: id },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+
+                    }
+                });
+            });
+        });
+
+    </script>
+ }
+

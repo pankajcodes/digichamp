@@ -1,0 +1,767 @@
+﻿@model DigiChamps.Models.View_DC_Exam_Setup
+@{
+    ViewBag.Title = "Exam Setup";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<form class="form-horizontal" id="validation-form">
+    <div class="page-content-wrap">
+
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active">@ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+		
+		@if(  TempData["WarningMessage"] != null)
+		{
+		<div>@TempData["WarningMessage"]</div>
+		}
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i>Create Exam</h3>
+                        @Html.HiddenFor(m => m.Exam_ID, new { data_rule_required = "false", data_val = "false", Value = @ViewBag.exam_id })
+                    </div>
+
+                    <div class="box-content">
+                        <div class="form-group voffset3">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Exam Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.TextBoxFor(m => m.Exam_Name, new { @class = "form-control", placeholder = "Name of the exam", data_rule_required = "true", data_msg_required = "Please enter name of exam", data_rule_maxlength = "50", Value = @ViewBag.exam_name })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Exam Type<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <select id="exam_typ" name="exam_type" data-rule-required="true" data-msg-required="Please selecet Exam Type" class="form-control chosen">
+                                    <option value=""></option>
+                                    @foreach (var v in ViewBag.exam_type)
+                                    {
+                                        if (Convert.ToString(ViewBag.examtyp) == Convert.ToString(@v.E_ID))
+                                        {
+                                            <option value="@v.E_ID" selected="selected">@v.Exam_Type</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@v.E_ID">@v.Exam_Type</option>
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div id="timing">
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Scheduled Date<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @{
+                                        DateTime dt = Convert.ToDateTime(ViewBag.sdate);
+                                    }
+                                    @if (@ViewBag.sdate != null)
+                                    {
+                                        <input type="text" class="datepicker form-control" id="dt" name="s_date" value="@dt.ToShortDateString()" data-rule-required="true" data-msg-required="Please enter date">
+                                    }
+                                    else
+                                    {
+                                        <input type="date" class="form-control" placeholder="@DateTime.Today.ToShortDateString()"  id="dt" name="s_date" data-rule-required="true" data-msg-required="Please enter date">
+                                    }
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Scheduled Time<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <input type="time" class="form-control" id="tm" name="s_time" value="@ViewBag.stime" data-rule-required="true" data-msg-required="Please enter date">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="percen" class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Select Percentage<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <select id="Percentage" name="percentage" data-rule-required="true" data-msg-required="please select percentage" class="form-control chosen">
+                                    <option value=""></option>
+
+                                    @foreach (var v in ViewBag.pre_test_percentage)
+                                    {
+                                        if (Convert.ToString(ViewBag.percentage) == Convert.ToString(@v.ID))
+                                        {
+                                            <option value="@v.ID" selected="selected">@v.Start_P to @v.END_P</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@v.ID">@v.Start_P to @v.END_P</option>
+                                        }
+                                    }
+                                </select>
+                                <span id="lbl_per" class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group validity_test" hidden>
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Validity (In Days)<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <input type="number" class="form-control" id="validity" name="Validity" value="@ViewBag.valid" data-rule-required="true" data-msg-required="Please enter validity">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Board<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @(Html.DropDownListFor(x => x.Board_Id, ViewBag.Boards as SelectList, "Please Select Board", new { @class = "form-control chosen", data_rule_required = "true", data_msg_required = "Please select board", @id = "ddlboard" }))
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ddlclass" class="col-sm-3 col-lg-2 control-label">Class<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @(Html.DropDownListFor(x => x.Class_Id, new List<SelectListItem>(), "Please Select class", new { @class = "form-control ", data_rule_required = "true", data_msg_required = "Please select class", @id = "ddlclass" }))
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ddlsubject" class="col-sm-3 col-lg-2 control-label">Subject<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @(Html.DropDownListFor(x => x.Subject_Id, new List<SelectListItem>(), "Please Select Subject", new { @class = "form-control ", @id = "ddlsubject", data_rule_required = "true", data_msg_required = "Please select subject" }))
+                            </div>
+                        </div>
+                        <div id="academic">
+                            <div class="form-group">
+                                <label for="ddlchapter" class="col-sm-3 col-lg-2 control-label">Chapter<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @(Html.DropDownListFor(x => x.Chapter_Id, new List<SelectListItem>(), "Please Select chapter", new { @class = "form-control ", @id = "ddlchapter", data_rule_required = "true", data_msg_required = "Please select chapter" }))
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">No Of Questions<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.TextBoxFor(m => m.Question_nos, new { @class = "form-control", placeholder = "No of questions", data_rule_required = "true", data_msg_required = "Please enter no. of questions", type = "number", data_rule_number = "true", max = "9999", data_msg_maxlength = "The field must be a number with a maximum length of 4.", @id = "Question_nos", Value = @ViewBag.questions })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">No Of Attempts<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.TextBoxFor(m => m.Attempt_nos, new { @class = "form-control", placeholder = "No of attempts", data_rule_required = "true", data_msg_required = "Please enter no. of attempts", type = "number", data_rule_number = "true", min = "0", max = "1000", data_msg_maxlength = "The field must be a number with a maximum length of 4.", Value = @ViewBag.attempt })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Time (In Min.)<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.TextBoxFor(m => m.Time, new { @class = "form-control", placeholder = "Time Limit", data_rule_required = "true", data_msg_required = "Please enter time limit", type = "number", data_rule_number = "true", min = "1", step = "5", max = "9999", data_msg_maxlength = "The field must be a number with a maximum length of 4.", Value = @ViewBag.time })
+                            </div>
+                        </div>
+                        <div id="power_tbl" class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">Total Question available<span class="asterisk"></span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <table class=" table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Power Name</th>
+                                            <th>Total Questions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bind_power"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        @if (ViewBag.powers != null)
+                        {
+                            <div class="form-group">
+                                <label class="col-sm-3 col-lg-2 control-label"></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <table class="table table-advance">
+                                        <thead>
+                                            <tr>
+                                                <th>Power</th>
+                                                <th>No of Questions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (@ViewBag.pow_exm == null)
+                                            {
+                                                foreach (var p in @ViewBag.powers)
+                                                {
+                                                    <tr>
+                                                        <td>@p.Power_Type</td>
+                                                        <td>
+                                                            <input type="hidden" value="@p.Power_Id" name="p_id" />
+                                                            <input type="number" name="P_Quantity" class="pow form-control" />
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                foreach (var p in @ViewBag.pow_exm)
+                                                {
+                                                    <tr>
+                                                        <td>@p.Power_Type</td>
+                                                        <td>
+                                                            <input type="hidden" value="@p.ExamP_ID" name="expid" />    @*power exam id for update*@
+                                                            <input type="hidden" value="@p.Power_Id" name="p_id" />     @*power id*@
+                                                            <input type="number" name="P_Quantity" class="pow form-control" min="0" value="@p.No_Of_Qstn" />
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            <tr>
+                                                <td>Total Questions</td>
+                                                <td><label id="sum">0</label></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("Exam", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back </span></a>
+                                <button id="btnSearch" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i> <span>Submit</span></button>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_3" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel2"><i class="fa fa-info-circle"></i> Information</h3>
+                </div>
+                <div class="modal-body">
+                    <h5>Something went wrong, Please try again.</h5>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section scripts
+{
+    <script>
+        var valid11 = @ViewBag.valid;
+        var type = @ViewBag.examtyp;
+        debugger;
+       
+            if (valid11 != 0 && (type==4 || type==6))
+            {
+                $(".validity_test").show();
+
+                $('#academic').hide();
+                $('#ddlchapter').prop('disabled', true);
+                $('#ddlchapter').closest('.form-group').removeClass("has-error");
+              
+            }
+            else if(valid11 == 0)
+                {
+                $(".validity_test").hide();
+            }
+            else{
+                $(".validity_test").show();
+            }
+       
+        $("#percen").hide();
+        $("#power_tbl").hide();
+        $("#power_tbl").hide();
+
+        $('#timing').hide();
+        $('#dt').prop('disabled', true);
+        $('#tm').prop('disabled', true);
+  $('#exam_typ').change(function () {
+            debugger;
+            var value = document.getElementById("exam_typ").value;
+            if (value != 6 || value != 1 || value !=5 ) {
+                $('#validity').val('0');
+            }
+        });
+
+
+
+        $("#Is_Global").change(function () {
+            if (this.checked) {
+                $('#academic').hide(1000);
+                $('#ddlchapter').prop('disabled', true);
+                $('#ddlchapter').closest('.form-group').removeClass("has-error");
+            }
+            else {
+                $('#academic').show(1000);
+                $('#ddlchapter').prop('disabled', false);
+            }
+        });
+        $(".pow").change(function () {
+            if ($("#Question_nos").val() == "") {
+                $("#modal_3 .modal-body h5").html("Please enter no. of questions first.");
+                $("#modal_3").modal("show");
+                $('.pow').val(0);
+                $("#sum").html(0);
+            }
+        });
+
+        //retest function
+        $("#exam_typ").on("change", function () {
+            debugger;
+            if ($("#exam_typ").val() == 2) {
+                $('#Attempt_nos').val(1);
+                $('#Attempt_nos').attr('readonly', true);
+                $('#academic').show(1000);
+                $('#ddlchapter').prop('disabled', false);
+                $("#percen").show(1000);
+
+                $('#timing').hide(1000);
+                $('#dt').prop('disabled', true);
+                $('#tm').prop('disabled', true);
+
+            }
+            else if ($("#exam_typ").val() == 4) {
+
+                $('#timing').show(1000);
+                $('#dt').prop('disabled', false);
+                $('#tm').prop('disabled', false);
+
+                $('#academic').hide(1000);
+                $('#ddlchapter').prop('disabled', true);
+                $('#ddlchapter').closest('.form-group').removeClass("has-error");
+                $("#percen").hide();
+                $('#Percentage').prop('disabled', true);
+            }
+            else if ($("#exam_typ").val() == 6)
+            {
+                
+                $('.validity_test').show(800);
+                $('#timing').hide(1000);
+                $('#dt').prop('disabled', true);
+                $('#tm').prop('disabled', true);
+
+                $('#academic').hide(800);
+                $('#ddlchapter').prop('disabled', true);
+                $('#ddlchapter').closest('.form-group').removeClass("has-error");
+                $("#percen").hide();
+                $('#Percentage').prop('disabled', true);
+            }
+            else if ($("#exam_typ").val() == 1) {
+                $('.validity_test').show(800);
+                $('#Attempt_nos').val(1);
+                $('#Attempt_nos').attr('readonly', true);
+                $('#academic').show(1000);
+                $('#ddlchapter').prop('disabled', false);
+
+                $("#percen").hide();
+                $('#Percentage').prop('disabled', true);
+
+                $('#timing').hide(1000);
+                $('#dt').prop('disabled', true);
+                $('#tm').prop('disabled', true);
+            }
+            else if ($("#exam_typ").val() == 5) {
+                $('.validity_test').show(800);
+                $('#Attempt_nos').val(1);
+                $('#Attempt_nos').attr('readonly', true);
+                $('#academic').show(1000);
+                $('#ddlchapter').prop('disabled', false);
+
+                $("#percen").hide();
+                $('#Percentage').prop('disabled', true);
+
+                $('#timing').hide(1000);
+                $('#dt').prop('disabled', true);
+                $('#tm').prop('disabled', true);
+            }
+            else {
+                $('.validity_test').hide();
+                $('#Attempt_nos').val(3);
+                $('#Attempt_nos').attr('readonly', false);
+                $('#academic').show(1000);
+                $('#ddlchapter').prop('disabled', false);
+
+                $("#percen").hide();
+                $('#Percentage').prop('disabled', true);
+
+                $('#timing').hide(1000);
+                $('#dt').prop('disabled', true);
+                $('#tm').prop('disabled', true);
+            }
+        });
+
+        // sum of Questions through power
+        $(".pow").each(function () {
+            $(this).change(function () {
+                calculateSum();
+            });
+        });
+        function calculateSum() {
+            var sum = 0;
+            debugger
+            //iterate through each textboxes and add the values
+            $(".pow").each(function () {
+                //add only if the value is number
+                if (!isNaN(this.value) && this.value.length != 0) {
+                    sum += parseInt(this.value);
+                }
+            });
+            $("#sum").html(sum);
+        }
+
+        //set max value to power box Quantities
+        $("#Question_nos").change(function () {
+            $("input[name='P_Quantity']").prop('max', $(this).val());
+            $("input[name='P_Quantity']").prop('data-rule-max', $(this).val())
+        });
+
+        //Dropdownlist Casceding
+        $('#ddlboard').change(function () {
+            //if ($('#ddlclass').closest('.form-group').find('.ajax-loader').length) {
+            //    // do nothing
+            //} else {
+            //    $('#ddlclass').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+            //}
+            // $('#ddlclass').closest('.form-group').addClass('display-loader');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllClass",
+                data: { brdId: $('#ddlboard').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta = sta + '<option value="">Please Select Class</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    $('#ddlclass').html(sta);
+                    setTimeout(function () {
+                        // $('#ddlclass').closest('.form-group').removeClass('display-loader');
+
+                    }, 800);
+
+                }
+            });
+        });
+        $('#ddlclass').change(function () {
+            //if ($('#ddlsubject').closest('.form-group').find('.ajax-loader').length) {
+            //    // do nothing
+            //} else {
+            //    $('#ddlsubject').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+            //}
+            //$('#ddlsubject').closest('.form-group').addClass('display-loader');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllSubject",
+                data: { ClsId: $('#ddlclass').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta1 = sta1 + '<option value="">Please Select Subject</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta1 = sta1 + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    $('#ddlsubject').html(sta1);
+                    setTimeout(function () {
+                        //$('#ddlsubject').closest('.form-group').removeClass('display-loader');
+                    }, 800);
+                }
+            });
+        });
+        $('#ddlsubject').change(function () {
+
+            if ($('#academic').is(':hidden')) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/Getcounts_power_sub",
+                    data: { subid: $('#ddlsubject').val(), exam_id: $("#exam_typ").val() },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        $("#power_tbl").show();
+
+                        var sta1 = "";
+                        for (var i = 0; i < data.length; i++) {
+                            sta1 += "<tr>" + "<td>" + data[i].Power_Type + "</td>" + "<td>" + data[i].Total_quetsion + "</td>" + "</tr>"
+                        }
+                        $('#bind_power').html(sta1);
+
+                    }
+                });
+            }
+
+            //if ($('#ddlchapter').closest('.form-group').find('.ajax-loader').length) {
+            //    // do nothing
+            //} else {
+            //    $('#ddlchapter').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+            //}
+            //$('#ddlchapter').closest('.form-group').addClass('display-loader');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllChapter",
+                data: { SubId: $('#ddlsubject').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta1 = sta1 + '<option value="">Please Select Subject</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta1 = sta1 + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    $('#ddlchapter').html(sta1);
+                    setTimeout(function () {
+                        //$('#ddlchapter').closest('.form-group').removeClass('display-loader');
+                    }, 800);
+                }
+            });
+        });
+
+        /////////////////get question by chapter//////////////////
+        $("#ddlchapter").change(function () {
+
+            debugger
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Getcounts_power",
+                data: { chid: $('#ddlchapter').val(), exam_id: $("#exam_typ").val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    if (data != null) {
+                        $("#power_tbl").show();
+
+                        var sta1 = "";
+                        for (var i = 0; i < data.length; i++) {
+                            sta1 += "<tr>" + "<td>" + data[i].Power_Type + "</td>" + "<td>" + data[i].Total_quetsion + "</td>" + "</tr>"
+                        }
+                        $('#bind_power').html(sta1);
+                    } else {
+                        alert("Please select Exam type.");
+                    }
+
+
+                }
+            });
+        })
+        //Edit dropdown data fetch
+        @if(@ViewBag.percentage!=null)
+         {
+            <text>
+        $("#percen").show();
+        </text>
+         }
+
+        @if (ViewBag.sdate != null)
+         {
+             <text>
+        $('#timing').show();
+        $('#dt').prop('disabled', false);
+        $('#tm').prop('disabled', false);
+
+        $('#academic').hide();
+        $('#ddlchapter').prop('disabled', true);
+        $('#ddlchapter').closest('.form-group').removeClass("has-error");
+        </text>
+         }
+      
+
+
+
+        @if(@ViewBag.classid != null)
+        {
+        <text>
+
+
+        var hide = $("#Exam_ID").val();
+        if (hide != null) {
+            calculateSum();
+            var classAvailable = '@ViewBag.classid';
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllClass",
+                data: { brdId: '@ViewBag.Boardid' },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta = sta + '<option value="">Please Select Class</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].Value == classAvailable) {
+                            sta = sta + '<option selected="selected" value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                        }
+                        else {
+                            sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                        }
+                    }
+                    $('#ddlclass').append(sta);
+                }
+            });
+
+            var subjectAvailable = '@ViewBag.subjectid';
+            var classopt = '@ViewBag.classid';
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllSubject",
+                data: { ClsId: classopt },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta1 = sta1 + '<option value="">Please Select Subject</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].Value == subjectAvailable) {
+                            sta1 = sta1 + '<option selected="selected" value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                        }
+                        else {
+                            sta1 = sta1 + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                        }
+                    }
+                    $('#ddlsubject').append(sta1);
+                }
+            });
+
+            var chapterAvailable = '@ViewBag.chid';
+            var subopt = '@ViewBag.subjectid';
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllChapter",
+                data: { SubId: subopt },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var fst = fst + '<option value="">Please Select Chapter</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].Value == chapterAvailable) {
+                            fst = fst + '<option selected="selected"  value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                        } else {
+                            fst = fst + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                        }
+                    }
+                    $('#ddlchapter').append(fst);
+                }
+            });
+           
+            var chapterAvailable = '@ViewBag.chid';
+            var hide = '@ViewBag.examtyp';
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/Getcounts_power",
+                    data: { chid: chapterAvailable, exam_id: hide },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        if (data != null) {
+                            $("#power_tbl").show();
+
+                            var sta1 = "";
+                            for (var i = 0; i < data.length; i++) {
+                                sta1 += "<tr>" + "<td>" + data[i].Power_Type + "</td>" + "<td>" + data[i].Total_quetsion + "</td>" + "</tr>"
+                            }
+                            $('#bind_power').append(sta1);
+                        } else {
+                            alert("Please select Exam type.");
+                        }
+
+
+                    }
+                });
+           
+            //if ($("#Is_Global").is(':checked')) {
+            //    $('#academic').hide();
+            //    $('#ddlchapter').prop('disabled', true);
+            //}
+         
+            //else {
+            //    $('#academic').show();
+            //    $('.validity_test').hide();
+            //    $('#ddlchapter').prop('disabled', false);
+            //    $('#power_tbl').show();
+                
+            //}
+        }</text>
+        }
+
+        $('form').submit(function (e) {
+            //if global disable chapter
+
+            debugger
+            //power question sum check
+            var sum = $("#sum").html();
+            //if ($(this).valid()) {
+            //$(".loader-ajax-container").css("display", "block");
+
+            if (sum > 0) {
+                if ($("#Question_nos").val() != sum) {
+                    $("#modal_3 .modal-body h5").html("Total powered question must match with no of question given.");
+                    $("#modal_3").modal("show");
+                    return false;
+                }
+                else {
+                    e.preventDefault();
+                    $.ajax({
+                        type: 'POST',
+                        url: "/Admin/Addexams",
+                        data: $(this).serialize(),
+                        success: function (data) {
+						debugger
+                            if (data == "01") {
+                                $("#modal_3 .modal-body h5").html("Exam name already exist.");
+                            }
+                            else if (data == "02") {
+                                $("#modal_3 .modal-body h5").html("Please enter no of question less than no of question exists in chapter.");
+                            }
+                            else if (data == "07") {
+                                $("#modal_3 .modal-body h5").html("Exam is already exist.");
+                            }
+                            else if (data == "03") {
+                                $("#modal_3 .modal-body h5").html("Exam already exist for same chapter.");
+                            }
+                            else if (data == "04") {
+                                $("#modal_3 .modal-body h5").html("Please specify no of powered Quesions.");
+                            }
+                            else if (data == "05") {
+                                $("#modal_3 .modal-body h5").html("Invalid exam details,please try again.");
+                            }
+                            else if (data == "06") {
+                                $("#modal_3 .modal-body h5").html("Please enter no of question less than no of question exists in Subject.");
+                            }
+                            else if (data == "0") {
+                                $("#modal_3 .modal-body h5").html("Please Enter exam name and time.");
+                            }
+                            else if (data == "1") {
+                                $("#modal_3 .modal-body h5").html("Exam created  successfully.");
+                                location.href = "/Admin/Exam";
+                            }
+							
+							 
+                            else {
+                                $("#modal_3 .modal-body h5").html(data);
+								 location.href = "/Admin/examsetup";
+                            }
+                            //$(".loader-ajax-container").css("display", "none");
+                            $("#modal_3").modal("show");
+                        }
+                    });
+                }
+                return false;
+            }
+            else {
+                $("#modal_3 .modal-body h5").html("Please specify no of powered Quesions.");
+                $("#modal_3").modal("show");
+                return false;
+            }
+            //}
+        });
+    </script>
+}

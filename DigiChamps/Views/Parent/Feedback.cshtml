@@ -1,0 +1,207 @@
+﻿@model DigiChamps.Models.DigiChampsModel.feedback_model
+@{
+    ViewBag.Title = "Feedback";
+    Layout = "~/Views/Shared/_ParentLayout.cshtml";
+}
+
+@section header{
+    <div class="col-md-8 pull-left">
+        <i class="ion-ios-chatboxes-outline page_header_icon"></i>
+        <span class="main-text">Feedback</span>
+    </div>
+}
+<link href="~/css/rateit.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Give Your Feedback
+                </h3>
+            </div>
+            <div class="panel-body">
+               <form class="form form-horizontal">
+                   <div class="form-group">
+                       <label class="col-sm-2 control-label">Teacher :</label>
+                       <div class="col-sm-8">
+                           @if (ViewBag.teacher != null)
+                           {
+                              @(Html.DropDownListFor(x => x.Teach_ID, ViewBag.teacher as SelectList, "Please Select Teacher", new { @class = "form-control", @id = "ddlteacher" }))
+                           }
+                       </div>
+                       <div class="clearfix"></div>
+                       <div class="col-sm-8 col-sm-offset-2 voffset2" id="teacher_ratingpanel" hidden>
+                           <div id="rater">
+                               <div style="float:left;">
+                                   <div class="rateit" id="rateit10">
+                                   </div>
+                               </div>
+                               <p style="float:left;padding-left:20px;">
+                                   Rate Now!
+                               </p>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group" id="feed_hid" hidden>
+                       <label class="col-sm-2 control-label">Feedback :</label>
+                       <div class="col-sm-8">
+                           @if (@ViewBag.feed != null)
+                           {
+                               <textarea name="feedback" id="stu_feedback" class="form-control text-area" cols="30" rows="10" placeholder="feedback Form">@ViewBag.feed</textarea>
+                           }
+                           else
+                           {
+                               <textarea name="feedback" id="stu_feedback" class="form-control text-area" cols="30" rows="10" placeholder="feedback Form"></textarea>
+                           }
+                       </div>
+                   </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Chapter :</label>
+                        <div class="col-sm-8">
+                            @if (ViewBag.chapter != null)
+                            {
+                               @(Html.DropDownListFor(x => x.Chapter_Id, ViewBag.chapter as SelectList, "Please Select Chapter", new { @class = "form-control", @id = "ddlchapter" }))
+                            }
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-8 col-sm-offset-2 voffset2" id="chapter_ratingpanel" hidden>
+                            <div id="rater">
+                                <div style="float:left;">
+                                    <div class="rateit" id="rateit11">
+                                    </div>
+                                </div>
+                                <p style="float:left;padding-left:20px;">
+                                    Rate Now!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </form> 
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+  {
+<script src="~/js/jquery.rateit.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#rateit11,#rateit10").bind('over', function (event,value) { $(this).attr('title', value); });
+
+        $('#ddlteacher').change(function () {
+            if($('#ddlteacher').val() != "")
+            {
+                $('#teacher_ratingpanel').show(100);
+                $('#feed_hid').show(100);
+                $.ajax({
+                    type: "POST",
+                    url: "/Parent/Check_Rating",
+                    data: { id: $("#ddlteacher").val(), condition: "teacher" },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response != false) {
+                            $('#rateit10').rateit('value', response);
+                        }
+                        else {
+                            $.noty.closeAll();
+                            generate('top', 'warning', "Please rate the teacher.");
+                        }
+                    }
+                });
+            }
+            else{
+                $('#teacher_ratingpanel').hide();
+                $('#feed_hid').hide(100);
+            }
+        });
+        $('#ddlchapter').change(function () {
+            if($('#ddlchapter').val() != "")
+            {
+                $('#chapter_ratingpanel').show(100);
+                $.ajax({
+                    type: "POST",
+                    url: "/Parent/Check_Rating",
+                    data: { id: $("#ddlchapter").val(), condition: "chapter" },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response != null) {
+                            $('#rateit11').rateit('value', response);
+                        }
+                        else {
+                            $.noty.closeAll();
+                            generate('top', 'warning', "Please rate the chapter.");
+                        }
+                    }
+                });
+            }
+            else{
+                $('#chapter_ratingpanel').hide();
+            }
+        });
+        //rating teacher
+        $('#rateit10').bind('rated reset', function (e) {
+		
+		debugger;
+            $.noty.closeAll();
+            var ri = $(this);
+            var value = ri.rateit('value');
+            if($("#stu_feedback").val()!= null && $("#stu_feedback").val() != "")
+            {
+                $.ajax({
+                    type: "POST",
+                    url: "/Parent/Rate_teacher",
+                    data: {rate1:value, id: $("#ddlteacher").val(),feedback: $("#stu_feedback").val()},
+                    dataType: "json",
+                    success: function(response) {
+                        if (response != false) {
+                            $.noty.closeAll();
+                            generate('top', 'success', "Thank you for your rating.");
+                        }
+                        else {
+                            $.noty.closeAll();
+                            generate('top', 'warning', "You have already rated.");
+                        }
+                    },
+                    error: function (response) {
+                        alert('There is an error occured.');
+                    }
+                });
+            }
+            else {
+                $.noty.closeAll();
+                generate('top', 'warning', "Please enter feedback.");
+                $('#rateit10').rateit('reset');
+            }
+        });
+
+        //rating Chapter
+        $('#rateit11').bind('rated reset', function (e) {
+		 $.noty.closeAll();
+            debugger
+            var ri = $(this);
+            var value = ri.rateit('value');
+            $.ajax({
+                type: "POST",
+                url: "/Parent/Rate_chapter",
+                data: {rate1:value, id: $("#ddlchapter").val()},
+                dataType: "json",
+                success: function(response) {
+
+                    if (response != false) {
+                        $.noty.closeAll();
+                        generate('top', 'success', "Thank you for your rating.");
+                    }
+                    else {
+                        $.noty.closeAll();
+                        generate('top', 'warning', "You have already rated.");
+                    }
+                },
+                error: function (response) {
+                    alert('There is an error occured.');
+                }
+            });
+        });
+    });
+</script>
+}

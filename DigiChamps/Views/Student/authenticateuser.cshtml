@@ -1,0 +1,412 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" /> <!--320-->
+    <title>Student Verification | DIGICHAMPS | Learners Beyond Classrooms</title>
+    <link href="~/Student_assets/images/fav-icon.jpg" rel="shortcut icon" />
+    <!-- Bootstrap CSS -->
+    <link rel='stylesheet' href='~/Student_assets/assets/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/material.css'>
+    <link href="~/Student_assets/assets/css/video-js.min.css" rel="stylesheet" />
+    <link rel='stylesheet' href='~/Student_assets/assets/css/sweet-alerts/sweetalert.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/owl.carousel.min.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/style.css'>
+    <style>
+        .align-middle-box {
+            border: 1px solid #ddd;
+            padding: 20px 20px 20px;
+        }
+            .align-middle-box-box  {
+                text-align: center;
+            }
+        #verify2 {
+            text-align: center;
+        } 
+        #verify2 h3 {
+            font-size: 20px;
+        }
+        #verify3 {
+            text-align: center;
+        }
+
+        #verify3 h3 {
+            font-size: 20px;
+        }
+        .verify-center-align {
+            float: none;
+            margin: 0 auto;
+        }
+    </style>
+    <script src='~/Student_assets/assets/js/jquery.js'></script>
+    <script src='~/Student_assets/assets/js/app.js'></script>
+    <script>
+        jQuery(window).load(function () {
+            $('.ntspl-preloader').addClass('hidden');
+        });
+    </script>
+</head>
+<body class="checkout-page">
+    <div class="ntspl-preloader text-center">
+        <!-- <div class="progress">
+            <div class="indeterminate"></div>
+        </div> -->
+        @*<div class="loader">Loading...</div>*@
+        <div class="loader-container">
+            <span>Loading</span>
+            <div id="circleG">
+                <div id="circleG_1" class="circleG"></div>
+                <div id="circleG_2" class="circleG"></div>
+                <div id="circleG_3" class="circleG"></div>
+            </div>
+            <div class="clearfix"></div>
+            <p>FUN + EDUCATION = FUNDUCATION</p>
+        </div>	
+    </div>
+    <div class="wrapper authenticate-user ">
+
+        <!-- left-bar -->
+        <!-- left-bar ends -->
+            <div class="content full-page full-res" id="content">
+                <div class="overlay"></div>
+                <!-- /top-bar -->
+                <div class="top-bar">
+                    <nav class="navbar navbar-default top-bar">
+                        <div class="full-logo">
+                            <a href="/Student/StudentDashboard"><img class="logo" src="~/Student_assets/images/Digichamps-small.jpg" alt="logo"></a>
+                        </div>
+                        <div class="menu-bar-mobile" id="open-left">
+                            <i class="ti-menu"></i>
+                        </div>
+                        <a href="#" class="menu-bar  pull-left"><i class="ti-menu"></i></a>
+
+                        <ul class="nav navbar-nav navbar-right top-elements">
+
+                            <li class="ntspl-dropdown dropdown">
+                                <!-- todo Change design here, its bit of odd or not upto usable -->
+
+                                <a href="#" class="dropdown-toggle avatar_width" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <span class="avatar-holder">
+                                        @{
+            string name = string.Empty;
+                                        string img = string.Empty;
+                                        DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                                        if (Session["USER_CODE"] != null)
+                                        {
+                                            int sid = Convert.ToInt32(Convert.ToString(Session["USER_CODE"]).Substring(1));
+                                            var student = DbContext.tbl_DC_Registration.Where(x => x.Regd_ID == sid).FirstOrDefault();
+                                            name = Convert.ToString(student.Customer_Name);
+                                            img = Convert.ToString(student.Image);
+                                        }
+                                        }
+                                        @if (img == null || img == "")
+                                    {
+                                    <text><img src="~/Student_assets/assets/images/avatar/one.png" alt="" /></text>
+                                    }
+                                    else
+                                    {
+                                    <text><img src="~/images/Profile/@img" alt=""></text>
+                                    }
+                                    </span>
+                                    <span class="avatar_info">
+                                        @if (name != "")
+                                    {
+                                <text>@name</text>
+                                    }
+                                    </span><span class="drop-icon"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-ntspl-menu  animated fadeInUp wow avatar_drop neat_drop dropdown-right" data-wow-duration="1500ms" role="menu">
+                                    <li>
+                                        <a href="/student/logout" class="logout_button"><i class="ion-power"></i>Logout</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>                <!-- /top-bar ends -->
+                <!-- Page Header -->
+               <!-- <div class="page_header page_header_tab">
+                    <div class="row">
+                        <div class="col-md-8 pull-left div-buttom-margin">
+
+                            <span class="main-text">Verify</span>
+                        </div>
+                        <div class="col-md-2 pull-right test-clock">
+                            <div id="clockbox"></div>
+                            <div id="clockboxd"></div>
+                        </div>
+                        <div class="col-md-12">
+                            <h1 class="head-text">Verify Your Account</h1>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>-->
+                <!-- /pageheader -->
+
+                <div class="main-content">
+                    <div class="panel panel-ntspl">
+
+                        <div class="panel-body">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 verify-center-align">
+                                <div class="align-middle-box auth-usr">
+								<h3 class="head-text">Verify Your Account</h3>
+								
+                                    <div id="verify1">
+                                        <p> When you enable 2-Step Verification (also known as two-factor authentication), you add an extra layer of security to your account. You sign in with something you know (your password) and something you have (a Security answer set by you).</p>
+                                        <ul>
+                                            <li>Click on verify button.</li>
+                                            <li>Enter the Answer and select Get started.</li>
+                                            <li>Review your settings and add backup phone numbers. The next time you sign in, you'll receive a text message with a verification code. You also have the option of using a security question.</li>
+                                        </ul>
+                                        <div class="align-middle-box-box">
+                                            <button type="button" class="btn btn-green btn-icon-green btn-icon-block btn-icon-blockleft voffset3" id="secure_tab"><i class="ion ion-checkmark"></i><span>Verify Now</span></button>
+                                            <a type="button" class="btn btn-red voffset3" id="logout_btn"><span>Cancel</span></a>
+                                        </div>
+
+                                    </div>
+                                    <form id="security_form">
+                                        <div id="verify2" hidden>
+                                            <h3>Enter security answer for verification.</h3>
+                                            <div class="form-group clearfix">
+                                                <div class="col-sm-12">
+                                                    <span id="secureqstn"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <div class="col-sm-12">
+                                                    <input type="text" maxlength="98" name="answer" id="answer" class="form-control" data-rule-required="true" data-msg-required="Please enter answer." placeholder="Enter Answer" autocomplete="off" />
+                                                    <span class="msg help-block"></span>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="align-middle-box-box">
+                                                <button type="submit" class="btn btn-green btn-icon-green btn-icon-block btn-icon-blockleft"><i class="ion ion-checkmark"></i><span>Submit</span></button>
+                                                <a href="#" id="verify_btn">Forgot Security Answer?</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <form id="otp-form">
+                                        <div id="verify3" hidden>
+                                            <h3>Enter OTP sent to your registered mobile number.</h3>
+                                            <div class="form-group clearfix">
+                                                @*<label class="col-sm-2 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 control-label">OTP :</label>*@
+                                                <div class="col-sm-12">
+                                                    <input type="text" maxlength="6" name="otpchk" id="otpchk" class="form-control" data-rule-required="true" data-rule-digits="true" data-msg-required="Please enter OTP." placeholder="Enter OTP" autocomplete="off" />
+                                                    <span class="msg help-block"></span>
+                                                </div>
+                                                <span class="help-block">You can change security question in profile edit.</span>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="align-middle-box-box ">
+                                                <button type="submit" class="btn btn-green btn-icon-green btn-icon-block btn-icon-blockleft"><i class="ion ion-checkmark"></i><span>Submit</span></button>
+                                                <a type="button" class="btn btn-red" id="backbtn"><span>Cancel</span></a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center footer">
+                            <p class="designed-by">Copyrights 2017 Digichamps. All Rights Reserved. |  Designed By <a href="https://www.ntsplhosting.com/">NTSPL</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div class="welcome-back-wrapper" id="logback">
+        <div class="welcome-popup">
+            <span class="close-popup c-hover"><i class="ti-close"></i></span>
+            <div class="welcome-text"><h3>Hey<i class="logname"></i></h3></div>
+            <div class="clearfix"></div>
+            <div class="welcome-container">
+                @if (img == null || img == "")
+                {
+                    <img class="welcome-profile-image" src="~/Student_assets/assets/images/avatar/one.png" />
+                }
+                else
+                {
+                    <img class="welcome-profile-image" src="~/images/Profile/@img" />
+                }
+                <div class="clearfix"></div>
+                <h3>Welcome Back</h3>
+                <p>Welcome Back To The World Of <span>Funducation</span></p>
+                <a href="/Student/StudentDashboard" class="take-a-tour">Continue</a>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="modal fade in" id="logback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="logback_form">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                        <h4 class="modal-title" id="myModalLabel">Welcome Back</h4>
+                    </div>
+                    <div class="modal-body">
+                        Hey <i class="logname"></i><br />
+                        <p>Welcome Back.</p>
+                        <div class="modal-footer">
+                            <a href="/student/studentdashboard" type="button" id="gotodash" class="btn btn-primary">Start Now</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>*@
+    <!-- wrapper -->
+
+    <script src='~/Student_assets/assets/js/jquery-ui-1.10.3.custom.min.js'></script>
+    <script src='~/Student_assets/assets/js/bootstrap.min.js'></script>
+    <script src='~/Student_assets/assets/js/jquery.loadmask.min.js'></script>
+    <script src='~/Student_assets/assets/js/jquery.accordion.js'></script>
+    <script src='~/Student_assets/assets/js/materialize.js'></script>
+    @*<script src='~/Student_assets/assets/js/nvd3/nv.d3.js'></script>*@
+	    <script src='~/Student_assets/assets/js/jquery.nicescroll.min.js'></script>
+		    <script src='~/Student_assets/assets/js/wow.min.js'></script>
+    <script src='~/Student_assets/assets/js/core.js'></script>
+    <script src="~/Student_assets/assets/js/jquery.countTo.js"></script>
+    <script src='~/Student_assets/assets/js/tooltip-custom.js'></script>    
+    <!--Validation scripts-->
+    <script type="text/javascript" src="~/assets/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/assets/jquery-validation/dist/additional-methods.min.js"></script>
+
+    <script>
+        // welcome modal close start
+        $(".close-popup").on('click', function () {
+            $(".welcome-wrapper").fadeOut();
+            $(".welcome-back-wrapper").fadeOut();
+            location.href = "http://thedigichamps.com/Student/StudentDashboard";
+        });
+        // welcome modal close end
+        $("#backbtn").click(function () {
+            $("#verify2").show();
+            $("#verify3").hide();
+        });
+        $("#secure_tab").click(function () {
+            $.ajax({
+                type: "Get",
+                url: "/Student/securecheck",
+                datatype: "json",
+                success: function (data) {
+                    $("#verify2").show();
+                    $("#verify1").hide();
+                    if (data != "0") {
+                        $("#secureqstn").html("Q : "+data);
+                    }
+                    else {
+                        $("#security_form").find("span.msg").addClass("text-danger");
+                        $("#security_form").find("span.msg").html("Something went wrong.");
+                    }
+                }
+            });
+        });
+        $("#security_form").submit(function (e) {
+            e.preventDefault();
+            $("#security_form").find("span.msg").html("");
+            if ($(this).valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Student/securecheck",
+                    data: $(this).serialize(),
+                    datatype: "json",
+                    success: function (data) {
+                        if (data == "-1") {
+                            $.noty.closeAll();
+                            generate('top', 'error', "Invalid user details.");
+                        }
+                        if (data == "0") {
+                            $("#security_form").find("span.msg").addClass("text-danger");
+                            $("#security_form").find("span.msg").html("Wrong answer, Please try again.");
+                        }
+                        else if (data == "1") {
+                            $("#security_form").find("span.msg").addClass("text-success");
+                            $("#security_form").find("span.msg").html("Answer successfully verified.");
+                            $('#logback .logname').html($(".avatar_width .avatar_info").html());
+                            $('#logback').css('display', 'block');
+                        }
+                        else {
+                            $("#security_form").find("span.msg").html(data);
+                        }
+                    }
+                });
+            }
+            else {
+                return false; 
+            }
+        });
+        $("#verify_btn").click(function () {
+            $.ajax({
+                type: "Get",
+                url: "/Student/OTP_ChkIp",
+                datatype: "json",
+                success: function (data) {
+                    $("#verify3").show();
+                    $("#verify2").hide();
+                    if (data == "0") {
+                        $("#modal_form").find("span.msg").addClass("text-danger");
+                        $("#modal_form").find("span.msg").html("OTP can not be sent more than 3 times.");
+                    }
+                }
+            });
+        });
+        $("#otp-form").submit(function (e) {
+            e.preventDefault();
+            $("#otp-form").find("span.msg").html("");
+            if ($(this).valid()) {
+                var otp = $("#otpchk").val();
+                $.ajax({
+                    type: "POST",
+                    url: "/Student/OTP_ChkIp",
+                    data: $(this).serialize(),
+                    datatype: "json",
+                    success: function (data) {
+                        if (data == "-1") {
+                            $.noty.closeAll();
+                            generate('top', 'error', "Invalid OTP details.");
+                        }
+                        else if (data == "1") {
+                            $("#otp-form").find("span.msg").addClass("text-success");
+                            $("#otp-form").find("span.msg").html("OTP successfully confirmed.");
+                            $('#logback .logname').html($(".avatar_width .avatar_info").html());
+                            $('#logback').css('display', 'block');
+                        }
+                        else {
+                            $("#otp-form").find("span.msg").html(data);
+                        }
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        });
+
+        $("#logout_btn").click(function () {
+		debugger
+            location.href = "http://thedigichamps.com/Student/Logout";
+        });
+		
+		
+		$(function(){
+		debugger;
+		var topBbar=$('.top-bar').height();
+		var pageHeader=$('.page_header').height();
+		var wHeight=$(window).height();
+		var mHeight=wHeight-topBbar-pageHeader;
+
+if(wHeight>600){
+	$('.main-content').css({height:mHeight});
+}
+	
+		console.log(mHeight);
+		})
+		
+		
+    </script>
+
+</body>
+</html>

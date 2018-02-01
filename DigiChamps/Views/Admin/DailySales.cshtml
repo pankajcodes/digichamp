@@ -1,0 +1,143 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsDailySalesModel
+@{
+    ViewBag.Title = "Daily Sales";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a href="~/Admin/AdminDashboard">Home</a>
+            <span class="divider"><i class="fa fa-angle-right"></i>Reports</span>
+            <span class="divider"><i class="fa fa-angle-right"></i></span>
+        </li>
+        @if (ViewBag.Breadcrumb != null)
+        {
+            <li class="active">@ViewBag.Breadcrumb</li>
+        }
+    </ul>
+</div>
+
+@using (Html.BeginForm("DailySales", "Admin", FormMethod.Post, new { @class = "form-horizontal", @id = "validation-form" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-title">
+                    <h3><i class="fa fa-list-ul"></i>Search Sales Report</h3>
+                </div>
+                <div class="box-content">
+                    <div class="page-content-wrap">
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <!-- START NEW RECORD -->
+                                <div class="">
+                                    <div class="">
+                                        <div class="form-group">
+                                            <div class="col-md-2">
+                                                <h5>From Date <span class="asterisk">*</span></h5>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control datepicker" name="frm_dt" autocomplete="off" data-rule-required="true" data-msg-required="Please select From date" onkeypress="return false;" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <h5>To Date <span class="asterisk">*</span></h5>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control datepicker" name="to_dt" autocomplete="off" data-rule-required="true" data-msg-required="Please select To date" onkeypress="return false;" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <h5>Order No</h5>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="orderno" name="Order_No" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <h5>Package Name</h5>
+                                                <div class="input-group">
+                                                    @(Html.DropDownListFor(x => x.Package_ID, ViewBag.package_Id as SelectList, "Please Select Package Name", new { @class = "form-control", id = "Package_Name", name = "Package_Name" }))
+                                                    @Html.HiddenFor(x => x.Package_ID)
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 vtop">
+                                                <div class="pull-left box-tooll">
+                                                    <button id="btnadd" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> <span>Search</span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-title">
+                <h3><i class="fa fa-file-text"></i> Sales Report</h3>
+                <div class="box-tool box-tooll">
+                    <a href="/Admin/DailySales" class="btn btn-primary dropdown-toggle"><i class="fa fa-refresh"></i><span>Refresh</span></a>
+                    <a href="#" class="btn btn-primary dropdown-toggle" onclick="$('#table1').tableExport({ type: 'excel', escape: 'false' });"><i class="fa fa-file-excel-o"></i> XLS</a>
+                    @*<a href="#" class="btn btn-inverse dropdown-toggle" onclick="$('#table1').tableExport({ type: 'pdf', escape: 'false' });"><i class="fa fa-file-pdf-o"></i> PDF</a>*@
+                </div>
+            </div>
+
+            <div class="box-content">
+
+                <div class="table-responsive" id="daily">
+                    <table class="table table-advance" id="table1">
+                        <thead>
+                            <tr>
+                                <th>Sl No.</th>
+                                <th>Purchase Date</th>
+                                <th>Customer Name</th>
+                                <th>Package Name</th>
+                                <th>Order No</th>
+                                <th>Total Price</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (ViewBag.status != null)
+                            {
+                                int rowNo = 0;
+                                foreach (var v in ViewBag.status)
+                                {
+                                    <tr>
+                                        <td class="nr">@(rowNo += 1)</td>
+                                        <td>@v.Inserted_Date</td>
+                                        <td>@v.Customer_Name</td>
+                                        <td>@v.Package_Name</td>
+                                        <td>@v.Order_No</td>
+                                        <td>
+                                            @{double n = Convert.ToDouble(v.Total);}
+                                            @n.ToString("N2")
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+@section scripts{
+    <script src="~/js/plugins/tableexport/jspdf/libs/base64.js"></script>
+    <script src="~/js/plugins/tableexport/jspdf/libs/sprintf.js"></script>
+    <script src="~/js/plugins/tableexport/jspdf/jspdf.js"></script>
+    <script src="~/js/plugins/tableexport/html2canvas.js"></script>
+    <script src="~/js/plugins/tableexport/jquery.base64.js"></script>
+    <script src="~/js/plugins/tableexport/tableExport.js"></script>
+}

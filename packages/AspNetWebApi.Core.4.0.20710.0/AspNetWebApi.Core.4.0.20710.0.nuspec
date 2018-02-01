@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>AspNetWebApi.Core</id>
+    <version>4.0.20710.0</version>
+    <title>ASP.NET Web API Core Libraries</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/MVC_4_eula_ENU.htm</licenseUrl>
+    <projectUrl>http://www.asp.net/web-api</projectUrl>
+    <iconUrl>https://download-codeplex.sec.s-msft.com/Download?ProjectName=aspnetwebstack&amp;DownloadId=360555</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Legacy package, AspNetWebApi.Core is now included in the 'Microsoft.AspNet.WebApi.Client' and 'Microsoft.AspNet.WebApi.Core' packages.</description>
+    <summary>Legacy package, AspNetWebApi.Core is now included in the 'Microsoft.AspNet.WebApi.Client' and 'Microsoft.AspNet.WebApi.Core' packages.</summary>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.WebApi.Client" version="[4.0.20710.0, 4.1)" />
+      <dependency id="Microsoft.AspNet.WebApi.Core" version="[4.0.20710.0, 4.1)" />
+    </dependencies>
+  </metadata>
+</package>

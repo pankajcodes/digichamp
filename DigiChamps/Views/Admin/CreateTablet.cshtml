@@ -1,0 +1,440 @@
+﻿@model List<DigiChamps.Models.tbl_DC_Tablet_Technical_Details>
+
+@{
+    ViewBag.Title = "Create Tablet";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<link href="~/assets/bootstrap-wysihtml5/bootstrap-wysihtml5.css" rel="stylesheet" />
+
+<div id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a href="~/Admin/AdminDashboard">Home</a>
+            <span class="divider"><i class="fa fa-angle-right"></i></span>
+        </li>
+        @if (ViewBag.Breadcrumb != null)
+        {
+            <li class="active">@ViewBag.Breadcrumb</li>
+        }
+    </ul>
+</div>
+
+@using (Html.BeginForm("CreateTablet", "Admin", FormMethod.Post, new { @class = "form-horizontal", @id = "validation-form" }))
+{
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> @ViewBag.title </h3>
+                        <input id="pkg_id" type="hidden" name="hpid" value="@ViewBag.hbid" />
+                        <input type="hidden" name="pkid" value="@ViewBag.pkdtlid">
+                    </div>
+                    <div class="box-content">
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Tablet Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.Package_Name != null)
+                                {
+                                    <input type="text" name="tablet_name" value="@ViewBag.Package_Name" class="form-control" data-rule-required="true" data-msg-required="Please enter tablet name">
+                                }
+                                else
+                                {
+                                    <input type="text" name="tablet_name" value="@TempData["Package_Name"]" class="form-control" data-rule-required="true" data-msg-required="Please enter tablet name">
+                                }
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @*Question image*@
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Tablet Images</label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <div class="fileupload fileupload-new">
+                                    <input type="hidden">
+                                    <div class="input-group">
+                                        <div class="form-control uneditable-input">
+                                            <i class="fa fa-file fileupload-exists"></i>
+                                            <span class="fileupload-preview"></span>
+                                        </div>
+                                        <div class="input-group-btn">
+                                            <a class="btn bun-default btn-file">
+                                                <span class="fileupload-new trigger_upload">Select file</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id='imageloadstatus' style='display:none'><img src="~/img/loader.gif" alt="Uploading...." /></div>
+                                <span class="label label-important">NOTE!</span>
+                                <span>Max attached file size should be 1 MB.</span>
+
+                                @*Image Temporary Table*@
+                                <table class="table table-advance voffset2" id="img_tbl" @ViewBag.hidden  >
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">Sl.no</th>
+                                            <th width="0%"></th>
+                                            <th>Tablet Images</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="img_body"></tbody>
+
+                                    @if (ViewBag.tabimages != null)
+                                    {
+                                        char i = 'A';
+                                        foreach (var img in @ViewBag.tabimages)
+                                        {
+                                            <tr>
+                                                <td class="char_td">@(i++)</td>
+                                                <td></td>
+                                                <td>
+                                                    <input type="hidden" name="img_id" value="@img.Tablet_Image_Id" />
+                                                    <img src="~/Images/Tablet/@img.Tablet_Image" />
+                                                </td>
+                                                <td><span class='btn btn-sm btn-danger deleteimg' title='DELETE'><i class='fa fa-trash-o'></i></span></td>
+                                            </tr>
+                                        }
+                                    }
+                                </table>
+                                <span class="dlt_msg"></span>
+                            </div>
+                        </div>
+                        
+
+                        @*Crop image in modal*@
+                        
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Description<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <textarea class="form-control wysihtml5" name="Desc_body" placeholder="Reply to this mail" rows="5" data-rule-required="true" data-msg-required="Please enter  description">@ViewBag.Package_Desc</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Subc.Period(In Days)<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.sub_period != null)
+                                {
+                                    <input type="number" value="@ViewBag.sub_period" data-rule-required="true" id="sub_period" name="Subscripttion_Period" max="999999" class="form-control" data-rule-digits="true" />
+                                }
+                                else
+                                {
+                                    <input type="number" value="@TempData["subscripttion_period"]" id="sub_period" name="Subscripttion_Period" max="999999" class="form-control" data-rule-required="true" data-rule-digits="true" data-msg-required="The subc.Period must be a number." />
+                                }
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Price (<i class="fa fa-inr"></i>)<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.price != null)
+                                {
+                                    <input type="text" value="@ViewBag.price" id="price" name="price" class="form-control" data-rule-required="true" data-msg-required="Please enter price" />
+                                }
+                                else
+                                {
+                                    <input type="number" value="@TempData["Price"]" id="price" name="price" class="form-control" data-rule-required="true" data-msg-required="Please enter price" />
+                                }
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Technical Details <span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <div><a class="btn btn-default" href="#" id="addNew"><span class="glyphicon glyphicon-plus"></span>Add New</a></div>
+                                <table id="dataTable" border="0" class="table table-bordered" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <th>Technical Name</th>
+                                        <th>Technical Details</th>
+                                        <th></th>
+                                    </tr>
+                                    @if (Model != null && Model.Count > 0)
+                                    {
+                                        int j = 0;
+                                        foreach (var i in Model)
+                                        {
+                                            <tr>
+                                                <td>@Html.HiddenFor(a => a[j].Tech_Detail_Id)
+                                                @Html.TextBoxFor(a => a[j].Technical_Name, new { @class = "form-control txtname", data_rule_required = "true", data_msg_required = "Please enter Name" })</td>
+                                                <td>@Html.TextBoxFor(a => a[j].Technical_Desc, new { @class = "form-control txtdtls", data_rule_required = "true", data_msg_required = "Please enter Details" })</td>
+                                                <td>
+                                                    @if (j > 0)
+                                                    {
+                                                        <a href="#" class="remove">Remove</a>
+                                                    }
+                                                </td>
+                                            </tr>
+                                            j++;
+                                        }
+                                    }
+                                </table>
+                            </div>
+                      </div>
+                        
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Other Details<span class="asterisk"></span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.OtherDeatls != null)
+                                {
+                                    <textarea placeholder="Description" name="Other_Desc" class="form-control" rows="5">@ViewBag.OtherDeatls</textarea>
+                                }
+                                else
+                                {
+                                    <textarea placeholder="Description" name="Other_Desc" class="form-control" rows="5">@TempData["Package_Desc"]</textarea>
+                                }
+
+                            </div>
+                        </div>
+                     
+
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("ViewTablet", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                                <button id="btnadd" type="submit" value="search" name="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i> <span>Submit</span></button>
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END NEW RECORD -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_3" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel2"></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="demo-wrap upload-demo">
+                        <div class="container">
+                            <div class="grid">
+                                <div class="col-md-2" hidden>
+                                    <div class="actions">
+                                        <input type="file" id="upload" style="visibility: hidden;" value="Choose a file" accept="image/*" />
+
+                                        @*<button class="upload-result" type="button">Result</button>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="upload-msg">
+                                        Upload a file to start cropping
+                                    </div>
+                                    <div class="upload-demo-wrap">
+                                        <div id="upload-demo"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-primary upload-result">Crop Image </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+<script src="~/assets/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
+<script src="~/assets/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+<script src="~/js/croppie.min.js"></script>
+<script src="~/js/exif.js"></script>
+    <script language="javascript">
+        $(document).ready(function () {
+            //1. Add new row
+            $("#addNew").click(function (e) {
+                e.preventDefault();
+                var $tableBody = $("#dataTable");
+                var $trLast = $tableBody.find("tr:last");
+                var $trNew = $trLast.clone();
+
+                var suffix = $trNew.find(':input:first').attr('name').match(/\d+/);
+                $trNew.find("td:last").html('<a href="#" class="remove">Remove</a>');
+                $.each($trNew.find(':input'), function (i, val) {
+                    // Replaced Name
+                    var oldN = $(this).attr('name');
+                    var newN = oldN.replace('[' + suffix + ']', '[' + (parseInt(suffix) + 1) + ']');
+                    $(this).attr('name', newN);
+                    //Replaced value
+                    var type = $(this).attr('type');
+                    if (type.toLowerCase() == "text") {
+                        $(this).attr('value', '');
+                    }
+                    if (type.toLowerCase() == "hidden") {
+                        $(this).attr('value', '');
+                    }
+                    $(this).removeClass("input-validation-error");
+
+                });
+                $trLast.after($trNew);
+            });
+          
+            // 2. Remove
+            $('#dataTable').on('click', '.remove', function (e) {
+                $(this).closest("tr").remove();
+            });
+            function readURL1(input, this2) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        this2.parents('.fileupload').find(".optimg").attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $(".answer-box").on("change", '.img_prvw', function () {
+                readURL1(this, $(this));
+            });
+            var A = $("#imageloadstatus");
+
+            //************************************** JavaScript for cropping of image *****************************************
+            $(".trigger_upload").on('click', function () {
+                $("#upload").trigger('click');
+                setTimeout(function () {
+                    $('#modal_3').modal('show');
+                    $("#myModalLabel2").text("Crop Image");
+                }, 1700);
+            });
+            $('#upload').on('change', function () {
+                readFile(this);
+                var filename = $(this).val();
+                var res = filename.substr(12, 200);
+                $(".uneditable-input span").text(res);
+            });
+            function output(node) {
+                var existing = $('#result .croppie-result');
+                if (existing.length > 0) {
+                    existing[0].parentNode.replaceChild(node, existing[0]);
+                }
+                else {
+                    $('#result')[0].appendChild(node);
+                }
+            }
+
+            var $uploadCrop;
+            function readFile(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('.upload-demo').addClass('ready');
+                        $uploadCrop.croppie('bind', {
+                            url: e.target.result
+                        }).then(function () {
+                            console.log('Image Bind complete');
+                        });
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+                else {
+                    alert("Please select crop area.");
+                }
+            }
+
+            $uploadCrop = $('#upload-demo').croppie({
+                viewport: {
+                    width: 1000,
+                    height: 1000,
+                    type: 'square'
+                },
+                enableExif: true
+            });
+
+            $('.upload-result').on('click', function (ev) {
+                debugger;
+                $uploadCrop.croppie('result', {
+                    type: 'canvas',
+                    size: 'viewport'
+                }).then(function (resp) {
+                    readURL(resp);
+                    A.hide(1200);
+                });
+            });
+            $("#img_tbl").on("click", ".deleterow", function () {
+                $(this).closest("tr").remove();
+
+                var id = $(this).parent().parent().find('input[name="img_id"]').val();
+                var element = $(this);
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/delete_tab_img",
+                    data: { img_id: id },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        if (data == "1") {
+                            element.closest("tr").remove();
+                            $("span.dlt_msg").html("Tablet image deleted successfully.");
+                        }
+                        else if (data == "-1") {
+                            $("span.dlt_msg").html("Something went wrong.");
+                        }
+                        else if (data == "0") {
+                            $("span.dlt_msg").html("Tablet Image is no longer valid.");
+                        }
+                        else {
+                            $("span.dlt_msg").html(data);
+                        }
+                    }
+                });
+            });
+            var ch = "Z";
+            function nextLetter(s) {
+                return s.replace(/([a-zA-Z])[^a-zA-Z]*$/, function (a) {
+                    var c = a.charCodeAt(0);
+                    switch (c) {
+                        case 90: return 'A';
+                        case 122: return 'a';
+                        default: return String.fromCharCode(++c);
+                    }
+                });
+            }
+            function readURL(pathto_save) {
+                A.show();
+                debugger
+                var data = "<tr><td><input name='Qphotos' type='hidden' value=" + pathto_save + " />" + nextLetter(ch) + "<td><td><img src='" + pathto_save + "'/></td>" +
+                    "<td><span class='btn btn-sm btn-danger deleterow' title='DELETE'><i class='fa fa-trash-o'></i></span></td></tr>";
+                $('#img_body').append(data);
+                $("#img_tbl").show();
+                ch = nextLetter(ch);
+            }
+
+            $("#img_tbl").on("click", ".deleteimg", function () {
+                var id = $(this).parent().parent().find('input[name="img_id"]').val();
+                var element = $(this);
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/delete_tab_img",
+                    data: { img_id: id },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        if (data == "1") {
+                            element.closest("tr").remove();
+                            $("span.dlt_msg").html("Tablet image deleted successfully.");
+                        }
+                        else if (data == "-1") {
+                            $("span.dlt_msg").html("Something went wrong.");
+                        }
+                        else if (data == "0") {
+                            $("span.dlt_msg").html("Tablet Image is no longer valid.");
+                        }
+                        else {
+                            $("span.dlt_msg").html(data);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

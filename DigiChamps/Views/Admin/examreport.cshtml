@@ -1,0 +1,183 @@
+﻿@{
+    ViewBag.Title = "examreport";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="page-content-wrap">
+    <div class="page-title">
+        <div>
+            <h1>
+                <i class="fa fa-file-o"></i> Exam Report
+            </h1>
+
+        </div>
+    </div>
+    <div id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="~/Admin/AdminDashboard">Home</a>
+                <span class="divider"><i class="fa fa-angle-right"></i>Reports</span>
+                <span class="divider"><i class="fa fa-angle-right"></i></span>
+            </li>
+            @if (ViewBag.Breadcrumb != null)
+            {
+                <li class="active">@ViewBag.Breadcrumb</li>
+            }
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-title">
+                    <h3><i class="fa fa-table"></i>Exam Report</h3>
+                    <div class="box-tool box-tooll">
+                       
+                        <a href="#" class="btn btn-primary dropdown-toggle" onclick="$('#table1').tableExport({ type: 'excel', escape: 'false' });"><i class="fa fa-file-excel-o"></i> XLS</a>
+                       
+                    </div>
+                </div>
+                <div class="box-content">
+@using (Html.BeginForm("examreport", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+                    <div class="btn-group">
+                        @{
+                            string typ = "-";
+                        }
+
+                            <div class="col-md-8">
+                                <select class="form-control" id="ddlexam" name="ddlexam">
+                                    @if (ViewBag.exam_name != null)
+                                    {
+
+                                        <option value="0">Select Exam Name</option>
+                                        foreach (var v in ViewBag.exam_name)
+                                        {
+                                            @*<option>@Html.ActionLink((string)v.Exam_Name, "examreport", )</option>*@
+                                            <option id="DDLNAME" value="@v.Exam_ID">@v.Exam_Name</option>
+                                            @**@
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-2 box-tooll">
+                              
+                                <button id="btnadd" type="submit" class="btn btn-primary"><i class="fa fa-search"></i><span> Search</span></button>
+                            </div>
+                         </div>
+}
+                        <div class="btn-toolbar pull-right clearfix">
+                            @* <div class="btn-group">
+                                            <a class="btn btn-circle show-tooltip" title="Refresh" href="/Teacher/Viewticekts"><i class="fa fa-refresh"></i></a>
+                    <a class="btn btn-circle show-tooltip" title="My tickets" href="/Teacher/mytickets"><i class="fa fa-filter"></i></a>
+                </div>*@
+                        </div>
+                        <br /><br />
+                        <div class="clearfix"></div>
+                        <div class="table-responsive" style="border:0">
+                            <table class="table table-advance table-hover" id="table1">
+                                <thead>
+                                    <tr>
+                                        <th hidden>Sl no</th>
+                                        <th>Student Name</th>
+                                        <th>Exam Name</th>
+                                        <th>Board</th>
+                                        <th>Class Name</th>
+                                        <th>Subject</th>
+                                        @*<th>Chapter</th>*@
+                                        <th>Start Time</th>
+                                        <th>End Time</th>
+                                        <th>Date</th>
+                                        <th>Total Question</th>
+                                        <th>Question Attemped</th>
+                                        <th>Total Correct</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.test_result_dtl != null)
+                                    {
+                                        int i = 0;
+                                        foreach (var item in ViewBag.test_result_dtl)
+                                        {
+                                            <tr>
+                                                <td hidden>@(i += 1)</td>
+                                                <td>@item.Customer_Name</td>
+                                                <td>
+                                                   
+                                                @item.Exam_Name
+                                                </td>
+                                                <td>@item.Board_Name</td>
+                                                <td>@item.Class_Name</td>
+                                                <td>@item.Subject</td>
+                                                @*<td>@item.Chapter</td>*@
+                                                <td>
+                                                    @{
+                                            DateTime tm1 = Convert.ToDateTime(@item.StartTime);
+                                                    }
+                                               @tm1.ToShortTimeString()
+                                                </td>
+                                                <td>
+                                                    @{
+                                            DateTime tm2 = Convert.ToDateTime(@item.EndTime);
+                                                    }
+                                                @tm2.ToShortTimeString()
+                                                </td>
+                                                <td>
+                                                   @{
+                                            DateTime dt = Convert.ToDateTime(@item.EndTime);
+}
+                                                   @dt.ToShortDateString() 
+                                                </td>
+                                                <td>@item.Question_Nos</td>
+                                                <td>@item.Question_Attempted</td>
+                                                <td>@item.Total_Correct_Ans</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section scripts
+{
+    <script src="~/Student_assets/assets/js/chartist.min.js"></script>
+
+    <script src="~/Student_assets/assets/js/sparkline.js"></script>
+    <script src="~/Student_assets/assets/js/photoswipe.min.js"></script>
+    <script src="~/Student_assets/assets/js/photoswipe-ui-default.min.js"></script>
+    <script src="~/Student_assets/assets/js/CustomChart.js"></script>
+    <script src="~/js/jquery.countdownTimer.js"></script>
+    <script src="~/js/plugins/tableexport/jspdf/libs/base64.js"></script>
+    <script src="~/js/plugins/tableexport/jspdf/libs/sprintf.js"></script>
+    <script src="~/js/plugins/tableexport/jspdf/jspdf.js"></script>
+    <script src="~/js/plugins/tableexport/html2canvas.js"></script>
+    <script src="~/js/plugins/tableexport/jquery.base64.js"></script>
+    <script src="~/js/plugins/tableexport/tableExport.js"></script>
+    <script>
+
+        function bindexam() {
+            var id = $("#DDLNAME").val;
+            debugger;
+            $.ajax({
+                type: "GET",
+                url: "/Admin/examreport",
+                data: { id: id },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+
+                }
+            });
+        }
+
+    </script>
+}

@@ -1,0 +1,619 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsQuestionMasterModel
+@{
+    ViewBag.Title = "Pre Requisite Test| DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+@section header{
+    <i class="menu-icons online-test-icon page_header_icon"></i>
+    <span class="main-text">Pre Requisite Test</span>
+    <div class="clearfix"></div>
+    @if (ViewBag.subjectlist != null)
+    {
+        if (ViewBag.subjectlist.Count > 0)
+        {
+            <div class='row'>
+                <div class='col-md-6 col-lg-6 col-sm-8'>
+                    <ul class="tabs">
+                        @{ int i = 0;  }
+                        @{DigiChamps.Models.DigiChampsEntities dc = new DigiChamps.Models.DigiChampsEntities();}
+                        @foreach (var itm in ViewBag.subjectlist)
+                        {
+                            if (i == 0)
+                            {
+                                int id1 = Convert.ToInt32(itm);
+                                var dt = dc.tbl_DC_Subject.Where(x => x.Subject_Id == id1).FirstOrDefault();
+                                <li class="tab">
+                                    <a href="#@dt.Subject_Id" class="active">@dt.Subject</a>
+                                </li>
+                            }
+                            else
+                            {
+                                int id1 = Convert.ToInt32(itm);
+                                var dt = dc.tbl_DC_Subject.Where(x => x.Subject_Id == id1).FirstOrDefault();
+                                <li class="tab">
+                                    <a href="#@dt.Subject_Id">@dt.Subject</a>
+                                </li>
+                            }
+                            i++;
+                        }
+                    </ul>
+                </div>
+            </div>
+
+        }
+    }
+    else if (ViewBag.free_test != null)
+    {
+        if (ViewBag.free_test.Count > 0)
+        {
+            if (ViewBag.subjectlist == null)
+            {
+                <div class='row'>
+                    <div class='col-md-6 col-lg-6 col-sm-8'>
+                        <ul class="tabs">
+                            @{ int i = 0;  }
+                            @{DigiChamps.Models.DigiChampsEntities dc = new DigiChamps.Models.DigiChampsEntities();}
+                            @foreach (var itm in ViewBag.subjects)
+                            {
+                                 if (i == 0)
+                        {
+                            int id1 = Convert.ToInt32(itm);
+                            var dt = dc.tbl_DC_Subject.Where(x => x.Subject_Id == id1).FirstOrDefault();
+                            <li class="tab">
+                                <a href="#@dt.Subject_Id" class="active">@dt.Subject</a>
+                            </li>
+                        }
+                        else
+                        {
+                            int id1 = Convert.ToInt32(itm);
+                            var dt = dc.tbl_DC_Subject.Where(x => x.Subject_Id == id1).FirstOrDefault();
+                            <li class="tab">
+                                <a href="#@dt.Subject_Id">@dt.Subject</a>
+                            </li>
+                        }
+                                i++;
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        }
+    }
+}
+
+
+@if (ViewBag.Examnames != null)
+{
+    if ((ViewBag.Examnames).Count > 0)
+    {
+        foreach (var itm in ViewBag.subjectlist)
+        {
+            int i = 0; int j = 0;
+            <div class="row" id="@itm">
+
+                <div class="col-md-8 questions-cont nopad-right">
+
+
+                    <div class="panel panel-ntspl">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Chapterwise Test
+                            </h3>
+                        </div>
+
+                        @foreach (var item in ViewBag.Examnames)
+                        {
+
+                            if (i % 4 == 0)
+                            {
+                                j = 1;
+                                @*<div class='table-cont bd-clr-1'>*@
+
+                            }
+
+
+
+                            if (i % 4 == 1)
+                            {
+                                j = 2;
+                            }
+                            @*<div class='table-cont bd-clr-2'>*@
+
+
+                            if (i % 4 == 2)
+                            {
+                                j = 3;
+                            }
+                            @*<div class='table-cont bd-clr-3'>*@
+
+
+                            if (i % 4 == 3)
+                            {
+                                j = 4;
+                            }
+                            if (item.Subject_Id == itm)
+                            {
+                                <div class="panel-body">
+                                    <div class="bd-clr-@j">
+                                        <div class="panel panel-ntspl inner-panel">
+
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">
+                                                    <a href="javascript:void(0)" class="plain-link" data-toggle="modal" data-target="#responsivemodal">@item.Exam_Name</a>
+
+                                                    <span class="panel-options">
+                                                        <a href="#" class="panel-minimize">
+                                                            <i class="icon ti-angle-up"></i>
+                                                        </a>
+                                                    </span>
+                                                    <span class="test-short-desc">Total Attempt: @(item.student_Attempt) / @item.Attempt_nos</span>
+                                                </h3>
+                                            </div>
+                                            <div class="panel-body test-panel-body">
+                                                <table class="table table-bordered table-hover">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">Duration</th>
+                                                            <td>@item.Time Min</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>No of Questions</td>
+                                                            <td>@item.Question_nos</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>No of Participants</td>
+                                                            <td>@item.Participants</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Total Attempts</td>
+                                                            <td><input type="text" disabled class="range-slider" name="example_name" value="@item.student_Attempt" /></td>
+                                                        </tr>
+                                                        @*<tr>
+                                                                <td>Top Performer</td>
+                                                                <td>
+                                                                    <span class="avatar_holder leader-avatar" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Scored 28/30 in 15 min 10 sec." data-original-title="Shibashis Das" aria-describedby="popover934317"><img src="assets/images/avatar/two.png" alt=""></span>
+                                                                    <span class="avatar_holder leader-avatar" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Scored 28/30 in 15 min 10 sec." data-original-title="Debasis Behera" aria-describedby="popover934317"><img src="assets/images/avatar/two.png" alt=""></span>
+                                                                    <span class="avatar_holder leader-avatar" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Scored 28/30 in 15 min 10 sec." data-original-title="Prasanta Singh" aria-describedby="popover934317"><img src="assets/images/avatar/two.png" alt=""></span>
+                                                                    <span class="avatar_holder leader-avatar" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Scored 28/30 in 15 min 10 sec." data-original-title="Shakti Kunda" aria-describedby="popover934317"><img src="assets/images/avatar/two.png" alt=""></span>
+                                                                    <span class="avatar_holder leader-avatar" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Scored 28/30 in 15 min 10 sec." data-original-title="Sourav Behera" aria-describedby="popover934317"><img src="assets/images/avatar/two.png" alt=""></span>
+                                                                </td>
+                                                            </tr>*@
+
+                                                    </tbody>
+                                                </table>
+                                                @if (item.student_Attempt < item.Attempt_nos)
+                                                {
+                                                    @*<a href="#" class="btn btn-red btn-icon-red btn-icon-block btn-icon-blockleft btn-lg starttest"><i class="ion ion-android-refresh"></i><span>@item.Exam_Name</span></a>*@
+                                                    <button class="btn btn-orange  voffset3 starttest" data-toggle="modal" data-target="#responsivemodal"><input type="hidden" id="jobdtlid" class="Chapters" name="Chapter_Id" value=@item.Exam_ID /><input type="hidden" class="servTime" id="Time" name="serviceid" value=@item.Time /><input type="hidden" class="startTime" id="startTime" name="startTime" value="@DateTime.Now" />Start Test</button>
+                                                    <a href="/student/leaderboard/@item.Exam_ID" class="btn btn-green voffset3">Leader Board</a>
+                                                }
+
+                                                else
+                                                {
+
+                                                    <button class="btn btn-primary voffset3" type="button">No attemps left</button>
+                                                    <a href="/student/leaderboard/@item.Exam_ID" class="btn btn-primary voffset3">Leader Board</a>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            i++;
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="panel panel-ntspl">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                How Test Works
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="video-panel">
+                                <div class="video-overlay">
+                                    <i class="ion-social-youtube-outline"></i>
+
+                                </div>
+                                <img src="/images/how-test-works.jpg">
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="panel panel-ntspl">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Test Guidelines
+
+                            </h3>
+                        </div>
+
+                        <div class="panel-body">
+                            Take the Test to get the best of Analysis, so that you are aware of your Strengths and Weaknesses  of Every Subject , Chapter and Topic.
+
+                            <div class="content-lists voffset3">
+                                <i class="list-icon ion-android-done-all"></i>
+                                Select the Option and click on save and next to go to the next question.
+                            </div>
+                            <div class="content-lists">
+                                <i class="list-icon ion-android-done-all"></i>
+                                Exam will be automatically closed after the Time is up.
+                            </div>
+                            <div class="content-lists">
+                                <i class="list-icon ion-android-done-all"></i>
+                                Do not resize (minimize) or reload the browser during the test.
+                            </div>
+                            <div class="content-lists">
+                                <i class="list-icon ion-android-done-all"></i>
+                                Click the “Finish ”'button to submit your exam.
+                            </div>
+                            <div class="content-lists">
+                                <i class="list-icon ion-android-done-all"></i>
+                                Give the Test honestly so that you get best of Analysis.
+                            </div>
+                            <div class="content-lists">
+                                <i class="list-icon ion-android-done-all"></i>
+                                All the Best .
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-12 questions-cont text-center">
+                <div class="ful-hi-wi">
+                    <div class="no-content-notification voffset3">
+                        There is no exam in your subscribed packages.
+                    </div>
+                    @{
+        DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+        var list = DbContext.tbl_DC_Sample_Image.Where(x => x.Image_Type == "Exam" && x.Is_Active == true && x.Is_Deleted == false).FirstOrDefault();
+        ViewBag.list = list.Image_URL;
+        <img src="~/Images/SampleImage/@ViewBag.list" style="width:100%" class="img-responsive voffset3" />
+                    }
+
+                    <div class="foraddbtn">
+                        <a href="/student/packagepreview" title="Order Now">
+                            <button type="button" class="btn btn-primary addbtn">View Packages</button>
+                        </a>
+                    </div>
+
+                    <!--<a href="javascript:void(0)"></a>-->
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    if (ViewBag.free_test != null)
+    {
+        if ((ViewBag.free_test).Count > 0)
+        {
+            foreach (var itm in ViewBag.subjects)
+            {
+                int i = 0; int j = 0;
+                <div class="row" id="@itm">
+
+                    <div class="col-md-8 questions-cont nopad-right">
+
+
+                        <div class="panel panel-ntspl">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    Chapterwise Test
+                                </h3>
+                            </div>
+
+                            @foreach (var item in ViewBag.free_test)
+                            {
+
+                                if (i % 4 == 0)
+                                {
+                                    j = 1;
+                                    @*<div class='table-cont bd-clr-1'>*@
+
+                                }
+
+
+
+                                if (i % 4 == 1)
+                                {
+                                    j = 2;
+                                }
+                                @*<div class='table-cont bd-clr-2'>*@
+
+
+                                if (i % 4 == 2)
+                                {
+                                    j = 3;
+                                }
+                                @*<div class='table-cont bd-clr-3'>*@
+
+
+                                if (i % 4 == 3)
+                                {
+                                    j = 4;
+                                }
+                                if (item.Subject_Id == itm)
+                                {
+                                    <div class="panel-body">
+                                        <div class="bd-clr-@j">
+                                            <div class="panel panel-ntspl inner-panel">
+
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">
+                                                        <a href="javascript:void(0)" class="plain-link" data-toggle="modal" data-target="#responsivemodal">@item.Exam_Name</a>
+
+                                                        <span class="panel-options">
+                                                            <a href="#" class="panel-minimize">
+                                                                <i class="icon ti-angle-up"></i>
+                                                            </a>
+                                                        </span>
+                                                        <span class="test-short-desc">Total Attempt: @(item.stu_Attempt_nos) / @item.Attempt_nos</span>
+                                                    </h3>
+                                                </div>
+                                                <div class="panel-body test-panel-body">
+                                                    <table class="table table-bordered table-hover">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row">Duration</th>
+                                                                <td>@item.Time Min</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>No of Questions</td>
+                                                                <td>@item.Question_nos</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>No of Participants</td>
+                                                                <td>@item.Participants</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Total Attempts</td>
+                                                                <td><input type="text" disabled class="range-slider" name="example_name" value="@item.stu_Attempt_nos" /></td>
+                                                            </tr>
+                                                            @*<tr>
+                                                                    <td>Top Performer</td>
+                                                                    <td>
+                                                                        <span class="avatar_holder leader-avatar" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Scored 28/30 in 15 min 10 sec." data-original-title="Shibashis Das" aria-describedby="popover934317"><img src="assets/images/avatar/two.png" alt=""></span>
+                                                                        <span class="avatar_holder leader-avatar" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Scored 28/30 in 15 min 10 sec." data-original-title="Debasis Behera" aria-describedby="popover934317"><img src="assets/images/avatar/two.png" alt=""></span>
+                                                                        <span class="avatar_holder leader-avatar" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Scored 28/30 in 15 min 10 sec." data-original-title="Prasanta Singh" aria-describedby="popover934317"><img src="assets/images/avatar/two.png" alt=""></span>
+                                                                        <span class="avatar_holder leader-avatar" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Scored 28/30 in 15 min 10 sec." data-original-title="Shakti Kunda" aria-describedby="popover934317"><img src="assets/images/avatar/two.png" alt=""></span>
+                                                                        <span class="avatar_holder leader-avatar" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Scored 28/30 in 15 min 10 sec." data-original-title="Sourav Behera" aria-describedby="popover934317"><img src="assets/images/avatar/two.png" alt=""></span>
+                                                                    </td>
+                                                                </tr>*@
+
+                                                        </tbody>
+                                                    </table>
+                                                    @if (item.stu_Attempt_nos < item.Attempt_nos)
+                                                    {
+                                                        @*<a href="#" class="btn btn-red btn-icon-red btn-icon-block btn-icon-blockleft btn-lg starttest"><i class="ion ion-android-refresh"></i><span>@item.Exam_Name</span></a>*@
+                                                        <button class="btn btn-orange  voffset3 starttest" data-toggle="modal" data-target="#responsivemodal"><input type="hidden" id="jobdtlid" class="Chapters" name="Chapter_Id" value=@item.Exam_ID /><input type="hidden" class="servTime" id="Time" name="serviceid" value=@item.Time /><input type="hidden" class="startTime" id="startTime" name="startTime" value="@DateTime.Now" />Start Test</button>
+                                                        <a href="/student/leaderboard/@item.Exam_ID" class="btn btn-green voffset3">Leader Board</a>
+                                                    }
+
+                                                    else
+                                                    {
+
+                                                        <button class="btn btn-primary voffset3" type="button">No attemps left</button>
+                                                        <a href="/student/leaderboard/@item.Exam_ID" class="btn btn-primary voffset3">Leader Board</a>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                i++;
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="panel panel-ntspl">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    How Test Works
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+
+                                <div class="video-panel">
+                                    <div class="video-overlay">
+                                        <i class="ion-social-youtube-outline"></i>
+
+                                    </div>
+                                    <img src="/images/how-test-works.jpg">
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="panel panel-ntspl">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    Test Guidelines
+
+                                </h3>
+                            </div>
+
+                            <div class="panel-body">
+                                Take the Test to get the best of Analysis, so that you are aware of your Strengths and Weaknesses  of Every Subject , Chapter and Topic.
+
+                                <div class="content-lists voffset3">
+                                    <i class="list-icon ion-android-done-all"></i>
+                                    Select the Option and click on save and next to go to the next question.
+                                </div>
+                                <div class="content-lists">
+                                    <i class="list-icon ion-android-done-all"></i>
+                                    Exam will be automatically closed after the Time is up.
+                                </div>
+                                <div class="content-lists">
+                                    <i class="list-icon ion-android-done-all"></i>
+                                    Do not resize (minimize) or reload the browser during the test.
+                                </div>
+                                <div class="content-lists">
+                                    <i class="list-icon ion-android-done-all"></i>
+                                    Click the “Finish ”'button to submit your exam.
+                                </div>
+                                <div class="content-lists">
+                                    <i class="list-icon ion-android-done-all"></i>
+                                    Give the Test honestly so that you get best of Analysis.
+                                </div>
+                                <div class="content-lists">
+                                    <i class="list-icon ion-android-done-all"></i>
+                                    All the Best .
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-12 questions-cont text-center">
+                <div class="ful-hi-wi">
+                    <div class="no-content-notification voffset3">You have not subscribed for any package yet.</div>
+                    @{
+        DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+        var list = DbContext.tbl_DC_Sample_Image.Where(x => x.Image_Type == "Package" && x.Is_Active == true && x.Is_Deleted == false).FirstOrDefault();
+        ViewBag.list = list.Image_URL;
+        <img src="~/Images/SampleImage/@ViewBag.list" style="width:100%" class="img-responsive voffset3" />
+                    }
+
+                    <div class="foraddbtn">
+                        <a href="/student/packagepreview" title="Order Now">
+                            <button type="button" class="btn btn-primary addbtn">View Packages</button>
+                        </a>
+                    </div>
+
+                    <!--<a href="javascript:void(0)"></a>-->
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<!-- Ajax Modal For  Online Test Starts-->
+<div class="modal fade" id="ajaxmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                <h4 class="modal-title" id="myModalLabel6">Ajax Modal</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Ajax Modal For  Online Test Ends -->
+<!-- responsive modal for online-test starts -->
+<div class="modal fade" id="responsivemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                <h4 class="modal-title" id="myModalLabel5">Get Started</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="responsive-bottom">
+                            <div class="test-confirm-modal">
+
+                                <img src="~/Student_assets/images/leaderboard2.png">
+                                <h3 class="text-success modal-content-header">Now its your time to lead the leaderboard.</h3>
+                                Timer starts as soon as you click on the start button. Give the test honestly to get the best of your analysis.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Later</button>
+                <a href="" type="button" id="startexam" class="btn btn-primary">Start Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- responsive modal for online test ends -->
+<!-- responsive modal for selecting class -->
+<div class="modal" id="selectclassmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                <h4 class="modal-title" id="myModalLabel5">Update Your Class</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-2 col-sm-2">
+                        <div class="select-class">Class 6</div>
+                    </div>
+                    <div class="col-md-2 col-sm-2">
+                        <div class="select-class">Class 7</div>
+                    </div>
+                    <div class="col-md-2 col-sm-2">
+                        <div class="select-class">Class 8</div>
+                    </div>
+                    <div class="col-md-2 col-sm-2">
+                        <div class="select-class">Class 9</div>
+                    </div>
+                    <div class="col-md-2 col-sm-2">
+                        <div class="select-class">Class 10</div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Later</button>
+                <a href="online-test.php" type="button" class="btn btn-primary">Update</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- responsive modal for selecting class ends -->
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".starttest").click(function () {
+                debugger;
+
+                var id = $(this).find(".Chapters").val();
+                var Examtime = $(this).find(".servTime").val();
+                var startTime = $(this).find(".startTime").val();
+
+                var url = "/student/test/" + id + ""
+
+                $('#startexam').attr('href', url)
+
+            })
+        });
+    </script>
+}
+
+

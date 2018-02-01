@@ -1,0 +1,127 @@
+﻿@model DigiChamps.Models.tbl_DC_Smtp_Details
+@{
+    ViewBag.Title = "SMTP Configuration";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("AddSMTPConfig", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", id = "validation-form" }))
+{
+    @Html.AntiForgeryToken();
+    <div class="page-content-wrap">
+
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active"> @ViewBag.pagetitle @ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row ">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> Add New</h3>
+                        <input type="hidden" name="smtpid" value="@ViewBag.editid">
+                    </div>
+                    <div class="box-content">
+                            <div class="form-group voffset4 ">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Sender Name <span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(m => m.SMTP_Sender, new { @class = "form-control", data_rule_required = "true", data_required_message = "Please enter sender name"})
+                                   @Html.ValidationMessageFor(x => x.SMTP_Sender)
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Host Name <span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(m => m.SMTP_HostName, new { @class = "form-control", data_rule_required = "true", data_required_message = "Please enter host name" })
+                                    @Html.ValidationMessageFor(x => x.SMTP_HostName)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">User Name <span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(m => m.SMTP_User, new { @class = "form-control", data_rule_required = "true", data_required_message = "Please enter username" })
+                                    @Html.ValidationMessageFor(m => m.SMTP_User)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Password <span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(m => m.SMTP_Pwd, new { @class = "form-control", type = "Password", data_rule_required = "true", data_required_message = "Please enter password" })
+                                    @Html.ValidationMessageFor(m => m.SMTP_Pwd)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Port <span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(m => m.SMTP_Port, new { @class = "form-control chosenn", data_rule_required = "true", data_rule_digits = "true", maxlength = "4", data_required_message = "Please enter port no." })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 col-lg-2 control-label">SSL</label>
+                                <div class="col-sm-9 col-lg-10 controls">
+                                    <label class="checkbox">
+                                        @if (TempData["chkor"] != null)
+                                        {
+                                            if (TempData["chkor"].ToString() == "True")
+                                            {
+                                                @Html.CheckBox("SMTP_Ssl", true)
+                                            }
+                                            else
+                                            {
+                                                @Html.CheckBox("SMTP_Ssl", false)
+                                            }
+
+                                        }
+                                        @if (TempData["chkor"] == null)
+                                        {
+                                            @Html.CheckBox("SMTP_Ssl", false)
+                                        }
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group last box-tooll">
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                    <a href="@Url.Action("SMTPconfiguration", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i> <span> Back</span>  </a>
+                                    <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span>Submit</span> </button>
+                                    
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}
+
+@section scripts
+{
+
+    <script src="~/assets/jquery/jquery-2.1.1.min.js"></script>
+    <script src="~/js/EmailValidation.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.chosenn').keypress(function (e) {
+                if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                    return false;
+                }
+            });
+        });
+
+    </script>
+}
+

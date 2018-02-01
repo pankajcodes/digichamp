@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "View Banner";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content-wrap">
+
+    <div id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="~/Admin/AdminDashboard">Home</a>
+                <span class="divider"><i class="fa fa-angle-right"></i></span>
+            </li>
+            @if (ViewBag.Breadcrumb != null)
+            {
+                <li class="active">@ViewBag.Breadcrumb</li>
+            }
+        </ul>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-title">
+                    <h3><i class="fa fa-file-text"></i>Banner Details</h3>
+
+                    <div class="box-tool box-tooll">
+                        <a class="btn btn-primary" href="/Admin/addbanner"><i class="fa fa-plus"></i><span>Add New</span> </a>
+                        </div>
+
+                </div>
+                <div class="box-content">
+                    <div class="clearfix"></div>
+                    <div class="table-responsive voffset3">
+                        <table class="table table-advance" id="table1">
+
+                            <thead>
+                                <tr>
+                                    <th>Sl No.</th>
+                                 
+                                    <th>Image Title</th>
+                                    <th>Image</th>
+                                    <th style="width: 15%;">Action</th>
+                                    <th hidden> id</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.data != null)
+                                {
+                                    DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                                    int rowNo = 0;
+                                    foreach (var item in ViewBag.data)
+                                    {
+
+                                        <tr>
+
+                                            <td>@(rowNo += 1)</td>
+                                         
+                                            <td>@item.Image_Title</td>
+                                            <td><img src="~/Images/Banner/@item.Image_URL" height="100" width="170" /></td>
+
+
+                                            <td>
+
+                                                @Html.ActionLink(" ", "addbanner", "Admin", new { ID = @item.banner_Id }, new { @class = "btn btn-sm btn-primary show-tooltip fa fa-edit", @title = "Edit" })
+
+
+                                                @Html.ActionLink(" ", "deletebanner", "Admin", new { ID = @item.banner_Id }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the banner?')", @data_original_title = "Delete", @title = "Delete" })
+
+
+                                            </td>
+                                            <td hidden>@item.banner_Id</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,892 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsQuestionMasterModel
+
+@{
+    ViewBag.Title = "Online Test | DIGI CHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+@section header
+{
+    <!-- Page Header -->
+    <i class="menu-icons online-test-icon page_header_icon"></i>
+    <span class="main-text">@ViewBag.Breadcrumb</span>
+    <p class="text">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis nisi ligula. Aenean condimentum quam mauris, nec ultricies diam dapibus eu.
+    </p>
+    <!-- /pageheader -->
+    <link href="/Student_assets/assets/css/photoswipe.css" rel="stylesheet" />
+    <link href="/Student_assets/assets/css/default-skin.css" rel="stylesheet" />
+    <link href="~/css/jquery.countdownTimer.css" rel="stylesheet" />
+
+}
+@using (Html.BeginForm("OnlineTest", "Student", FormMethod.Post, new { id = "onlineexam" }))
+{
+    <div class="row">
+        @if (Model != null)
+{
+    <div class="col-lg-8 col-md-8 col-sm-7 clo-xs-12 questions-cont nopad-right">
+        <!-- Question Panel Starts -->
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Question No. #
+                    <span class="qid"></span>
+                    <span class="panel-options">
+                        <a href="#" class="panel-refresh">
+                            <i class="icon ti-reload"></i>
+                        </a>
+                    </span>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <input type="hidden" name="startime" value="@ViewBag.starttime" />
+                <input type="hidden" name="regdid" value="@Model.Regd_Id" />
+                <input type="hidden" name="subjectid" value="@Model.Subject_Id" />
+                <input type="hidden" name="Exam_Name" value="@Model.Exam_Name" />
+                <input type="hidden" name="ChapterId" value="@Model.Chapter_Id" />
+                <input type="hidden" name="noofques" value="@Model.Question_nos" />
+                <input type="hidden" name="classid" value="@Model.Class_Id" />
+                <input type="hidden" name="boardid" value="@Model.Board_Id" />
+                <div class="owl-carousel" id="dtls">
+                    @foreach (var item in Model.quesdtls)
+                    {
+                        char c1 = 'A';
+                        string abc = "ac" + @item.RowID;
+                        <div id="@abc" class="childcls">
+                            <input type="hidden" value="@item.RowID" class="rowid" />
+                            <p>
+                                @item.question
+                            </p>
+                            <p>@item.Qustion_Desc</p>
+                            @{
+                        int quesid = Convert.ToInt32(item.question_id);
+                        DigiChamps.Models.DigiChampsEntities DbContext4 = new DigiChamps.Models.DigiChampsEntities();
+                        var question_image = DbContext4.tbl_DC_Question_Images.Where(x => x.Question_ID == quesid && x.Is_Active == true && x.Is_Deleted == false).ToList();
+                            }
+                            @foreach (var item1 in question_image)
+                            {
+
+                                <div class="image-zoom-container qsn-img-cont">
+                                    <img class="question-image qsn-zoom" src="~/Content/Qusetion/@item1.Question_desc_Image" data-zoom-image="~/Content/Qusetion/@item1.Question_desc_Image">
+
+
+                                    <div class="clearfix"></div>
+                                    <div class="picture pull-right" itemscope itemtype="">
+                                        <figure itemprop="associatedMedia" itemscope itemtype="">
+                                            <a href="~/Content/Qusetion/@item1.Question_desc_Image" itemprop="contentUrl" data-size="2000x1408" data-index="0">
+                                                <button class="btn btn-white btn-icon-white btn-icon-block btn-icon-blockleft  btn-xs pull-right">
+                                                    <i class="ion ion-android-search"></i>
+                                                    <span>Zoom</span>
+                                                </button>
+                                            </a>
+                                        </figure>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                            }
+                            @{
+                            int id9 = Convert.ToInt32(item.question_id);
+                            DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                            var question_details = DbContext.tbl_DC_Question_Answer.Where(x => x.Question_ID == id9 && x.Is_Active == true && x.Is_Deleted == false).ToList();
+                            }
+
+                            <ul class="list-group">
+                                @foreach (var item1 in question_details)
+                                {
+                                    string ab = "aa" + @item1.Answer_ID;
+                                    <li class="list-group-item">
+                                        <input type="checkbox" value="@item1.Question_ID + @item1.Answer_ID" name="rdanswer" data-rel="@item.RowID" class="rdcolor" id="@ab" />
+                                        <i class="answer-check">
+                                            <input type="hidden" name="Qs_array" value="@item1.Question_ID">    <!--<label for="@ab"><span></span> @(c1++)</label>-->
+                                        </i>
+                                        <p>@item1.Option_Desc </p>
+
+                                        @if (@item1.Option_Image != null)
+                                        {
+                                            <div class="image-zoom-container voffset3">
+                                                <img class="question-image qsn-zoom" src="~/Content/Answer/@item1.Option_Image" data-zoom-image="images/question-image.jpg">
+
+
+                                                <div class="clearfix"></div>
+                                                <div class="picture pull-right" itemscope itemtype="">
+                                                    <figure itemprop="associatedMedia" itemscope itemtype="">
+                                                        <a href="~/Content/Answer/@item1.Option_Image" itemprop="contentUrl" data-size="2000x1408" data-index="0">
+                                                            <button class="btn btn-white btn-icon-white btn-icon-block btn-icon-blockleft  btn-xs pull-right">
+                                                                <i class="ion ion-android-search"></i>
+                                                                <span>Zoom</span>
+                                                            </button>
+                                                        </a>
+
+
+                                                    </figure>
+                                                </div>
+
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+
+                        </div>
+                    }
+                </div>
+                <div class="row voffset2" id="btnshow">
+                    <div class="col-md-12 res-col-btn">
+                        <div class="responsive-response">
+                            <button type="button" class="btn btn-red btn-icon-red btn-icon-block btn-icon-blockleft btn-lg clrresponse">
+                                <i class="ion ion-android-refresh"></i>
+                                <span>Clear Response</span>
+                            </button>
+                            <button type="button" class="btn btn-orange btn-icon-orange btn-icon-block btn-icon-blockleft btn-lg reviewcls">
+                                <i class="ion ion-eye"></i>
+                                <span>Review</span>
+                            </button>
+                        </div>
+                        <div class="responsive-navigator">
+                            <a type="button" class="btn btn-green btn-icon-green btn-icon-block btn-icon-blockright btn-lg pull-right Nextcls">
+                                <span>Next</span><i class="ion ion-chevron-right"></i>
+                            </a>
+                            <a type="button" class="btn btn-green btn-icon-green btn-icon-block btn-icon-blockleft btn-lg pull-right prev-btn prevcls">
+                                <i class="ion ion-chevron-left"></i>
+                                <span>Prev</span>
+                            </a>
+                        </div>
+                        </div>
+                </div>
+
+
+
+            </div>
+        </div>
+        <!-- Question Panel Ends -->
+        <!-- test guidelines start -->
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Test Guidelines
+
+                </h3>
+            </div>
+            <div class="panel-body">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+
+                <div class="content-lists voffset3">
+                    <i class="list-icon ion-android-done-all"></i>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                </div>
+                <div class="content-lists">
+                    <i class="list-icon ion-android-done-all"></i>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                </div>
+                <div class="content-lists">
+                    <i class="list-icon ion-android-done-all"></i>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                </div>
+                <div class="content-lists">
+                    <i class="list-icon ion-android-done-all"></i>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                </div>
+                <div class="content-lists">
+                    <i class="list-icon ion-android-done-all"></i>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                </div>
+                <div class="content-lists">
+                    <i class="list-icon ion-android-done-all"></i>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                </div>
+
+            </div>
+        </div>
+        <!-- test guidelines ends -->
+        <!-- Test Progress Starts -->
+        @*<div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Test Progress Status
+                        <span class="panel-options">
+                            <a href="#" class="panel-refresh">
+                                <i class="icon ti-reload"></i>
+                            </a>
+                            <a href="#" class="panel-minimize">
+                                <i class="icon ti-angle-up"></i>
+                            </a>
+                            <a href="#" class="panel-close">
+                                <i class="icon ti-close"></i>
+                            </a>
+                        </span>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="progress progress-bar-mini">
+                        <div class="progress-bar progress-bar-success right progress-bar-striped active" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+                            70% Completed
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+        <!-- Test Progress Ends -->
+
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
+
+        @if (ViewBag.final_time != null)
+        {
+            <div class="dashboard-stats countdown-timer">
+                <div class="left">
+                    <div class="countdown styled"></div>
+                    <h4>Time Remaining</h4>
+                    <span class=" given_date style colordefinition size_lg"></span>
+                </div>
+                <div class="right flatRed">
+                    <i class="ion ion-ios-alarm-outline"></i>
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <div class="dashboard-stats countdown-timer">
+                <div class="left">
+                    <div class="countdown styled"></div>
+                    <h4>Time Remaining</h4>
+                    <h2 id="timecountdown" style="font-size:20px;"></h2>
+                </div>
+                <div class="right flatRed">
+                    <i class="ion ion-ios-alarm-outline"></i>
+                </div>
+
+            </div>
+        }
+
+
+        <!-- Question Pallete Starts -->
+        <div class="panel panel-ntspl question-pallete">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Question Pallete
+                    <span class="panel-options">
+                        <a href="#" class="panel-refresh">
+                            <i class="icon ti-reload"></i>
+                        </a>
+
+                    </span>
+                </h3>
+            </div>
+            <div class="panel-body " id="anser">
+                @foreach (var item in Model.quesdtls)
+                {
+                    string quesclr = "plt" + @item.RowID;
+                    <span id="@quesclr" class="label label-default palletcls">@item.RowID</span>
+
+
+                }
+
+                <div class="badge-counters new-badge">
+                    <button class="btn btn-primary" type="button">
+                        Answered <span id="answered" class="badge"></span>
+                    </button>
+                    <button class="btn btn-warning" type="button">
+                        Awaiting Review <span id="awating" class="badge"></span>
+                    </button>
+                    <button class="btn btn-info" type="button">
+                        Not Appeared <span id="Notappeared" class="badge bg-danger"></span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+        <!-- Question Pallete Ends -->
+        <!-- Test Progress Starts -->
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Test Progress Status
+                    <span class="panel-options">
+                        <a href="#" class="panel-refresh">
+                            <i class="icon ti-reload"></i>
+                        </a>
+                        <a href="#" class="panel-minimize">
+                            <i class="icon ti-angle-up"></i>
+                        </a>
+                        <a href="#" class="panel-close">
+                            <i class="icon ti-close"></i>
+                        </a>
+                    </span>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="progress progress-bar-mini">
+                    <div class="progress-bar progress-bar-success right progress-bar-striped active" role="progressbar" id="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+
+                    </div>
+                </div>
+
+                <div class="finish-test">
+                    <button class="btn btn-red btn-lg" type="submit">Finish Test</button>
+                </div>
+            </div>
+        </div>
+        <!-- Test Progress Ends -->
+        <!-- Test Statistics Starts -->
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Test Statistics
+                    <span class="panel-options">
+                        <a href="#" class="panel-refresh">
+                            <i class="icon ti-reload"></i>
+                        </a>
+                        <a href="#" class="panel-minimize">
+                            <i class="icon ti-angle-up"></i>
+                        </a>
+                        <a href="#" class="panel-close">
+                            <i class="icon ti-close"></i>
+                        </a>
+                    </span>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row small_pie_chart">
+
+                    <div class="content-holder">
+                        <div id="market1" class="col-md-12 no_padding">
+                            <div class="ct-chart ct-golden-section chart-height website-visits" id="small_pie_chart"></div>
+                            <ul class="list-unstyled  info_section list-inline">
+                                <li>
+                                    <i class="ion ion-record flatBluec"></i> Answered
+                                </li>
+                                <li>
+                                    <i class="ion ion-record flatOrangec"></i> Awaiting Review
+                                </li>
+                                <li>
+                                    <i class="ion ion-record flatGreyc"></i> Not Appeared
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /row -->
+            </div>
+        </div>
+        <!-- Test Statistics Ends -->
+    </div>
+
+                    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="pswp__bg"></div>
+                <div class="pswp__scroll-wrap">
+                    <div class="pswp__container">
+                        <div class="pswp__item"></div>
+                        <div class="pswp__item"></div>
+                        <div class="pswp__item"></div>
+                    </div>
+                    <div class="pswp__ui pswp__ui--hidden">
+                        <div class="pswp__top-bar">
+                            <div class="pswp__counter"></div>
+                            <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                            <button class="pswp__button pswp__button--share" title="Share"></button>
+                            <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                            <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                            <div class="pswp__preloader">
+                                <div class="pswp__preloader__icn">
+                                    <div class="pswp__preloader__cut">
+                                        <div class="pswp__preloader__donut"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                            <div class="pswp__share-tooltip"></div>
+                        </div>
+                        <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+                        <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+                        <div class="pswp__caption">
+                            <div class="pswp__caption__center"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+}
+        else
+        {
+            <div class="col-md-12 questions-cont text-center">
+                <div class="ful-hi-wi">
+                    <h2>No Question Left For the test.</h2>
+                    <img src="/images/no-question.png"/>
+                </div>
+            </div>
+        }
+    </div>
+    <!-- row -->
+
+}
+@section scripts
+{
+    <script src="~/Student_assets/assets/js/chartist.min.js"></script>
+
+    <script src="~/Student_assets/assets/js/sparkline.js"></script>
+    <script src="~/Student_assets/assets/js/photoswipe.min.js"></script>
+    <script src="~/Student_assets/assets/js/photoswipe-ui-default.min.js"></script>
+    <script src="~/Student_assets/assets/js/CustomChart.js"></script>
+    <script src="~/js/jquery.countdownTimer.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            history.pushState(null, null, document.URL);
+            window.addEventListener('popstate', function () {
+                history.pushState(null, null, document.URL);
+            });
+            $(window).on('beforeunload', function() {
+                var e = $.Event('webapp:page:closing');
+                $(window).trigger(e); // let other modules determine whether to prevent closing
+                if(e.isDefaultPrevented()) {
+                    // e.message is optional
+                    return e.message || 'You have unsaved stuff. Are you sure to leave?';
+                }
+            });
+            var dt = '@ViewBag.Rem_Time';
+            var dateAr = dt.split('-');
+            var newDate = dateAr[1] + '/' + dateAr[0] + '/' + dateAr[2];
+
+            var end = new Date(dateAr[1] + '/' + dateAr[0] + '/' + dateAr[2]);
+
+            var _second = 1000;
+            var _minute = _second * 60;
+            var _hour = _minute * 60;
+            var _day = _hour * 24;
+            var timer;
+
+            function showRemaining() {
+                var now = new Date();
+                var distance = end - now;
+                if (distance < 0) {
+                    clearInterval(timer);
+                    document.getElementById('timecountdown').innerHTML = 'Count Down Ends!';
+                    $('form').trigger('submit');
+
+                }
+                if(distance < 300000)
+                {
+                    var f = document.getElementById('timecountdown');
+                    setInterval(function() {
+                        f.style.display = (f.style.display == 'none' ? '' : 'none');
+                    }, 600);
+                  
+                    document.getElementById('timecountdown').style.color='red';
+                    document.getElementById('timecountdown').style.fontWeight = 'bold';
+                }
+                var days = Math.floor(distance / _day);
+                var _hours = Math.floor((distance % _day) / _hour);
+                var _minutes = Math.floor((distance % _hour) / _minute);
+                var _seconds = Math.floor((distance % _minute) / _second);
+
+                document.getElementById('timecountdown').innerHTML = _hours + 'h ';
+                document.getElementById('timecountdown').innerHTML += _minutes +'m ';
+                document.getElementById('timecountdown').innerHTML += _seconds + 's';
+            }
+
+            timer = setInterval(showRemaining, 1000);
+        });
+
+        $(function () {
+
+            //photo swipe start
+            var $pswp = $('.pswp')[0];
+            var image = [];
+
+            $('.picture').each(function () {
+                var $pic = $(this),
+                        getItems = function () {
+                            var items = [];
+                            $pic.find('a').each(function () {
+                                var $href = $(this).attr('href'),
+                                        $size = $(this).data('size').split('x'),
+                                        $width = $size[0],
+                                        $height = $size[1];
+
+                                var item = {
+                                    src: $href,
+                                    w: $width,
+                                    h: $height
+                                }
+
+                                items.push(item);
+                            });
+                            return items;
+                        }
+
+                var items = getItems();
+
+                $.each(items, function (index, value) {
+                    image[index] = new Image();
+                    image[index].src = value['src'];
+                });
+
+                $pic.on('click', 'figure', function (event) {
+                    event.preventDefault();
+
+                    var $index = $(this).index();
+                    var options = {
+                        index: $index,
+                        bgOpacity: 0.7,
+                        showHideOpacity: true
+                    }
+
+                    var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
+                    lightBox.init();
+                });
+            });
+        }); //photo swipe end
+
+        /* Get image width */
+        function get_size(ddd) {
+            var img = new Image();
+            img.onload = function () {
+                return this.width + 'x' + this.height;
+            };
+            img.src = ddd;
+
+        }
+        
+        $(function () {
+            $('.given_date').countdowntimer({
+                startDate: "@ViewBag.TodayTime",
+                dateAndTime: "@ViewBag.final_time",
+                size: "lg",
+                timeUp: timeisUp
+            });
+
+            function timeisUp() {
+                //alert("Now your global exam started");
+                debugger
+                $('.exam').removeClass("disabled");
+                var exid = $('.exam').attr("value");
+                var time = $('.exam').attr("time");
+                var url = "/student/onlinetest/" + exid;
+                $("#startexam").find("a").attr('href', url);
+            }
+        });
+        
+    @if(Model != null)
+        {
+       <text> 
+        $(function () {
+            $('#answered').html('0');
+            $('#awating').html('0');
+
+            var napid = '@Model.quesdtls.Count()';
+            $('.qid').html('1');
+            btnshowhide();
+
+            $('#Notappeared').html(napid);
+            var owl = $('.owl-carousel').owlCarousel({
+                loop: false,
+                margin: 17,
+                touchDrag: false,
+                mouseDrag: false,
+                responsiveClass: true,
+                autoHeight: true,
+                responsive: {
+                    0: {
+                        items: 1,
+                        nav: true
+                    },
+                    600: {
+                        items: 1,
+                        nav: false
+                    },
+                    1000: {
+                        items: 1,
+                        nav: false,
+                        loop: true
+                    }
+                }
+            });
+
+            var countitm = parseInt($('#anser span.palletcls').length);
+            function btnshowhide() {
+                if($('.qid').html() == "1")
+                {
+                    $('.prevcls').hide();
+                    $('.Nextcls').show();
+                }
+                else if($('.qid').html() == countitm){
+                    $('.Nextcls').hide();
+                    $('.prevcls').show();
+                }
+                else{
+                    $('.prevcls').show();
+                    $('.Nextcls').show();
+                }
+            };
+            $('.prevcls').click(function () {
+                owl.trigger('prev.owl.carousel');
+                var id1 = $(".active").find(".childcls").attr("id");
+                var id2 = id1.split("ac");
+                var id3 = parseInt(id2[1])-1;
+
+                if(id3 == 0)
+                {
+                    id3 = countitm;
+                }
+                $('.qid').html(id3);
+                $('.clrresponse').attr("disabled", false);
+                $('.reviewcls').attr("disabled", false);
+                btnshowhide();
+            });
+            $('.Nextcls').click(function () {
+                owl.trigger('next.owl.carousel');
+                var id1 = $(".active").find(".childcls").attr("id");
+                var id2 = id1.split("ac");
+                var id3 = parseInt( id2[1])+1;
+
+                if(id3 > countitm)
+                {
+                    id3 = 1;
+                }
+
+                $('.qid').html(id3);
+                $('.clrresponse').attr("disabled", false);
+                $('.reviewcls').attr("disabled", false);
+                btnshowhide();
+            });
+            $('.palletcls').on('click', function (e) {
+                $('.clrresponse').attr("disabled", false);
+                $('.reviewcls').attr("disabled", false);
+                var myattr = $(this).text();
+                owl.trigger('to.owl.carousel', [myattr-1,0])
+                //var id = $(this).attr("id");
+                //$('div.childcls').find("#" + id).parent().addClass('active');
+
+                ////$('#' + id).show().siblings('div').hide();
+                ////$('#' + id).addClass('active');
+                $('.qid').html(myattr);
+                btnshowhide();
+            });
+            $('.panel-refresh').on('click', function (e) {
+                $owl.trigger('refresh.owl.carousel');
+
+            });
+
+
+            $('.reviewcls').on('click', function (e) {
+                $('.reviewcls').attr("disabled", true);
+
+                var btnid = $('.active').find('.rdcolor');
+                var class1 = btnid.attr('class');
+                var id1 = btnid.data('rel');
+                var id = "plt" + id1;
+
+                $("#anser").find("#" + id).removeClass('label-default');
+                $("#anser").find("#" + id).removeClass('label-primary');
+                $("#anser").find("#" + id).addClass('label-warning');
+                var id = $('#awating').html();
+                if (id == "")
+                {
+
+                    id = 0;
+                }
+                if (id >= 0) { $('#awating').text("" + id++ + " "); } else { $('#awating').html('1'); }
+
+                $('#awating').html(id);
+                reviewgraph(id)
+            });
+            $('.clrresponse').on('click', function (e) {
+                $('.clrresponse').attr("disabled", true);
+
+                var btnid = $('.active').find('.rdcolor');
+                var class1 = btnid.attr('class');
+                var id1 = btnid.data('rel');
+                var id = "plt" + id1;
+                var review =
+                $('.active').find("[data-rel='" + id1 + "']").removeAttr('checked');
+                //$("#anser").find("#" + value1).removeClass('label-default');
+                $("#anser").find("#" + id).removeClass('label-primary');
+                $("#anser").find("#" + id).addClass('label-default');
+                var id = $('#answered').text();
+                if (id > 0) { $('#answered').text("" + id - 1 + ""); } else { $('#answered').html('0'); }
+
+                if(id>0)
+                {
+                    var totalcount = @Model.quesdtls.Count();
+                    var napid = '@Model.quesdtls.Count()' - parseInt(id-1);
+                    var ansid =   $('#answered').text();
+                    var id5 = parseInt(ansid);
+                    var parcentage = Math.round(ansid / totalcount * 100);
+                    $('#progressbar').html(parcentage + '%');
+                    $("#progressbar").css("width", parcentage + '%');
+                    var review = $('#awating').text();
+                    var revid = parseInt(review);
+                    var data = {
+                        series: [id5, revid, napid]
+                    };
+
+                    var sum = function (a, b) { return a + b };
+
+                    new Chartist.Pie('#small_pie_chart', data, {
+                        labelInterpolationFnc: function (value) {
+                            return Math.round(value / data.series.reduce(sum) * 100) + '%';
+                        }
+                    })
+
+                }
+                else
+                {
+                    var napid = '@Model.quesdtls.Count()'
+
+                }
+
+                $('#Notappeared').html(napid);
+                var data = {
+                    series: [len, review, napid]
+                };
+
+                var sum = function (a, b) { return a + b };
+
+                new Chartist.Pie('#small_pie_chart', data, {
+                    labelInterpolationFnc: function (value) {
+                        return Math.round(value / data.series.reduce(sum) * 100) + '%';
+                    }
+                })
+            });
+
+        });
+
+        $(document).on('click', '.rdcolor', function () {
+            $('.clrresponse').attr("disabled", false);
+
+            var i = 0;
+            //var id = $(this).attr('id');
+            var value = $(this).data('rel');
+            var len = 0;
+
+            if ($(this).is(':checked')) {
+                //$("[data-rel='" + value + "']").not(this).prop('checked', false)
+
+                //$('.rdcolor').find("#" + value).addClass('new-class');
+                value1 = "plt" + value;
+                $("#anser").find("#" + value1).removeClass('label-default');
+                $("#anser").find("#" + value1).addClass('label-primary');
+
+                var len1 = $("input[data-rel=" + value + "]:checked").length;
+
+                GRAPH(len1);
+
+            }
+            else {
+                var len1 = $("input[data-rel=" + value + "]:checked").length;
+                if(len1 == 0 )
+                {
+                    var id = $('#answered').text();
+                    if (id > 0) { $('#answered').text("" + id - 1 + ""); } else { $('#answered').html(''); }
+                    var id1 = $('#answered').html();
+                    var id5 = parseInt(id1);
+                    var value = $(this).data('rel');
+                    value = "plt" + value;
+                    $('.rdcolor').find("#" + value).addClass('new-class');
+                    $("#anser").find("#" + value).removeClass('label-primary');
+                    $("#anser").find("#" + value).addClass('label-default');
+
+                    var napid = '@Model.quesdtls.Count()' - id1;
+                    $('#Notappeared').html(napid);
+                    var totalcount = '@Model.quesdtls.Count()';
+                    var parcentage = Math.round(id1 / totalcount * 100);
+                    $('#progressbar').html(parcentage + '%');
+                    $("#progressbar").css("width", parcentage + '%');
+
+                    var review  = parseInt($('#awating').html());
+
+                    var data = {
+                        series: [id5, review, napid]
+                    };
+
+                    var sum = function (a, b) { return a + b };
+
+                    new Chartist.Pie('#small_pie_chart', data, {
+                        labelInterpolationFnc: function (value) {
+                            return Math.round(value / data.series.reduce(sum) * 100) + '%';
+                        }
+                    })
+                }
+            }
+
+            //$('span#' + id).removeClass('label-default');
+            //$('span#' + id).closest('span').addClass('label-primary');
+            //}
+        });
+
+
+
+        function  GRAPH(len1)
+        {
+            var len = 0;
+            if (len1 == 1) {
+                for(var i=1 ;i<=@Model.quesdtls.Count(); i++)
+                {
+                    var length = $("input[data-rel=" + i + "]:checked").length;
+                    if(length>0)
+                    {
+                        len++;
+
+                    }
+
+                }
+                var review1 =  $('#awating').text();
+                if(review1 == "")
+                {
+
+                    var review = 0;
+                }
+                else{
+                    var review = parseInt(review1);
+
+                }
+
+                if (len > 0) {
+                    $('#answered').text("" + len + " ");
+                } else {
+                    $('#answered').html('');
+                }
+                var totalcount = '@Model.quesdtls.Count()';
+                var napid = '@Model.quesdtls.Count()' - len;
+                $('#Notappeared').html(napid);
+                var parcentage = Math.round(len / totalcount * 100);
+                $('#progressbar').html(parcentage + '%');
+                $("#progressbar").css("width", parcentage + '%');
+
+                var data = {
+                    series: [len, review, napid]
+                };
+
+                var sum = function (a, b) { return a + b };
+
+                new Chartist.Pie('#small_pie_chart', data, {
+                    labelInterpolationFnc: function (value) {
+                        return Math.round(value / data.series.reduce(sum) * 100) + '%';
+                    }
+                })
+            }
+
+        }
+        function reviewgraph(review)
+        {
+            var len = $('span.label-primary').length
+            var napid = '@Model.quesdtls.Count()' - len;
+            var data = {
+                series: [len, review, napid]
+            };
+
+            var sum = function (a, b) { return a + b };
+
+            new Chartist.Pie('#small_pie_chart', data, {
+                labelInterpolationFnc: function (value) {
+                    return Math.round(value / data.series.reduce(sum) * 100) + '%';
+                }
+            })
+        }
+    </text>
+        }
+    </script>
+}
+

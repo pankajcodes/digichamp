@@ -1,0 +1,118 @@
+﻿@model DigiChamps.Models.DigiChampsModel.MenuPermissionModel
+
+@{
+    ViewBag.Title = "Assign Role";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("AssignRole", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    <div class="page-content-wrap">
+        <div class="page-title">
+            <div>
+                <h1>
+                    <i class="fa fa-file-o"></i> Assign Role
+                </h1>
+
+            </div>
+        </div>
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active">@ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> Assign Role</h3>
+                    </div>
+                    <div class="box-content">
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">User Group<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @(Html.DropDownListFor(x => x.ROLE_ID, ViewBag.role as SelectList, "Please Select Role Type", new { @class = "form-control ", data_rule_required = "true", data_msg_required = "Please select user group" }))
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-content">
+                        <div style="color:red">@TempData["Message1"]</div>
+                        <div class="table-responsive">
+                            <table class="table table-advance" id="table1">
+
+                                <thead>
+                                    <tr>
+                                        <th>Sl No.</th>                                     
+                                        <th>Main Menu</th>
+                                        <th>Sub Menu</th>
+                                        <th>Select</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.menuitems != null)
+                                    {
+                                        int rowNo = 0;
+                                        foreach (var item in ViewBag.menuitems)
+                                        {
+                                            <tr>
+                                                <td>@(rowNo += 1)</td>                                           
+                                                <td>@item.Menu_Parameter1</td>
+                                                <td>@item.Menu_Parameter2</td>                                             
+                                                <td><input type="checkbox" id="chkmenu" name="chkmenu" value="@item.Menu_Key_ID" /></td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @*<div class="box-content">
+                        <div style="color:red">@TempData["Message2"]</div>
+                        <div class="table-responsive">
+                            <table class="table table-advance" id="table2">
+
+                                <thead>
+                                    <tr>
+                                        <th>Sl No.</th>
+                                        <th>Select</th>
+                                        <th>Role Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.roletype != null)
+                                    {
+                                        int rowNo = 0;
+                                        foreach (var item1 in ViewBag.roletype)
+                                        {
+                                            <tr>
+                                                <td>@(rowNo += 1)</td>                                              
+                                                <td>@item1.Role_Type_Name</td>
+                                                <td><input type="checkbox" id="chkroletype" name="chkroletype" value="@item1.Role_Type_ID" /></td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>*@
+                        
+                    </div>
+                <div class="form-group last box-tooll">
+                    <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                        <a href="@Url.Action("ViewRoleType", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                        <button id="btnSearch" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span>Submit</span> </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

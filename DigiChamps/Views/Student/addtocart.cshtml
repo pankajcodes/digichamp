@@ -1,0 +1,238 @@
+﻿@{
+    ViewBag.Title = "Cart | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+@section header{
+    <i class="menu-icons cart-icon page_header_icon"></i>
+    <span class="main-text">Cart</span>
+}
+
+      
+            <!-- Question Panel Starts -->
+            <div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Your Order Details
+                    </h3>
+                </div> 
+                 @if (ViewBag.cartitems != null)
+                    {
+                        int i = 0; int j = 0;
+                     
+                      <div class="row" id="fullcart">
+                <div class="col-md-8 questions-cont nopad-right">
+                  
+                        @foreach (var item in ViewBag.cartitems)
+                        {
+                            if (i % 4 == 0)
+                            {
+                                j = 1;
+                                @*<div class='table-cont bd-clr-1'>*@
+
+                            }
+
+
+
+                            if (i % 4 == 1)
+                            {
+                                j = 2;
+                            }
+                            @*<div class='table-cont bd-clr-2'>*@
+
+
+                            if (i % 4 == 2)
+                            {
+                                j = 3;
+                            }
+                            @*<div class='table-cont bd-clr-3'>*@
+
+
+                            if (i % 4 == 3)
+                            {
+                                j = 4;
+                            }
+
+                            <div class="panel-body cartitem" id="@item.Cart_ID">
+                                <div class="bd-clr-@j pnl-learn">
+                                    <div class="panel panel-ntspl inner-panel">
+                                        <div class="panel-heading header-style">
+                                            <h3 class="panel-title">
+                                                @item.Package_Name
+                                                <span class="panel-options studentd-slider">
+                                                    @Html.ActionLink(" ", "RemoveCartItem", "Student", new { id = @item.Cart_ID }, new { @class = "icon ti-trash", @title = "Delete Item", @onclick = "return confirm('Are you sure want to delete this cart item?')" })
+                                                    @*<a href="#" class="icon ti-trash delete" onclick="delete1();" title = "Delete Item" id="@item.Cart_ID">
+                                                <i ></i>
+                                            </a>*@
+                                                </span>
+                                            </h3>
+                                        </div>
+                                        <div class="panel-body test-panel-body pannel-padding">
+                                            <table class="table table-hover">
+                                                <tbody>
+                                                    @*<tr>
+                                                <th scope="row" class="td-width-one">Subjects</th>
+                                                <td class="right-td td-width-two">Science and Mathematics</td>
+                                            </tr>*@
+                                                    <tr>
+                                                        <th scope="row" class="td-width-one">Package Name</th>
+                                                        <td class="right-td td-width-two">@item.Package_Name</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Duration</td>
+                                                        <td class="right-td">@item.Subscripttion_Period Days</td>
+                                                    </tr>
+                                                    <tr>
+                                                        @{
+                        ViewBag.price = null;
+                        DigiChamps.Models.DigiChampsEntities dc = new DigiChamps.Models.DigiChampsEntities();
+                        int id1 = Convert.ToInt32(item.Package_ID);
+                        var dt = dc.tbl_DC_Package_Period.Where(x => x.Package_ID == id1 && x.Is_Active == true && x.Is_Deleted == false).FirstOrDefault();
+                        if (dt != null)
+                        {
+                            decimal price = Convert.ToDecimal(dt.Excluded_Price + item.Price);
+                            ViewBag.price = price;
+                        }
+                                                        }
+                                                        <td>Price</td>
+                                                        @if (ViewBag.price != null)
+                                                        {
+                                                        <td class="price-color small-bolt">Rs. @string.Format("{0:0.00}", ViewBag.price)</td>
+                                                        }
+                                                        else
+                                                        {
+                                                        <td class="price-color small-bolt">Rs. @string.Format("{0:0.00}", item.Price)</td>
+                                                        }
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                        i++;
+                        }
+                    
+                   
+
+                    @using (Html.BeginForm("ClearCart", "Student", FormMethod.Post, new { id = "cart" }))
+                    {
+                        <div class="btn-div">
+                            <button type="submit" class="btn btn-red btn-icon-red btn-icon-block btn-icon-blockleft btn-lg voffset3 btn-buttom" onclick="return confirm('Are you sure to remove all cart items?')">
+                                <i class="ion ion-trash-a"></i>
+                                <span>Clear Cart</span>
+                            </button>
+                            <a href="/Student/PackagePreview" class="btn btn-primary btn-icon-primary btn-icon-block btn-icon-blockleft voffset3 btn-buttom" id="continue_shp">
+                                <i class="ion ion-bag"></i><span>Continue Shopping</span>
+                            </a>
+
+
+                            <div class="clearfix"></div>
+                        </div>
+                    }
+                </div>
+                     
+                     <div class="col-md-4">
+            <div class="panel panel-ntspl pannel-border">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Cart Summary (@TempData["totalitem"])
+                    </h3>
+                </div>
+                <div class="panel-body pannel-padding">
+                    <div class="cart-summery">
+                        @*<div class="total-item">
+                            <p>Total Item - <span class="price-color">@TempData["totalitem"]</span></p>
+                        </div>*@
+                        <div class="total-price">
+                            <p>Total Price - <span class="price-color">Rs. @TempData["price"]</span></p>
+                        </div>
+                                    
+                        <div class="total-tax">
+                            <p>Tax Amount (@string.Format("{0:0}", ViewBag.taxper)%) - <span class="price-color">Rs. @TempData["Tax"]</span></p>
+                        </div>
+                        @if (TempData["discountprice"] != null)
+                        {
+                            <div class="total-price">
+                                <p>Discount (INR) - <span class="price-color">Rs. - @TempData["discountprice"]</span></p>
+                            </div>
+                        }  
+                        else
+                        {
+                            <div class="total-price">
+                                <p>Discount (%) - <span class="price-color"> @TempData["discountprice1"]</span></p>
+                            </div>
+                        }
+                    </div>
+                    <div class="grand-total1">
+                        <p>Total Payable - <span>Rs. @TempData["payblamt"]</span></p>
+                    </div>
+                    <div class="place-div">
+                        @*<button class="btn btn-primary btn-lg voffset3 btn-buttom btn-width">Checkout</button>*@
+                        <a href="@Url.Action("checkout","student")" class="btn btn-primary btn-lg voffset3 btn-buttom btn-width">
+                            Checkout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+                          </div>
+                 }
+                 else
+                 {
+             <div class="row" id="emptycart" >
+        <div class="col-md-12 questions-cont text-center">
+            <div class="ful-hi-wi">
+			<div class="no-content-notification voffset3">There are no items in your cart.</div>
+              
+                <img  class="img-responsive voffset3" src="~/Student_assets/images/cartimg.png" />
+                <div class="foraddbtn">
+                    <a href="/student/packagepreview"><button type="button" class="btn btn-primary addbtn">BUY NOW</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+                     
+                     
+                 }
+            <!-- Question Panel Ends -->
+        </div>
+
+
+   
+
+
+    
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $('#cart').on('submit', function (e) {
+                debugger;
+                $(".loader-ajax-container").css("display", "block");
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "/student/clearcart",
+                    data: {},
+
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        if (data == "success") {
+                            $.noty.closeAll();
+                            generate('top', 'success', "All items are removed from your cart, add some item to your cart")
+                            //location.href = "/Student/PackagePreview";
+                            $('#fullcart').hide();
+                            $('#emptycart').show();
+                        }
+                        setTimeout(function () { }, 3000);
+                        $(".loader-ajax-container").css("display", "none");
+                    }
+                });
+            });
+            return false;
+        });
+    </script>
+}

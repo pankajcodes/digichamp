@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "User Creation";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@using (Html.BeginForm("UserCreation", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form"  }))
+{
+
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i>Create User</h3>
+                    </div>
+                    <div class="box-content">
+                            <div class="form-group">
+                                <label for="textfield3" class="col-sm-3 col-lg-2 control-label">Teacher<span class="asterisk">*</span></label>
+                                <div class="col-sm-6 col-lg-6 controls">
+                                    <select class="form-control chosen" name="teacher_nm" id="teacher_nm" tabindex="1" data-rule-required="true" data-msg-required="Please select teacher name">
+                                        <option value="">Please Select Teacher</option>
+                                        @if (ViewBag.teacher_details != null)
+                                        {
+                                            foreach (var v in ViewBag.teacher_details)
+                                            {
+                                                if (Convert.ToInt32(ViewBag.roleid)== v.Teach_ID)
+                                                    {
+                                              <option value="@v.Teach_ID" selected="selected">@v.Teacher_Name</option>
+                                                    }
+                                                else
+                                                {
+                                                    <option value="@v.Teach_ID">@v.Teacher_Name</option>
+                                                }
+                                                
+                                            }
+
+                                        }
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield3" class="col-sm-3 col-lg-2 control-label">User Name<span class="asterisk">*</span></label>
+                                <div class="col-sm-6 col-lg-6 controls">
+                                    <input type="text" name="uname" id="uname" value="@ViewBag.teacher_unames" class="form-control" data-rule-required="true" data-msg-required="Please enter user name">
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password3" class="col-sm-3 col-lg-2 control-label">Password<span class="asterisk">*</span></label>
+                                <div class="col-sm-6 col-lg-6 controls">
+                                    <input type="text" readonly name="password1" id="password1" value="@ViewBag.auto_pass" class="form-control">
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield3" class="col-sm-3 col-lg-2 control-label">User Type<span class="asterisk">*</span></label>
+                                <div class="col-sm-6 col-lg-6 controls">
+                                    <select class="form-control chosen" name="roll_nm" id=" roll_nm" tabindex="1" data-rule-required="true" data-msg-required="Please select user type">
+                                        <option value="">Select User</option>
+                                        @if (ViewBag.roletype != null)
+                                        {
+                                            foreach (var v in ViewBag.roletype)
+                                            {
+                                                <option value="@v.ROLE_CODE">@v.ROLE_TYPE</option>
+                                            }
+
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            @*<input type="hidden" value="@ViewBag.editid" name="smtpid" id="smtpid" />*@
+                            <div class="form-group last">
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
+                                    <a href="@Url.Action("AdminDashboard", "Admin")" class="btn btn-inverse dropdown-toggle"><i class="fa fa-caret-left"></i> Back </a>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+@section scripts
+{
+    <script>
+        $('#teacher_nm').change(function () {
+            if ($('#teacher_nm').val() != null) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/getEmailid",
+                    data: { id: $('#teacher_nm').val() },
+                    traditional: true,
+                    success: function (data) {
+                        $('#uname').val(data);
+                    }
+                });
+            }
+        });
+    </script>
+}

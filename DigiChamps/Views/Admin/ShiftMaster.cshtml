@@ -1,0 +1,95 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsShiftModel
+@{
+    ViewBag.Title = "Shift Master";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+    <div class="page-content-wrap">
+        <div class="page-title">
+            <div>
+                <h1>
+                    <i class="fa fa fa-user"></i> Teacher
+                    <div class="btn-toolbar pull-right">
+                        <div class="box-tool">
+                            <a class="btn btn-primary show-tooltip" href="/Admin/registration" data-toggle="tooltip" data-placement="top" title="User Registration"><span>U</span></a>
+                            <a class="btn btn-primary show-tooltip" href="/Admin/ViewAssignedCourse" data-toggle="tooltip" data-placement="top" title="Assign Course"><span>A</span></a>
+                            @*<a class="btn btn-inverse" href="/Admin/ShiftMaster"><span class="shock-edu-papers show-tooltip" data-toggle="tooltip" data-placement="top" title="Shift Creation"></span></a>*@
+                            <a class="btn btn-primary show-tooltip" href="/Admin/CreateShift" data-toggle="tooltip" data-placement="top" title="Teacher Shift"><span>T</span></a>
+                        </div>
+                    </div>
+                </h1>
+
+            </div>
+        </div>
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active">@ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+
+                    <div class="box-title">
+                        <h3><i class="fa fa-file-text"></i>Shift Details</h3>
+                        <div class="box-tool box-tooll">
+                            <a href="/Admin/Admin_Shift" class="btn btn-primary"><i class="fa fa-plus"></i><span>Add New</span> </a>
+                        </div>
+                    </div>
+
+                    <div class="box-content">
+
+                        <div class="table-responsive voffset3">
+                            <table class="table table-advance" id="table1">
+
+                                <thead>
+                                    <tr>
+                                        <th>Sl No.</th>
+                                        <th hidden="hidden">Id</th>
+                                        <th>Shift Name</th>
+                                        <th>From Time</th>
+                                        <th>To Time</th>
+                                        <th style="width: 20%;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.Shift_Timing != null)
+                                    {
+                                        int rowNo = 0;
+                                        foreach (var item in ViewBag.Shift_Timing)
+                                        {
+                                            <tr>
+                                                <td>@(rowNo += 1)</td>
+                                                <td hidden="hidden">@item.ShiftMst_ID</td>
+                                                <td>@item.Shift_Name</td>
+                                                <td>@item.Shift_From_Time</td>
+                                                <td>@item.Shift_To_Time</td>
+                                                <td>
+                                                    @Html.ActionLink(" ", "EditShift", "Admin", new { id = @item.ShiftMst_ID }, new { @class = "btn btn-sm btn-primary show-tooltip fa fa-edit", @title = "Edit" })
+
+
+                                                    @Html.ActionLink(" ", "DeleteShift", "Admin", new { id = @item.ShiftMst_ID }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the shift?')", @data_original_title = "Delete", @title = "Delete" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>

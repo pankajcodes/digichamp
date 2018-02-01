@@ -1,0 +1,217 @@
+﻿@{
+    ViewBag.Title = "View Ticekts";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-title">
+                <h3><i class="fa fa-ticket"></i>Search Ticket By Date</h3>
+            </div>
+            <div class="box-content">
+                <div class="page-content-wrap">
+                    <div class="row">
+                        <div class="">
+                            @using (Html.BeginForm("Ticket_report", "Teacher", FormMethod.Post, new { @class = "form-horizontal" }))
+                            {
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="textfield5" class="col-sm-3 col-lg-5 control-label">From Date<span class="asterisk">*</span></label>
+                                        <div class="col-sm-9 col-lg-7 controls">
+                                            <input type="text" placeholder="@DateTime.Now.ToShortDateString()" autocomplete="off" data-rule-required="true" data-msg-required="Please select From date" name="f_Date" class="datepicker form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="textfield5" class="col-sm-3 col-lg-5 control-label">To Date<span class="asterisk">*</span></label>
+                                        <div class="col-sm-9 col-lg-7 controls">
+                                            <input type="text" placeholder="@DateTime.Now.ToShortDateString()" autocomplete="off" data-rule-required="true" data-msg-required="Please select To date" name="t_Date" class="datepicker form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group last box-tooll">
+                                        <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                            <button id="btnadd" type="submit" class="btn btn-primary"><i class="fa fa-search"></i><span> Search</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<form id="Ticke_form" class="form-horizontal">
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-table"></i>View Ticekts</h3>
+                        <div class="box-tool box-tooll">
+                            <a class="btn btn-large btn-primary" title="Refresh" href="/Teacher/Viewticekts"><i class="fa fa-refresh"></i> <span>Refresh</span></a>
+                            <a class="btn btn-large btn-primary" title="My tickets" href="/Teacher/mytickets"><i class="fa fa-filter"></i> <span>My tickets</span></a>
+                        </div>
+                    </div>
+                    <div class="box-content">
+                        <div class="btn-toolbar pull-right clearfix">
+                           @* <div class="btn-group">
+                                <a class="btn btn-circle show-tooltip" title="Refresh" href="/Teacher/Viewticekts"><i class="fa fa-refresh"></i></a>
+        <a class="btn btn-circle show-tooltip" title="My tickets" href="/Teacher/mytickets"><i class="fa fa-filter"></i></a>
+    </div>*@
+                        </div>
+                        <br /><br />
+                        <div class="clearfix"></div>
+                        <div class="table-responsive" style="border:0">
+                            <table class="table table-advance table-hover" id="table1">
+                                <thead>
+                                    <tr>
+                                        <th hidden>Sl no</th>
+                                        <th>Ticket No.</th>
+                                        <th>Student Name</th>
+                                        <th>Board</th>
+                                        <th>Class</th>
+                                        <th>Created Date</th>
+                                        <th>Assign To</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.Ticket != null)
+                                    {
+                                    int i=0;
+                                        foreach (var item in ViewBag.Ticket)
+                                        {
+                                            <tr>
+                                                <td hidden>@(i+=1)</td>
+                                              <td><a href="#" class="blue" value="@item.Ticket_ID">@item.Ticket_No</a></td>
+                                                <td>@item.Customer_Name</td>
+                                                <td>@item.Board_Name</td>
+                                                <td>@item.Class_Name</td>
+                                                <td>@item.Inserted_Date</td>
+                                                @if (item.Teacher_Name != null)
+                                                {
+                                                    <td>@item.Teacher_Name</td>
+                                                }
+                                                else
+                                                {
+                                                    <td><span class="label label-info">No Teacher Assigned</span></td>
+                                                }
+                                                @{
+                                            string sta = Convert.ToString(@item.Status);
+                                                }
+                                                @if (sta == "O")
+                                                {
+                                                    <td title="Open"><span class="label label-success">Open</span></td>
+                                                }
+                                                @if (sta == "R")
+                                                {
+                                                    <td title="Rejected"><span class="label label-danger">Rejected</span></td>
+
+                                                }
+                                                @if(sta=="C")
+                                                {
+                                                    <td title="Click To Reopen"><span class="label label-yellow">Close</span></td>
+                                                }
+                                                @if (sta == "D")
+                                               {
+                                                   <td title="Overdue"><span class="label label-important">Overdue</span></td>
+                                               }
+                                                <td>
+
+                                                    @Html.ActionLink(" ", "ViewTickectDetail", "Teacher", new { id = @item.Ticket_ID }, new { @class = "btn btn-sm btn-primary show-tooltip fa fa-eye", @title = "View Ticket" })                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</form>
+
+<div id="modal_3" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel2"><i class="fa fa-exclamation-triangle"></i>Message</h3>
+            </div>
+            <div class="modal-body">
+                <h5></h5>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_4" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel2"><i class="fa fa-exclamation-triangle"></i> Ticket Details</h3>
+            </div>
+            <div class="modal-body">
+                <label for="textfield5" class="control-label">
+                    Question<span class="asterisk">*</span>
+                </label>
+                <p id="Ticket_p"></p>
+
+                <label for="textfield5" class="control-label">
+                    Created on<span class="asterisk">*</span>
+                </label><p id="Ticket_d"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*}*@
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $(".blue").click(function () {
+                debugger;
+                $.ajax({
+                    type: 'POST',
+                    url: "/Teacher/tooltip_ticket_details",
+                    data: { id: $(this).attr('value') },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data[0] == "No data found") {
+                            $("#modal_4 .modal-body #Ticket_p").html(data[0]);
+                            $("#modal_4 .modal-body #Ticket_d").html(data[0]);
+                            $("#modal_4").modal("show");
+                        } else {
+                            $("#modal_4 .modal-body #Ticket_p").html(data[0]);
+                            $("#modal_4 .modal-body #Ticket_d").html(data[1]);
+                            $("#modal_4").modal("show");
+                        }
+
+                    }
+                });
+            });
+        });
+    </script>
+    }

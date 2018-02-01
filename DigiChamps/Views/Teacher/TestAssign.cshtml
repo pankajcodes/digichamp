@@ -1,0 +1,151 @@
+﻿@model IEnumerable<DigiChamps.Models.SP_DC_Startegic_Report_Result>
+
+@{
+    ViewBag.Title = "Test assign";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+<!--page specific css styles-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-title">
+                <h3><i class="fa fa-calendar"></i>Test Assign</h3>
+            </div>
+            <div class="box-content">
+                <div class="row">
+                    @using (Html.BeginForm("TestAssign", "Teacher", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", id="validation-form" }))
+                    {
+                        <div class="col-md-12" style="padding:20px 0">
+                            <!-- BEGIN Teacher EVENTS PORTLET-->
+                            <div class="form-group">
+                                <label class="col-sm-3 col-lg-2 control-label">Exam Name</label>
+                                <div class="col-sm-6 col-lg-8 controls">
+                                    <select id="event_priority" name="Teacher_name" data-rule-required="true" data-msg-required="Please select Exam" data-placeholder="Select Teacher" class="col-md-12 chosen form-control">
+                                        <option value="">Select Exam Type</option>
+                                        @if (@ViewBag.ExamType != null)
+                                        {
+                                            foreach (var v in ViewBag.ExamType)
+                                            {
+                                                <option value="@v.E_ID">@v.Exam_Type</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 col-lg-2 controls">
+                                    <input type="submit" id="event_add" class="btn btn-primary" value="Search">
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="col-md-12">
+                        <table class="table table-advance" id="table1">
+                            <thead>
+                                <tr>
+                                    <th>Sl No.</th>
+                                    <th>Exam Name</th>
+                                    <th>Student Name</th>
+                                    <th>Subject Name</th>
+                                    <th>Chapter Name</th>
+                                    <th>Assignment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.ExamAssign != null)
+                                {
+                                    int rowNo = 0;
+                                    foreach (var item in  ViewBag.ExamAssign)
+                                    {
+                                        <tr>
+                                           
+                                            <td>@(rowNo += 1)</td>
+                                            <td>@item.Exam_Name</td>
+                                            <td>@item.Customer_Name</td>
+                                            <td>@item.Subject_Name</td>
+                                            <td>@item.Chapter_Name</td>
+                                            <td><a href="javascript:void(0);" class="anchorDetail" id="@item.Exam_ID" data-id="@item.Regd_ID">Assign</a></td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:140%">
+
+            <form id="modal_form">
+                <div id='myModalContent'></div>
+            </form>
+</div>
+    </div>
+
+</div>
+
+@section scripts{
+<script>
+
+    var TeamDetailPostBackURL1 = '/Teacher/Vwtestdtls';
+    $(document).ready(function () {
+        var t_sum = 0;
+        $(".anchorDetail").click(function () {
+            var $buttonClicked = $(this);
+            var id = $buttonClicked.attr('data-id');
+            var id1 = $buttonClicked.attr('id');
+            $.ajax({
+                type: "GET",
+                url: TeamDetailPostBackURL1,
+                contentType: "application/json; charset=utf-8",
+                data: { id: id, id1: id1 },
+                datatype: "json",
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+                    $('.total_qstn').each(function () {
+                        t_sum += Number($(this).val());
+                    });
+                    $('.nques').attr('max', t_sum);
+                },
+                error: function () {
+                    alert("Dynamic content load failed.");
+                }
+            });
+        });
+
+        $('.modal').on('change', '.nques', function () {
+            var num = $(this).val();
+            $(this).parent().closest('tr').find(".pow").attr('max', num);
+        });
+        $("#modal_form").submit(function (e) {
+            debugger
+            if ($(this).valid()) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Teacher/Vwtestdtls",
+                    contentType: "application/json; charset=utf-8",
+                    data: $(this).serialize(),
+                    datatype: "json",
+                    success: function (data) {
+                        $('#myModal').modal('hide');
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        });
+
+    });
+
+</script>
+
+}

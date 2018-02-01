@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Percentage Entry";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("Percentage_entry", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    <div class="page-content-wrap">
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active">@ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        @if (ViewBag.pagetitle != null)
+                        {
+                            <h3><i class="fa fa-file"></i> @ViewBag.pagetitle</h3>
+                        }
+                    </div>
+                    <div class="box-content">
+                             <div class="form-group voffset3">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Start Percentage<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <input type="number" name="start" data-rule-required="true" data-msg-required="Please enter start percentage" class="form-control" min="0" max="100" />
+                            </div>
+                        </div>
+                        <div class="form-group voffset3">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">End Percentage<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <input type="number" data-rule-required="true" data-msg-required="Please enter end percentage" name="end" class="form-control" min="0" max="100" />
+                            </div>
+                        </div>
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("percentage", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i><span>  Back</span>  </a>
+                                <button id="btnSearch" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span>Submit</span> </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+}

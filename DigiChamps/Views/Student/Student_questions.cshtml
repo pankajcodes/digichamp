@@ -1,0 +1,197 @@
+﻿@{
+    ViewBag.Title = "My Questions";
+    Layout = "~/Views/Shared/Student_layout_View1.cshtml";
+}
+
+<form id="Ticke_form" class="form-horizontal">
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-table"></i>My Qusetions</h3>
+                        <div class="box-tool">
+                            <a title="Ask question" class="btn btn-primary" href="/Student/Askdoubt">Ask Question<i class="fa fa-question"></i></a>
+                        </div>
+                    </div>
+                    <div class="box-content">
+                        <div class="btn-toolbar pull-right clearfix">
+                            <div class="btn-group">
+                                <a class="btn btn-circle show-tooltip" title="Refresh" href="/Student/Student_questions"><i class="fa fa-refresh"></i></a>
+                            </div>
+                        </div>
+                        <br /><br />
+                        <div class="clearfix"></div>
+                        <div class="table-responsive" style="border:0">
+                            <table class="table table-advance table-hover" id="table1">
+                                <thead>
+                                    <tr>
+                                        <th>Question Number</th>
+                                        <th>Question</th>
+                                        <td>Subject</td>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.studentallquestion != null)
+                                    {
+
+                                        foreach (var item in ViewBag.studentallquestion)
+                                        {
+                                            <tr>
+                                                <td>@item.Ticket_No</td>
+                                                <td>@item.Question</td>
+                                                <td>@item.Subject</td>
+                                                <td>
+                                                    @Html.ActionLink(" ", "AnswerTicket", "Student", new { id = @item.Ticket_ID }, new { @class = "btn btn-sm btn-success show-tooltip fa fa-check", @title = "See answer and reply" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</form>
+
+<div id="modal_3" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel2"><i class="fa fa-exclamation-triangle"></i>Message</h3>
+            </div>
+            <div class="modal-body">
+                <h5></h5>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_4" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel2"><i class="fa fa-exclamation-triangle"></i>Ticket Details</h3>
+            </div>
+            <div class="modal-body">
+                <label for="textfield5" class="control-label">
+                    Question <span class="asterisk">*</span>
+                </label>
+                <p id="Ticket_p"></p>
+
+                <label for="textfield5" class="control-label">
+                    Created on <span class="asterisk">*</span>
+                </label><p id="Ticket_d"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*}*@
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#btnSearch").click(function () {
+                var tb = $(this).attr('title');
+                var sel = false;
+                var ch = $('#table1').find('tbody input[type=checkbox]');
+                var c = confirm('Continue delete?');
+                if (c) {
+
+                    if ($('#table1').find('tbody input[type=checkbox]').is(':checked')) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "/Admin/Delete_ALLTickets",
+                            data: $('#Ticke_form').serialize(),
+                            success: function (data) {
+                                if (data == "1") {
+                                    location.href = "/Admin/Ticket";
+                                    $("#modal_3 .modal-body h5").html("Selected Ticket Deleted.");
+                                    $("#modal_3").modal("show");
+
+                                } else {
+                                    $("#modal_3 .modal-body h5").html("Something went wrong.");
+                                    $("#modal_3").modal("show");
+                                }
+                            }
+                        });
+
+
+                    } else {
+                        $("#modal_3 .modal-body h5").html("No data Selected.");
+                        $("#modal_3").modal("show");
+                    }
+
+                }
+            })
+            $("#btnassign").click(function () {
+                if ($('#table1').find('tbody input[type=checkbox]').is(':checked')) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "/Admin/Bulk_Assign_Tickets",
+                        dataType: "json",
+                        data: $('#Ticke_form').serialize(),
+                        success: function (data) {
+                            if (data == "1") {
+                                location.href = "/Admin/Ticket";
+                                $("#modal_3 .modal-body h5").html("Ticket Assigned Successfully.");
+                                $("#modal_3").modal("show");
+
+                            } else if (data == "2") {
+                                $("#modal_3 .modal-body h5").html("Please select Teacher.");
+                                $("#modal_3").modal("show");
+                            }
+                            else {
+                                $("#modal_3 .modal-body h5").html("Something went wrong.");
+                                $("#modal_3").modal("show");
+                            }
+                        }
+                    });
+                }
+                else {
+                    $("#modal_3 .modal-body h5").html("Please select data.");
+                    $("#modal_3").modal("show");
+                }
+            })
+
+
+
+            $(".blue").mouseenter(function () {
+
+                $.ajax({
+                    type: 'POST',
+                    url: "/Admin/tooltip_ticket_details",
+                    data: { id: $(this).attr('value') },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data[0] == "No data found") {
+                            $("#modal_4 .modal-body #Ticket_p").html(data[0]);
+                            $("#modal_4 .modal-body #Ticket_d").html(data[0]);
+                            $("#modal_4").modal("show");
+                        } else {
+                            $("#modal_4 .modal-body #Ticket_p").html(data[0]);
+                            $("#modal_4 .modal-body #Ticket_d").html(data[1]);
+                            $("#modal_4").modal("show");
+                        }
+
+                    }
+                });
+            });
+        });
+    </script>
+}

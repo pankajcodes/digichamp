@@ -1,0 +1,578 @@
+﻿@model DigiChamps.Models.SP_DC_Assign_Batch_Details_Result
+@{
+    ViewBag.Title = "Batch Assign";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("AddBatchAssign", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    <div class="page-content-wrap">
+        <div class="page-title">
+            <div>
+                <h1>
+                    <i class="fa fa-graduation-cap"></i> Academic
+                    <div class="btn-toolbar pull-right">
+                        <div class="box-tool">
+                            <a class="btn btn-primary show-tooltip" href="/Admin/BoardMaster" data-toggle="tooltip" data-placement="top" title="Board"><span>B</span></a>
+                            <a class="btn btn-primary show-tooltip" href="/Admin/ClassMaster" data-toggle="tooltip" data-placement="top" title="Class" data-original-title="Class"><span>C</span></a>
+                            <a class="btn btn-primary show-tooltip" href="/Admin/SubjectMaster" data-toggle="tooltip" data-placement="top" title="Subject"><span>S</span></a>
+                            <a class="btn btn-primary show-tooltip" href="/Admin/ChapterMaster" data-toggle="tooltip" data-placement="top" title="Chapter"><span>C</span></a>
+                            <a class="btn btn-primary show-tooltip" href="/Admin/Topics" data-toggle="tooltip" data-placement="top" title="Topics"><span>T</span></a>
+                            <a class="btn btn-primary show-tooltip" href="/Admin/ShowTopicStartegic" data-toggle="tooltip" data-placement="top" title="Topic Startegic"><span>T</span></a>
+                            <a class="btn btn-primary show-tooltip" href="/Admin/CentreMaster" data-toggle="tooltip" data-placement="top" title="Centre"><span>C</span></a>
+                            @*<a class="btn btn-primary show-tooltip" href="/Admin/BatchMaster" data-toggle="tooltip" data-placement="top" title="Batch"><span>B</span></a>*@
+                            <a class="btn btn-primary show-tooltip" href="/Admin/Power" data-toggle="tooltip" data-placement="top" title="Power"><span>P</span></a>
+
+                        </div>
+                    </div>
+                </h1>
+
+            </div>
+        </div>
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active">@ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+
+                        <h3><i class="fa fa-file"></i>Assign Batch Teacher</h3>
+
+                        @Html.HiddenFor(x => x.Batch_Assign_Id, new { @id = "bid" })
+                    </div>
+                    <div class="box-content">
+                        <form action="#" class="form-horizontal form-bordered form-row-stripped">
+                            <div class="form-group voffset3">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Board<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @if (ViewBag.boarddetails == null)
+                                  {
+                                        @(Html.DropDownListFor(x => x.Board_Id, ViewBag.Board_Id as SelectList, "Please Select Board", new { @class = "form-control", @id = "ddlboard", data_rule_required = "true", data_msg_required = "Please enter board" }))
+                                        @Html.HiddenFor(x => x.Board_Id, new { Value = @ViewBag.Boardid })
+                                  }
+                                  else
+                                  {
+                                        @(Html.DropDownListFor(x => x.Board_Id, ViewBag.boarddetails as SelectList, "Please Select Board", new { @class = "form-control", @id = "ddlboard", data_rule_required = "true", data_msg_required = "Please enter board" }))
+                                        @Html.HiddenFor(x => x.Board_Id, new { Value = @ViewBag.Boardid })
+
+                                  }
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Class<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+
+                                    <select class="form-control" data-rule-required="true" data-msg-required="Please select class name" id="ddlclass" name="ddlclass">
+                                        <option value="">Please Select Class</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Subject<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <select class="form-control" data-rule-required="true" data-msg-required="Please select subject name" id="ddlsubject" name="ddlsubject">
+                                        <option value="">Please Select Subject</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Batch_Name<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @{
+                                        string typ = "-";
+                                    }
+
+                                    <select class="form-control" data-rule-required="true" data-msg-required="Please select batch name" id="Batch_Name" name="Batch_Id">
+                                        <option value="">Please Select Batch</option>
+                                       
+                                       
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Teacher's Name <span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @*<input type="hidden" value="@ViewBag.Teachername" name="Teacher_ID" />*@
+
+                                    <select class="form-control" data-rule-required="true" data-msg-required="Please select teacher name" id="Teacher_Name" name="Teacher_Id">
+                                        <option value="">Please Select Teacher Name</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+
+                          @if (Convert.ToInt32(ViewBag.batch)== 0)
+                            {
+                                <div class="form-group last box-tooll box-tooll">
+                                    <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                        <a class="btn btn-primary" title="Back To List" href="/Admin/TeacherBatchAssign"><i class="fa fa-undo"></i> <span>Back</span></a>
+                                        <button id="btnSearch" type="submit" class="btn btn-primary btn-success" ><i class="fa fa-check green-i"></i> <span>Submit</span></button>
+                                       
+                                    </div>
+                                </div>
+
+                            }
+                        </form>
+
+                    </div>
+                </div>
+
+
+               
+            </div>
+        </div>
+    </div>
+
+}
+
+@using (Html.BeginForm("AddBatchAssign_stu", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+<div class="box">
+    <div class="box-title">
+
+        <h3><i class="fa fa-file"></i>Batch Students</h3>
+    </div>
+    <div class="box-content">
+
+
+        
+            <div class="form-group voffset3">
+                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">BatchName_Teacher_Subject<span class="asterisk">*</span></label>
+                <div class="col-sm-9 col-lg-7 controls">
+                    <select class="form-control" data-rule-required="true" data-msg-required="Please select batch name" id="Batch_teach_Id" name="Batch_teach_Id">
+                        <option value="">Please Select Batch</option>
+                        @foreach (var v in ViewBag.Batch_Assignid)
+                        {
+                            if (ViewBag.Batch_Assignids != null)
+                            {
+                                if (Convert.ToString(ViewBag.Batch_Assignids) == Convert.ToString(@v.Batch_Assign_Id))
+                                {
+                                    
+                                    <option value="@v.Batch_Assign_Id" selected>
+                                @{
+                            DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                            int subject_id = Convert.ToInt32(v.Subject_Id);
+                            int teacher_id = Convert.ToInt32(v.Teach_ID);
+                            int batch_id = Convert.ToInt32(v.Batch_Id);
+                            var subject = DbContext.tbl_DC_Subject.Where(x => x.Subject_Id == subject_id).FirstOrDefault();
+                            var tecaher = DbContext.tbl_DC_Teacher.Where(x => x.Teach_ID == teacher_id).FirstOrDefault();
+                            var batch = DbContext.tbl_DC_Batch.Where(x => x.Batch_Id == batch_id).FirstOrDefault();
+                            int center = Convert.ToInt32(batch.Centre_Id);
+                            var cent = DbContext.tbl_DC_Centre.Where(x => x.Centre_Id == center).FirstOrDefault();
+                                }
+                                @batch.Batch_Name (@batch.Batch_Code) - @tecaher.Teacher_Name - @subject.Subject- @cent.Centre_Name
+                            </option>
+                                }
+                                else
+                                {
+                                     <option value="@v.Batch_Assign_Id">
+                                @{
+                            DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                            int subject_id = Convert.ToInt32(v.Subject_Id);
+                            int teacher_id = Convert.ToInt32(v.Teach_ID);
+                            int batch_id = Convert.ToInt32(v.Batch_Id);
+                            var subject = DbContext.tbl_DC_Subject.Where(x => x.Subject_Id == subject_id).FirstOrDefault();
+                            var tecaher = DbContext.tbl_DC_Teacher.Where(x => x.Teach_ID == teacher_id).FirstOrDefault();
+                            var batch = DbContext.tbl_DC_Batch.Where(x => x.Batch_Id == batch_id).FirstOrDefault();
+                            int center = Convert.ToInt32(batch.Centre_Id);
+                            var cent = DbContext.tbl_DC_Centre.Where(x => x.Centre_Id == center).FirstOrDefault();
+                                }
+                                @batch.Batch_Name (@batch.Batch_Code) - @tecaher.Teacher_Name - @subject.Subject- @cent.Centre_Name
+                            </option>
+                                }
+                                
+                            }
+                            else
+                            {
+                                <option value="@v.Batch_Assign_Id">
+                                @{
+                            DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                            int subject_id = Convert.ToInt32(v.Subject_Id);
+                            int teacher_id = Convert.ToInt32(v.Teach_ID);
+                            int batch_id = Convert.ToInt32(v.Batch_Id);
+                          
+                            var subject = DbContext.tbl_DC_Subject.Where(x => x.Subject_Id == subject_id).FirstOrDefault();
+                            var tecaher = DbContext.tbl_DC_Teacher.Where(x => x.Teach_ID == teacher_id).FirstOrDefault();
+                            var batch = DbContext.tbl_DC_Batch.Where(x => x.Batch_Id == batch_id).FirstOrDefault();
+                            int center = Convert.ToInt32(batch.Centre_Id);
+                            var cent = DbContext.tbl_DC_Centre.Where(x => x.Centre_Id == center).FirstOrDefault();
+
+                                }
+                                @batch.Batch_Name (@batch.Batch_Code) - @tecaher.Teacher_Name - @subject.Subject - @cent.Centre_Name
+                              </option>
+                            }
+                            
+                        }
+
+                    </select>
+                </div>
+
+            </div>
+            <div class="table-responsive" hidden>
+                <table class="table" id="table1" >
+                    <thead>
+                        <tr>
+                            <th>Sl No.</th>
+                            <th>Student Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Class</th>
+                            <th>Select</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ans_body">
+                        @*@if (ViewBag.batch_data != null)
+                            {
+                                int row = 1;
+                                if ((ViewBag.batch_data).Count > 0)
+                                {
+                                    foreach (var v in ViewBag.batch_data)
+                                    {
+                                    <tr>
+                                        <td>@(row+1)</td>
+                                        <td>@v.Customer_Name</td>
+                                        <td>@v.Mobile</td>
+                                        <td>@v.Email</td>
+                                        <td>@v.Class_Name</td>
+                                        <td><input type='checkbox' name='chk_Id' value='@v.Regd_ID' checked></td>
+                                    </tr>
+                                    }
+                                }
+                            }*@
+                    </tbody>
+                </table>
+            </div>
+       
+        <div class="form-group last box-tooll">
+            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2 box-tooll">
+                <a class="btn btn-primary" title="Back To List" href="/Admin/TeacherBatchAssign"><i class="fa fa-undo"></i> <span>Back</span></a>
+                @if (Convert.ToInt32(ViewBag.batch) == 0)
+                {
+                    <button id="btnSearch" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i> <span>Submit</span></button>
+                }
+
+            </div>
+        </div>
+
+      
+        
+    </div>
+</div>
+}
+@section scripts{
+
+    <script>
+        $('#ddlboard').change(function () {
+            if ($('#ddlclass').closest('.form-group').find('.ajax-loader').length) {
+                // do nothing
+            }
+            else {
+                $('#ddlclass').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+            }
+            $('#ddlclass').closest('.form-group').addClass('display-loader');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllClass",
+                data: { brdId: $('#ddlboard').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta = "<select id='ddlclass'>";
+                    sta = sta + '<option value="">Please Select Class</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    sta = sta + '</select>';
+                    $('#ddlclass').html(sta);
+                    setTimeout(function () {
+                        $('#ddlclass').closest('.form-group').removeClass('display-loader');
+                    }, 800);
+                }
+            });
+        });
+
+
+
+
+        $('#ddlclass').change(function () {
+            if ($('#ddlsubject').closest('.form-group').find('.ajax-loader').length) {
+                // do nothing
+            } else {
+                $('#ddlsubject').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+            }
+            $('#ddlsubject').closest('.form-group').addClass('display-loader');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllSubject",
+                data: { ClsId: $('#ddlclass').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta1 = "<select id='ddlsubject'>";
+                    sta1 = sta1 + '<option value="">Please Select Subject</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta1 = sta1 + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    sta1 = sta1 + '</select>';
+                    $('#ddlsubject').html(sta1);
+                    setTimeout(function () {
+                        $('#ddlsubject').closest('.form-group').removeClass('display-loader');
+                    }, 800);
+                }
+            });
+        });
+
+        $('#ddlsubject').change(function () {
+            if ($('#Batch_Name').closest('.form-group').find('.ajax-loader').length) {
+                // do nothing
+            } else {
+                $('#Batch_Name').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+            }
+            $('#Batch_Name').closest('.form-group').addClass('display-loader');
+
+            if ($('#Teacher_Name').closest('.form-group').find('.ajax-loader').length) {
+                // do nothing
+            } else {
+                $('#Teacher_Name').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+            }
+            $('#Teacher_Name').closest('.form-group').addClass('display-loader');
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllTeacher_subwise",
+                data: { subid: $('#ddlsubject').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    debugger;
+                    var sta1 = "<select id ='Teacher_Name'>";
+                    sta1 = sta1 + '<option value="">Please Select Teacher</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta1 = sta1 + '<option value=' + data[i].Teach_ID + '>' + data[i].Teacher_Name + '</option>';
+                    }
+                    sta1 = sta1 + '</select>';
+                    $('#Teacher_Name').html(sta1);
+                    //appendtable();
+                    setTimeout(function () {
+                        $('#Teacher_Name').closest('.form-group').removeClass('display-loader');
+                    }, 800);
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllBatch",
+                data: { Subid: $('#ddlsubject').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta1 = "<select id ='Batch_Name'>";
+                    sta1 = sta1 + '<option value="">Please Select Batch</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta1 = sta1 + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    sta1 = sta1 + '</select>';
+                    $('#Batch_Name').html(sta1);
+                    appendtable();
+                    setTimeout(function () {
+                        $('#Batch_Name').closest('.form-group').removeClass('display-loader');
+                    }, 800);
+                }
+            });
+        });
+
+        /////////////////////////////////////////////////////////////////
+        $('#Batch_teach_Id').change(function () {
+            debugger;
+            var v = $('#Batch_Name').val();
+            appendtable()
+        })
+
+        function appendtable() {
+            $(".table-responsive").show();
+            $.ajax({
+                type: 'POST',
+                url: "/Admin/GetAllStudent_batchidwise",
+                dataType: "json",
+                data: { subid: $('#Batch_teach_Id').val() },
+                success: function (data) {
+                    var tr = "";
+                    var apnd = "";
+                    var get = $('#Batch_teach_Id').val();
+                    var count = 1;
+                    //Append each row to html table
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].Batch_Assign_Id == parseInt(get))
+                        {
+                            apnd = "<td><input type='checkbox' name='chk_Id' checked  value='" + data[i].Regd_ID + "'></td>";
+                        } else {
+                            apnd = "<td><input type='checkbox' name='chk_Id'  value='" + data[i].Regd_ID + "'></td>";
+                        }
+                        
+                       
+                        tr += "<tr>" + "<td>" + count++ + "</td>" + "<td>" + data[i].Customer_Name + "</td>" + "<td>" + data[i].Mobile + "</td>" + "<td>" + data[i].Email + "</td>" + "<td>" + data[i].Class_Name + "</td>" + apnd + "</tr>";
+                    }
+                    $('#ans_body').html(tr);
+                    $('#chk_batch').hide();
+                }
+            });
+        };
+
+
+        @if(ViewBag.classid != null)
+        {
+        <text>
+        var classAvailable = '@ViewBag.classid';
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetAllClass",
+            data: { brdId: '@ViewBag.Boardid' },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var sta = "";
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].Value == classAvailable) {
+                        sta = sta + '<option selected="selected" value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    else {
+                        sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                }
+                $('#ddlclass').append(sta);
+                @if(ViewBag.classid != null)
+                            {
+                                <text>
+                //$('#ddlclass').attr('disabled', 'disabled');
+                </text>
+                            }
+            }
+        });
+
+        var subjectAvailable = '@ViewBag.subid';
+        var classopt = '@ViewBag.classid';
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetAllSubject",
+            data: { ClsId: classopt },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var sta1 = "";
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].Value == subjectAvailable) {
+                        sta1 = sta1 + '<option selected="selected" value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    else {
+                        sta1 = sta1 + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                }
+                $('#ddlsubject').append(sta1);
+
+                //@if (ViewBag.subid != null)
+                            {
+                            <text>
+                // $('#ddlsubject').attr('disabled', 'disabled');
+                </text>
+                            }
+            }
+        });
+        var teachopt = '@ViewBag.teachid';
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetAllTeacher_subwise",
+            data: { subid: subjectAvailable },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var sta1 = "<select id ='Teacher_Name'>";
+                sta1 = sta1 + '<option value="">Please Select Teacher</option>';
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].Teach_ID == teachopt) {
+                        sta1 = sta1 + '<option value=' + data[i].Teach_ID + ' selected>' + data[i].Teacher_Name + '</option>';
+                    }
+                    else {
+                        sta1 = sta1 + '<option value=' + data[i].Teach_ID + '>' + data[i].Teacher_Name + '</option>';
+                    }
+
+                }
+                sta1 = sta1 + '</select>';
+                $('#Teacher_Name').html(sta1);
+            }
+        });
+        var batotp = '@ViewBag.batch_id';
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetAllBatch",
+            data: { Subid: subjectAvailable },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var sta1 = "<select id ='Batch_Name'>";
+                sta1 = sta1 + '<option value="">Please Select Batch</option>';
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].Value == batotp) {
+                        sta1 = sta1 + '<option value=' + data[i].Value + ' selected>' + data[i].Text + '</option>';
+                    }
+                    else {
+                        sta1 = sta1 + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                }
+                sta1 = sta1 + '</select>';
+                $('#Batch_Name').html(sta1);
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: "/Admin/GetAllStudent_subwise",
+            dataType: "json",
+            data: { subid: subjectAvailable },
+            success: function (data) {
+                var tr = "";
+                var count = 1;
+                var get = $('#Batch_teach_Id').val();
+                //Append each row to html table
+                for (var i = 0; i < data.length; i++) {
+
+                    if (data[i].Batch_Assign_Id == parseInt(get)) {
+                        apnd = "<td><input type='checkbox' name='chk_Id' checked  value='" + data[i].Regd_ID + "'></td>";
+                    } else {
+                        apnd = "<td><input type='checkbox' name='chk_Id'  value='" + data[i].Regd_ID + "'></td>";
+                    }
+                    if (data[i].Batch_Assign_Id != null)
+                    {
+                        tr += "<tr>" + "<td>" + count++ + "</td>" + "<td>" + data[i].Customer_Name + "</td>" + "<td>" + data[i].Mobile + "</td>" + "<td>" + data[i].Email + "</td>" + "<td>" + data[i].Class_Name + "</td>" + apnd + "</tr>";
+                    }
+                    
+                }
+                $('#ans_body').html(tr);
+                $(".table-responsive").show();
+                $('#table1 > tbody  > tr').each(function () {
+                    if ($(this).find("input[name='bat_id']").val() != null) {
+                        $(this).find('input[name="chk_Id"]').prop('checked', true);
+                    }
+                });
+            }
+        });
+
+        </text>
+        }
+
+    </script>
+}

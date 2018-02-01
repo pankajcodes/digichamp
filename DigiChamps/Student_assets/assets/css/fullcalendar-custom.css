@@ -1,0 +1,66 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito:400,300);
+/************theme fonts********************/
+/***********************theme colors*****************************/
+/*****************theme parametres*******************/
+/*sidebar-parametres*/
+.calendar {
+  font-family: 'Nunito', sans-serif;
+}
+.event-color {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.external-event {
+  padding: 10px 12px;
+  color: #ffffff !important;
+}
+.external-event:hover {
+  opacity: 0.8;
+}
+.fc-toolbar .fc-state-default {
+  display: inline-block;
+  font-size: 14px;
+  margin-right: 2px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 0px solid transparent;
+  border-radius: 0px;
+  background-color: #a0d269;
+  height: 40px;
+  color: #ffffff;
+  outline: 0;
+}
+.fc-toolbar .fc-left .fc-today-button {
+  background-color: #2196f3;
+}
+.fc-toolbar .fc-state-active {
+  opacity: 0.6;
+}
+.fc-view-container {
+  background-color: #ffffff;
+}
+.fc-view-container .fc-day-grid-event {
+  padding: 6px 8px;
+  background-color: #2196f3;
+  color: #ffffff;
+  border: 0px;
+  border-radius: 0px;
+}
+.fc-view-container table thead.fc-head tr td.fc-widget-header table thead tr th.fc-day-header {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.fc-view-container .fc-day {
+  padding: 2px;
+}

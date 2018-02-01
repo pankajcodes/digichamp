@@ -1,0 +1,72 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsShiftModel
+@{
+    ViewBag.Title = "Admin Shift";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using (Html.BeginForm("Admin_Shift", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    <div class="page-content-wrap">
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active"> @ViewBag.pagetitle @ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i>Create Shift</h3>
+                    </div>
+                    <div class="box-content">
+                        <form action="#" class="form-horizontal form-bordered form-row-stripped">
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Shift Name<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <input type="text" id="Shift_Name" name="Shift_Name" value="@ViewBag.Shift_Name" class="form-control" data-msg-required="Please enter shift name" data-rule-required="true"/>
+                                    <input type="hidden" value="@ViewBag.shift_id" id="shift_id" name="shift_id" />
+                                </div>
+                                <div class="validation-summary-valid" data-valmsg-summary="true">
+                                    <ul><li style="display:none"></li></ul>
+                                </div>
+                                @*<div class="col-sm-2">
+                                    <div class="ajax-loader">
+                                        <div class="loader"></div>
+                                    </div>
+                                </div>*@
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">From Time<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <input type="time" id="From_Time" name="From_Time" value="@ViewBag.Shift_From_Time" class="form-control" data-rule-required="true" data-msg-required="Please enter from time" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">To Time<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <input type="time" id="To_Time" name="To_Time" value="@ViewBag.Shift_To_Time" class="form-control" data-rule-required="true" data-msg-required="Please enter to time" />
+                                </div>
+                            </div>
+                            <div class="form-group last box-tooll">
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                    <a href="@Url.Action("ShiftMaster", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i><span> Back</span> </a>
+                                    <button id="btnSearch" type="submit" value="search" name="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span> Submit</span></button>
+                                   
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

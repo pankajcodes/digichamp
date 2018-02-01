@@ -1,0 +1,107 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsTeacherRegModel
+
+@{
+    ViewBag.Title = "Add Teacher";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("TeacherRegistration", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="page-content-wrap">
+        <div class="page-content-wrap">
+            <div class="page-title">
+                <div>
+                    <h1>
+                        <i class="fa fa-file-o"></i> Teacher
+                        <div class="btn-toolbar pull-right">
+                            <div class="box-tool">
+                                <a class="btn btn-inverse" href="/Admin/ViewAssignedCourse"><span class="shock-edu-school show-tooltip" data-toggle="tooltip" data-placement="top" title="Assign Course"></span></a>
+                                <a class="btn btn-inverse" href="/Admin/ShiftMaster"><span class="shock-edu-papers show-tooltip" data-toggle="tooltip" data-placement="top" title="Shift Creation"></span></a>
+                                <a class="btn btn-inverse" href="/Admin/CreateShift"><span class="shock-edu-essay show-tooltip" data-toggle="tooltip" data-placement="top" title="Teacher Shift"></span></a>
+                            </div>
+                        </div>
+                    </h1>
+
+                </div>
+            </div>
+            <div id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="~/Admin/AdminDashboard">Home</a>
+                        <span class="divider"><i class="fa fa-angle-right"></i></span>
+                    </li>
+                    @if (ViewBag.Breadcrumb != null)
+                {
+                        <li class="active">@ViewBag.Breadcrumb</li>
+                }
+                </ul>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-title">
+                            <h3><i class="fa fa-file-text"></i>Teacher Registration Details</h3>
+                            <div class="box-tool">
+                                <a href="/Admin/AddTeacher" class="btn btn-inverse"><i class="fa fa-plus"></i> Add New</a>
+                            </div>
+                        </div>
+                        <div class="box-content">
+                            <div class="table-responsive voffset3">
+                                <table class="table table-advance" id="table1">
+
+                                    <thead>
+                                        <tr>
+                                            <th>Sl No.</th>
+                                            <th hidden="hidden">Id</th>
+                                            <th>Teacher's Name</th>
+                                            <th>Mobile No.</th>
+                                            <th>Email-Id</th>
+                                            <th>Designation</th>
+                                            <th>Image</th>
+                                            <th style="width: 20%;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{   int i = 1;
+                                        }
+                                        @if (ViewBag.data != null)
+                                    {
+                                        foreach (var b in ViewBag.data)
+                                        {
+                                            <tr id="smt">
+                                                <td><label>@Html.Raw(i++)</label></td>
+                                                <td hidden="hidden">@b.Teach_ID</td>
+                                                <td>@b.Teacher_Name</td>
+                                                <td>@b.Mobile</td>
+                                                <td>@b.Email_ID</td>
+                                                <td>@b.Designation</td>
+                                                <td><img src="@b.Image" height="80" width="100" /></td>
+
+                                                <td>
+                                                    @Html.ActionLink(" ", "EditTeacher", "Admin", new { id = @b.Teach_ID }, new { @class = "btn btn-sm show-tooltip btn-primary fa fa-edit", @title = "Edit" })
+
+                                                    @Html.ActionLink(" ", "DeleteTeacher", "Admin", new { id = @b.Teach_ID }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the Teacher?')", @data_original_title = "Delete", @title = "Delete" })
+
+
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+        }
+
+
+

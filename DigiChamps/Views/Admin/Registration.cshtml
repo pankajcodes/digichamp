@@ -1,0 +1,239 @@
+﻿@{
+    ViewBag.Title = "Registration";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("Registration", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="page-content-wrap">
+        <div class="page-content-wrap">
+            <div class="page-title">
+                <div>
+                    <h1>
+                        <i class="fa fa-file-text-o"></i> Registration
+                        <div class="btn-toolbar pull-right">
+                            <div class="box-tool">
+                                <a class="btn btn-primary show-tooltip" href="/Admin/ViewAssignedCourse" data-toggle="tooltip" data-placement="top" title="Assign Course"><span>A</span></a>
+                                <a class="btn btn-primary show-tooltip" href="/Admin/ShiftMaster" data-toggle="tooltip" data-placement="top" title="Shift Creation"><span>S</span></a>
+                                <a class="btn btn-primary show-tooltip" href="/Admin/CreateShift" data-toggle="tooltip" data-placement="top" title="Teacher Shift"><span>T</span></a>
+                            </div>
+                        </div>
+                    </h1>
+
+                </div>
+            </div>
+            <div id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="~/Admin/AdminDashboard">Home</a>
+                        <span class="divider"><i class="fa fa-angle-right"></i></span>
+                    </li>
+                    @if (ViewBag.Breadcrumb != null)
+                    {
+                        <li class="active">@ViewBag.Breadcrumb</li>
+                    }
+                </ul>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-title">
+                            <h3><i class="fa fa-file-text-o"></i>Registration Details</h3>
+                            <div class="box-tool box-tooll">
+                                <a href="/Admin/AddRegistration" class="btn btn-primary"><i class="fa fa-plus"></i> <span>Add New</span></a>
+                            </div>
+                        </div>
+                        <div class="box-content">
+                            <div class="tabbable">
+                                                            <ul id="myTab1" class="nav nav-tabs">
+                                 @if(TempData["item2"] != null)
+                                     
+                                 {
+                                    <li class="active"><a href="#home1" data-toggle="tab"><i class="fa fa-user"></i> Teacher</a></li>
+                                     ViewBag.data1 = "active in";
+                                 }
+                                 else if (TempData["item2"] == null && TempData["item1"] == null)
+                                 {                                     
+                                     
+                                     
+                                      <li class="active"><a href="#home1" data-toggle="tab"><i class="fa fa-user"></i> Teacher</a></li>
+                                     
+                                     ViewBag.data1 = "active in";
+                                 }
+                                 else
+                                 {
+                                    <li><a href="#home1" data-toggle="tab"><i class="fa fa-user"></i> Teacher</a></li>
+
+                                 }
+                                    @if(TempData["item1"] != null)
+                                    {
+                                        <li class="active"><a href="#profile1" data-toggle="tab"><i class="fa fa-user"></i> Admin User</a></li>
+                                        ViewBag.data2 = "active in";
+                                    }
+                                    else
+                                    {
+                                        <li ><a href="#profile1" data-toggle="tab"><i class="fa fa-user"></i> Admin User</a></li>
+                                    }
+                                </ul>
+
+                                <div id="myTabContent1" class="tab-content">
+                                    <div class="tab-pane fade  @ViewBag.data1" id="home1">
+                                        <div class="table-responsive voffset3">
+                                            <table class="table table-advance" id="table1">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sl No.</th>
+                                                        <th hidden="hidden">Id</th>
+                                                        <th>Teacher's Name</th>
+                                                        <th>Mobile No.</th>
+                                                        <th>Email-Id</th>
+                                                        <th>Designation</th>
+                                                        <th>Image</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{   int i = 1;
+                                                    }
+                                                    @if (ViewBag.teach != null)
+                                                    {
+                                                        foreach (var b in ViewBag.teach)
+                                                        {
+                                                            <tr tabindex="1">
+                                                                <td>@Html.Raw(i++)</td>
+                                                                <td hidden="hidden">@b.Teach_ID</td>
+                                                                <td>@b.Teacher_Name</td>
+                                                                <td>@b.Mobile</td>
+                                                                <td>@b.Email_ID</td>
+                                                                <td>@b.Designation</td>
+                                                                <td>
+                                                                    @if (b.Image != null)
+                                                                    {
+                                                                        <img src="~/images/TeacherProfile/@b.Image" width="100" height="130" />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <img src="~/Images/e71cc688-1b32-486b-98c6-5870ed33abdd.png" width="100" height="130"/>
+                                                                    }
+                                                                
+                                                                </td>
+
+                                                                <td>
+                                                                    @Html.ActionLink(" ", "EditRegistration", "Admin", new { id = @b.Teach_ID, type = "T" }, new { @class = "btn btn-sm show-tooltip btn-primary fa fa-edit", @title = "Edit" })
+
+                                                                    @Html.ActionLink(" ", "DeleteRegistration", "Admin", new { id = @b.Teach_ID, type = "T" }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the Teacher?')", @data_original_title = "Delete", @title = "Delete" })
+
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade @ViewBag.data2" id="profile1">
+                                        <div class="table-responsive voffset3">
+                                            <table class="table table-advance" id="table2">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sl No.</th>
+                                                        <th hidden="hidden">Id</th>
+                                                        <th>User Name</th>
+                                                        <th>Mobile No.</th>
+                                                        <th>Email-Id</th>
+                                                        <th>Designation</th>
+                                                        <th>Image</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{   int j = 1;
+                                                    }
+                                                    @if (ViewBag.user != null)
+                                                    {
+                                                        foreach (var b in ViewBag.user)
+                                                        {
+                                                            <tr tabindex="1">
+                                                                <td>@Html.Raw(j++)</td>
+                                                                <td hidden="hidden">@b.USER_ID</td>
+                                                                <td>@b.USER_NAME</td>
+                                                                <td>@b.MOBILE</td>
+                                                                <td>@b.EMAIL</td>
+                                                                <td>@b.DESIGNATION</td>
+                                                                <td>
+                                                                    @if (b.IMAGE != null)
+                                                                    {
+                                                                        <img src="~/images/TeacherProfile/@b.IMAGE" width="100" height="130" />
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                        <img src="~/Images/e71cc688-1b32-486b-98c6-5870ed33abdd.png" width="100" height="130"/>
+                                                                    }
+                                                                </td>
+
+                                                                <td>
+                                                                    @Html.ActionLink(" ", "EditRegistration", "Admin", new { id = @b.USER_ID, type = "S" }, new { @class = "btn btn-sm show-tooltip btn-primary fa fa-edit", @title = "Edit" })
+
+                                                                    @Html.ActionLink(" ", "DeleteRegistration", "Admin", new { id = @b.USER_ID, type = "S" }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the User?')", @data_original_title = "Delete", @title = "Delete" })
+
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            debugger;
+
+
+
+        })
+        $('#table2').dataTable({
+            "aLengthMenu": [
+                [10, 15, 25, 50, 100, -1],
+                [10, 15, 25, 50, 100, "All"]
+            ],
+            "iDisplayLength": 10,
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ Records per page",
+                "sInfo": "_START_ - _END_ of _TOTAL_",
+                "sInfoEmpty": "0 - 0 of 0",
+                "oPaginate": {
+                    "sPrevious": "Prev",
+                    "sNext": "Next"
+                }
+            },
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }]
+        });
+    </script>
+}
+
+

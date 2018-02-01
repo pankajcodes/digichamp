@@ -1,0 +1,108 @@
+﻿@model DigiChamps.Models.tbl_DC_Sms_API
+    @{
+        ViewBag.Title = "Add Smsapi";
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+
+    @using (Html.BeginForm("add_Smsapi", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+    {
+        @Html.AntiForgeryToken();
+        <div class="page-content-wrap">
+
+            <div id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="~/Admin/AdminDashboard">Home</a>
+                        <span class="divider"><i class="fa fa-angle-right"></i></span>
+                    </li>
+                    @if (ViewBag.Breadcrumb != null)
+                    {
+                        <li class="active"> @ViewBag.pagetitle @ViewBag.Breadcrumb</li>
+                    }
+                </ul>
+            </div>
+            <div class="row ">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-title">
+                            <h3><i class="fa fa-file"></i> Create SMS API</h3>
+                            @Html.HiddenFor(x => x.Api_Id)
+                        </div>
+                        <div class="box-content">
+                            <div class="form-group voffset4 ">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">API Name<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(m => m.Api_Name, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter API name", data_rule_maxlength = "50" })
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">API URL<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(m => m.Api_Url, new { @class = "form-control", data_rule_required = "true", type = "url", data_rule_url = "true", data_msg_required = "Please enter API URL" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Username<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter username", data_rule_maxlength = "100" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Password<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter password", data_rule_maxlength = "100", type="password" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Sender Type<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(m => m.Sender_Type, new { @class = "form-control", data_rule_required = "true",@value="PROMO", data_msg_required = "Please enter Sender type", data_rule_maxlength = "100" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Message Type<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <select class="form-control choosen" data-rule-required="true" data-msg-required="Please select message type" name="Message_Type" id="Message_Type">
+                                        <option value="">Select Message Type</option>
+                                        <option value="reg">Registration</option>
+                                        <option value="OTP">OTP</option>
+                                        <option value="chng_pwd">Change Password</option>
+                                        <option value="for_pwd">Forgot Password</option>
+                                        <option value="tkt_assign">Ticket Assign</option>
+                                        <option value="ans_ques">Answer Question</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group last box-tooll">
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                    <a href="@Url.Action("View_Smsapi", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i><span> Back</span> </a>
+                                    <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span> Submit</span></button>
+                                   
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    }
+
+@section scripts
+{
+    <script>
+        @if (@ViewBag.messagetype != null)
+        { 
+            <text>
+            var type = "@ViewBag.messagetype";
+            $('#Message_Type').val(type);
+            $('#Message_Type').trigger('chosen:updated');
+            </text>
+        }
+    </script>
+}

@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title> @ViewBag.Title</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/Student_assets/images/fav-icon.jpg" rel="shortcut icon" />
+    <link rel="stylesheet" href="~/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/chosen-bootstrap/chosen.min.css">
+    <link rel="stylesheet" href="~/assets/font-awesome/css/font-awesome.min.css">
+    <link href="~/assets/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/css/flaty-responsive.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/flaty.css">
+    <link rel="shortcut icon" href="~/img/favicon.html">
+    <link href="~/assets/datepicker/css/datepicker.css" rel="stylesheet" />
+    <link href="~/assets/data-tables/bootstrap3/dataTables.bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/assets/bootstrap-fileupload/bootstrap-fileupload.css" />
+    <link rel="stylesheet" href="~/css/manual.css">
+    @*<script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-93241591-1', 'auto');
+        ga('send', 'pageview');
+    </script>*@
+</head>
+<body class="skin-blue">
+
+    <!-- BEGIN Theme Setting -->
+    <!-- END Theme Setting -->
+    <!-- BEGIN Navbar -->
+    <div id="navbar" class="navbar">
+        <button type="button" class="navbar-toggle navbar-btn collapsed" data-toggle="collapse" data-target="#sidebar">
+            <span class="fa fa-bars"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+            <img src="~/Images/Digichamps_logo.png" />
+        </a>
+        <!-- BEGIN Navbar Buttons -->
+        <ul class="nav flaty-nav pull-right">
+
+            <li class="user-profile">
+                <a data-toggle="dropdown" href="#" class="user-menu dropdown-toggle">
+                    @if (Session["pfimage"] == null)
+                    {
+                    <img class="nav-user-photo" src="~/Images/images.png" alt="Teacher's Profile'" />
+                    }
+                    else
+                    {
+                        <img class="nav-user-photo" src="~/Images/Teacherprofile/@Session["pfimage"]" alt="" />
+                    }
+                    <span class="hhh" id="user_info">
+                         @Session["USER_NAME"]
+                    </span>
+                    <i class="fa fa-caret-down"></i>
+                </a>                
+                <!-- BEGIN User Dropdown -->
+                <ul class="dropdown-menu dropdown-navbar" id="user_menu">
+                    <li class="nav-header">
+                        Logined From @Session["Time"]
+                    </li>
+                    <li>
+                        <a href="/Teacher/TecaherProfile">
+                            <i class="fa fa-user"></i>
+                            Edit Profile
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="@Url.Action("Logout", "Teacher")"><i class="fa fa-off"></i>Logout</a>
+                    </li>
+                </ul>
+                <!-- BEGIN User Dropdown -->
+            </li>
+            <!-- END Button User -->
+        </ul>
+        <!-- END Navbar Buttons -->
+    </div>
+
+    <div>
+        <!-- BEGIN Sidebar -->
+        <div id="sidebar" class="navbar-collapse collapse">
+            <!-- BEGIN Navlist -->
+            <ul class="nav nav-list">
+                <li class="active">
+                    <a href="/Teacher/TeacherDashboard">
+                        <i class="fa fa-dashboard"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Teacher/Viewticekts">
+                        <i class="fa fa-tasks"></i>
+                        <span>Tickets</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Teacher/QuestionBank">
+                        <i class="fa fa-sort-alpha-desc"></i>
+                        <span>Questions</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/Teacher/shift">
+                        <i class="fa fa-calendar"></i>
+                        <span>Shift Time
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Teacher/ViewAttendance">
+                        <i class="fa fa-child"></i>
+                        <span>Attendance</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Teacher/TestResult">
+                        <i class="fa fa-file-text-o"></i>
+                        <span>Test Result</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Teacher/TestAssign">
+                        <i class="glyphicon glyphicon-indent-left"></i>
+                        <span>Test Assign</span>
+                    </a>
+                </li>
+                @*<li>
+                    <a href="#">
+                        <i class="fa fa-folder-open"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>*@
+            </ul>
+
+            <div id="sidebar-collapse" class="visible-lg">
+                <i class="fa fa-angle-double-left"></i>
+            </div>
+            <!-- END Sidebar Collapse Button -->
+        </div>
+        <!-- END Sidebar -->
+        <!-- BEGIN Content -->
+        <div id="main-content">
+            @if (@TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <div style="font-size: 13px; color:#5ead34;"><i class="fa fa-check-circle"></i>@TempData["SuccessMessage"]</div>
+                </div>
+            }
+            @if (@TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <div style="font-size: 13px;"><i class="fa fa-times-circle"></i>@TempData["ErrorMessage"]</div>
+                </div>
+            }
+            @if (@TempData["WarningMessage"] != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <div style="font-size: 13px; color:#ffaf36;"><i class="fa fa-exclamation-circle"></i>@TempData["WarningMessage"]</div>
+                </div>
+            }
+
+            <!-- BEGIN Breadcrumb -->
+            <div id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="~/Teacher/TeacherDashboard">Home</a>
+                        <span class="divider"><i class="fa fa-angle-right"></i></span>
+                    </li>
+                    @if (ViewBag.Breadcrumb != null)
+                    {
+                        <li class="active">@ViewBag.Breadcrumb</li>
+                    }
+                </ul>
+            </div>
+            <!-- END Breadcrumb -->
+            <!-- BEGIN Session check -->
+            @if (Session["USER_CODE"] != null)
+            {
+                if (Session["ROLE_CODE"].ToString() != "T")
+                {
+                    Response.Redirect("~/Teacher/Logout");
+                }
+                else
+                {
+                    @RenderBody()
+                }
+            }
+            else
+            {
+                Response.Redirect("~/Teacher/Logout");
+            }
+            <footer>
+                <p>2017 © Designed by NTSPL.</p>
+            </footer>
+            <a id="btn-scrollup" class="btn btn-circle btn-lg" href="#"><i class="fa fa-chevron-up"></i></a>
+        </div>
+
+    </div>
+    <script src="~/assets/jquery/jquery-2.1.1.min.js"></script>
+    <script src="~/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/assets/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/assets/jquery-cookie/jquery.cookie.js"></script>
+
+    <script src="~/assets/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/assets/datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/assets/data-tables/jquery.dataTables.js"></script>
+    <script src="~/assets/data-tables/bootstrap3/dataTables.bootstrap.js"></script>
+    <!--Validation scripts-->
+    <script type="text/javascript" src="~/assets/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/assets/jquery-validation/dist/additional-methods.min.js"></script>
+    <script type="text/javascript" src="~/assets/chosen-bootstrap/chosen.jquery.min.js"></script>
+    <script src="~/assets/datepicker/js/bootstrap-datepicker.js"></script>
+
+    <!--flaty scripts-->
+    <script src="~/js/flaty.js"></script>
+    <script src="~/js/flaty-demo-codes.js"></script>
+
+    @*<script>
+            $('.datepicker').datepicker();
+
+        </script>*@
+    @RenderSection("scripts", required: false)
+    <script>
+        $('.datepicker').datepicker().on('changeDate', function (e) {
+            $(this).datepicker('hide');
+        });
+    </script>
+</body>
+
+</html>
+

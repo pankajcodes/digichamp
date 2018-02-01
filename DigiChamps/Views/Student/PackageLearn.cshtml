@@ -1,0 +1,416 @@
+﻿@{
+    ViewBag.Title = "Package Learn | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+<!-- /pageheader -->
+<!-- Class select -->
+@section class_select{
+    <form class="navbar-left" role="search">
+        <div class="search">
+            <div class="ntspl-dropdown dropdown">
+                @if (ViewBag.pkgboard != null)
+                {
+                    <a href="#" id="drpboard" class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">@ViewBag.pkgboard<span class="drop-icon"><i class="ion ion-chevron-down"></i></span></a>
+                }
+                else
+                {
+                    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Select Board<span class="drop-icon"><i class="ion ion-chevron-down"></i></span></a>
+                }
+                <ul class="dropdown-menu dropdown-ntspl-menu animated fadeInUp wow language-drop neat_drop dropdown-right" data-wow-duration="1500ms" role="menu">
+                    @if (ViewBag.board != null)
+                    {
+                        foreach (var v in ViewBag.board)
+                        {
+                            <li><a href="#" class="board" value="@v.Board_Id">@v.Board_Name</a></li>
+                        }
+                    }
+                </ul>
+            </div>
+            <div class="ntspl-dropdown dropdown">
+                @if (ViewBag.pkgclass != null)
+                {
+                    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">@ViewBag.pkgclass<span class="drop-icon"><i class="ion ion-chevron-down"></i></span></a>
+                }
+                else
+                {
+                    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Select Class<span class="drop-icon"><i class="ion ion-chevron-down"></i></span></a>
+                }
+                <ul class="dropdown-menu dropdown-ntspl-menu animated fadeInUp wow language-drop neat_drop dropdown-right" data-wow-duration="1500ms" role="menu" id="ddlclass">
+
+                    @if (ViewBag.class_name != null)
+                    {
+                        foreach (var v in ViewBag.class_name)
+                        {
+                            <li>@Html.ActionLink((string)v.Class_Name, "packagelearn", new { @id = @v.Class_Id })</li>
+                        }
+                    }
+
+                </ul>
+            </div>
+        </div>
+
+    </form>
+}
+<!-- Page Header -->
+@section header{
+    <i class="menu-icons learn-icon page_header_icon"></i>
+    <span class="main-text">Learn</span>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-8">
+            <!--   <div class="btn-group btn-group-justified">
+                <a class="btn btn-default btn-xs">Mathematics</a>
+                <a class="btn btn-default btn-xs">Science</a>
+            </div> -->
+            @if (ViewBag.subjects != null)
+            {
+                if ((ViewBag.subjects).Count > 0)
+                {
+                    <ul class="tabs">
+                        @{ int i = 0;  }
+                        
+                        @foreach (var item in ViewBag.subjects)
+                        { if( i == 0)
+                { 
+                            <li class="tab"><a href="#@item.Subject_ID" class="active">@item.Subject</a></li>
+                        }
+                        else
+                        {
+                            <li class="tab"><a href="#@item.Subject_ID" >@item.Subject</a></li>
+                            
+                        }
+                            i++;
+                        }
+                    </ul>
+                }
+            }
+            else
+            {
+                // if ((ViewBag.nosubjects).Count > 0)
+                //{
+                    <ul class="tabs">
+                        @foreach (var item in ViewBag.notsubjectss)
+                        {
+                            DigiChamps.Models. DigiChampsEntities DbContext = new DigiChamps.Models. DigiChampsEntities();
+                            int id1 = Convert.ToInt32(item);
+                            var dt = DbContext.tbl_DC_Subject.Where(x => x.Subject_Id == id1).FirstOrDefault();
+                        <li class="tab col-md-4">
+                            <a href="#@dt.Subject_Id" class="active">@dt.Subject</a>
+                        </li>
+                            
+                        }
+                    </ul>
+                @*}*@
+            }
+        </div>
+    </div>
+
+}
+<style>
+    video::-internal-media-controls-download-button {
+        display: none;
+    }
+
+    video::-webkit-media-controls-enclosure {
+        overflow: hidden;
+    }
+
+    video::-webkit-media-controls-panel {
+        width: calc(100% + 30px); /* Adjust as needed */
+    }
+</style>
+@section video
+{<div class="light_box_container">
+        <div class="light_box_inner">
+            <div class="light_box_content">
+                <div class="light_box_content_inner">
+                    <span class="close_btn">X</span>
+                    <video class="video-js vjs-default-skin" width="100%" height="90%" autoplay controls>
+                        <source id="v2src" src="" type="video/mp4" />
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+<div class="row">
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 nopad-right">
+        <div class="row">
+            @if (ViewBag.subjects != null)
+            {
+                foreach (var item in ViewBag.subjects)
+                {
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 questions-cont">
+                        <div class="panel panel-ntspl" id="@item.Subject_ID">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    Chapters
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                @{
+                        int sbid = Convert.ToInt32(item.Subject_ID);
+                        int rid = ViewBag.stu_id;
+
+                        DigiChamps.Models. DigiChampsEntities DbContext = new DigiChamps.Models. DigiChampsEntities();
+                        var chapter = (from d in DbContext.VW_DC_Package_Learn.Where(x => x.Regd_ID == rid && x.Subject_ID == sbid)
+                                       group d by d.Chapter_ID into g
+                                       select new DigiChamps.Models.DigiChampCartModel
+                                       {
+                                           Order_ID = g.FirstOrDefault().Order_ID,
+                                           Chapter_ID = g.FirstOrDefault().Chapter_ID,
+                                           Chapter = g.FirstOrDefault().Chapter_Name,
+                                           Inserted_Date = g.Max(x => x.Inserted_Date)
+                                       }).ToList();
+                        ViewBag.chapter = chapter;
+                                }
+
+                                @if (ViewBag.chapter != null)
+                                    {  int i = 0; int j = 0;
+                                        foreach (var item1 in ViewBag.chapter)
+                                        {
+                                             if(i % 4 == 0)
+    {
+        j = 1;               
+        @*<div class='table-cont bd-clr-1'>*@
+
+           }
+
+         
+
+           if (i % 4 == 1)
+           {
+               j = 2;
+           }
+            @*<div class='table-cont bd-clr-2'>*@
+
+               
+                if(i % 4 == 2)
+                {
+                    j = 3;
+                }          
+                    @*<div class='table-cont bd-clr-3'>*@
+
+
+                if (i % 4 == 3)
+                {
+                    j = 4;
+                }
+                int id = Convert.ToInt32(item1.Chapter_ID);
+                ViewBag.video = DbContext.tbl_DC_Module.Where(x => x.Chapter_Id == id && x.Is_Active == true && x.Is_Deleted == false && x.Module_video != null).ToList().Count;
+                ViewBag.pdf = DbContext.tbl_DC_Module.Where(x => x.Chapter_Id == id && x.Is_Active == true && x.Is_Deleted == false && x.Module_Content != null).ToList().Count;
+ ViewBag.sample = DbContext.tbl_DC_Module.Where(x => x.Chapter_Id == id && x.Question_PDF != null).ToList().Select(x => x.Question_PDF).Count();
+
+                 
+			   <div class="bd-clr-@j pnl-learn">
+                    <div class="panel panel-ntspl inner-panel ">
+
+                        <div class="panel-heading">
+                            <a href="/student/chapterdetails/@item1.Chapter_ID/@item1.Order_ID" class="plain-link">
+                                <h3 class="panel-title">
+                                    @*<a @Html.ActionLink(" ", "ChapterDetails", new { @id = @item.Chapter_ID, @class = "plain-link" })>*@
+                                    <div class="clearfix">@item1.Chapter</div>
+                                    <span class="chapter-sec">@ViewBag.video Amazing Videos</span>
+                                    <span class="chapter-sec">@ViewBag.pdf Study Material</span>
+									 <span class="chapter-sec">@ViewBag.sample Question Bank</span> 
+
+                                </h3>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+                                            i++;
+
+                                        }
+                                    }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                foreach (var item in ViewBag.notsubjectss)
+                {
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 questions-cont">
+                        <div class="panel panel-ntspl" id="@item">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    Chapters
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                @{
+                    DigiChamps.Models. DigiChampsEntities DbContext = new DigiChamps.Models. DigiChampsEntities();
+                    }
+                                @{
+                                    if(ViewBag.cls_id!=null)
+                                    {
+                                        
+                                    
+                    int clsid = Convert.ToInt32(ViewBag.cls_id);                   
+                    int sbid = Convert.ToInt32(item);
+                        int rid = ViewBag.stu_id;
+                        var chapter = DbContext.Sp_DC_Getall_Packagelearn(clsid).Where(x => x.Subject_Id == sbid).ToList();
+                        ViewBag.chapter = chapter;
+                                }
+                                }
+                                @if (ViewBag.chapter != null)
+                                    {
+                                        foreach (var item1 in ViewBag.chapter)
+                                        {
+                                            
+                                            int clsid1 = Convert.ToInt32(ViewBag.cls_id);
+                                            int id = Convert.ToInt32(item1.Chapter_Id);
+                                            ViewBag.video = DbContext.Sp_DC_Getall_Packagelearn(clsid1).Where(x => x.Chapter_Id == id).FirstOrDefault().total_video;
+                                            ViewBag.pdf = DbContext.Sp_DC_Getall_Packagelearn(clsid1).Where(x => x.Chapter_Id == id).FirstOrDefault().total_pdf;
+                                            ViewBag.sample=DbContext.Sp_DC_Getall_Packagelearn(clsid1).Where(x => x.Chapter_Id == id).FirstOrDefault().total_question_pdf;
+                                             <div class="panel panel-ntspl inner-panel">
+
+                                        <div class="panel-heading">
+                                            <a href="/student/chapterdetails/@item1.Chapter_Id" class="plain-link">
+                                                <h3 class="panel-title">
+                                                    @*<a @Html.ActionLink(" ", "ChapterDetails", new { @id = @item.Chapter_ID, @class = "plain-link" })>*@
+                                                    <div class="clearfix">@item1.chaptername</div>
+                                                    <span class="chapter-sec">@ViewBag.video Videos</span>
+                                                    <span class="chapter-sec">@ViewBag.pdf PDF</span>
+                                                    <span class="chapter-sec">@ViewBag.sample Question PDF</span>
+                                                </h3>
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                        }
+                                    }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                <div class="panel panel-ntspl">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            What's Inside
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="inside-box">
+                            <span class="video-neww"></span>
+                            <div class="right-p">
+                                <h3>Lectures Video</h3>
+                                <p>Best lectures are guide you to study.</p>
+                            </div>
+                        </div>
+                        <div class="inside-box inside-box-margin">
+                            <span class="study-neww"></span>
+                            <div class="right-p">
+                                <h3>Study Material</h3>
+                                <p>Best study material will be provided by our lectures. </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Student_assets/assets/js/video.js"></script>
+    <script src="~/Student_assets/assets/js/videojs-contrib-hls.min.js"></script>
+    <script src="~/jwplayer-7.9.3/jwplayer.js"></script>
+    <script>jwplayer.key = "cxb/fhH3Z9Oh3TulqzBk1tMznPqKXQ0fj8cZYfZ5tRA=";</script>
+    <script>
+        //var player = videojs('example-video');
+        //player.play();
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('a.board').click(function () {
+                var bid = $(this).attr("value");
+                var board = $(this).html();
+                $.ajax({
+                    type: "POST",
+                    url: "/Student/GetAllClass",
+                    data: { brdId: bid },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        var sta = "";
+                        for (var i = 0; i < data.length; i++) {
+                            sta = sta + '<li><a href="/student/packagelearn/' + data[i].Value + '">' + data[i].Text + '</a></li>';
+                        }
+                        $('#ddlclass').html(sta);
+                        $("#drpboard").html(board + '<span class="drop-icon"><i class="ion ion-chevron-down"></i></span>');
+                    }
+                });
+            });
+        });
+
+    </script>
+}
+
+@section scriptvideo{
+    <script>
+        $(function () {
+            $('.post-thumb .play-now-in-popup').on('click', function () {
+                debugger;
+                var video_key = $(this).attr('id');
+                $.ajax({
+                    type: "POST",
+                    url: "/Student/Show_video",
+                    data: { video_key: video_key },
+                    datatype: "json",
+                    success: function (data) {
+                        //var video_url = $(this).parents(".post-thumb").find('video').find('source.vsrc').attr('src');
+                        $('.light_box_content_inner video').find('#v2src').attr('src', data);
+                        $('.light_box_content_inner video').load();
+                        $(".light_box_container").fadeIn(500);
+                    }
+
+
+                })
+                $('.light_box_inner .close_btn').on('click', function () {
+                    $('.light_box_container').fadeOut(1000);
+                });
+
+
+            })
+        })
+        $(document).bind("contextmenu", function (e) {
+           // e.preventDefault();
+
+        });
+        $(document).keydown(function (e) {
+            return false;
+        });
+        with ((window && window.console && window.console._commandLineAPI) || {}) {
+            (function () {
+
+                var _z = console;
+                Object.defineProperty(window, "console", {
+                    get: function () {
+                        if (_z._commandLineAPI) {
+                            throw "Sorry, Can't execute scripts!";
+                        }
+                        return _z;
+                    },
+                    set: function (val) {
+                        _z = val;
+                    }
+                });
+
+            })();
+        }
+    </script>
+}
+<!-- row -->

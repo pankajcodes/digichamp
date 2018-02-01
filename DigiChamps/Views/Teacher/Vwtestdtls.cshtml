@@ -1,0 +1,71 @@
+﻿<html>
+
+<body>
+    <div style="overflow-x:auto;">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title" id="myModalLabel">Report</h4>
+        </div>
+
+
+    <div class="modal-body">
+        <div class="panel panel-info" style="overflow-x:auto;">
+                <table class="table table-responsive" style="overflow-x:auto;" width="100%">
+                    <thead>
+                        <tr>
+                            <td>Topic Name</td>
+                            <td>Total question</td>
+                            <td>Correct Answer</td>
+                            <td>Percentage</td>
+                            <td>Remarks</td>
+                            <td>No Of questions</td>
+                            <td>Power</td>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in @ViewBag.testdtls)
+                        {
+                            <tr>
+                                <td><input type="hidden" value="@item.Topic_ID" name="Topic_Name">@item.Topic_Name</td>
+                                <td><input type="hidden" value="@item.Total_question" class="total_qstn" name="Total_Question">@item.Total_question</td>
+                                <td><input type="hidden" value="@item.Correct_answer" name="correct_answer">@item.Correct_answer</td>
+                                <td><input type="hidden" value="@item.Percentage" name="Percentage">@item.Percentage</td>
+                                <td><input type="hidden" value="@item.Remark" name="Remark">@item.Remark</td>
+                                <td><input data-rule-required="true" data-rule-digits="true" type="number" class="form-control nques" name="No_Ques" /></td>
+
+
+
+                                @foreach (var p in @ViewBag.powers)
+                                {
+                                    <td>
+                                        <input type="hidden" value="@p.Exam_Id" name="E_id" />
+                                        <input type="hidden" value="@p.Power_Id" name="p_id" />
+                                        <input type="number" name="P_Quantity" placeholder="@p.Power_Type" class="pow form-control" data-rule-required="true" data-rule-digits="true" data-msg-required="The subc.Period must be a number." />
+                                    </td>
+                                }
+                            </tr>
+
+                        }
+                    </tbody>
+
+                </table>
+                <input type="hidden" class="ttlques" value="@ViewBag.totalques" name="totalques" />
+                <input type="hidden" class="regid" value="@ViewBag.regdid" name="Redid" />
+        </div>
+    </div>
+
+
+    <div class="modal-footer">
+        <button id="btnadd" type="submit" value="search" name="submit" class="btn btn-primary"><i class="fa fa-check"></i> Submit</button>
+        <button type="button" data-dismiss="modal" class="btn btn-danger"><i class="fa fa-caret-left"></i> Back </button>
+    </div>
+
+    </div>
+
+</body>
+</html>
+

@@ -1,0 +1,172 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsSubjectModel
+@{
+    ViewBag.Title = "Add Subject";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("AddSubject", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+@Html.AntiForgeryToken();
+    <div class="page-content-wrap">
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active"> @ViewBag.pagetitle @ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3>
+                            <i class="fa fa-file"></i>
+                            @if (ViewBag.pagetitle != null)
+                                {
+                                    @ViewBag.pagetitle
+                                }
+                            Subject</h3>
+                    </div>
+                    <div class="box-content">
+                        <form action="#" class="form-horizontal form-bordered form-row-stripped">
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Board<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @if (ViewBag.Board == null) //insert subject
+                                    {
+                                        @(Html.DropDownList("Board_Name", ViewBag.Board_Id as SelectList, "Please Select Board", new { @class = "form-control ", data_rule_required="true", data_msg_required = "Please select board" , @id = "ddlboard" }))
+                                        @Html.ValidationMessageFor(x => x.Board_Name)
+                                    }
+                                    else
+                                    {
+                                        <select id='ddlboard' name="Board_Name" class="form-control" data-rule-required="true" data-msg-required="Please select board" disabled="disabled">
+                                            <option value="">Please Select Board</option>
+                                            @foreach (var v in ViewBag.Board)
+                                            {
+                                                if (ViewBag.b_id == v.Board_Id)
+                                                {
+                                                    <option value="@v.Board_Id" selected="selected">@v.Board_Name</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@v.Board_Id">@v.Board_Name</option>
+                                                }
+                                            }
+                                        </select>
+                                        @Html.HiddenFor(x => x.Board_Id, new { @name = "Board_Name" });
+                                    }
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="ajax-loader">
+                                        <div class="loader"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Class<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @(Html.DropDownListFor(x => x.Class_Id, new List<SelectListItem>(), "Please Select Class", new { @class = "form-control ", data_rule_required = "true", data_msg_required = "Please select class", @id = "ddlclass" }))                                    @Html.ValidationMessageFor(x => x.Class_Id)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Subject<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @(Html.TextBoxFor(x => x.Subject, new { @class = "form-control", placeholder = "Please Enter Subject", data_rule_required = "true", data_msg_required = "Please enter subject", @id = "txtsubject",@value = @TempData["Ssubject_name"]}))                                    
+                                    @(Html.ValidationMessageFor(m => m.Subject))
+                                    <input type="hidden" value="@ViewBag.subject_id" id="subject_id" name="subject_id" />
+                                </div>
+                            </div>
+
+                            <div class="form-group last box-tooll">
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                    <a href="@Url.Action("SubjectMaster", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i><span> Back </span></a>
+                                    <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span>Submit</span> </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+
+
+@section scripts
+{
+    <script>
+    $(document).ready(function () {
+        $('#ddlboard').change(function () {
+            if ($('#ddlclass').closest('.form-group').find('.ajax-loader').length) {
+                // do nothing
+            } else {
+                $('#ddlclass').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+            }
+            $('#ddlclass').closest('.form-group').addClass('display-loader');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllClass",
+                data: { brdId: $('#ddlboard').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta = "<select id='ddlclass'>";
+                    sta = sta + '<option value="">Please Select Class</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    sta = sta + '</select>';
+                    $('#ddlclass').html(sta);
+                    setTimeout(function () {
+                        $('#ddlclass').closest('.form-group').removeClass('display-loader');
+                    }, 800);
+                }
+            });
+        });
+
+        @if(ViewBag.classid != null)
+        {<text>
+        var statesAvailable = '@ViewBag.classid';
+        var subid = '@ViewBag.subject_id';
+        if (subid != null) {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllClass",
+                data: { brdId: '@ViewBag.b_id' },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta = "<select id='ddlclass'>";
+                    sta = sta + '<option value="">Please Select Class</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].Value == statesAvailable) {
+                            sta = sta + '<option selected="selected" value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                        }
+                        else {
+                            sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                        }
+                    }
+                    sta = sta + '</select>';
+                    $('#ddlclass').html(sta);
+                    @if(ViewBag.classid != null)
+                    {
+                        <text>
+                    $('#ddlclass').attr("disabled", "disabled");</text>
+                    }
+                }
+            });
+        }</text>
+        }
+    });
+
+</script>
+}
+

@@ -1,0 +1,289 @@
+﻿@{
+    ViewBag.Title = "View Module";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    video::-internal-media-controls-download-button {
+        display: none;
+    }
+
+    video::-webkit-media-controls-enclosure {
+        overflow: hidden;
+    }
+
+    video::-webkit-media-controls-panel {
+        width: calc(100% + 30px); /* Adjust as needed */
+    }
+	
+</style>
+<link rel="stylesheet" type="text/css" href="~/assets/bootstrap-switch/static/stylesheets/bootstrap-switch.css" />
+<div class="page-content-wrap">
+    <div class="page-title">
+        <div>
+            <h1>
+                <i class="fa fa-cubes"></i> Module
+                <div class="btn-toolbar pull-right">
+                    <div class="box-tool">
+                        <a class="btn btn-primary show-tooltip" href="/Admin/PackageCreate" data-toggle="tooltip" data-placement="top" title="Packages"><span>P</span></a>
+                        <a class="btn btn-primary show-tooltip" href="/Admin/ViewTablet" data-toggle="tooltip" data-placement="top" title="Tablets"><span>T</span></a>
+                    </div>
+                </div>
+            </h1>
+
+        </div>
+    </div>
+    <div id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="~/Admin/AdminDashboard">Home</a>
+                <span class="divider"><i class="fa fa-angle-right"></i></span>
+            </li>
+            @if (ViewBag.Breadcrumb != null)
+            {
+                <li class="active">@ViewBag.Breadcrumb</li>
+            }
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-title">
+
+                    <h3><i class="fa fa-cubes"></i>Module Details</h3>
+                    <div class="box-tool box-tooll">
+                        <a href="/Admin/CreateModule" class="btn btn-primary"><i class="fa fa-plus"></i> <span>Add New</span></a>
+                    </div>
+                </div>
+                @*<div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                           
+                            <div class="modal-body">
+                                <div class="from-group">
+
+                                    <p>
+                                        <video id="PreviewVideo" width="100%" controls>
+                                            <source id="videoplay" src="" type="video/mp4">
+                                        </video>
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="myModal2" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                          
+                            <div class="modal-body">
+
+                                <p>
+                                    <object width="100%" height="500px" id="pdfview" data="#"></object>
+                                </p>
+
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>*@
+               
+                @*<div id='myModal' class='modal'>
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-body">
+
+                                @{Html.RenderPartial("ciphervideo");}
+                            </div>
+
+                        </div>
+                        </div>
+                    </div>*@
+
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Module Video</h4>
+             </div>
+                            <div class="modal-body" >
+
+
+                                <div id="" class="vidoscls" style="height: 350px; position: relative;" ></div>
+
+
+                            </div>
+                       
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default close" >Close</button>
+                        </div>
+						 </div>
+                    </div>
+                    </div>
+                    <div class="box-content">
+                        <div class="table-responsive voffset3">
+                            <table class="table table-advance" id="table1">
+
+                                <thead>
+                                    <tr>
+                                        <th>Sl No.</th>
+                                        <th>Board</th>
+                                        <th>Class</th>
+                                        <th>Subject</th>
+                                        <th>Module Name</th>
+                                        <th>Video</th>
+                                        <th>PDF</th>
+                                        <th>PDF Name</th>
+                                        <th>Question PDF Name</th>                                        
+                                        <th>Is Free</th>
+                                        <th style="width: 20%;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int i = 0;
+                                    }
+                                    @if (ViewBag.moduledata != null)
+                                    {
+                                        foreach (var v in ViewBag.moduledata)
+                                        {
+                                            <tr>
+                                                <td>@(i += 1)</td>
+                                                <td>@v.Board_Name</td>
+                                                <td>@v.Class_Name</td>
+                                                <td>@v.Subject</td>
+
+                                                <td width="200">@v.Module_Name</td>
+
+                                                <td><a id="@v.Module_video" class="videoid" href="#"><img border="0" alt="Module Video" src="~/Images/video.png" width="30" height="30"></a></td>
+                                                <td><a id="~/Module/PDF/@v.Module_Content" class="pdfid" href="#"><img border="0" alt="Module Video" src="~/Images/pdf5.png" width="30" height="30"></a></td>
+                                                <td>@v.Upload_PDF</td>
+                                                <td>@v.Question_PDF_Name</td>
+                                                 <td>
+                                                    @if (v.Is_Free != null)
+                                                    {
+                                                        if (v.Is_Free)
+                                                        {
+                                                            <div class="make-switch switch-small" data-on-label="Yes" data-off-label="NO" data-on="success" data-off="warning">
+                                                                <input type="checkbox" checked disabled />
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="make-switch switch-small" data-on-label="Yes" data-off-label="NO" data-on="success" data-off="warning">
+                                                                <input type="checkbox" disabled />
+                                                            </div>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="make-switch switch-small" data-on-label="Yes" data-off-label="NO" data-on="success" data-off="warning">
+                                                            <input type="checkbox" disabled />
+                                                        </div>
+                                                    }
+                                                </td>
+                                                @*<td>@v.Module_Content</td>*@
+                                                <td>
+                                                    @Html.ActionLink(" ", "CreateModule", "Admin", new { id = @v.Module_ID }, new { @class = "btn btn-sm btn-primary show-tooltip fa fa-edit", @title = "Edit" })
+                                                    @* </span>*@
+                                                    @*<span class="btn btn-circle btn-bordered thick btn-danger" onclick="return confirm('Are you sure want to delete the module?')">*@
+                                                    @Html.ActionLink(" ", "DeleteModule", "Admin", new { id = @v.Module_ID }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the module?')", @data_original_title = "Delete", @title = "Delete" })
+                                                    @*</span>*@
+                                                </td>
+
+                                            </tr>
+                                        }
+
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+    </div>
+</div>
+@section scripts
+  {
+<script type="text/javascript" src="~/assets/bootstrap-switch/static/js/bootstrap-switch.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#table1").on('click', '.videoid', function (event) {
+            debugger;
+            var video_key = $(this).attr("id");
+            $('.vidoscls').attr('id', "");
+    
+            $.ajax({
+                type: "POST",
+                url: "/Admin/ciphervideo",
+                data: { video_key: video_key },
+                datatype: "json",
+                success: function (data) {
+                    debugger;
+                    //var video_url = $(this).parents(".post-thumb").find('video').find('source.vsrc').attr('src');
+                    (function(v,i,d,e,o){v[o]=v[o]||{}; v[o].add = v[o].add || function V(a){ (v[o].d=v[o].d||[]).push(a);};
+                        if(!v[o].l) { v[o].l=1*new Date(); a=i.createElement(d), m=i.getElementsByTagName(d)[0];
+                            a.async=1; a.src=e; m.parentNode.insertBefore(a,m);}
+                    })(window,document,'script','//de122v0opjemw.cloudfront.net/vdo.js','vdo');
+                    vdo.add({
+                        o: data,
+                   
+                    })
+                    $('.vidoscls').attr('id', "vdo" + data);
+                    $('#myModal').modal('show');
+                }
+            });
+          
+             
+            });
+           
+
+           
+            //$('#myModal').modal('show');
+           
+
+           
+      
+        $("#table1").on('click', '.pdfid', function (event) {
+            debugger;
+            var href = $(this).attr("id");
+
+            $('#pdfview').attr('data', href);
+            $('#myModal2').modal('show');
+
+        })
+    })
+</script>
+
+<script language="javascript" type="text/javascript">
+   
+        $('.close').click(function () {
+            
+			
+ location.reload();
+			 $('#myModal').modal('hide');
+			
+        });
+  
+</script>
+}

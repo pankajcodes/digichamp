@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
+  <metadata>
+    <id>Marvin.JsonPatch.Signed</id>
+    <version>0.7.0</version>
+    <title>Marvin.JsonPatch.Signed</title>
+    <authors>Kevin Dockx (Marvin)</authors>
+    <owners>Kevin Dockx (Marvin)</owners>
+    <projectUrl>https://github.com/carolynvs/JsonPatch.Signed</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This is the Marvin.JsonPatch package, repackaged with strongly named assemblies. See https://www.nuget.org/packages/Marvin.JsonPatch for the official package.</description>
+    <summary>JSON Patch (RFC 6902) support for .NET to easily allow and apply partial REST-ful service (through Web API) updates from any client (portable class library)</summary>
+    <releaseNotes>- support for non-IConvertible types
+- greatly improved performance
+- avoid unnecessary reflection where possible
+- stability improvements</releaseNotes>
+    <copyright>Copyright 2014, 2015</copyright>
+    <tags>Web API WebAPI HttpPatch Json JsonPatch Partial Update ASP .NET</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="6.0.4" />
+    </dependencies>
+    <references>
+      <group targetFramework=".NETPortable0.0-net40+win+wpa81">
+        <reference file="Marvin.JsonPatch.dll" />
+      </group>
+    </references>
+  </metadata>
+</package>

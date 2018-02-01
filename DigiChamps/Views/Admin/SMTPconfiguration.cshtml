@@ -1,0 +1,99 @@
+﻿@model DigiChamps.Models.tbl_DC_Smtp_Details
+@{
+    ViewBag.Title = "SMTP Configuration";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("SMTPconfiguration", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+
+    <div class="page-content-wrap">
+        <div class="page-title">
+            <div>
+                <h1>
+                    <i class="fa fa-envelope-o"></i> SMTP
+                    <div class="btn-toolbar pull-right">
+                        <div class="box-tool">
+                            <a class="btn btn-primary show-tooltip" href="/Admin/MailConfiguration" data-toggle="tooltip" data-placement="top" title="Mail"><span>M</span></a>
+                        </div>
+                    </div>
+                </h1>
+
+            </div>
+        </div>
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active">@ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-table"></i>SMTP Details</h3>
+                        <div class="box-tool box-tooll">
+                            <a href="/Admin/AddSMTPConfig" class="btn btn-primary"><i class="fa fa-plus"></i> <span>Add New</span></a>
+                        </div>
+                    </div>
+                    <div class="box-content">
+                        <div class="table-responsive voffset3" style="border:0">
+                            <table class="table table-advance" id="table1">
+                                <thead>
+                                    <tr>
+                                        <th>Sl No</th>
+                                        <th>Sender</th>
+                                        <th>Host Name</th>
+                                        <th>User Name</th>
+                                        <th>Port</th>
+                                        <th>SSL</th>
+                                        <th style="width: 150px">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{   int i = 1;
+                                    }
+                                    @if (ViewBag.data != null)
+                                    {
+                                        foreach (var b in ViewBag.data)
+                                        {
+                                            <tr id="smt">
+                                                <td><label>@Html.Raw(i++)</label></td>
+                                                <td>@b.SMTP_Sender</td>
+                                                <td>@b.SMTP_HostName</td>
+                                                <td>@b.SMTP_User</td>
+                                                <td>@b.SMTP_Port</td>
+                                                <td>@b.SMTP_Ssl</td>
+                                                <td>
+                                                    @Html.ActionLink(" ", "AddSMTPConfig", "Admin", new { id = @b.SMTP_ID }, new { @class = "btn btn-sm btn-primary show-tooltip fa fa-edit", @title = "Edit" })
+
+
+                                                    @Html.ActionLink(" ", "DeleteSmtpConfig", "Admin", new { id = @b.SMTP_ID }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the SMTP Config?')", @data_original_title = "Delete", @title = "Delete" })
+
+
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+

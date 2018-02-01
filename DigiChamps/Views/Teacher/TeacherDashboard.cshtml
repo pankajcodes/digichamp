@@ -1,0 +1,199 @@
+﻿@{
+    ViewBag.Title = "Teacher Dashboard";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+@*student doubt*@
+<div class="row">
+    <div class="col-md-7">
+        <div class="box box-pink">
+            <div class="box-title">
+                <h3><i class="fa fa-comments"></i> Student Recent Reply</h3>
+                <div class="box-tool">
+                    
+                </div>
+            </div>
+            <div class="box-content">
+
+              @if (ViewBag.rply != null)
+              {
+                <ul class="messages messages-chat messages-stripped messages-zigzag slimScroll" style="height:250px">
+                  
+                    @foreach (var v in ViewBag.rply)
+                    {
+                       <li>
+                           @{
+                        DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                        int Student_ID = Convert.ToInt32(v.User_Id);
+                        var student = DbContext.tbl_DC_Registration.Where(x => x.Regd_ID == Student_ID).FirstOrDefault(); 
+                           }
+                           @if (@student.Image != null)
+                        {
+                            <img src="~/Images/Profile/@student.Image" alt="">
+                        }
+                        else
+                        {
+                               <img src="~/Images/Profile/no_image.jpg" />
+                           }
+                        <div>
+                            <div>
+                                <h5>@student.Customer_Name</h5>
+                                <span class="time"><i class="fa fa-clock-o"></i> @v.User_Comment_Date</span>
+                            </div>
+                            <p>@v.User_Comment</p>
+                        </div>
+                       </li>
+                    }
+                   
+                </ul>
+              }
+              else
+              {
+                <h4 class="messages messages-chat"> No recent replies from Students.</h4>
+              }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="box box-green">
+            <div class="box-title">
+                <h3><i class="fa fa-check"></i>Over Due Tickets</h3>
+            </div>
+            <div class="box-content">
+                <ul class="todo-list">
+                    @if (ViewBag.allticket!=null)
+                    {
+                        foreach(var v in ViewBag.allticket)
+                        {
+                              <li>
+                                <div class="todo-desc">
+                                    <p>@v.Ticket_No</p>
+                                </div>
+                                    <div class="todo-actions">
+                                        <a class="show-tooltip" href="/Teacher/ViewTickectDetail/@v.Ticket_ID" title="View Ticket"><i class="fa fa-check-square-o"></i> Details</a>
+                                    </div>
+                              </li>
+                        }
+                    }
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    @if (ViewBag.course != null)
+    {
+        int row = 0;
+        int row2 = 0;
+    if (ViewBag.batch != null)
+    {
+        
+       
+            <div class="col-md-7">
+                <div class="box box-red">
+                    <div class="box-title">
+                        <h3><i class="fa fa-table"></i> Assigned Batch</h3>
+                    </div>
+                    <div class="box-content">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Slno</th>
+                                    <th><i class="fa fa-user"></i> Batch Name</th>
+                                    <th><i class="fa fa-twitter"></i> Time</th>
+                                    <th><i class="fa fa-twitter"></i> Day</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                @foreach (var v in ViewBag.batch)
+                                {
+                                <tr>
+                                    @{
+                                    DigiChamps.Models.DigiChampsEntities Db = new DigiChamps.Models.DigiChampsEntities();
+                                    int subject_id = Convert.ToInt32(v.Subject_Id);
+                                    int teacher_id = Convert.ToInt32(v.Teach_ID);
+                                    int batch_id = Convert.ToInt32(v.Batch_Id);
+                                    var subject = Db.tbl_DC_Subject.Where(x => x.Subject_Id == subject_id).FirstOrDefault();
+                                    var tecaher = Db.tbl_DC_Teacher.Where(x => x.Teach_ID == teacher_id).FirstOrDefault();
+                                    var batch = Db.tbl_DC_Batch.Where(x => x.Batch_Id == batch_id).FirstOrDefault();
+
+                                    }
+                                    <td>@(row += 1)</td>
+                                    <td>@batch.Batch_Name</td>
+                                    <td>@batch.Batch_From_Time - @batch.Batch_To_Time </td>
+                                    <td>@batch.Batch_Days</td>
+                                  
+                                </tr>
+
+
+                                }
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        
+
+    }
+
+
+
+    <div class="col-md-5">
+        <div class="box box-black">
+            <div class="box-title">
+                <h3><i class="fa fa-table"></i> Assigned Courses</h3>
+            </div>
+            <div class="box-content">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Board</th>
+                            <th>Class</th>
+                            <th>Subject</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       @foreach (var v in ViewBag.course)
+                       {
+                           <tr>
+                               @{
+                           DigiChamps.Models.DigiChampsEntities Db = new DigiChamps.Models.DigiChampsEntities();
+                           int subject_id = Convert.ToInt32(v.Subject_Id);
+                           int Board_Id = Convert.ToInt32(v.Board_Id);
+                           int Class_Id = Convert.ToInt32(v.Class_Id);
+                         
+                           var subjects = Db.tbl_DC_Subject.Where(x => x.Subject_Id == subject_id).FirstOrDefault();
+                          var board=Db.tbl_DC_Board.Where(x=>x.Board_Id==Board_Id).FirstOrDefault();
+                          var classs = Db.tbl_DC_Class.Where(x => x.Class_Id == Class_Id).FirstOrDefault();
+                               }
+                            <td>@(row2+=1)</td>
+                            <td>@board.Board_Name</td>
+                            <td>@classs.Class_Name</td>
+                            <td>@subjects.Subject</td>
+                        </tr>
+                       }
+                        
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+        
+}
+
+</div>
+<!-- END Main Content -->
+
+
+@section scripts{
+    <script>
+        $(".breadcrumb").hide();
+
+    </script>
+}

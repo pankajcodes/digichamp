@@ -1,0 +1,130 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito:400,300);
+/************theme fonts********************/
+/***********************theme colors*****************************/
+/*****************theme parametres*******************/
+/*sidebar-parametres*/
+/****************************************************
+                    Simple Gallery
+****************************************************/
+.demo li a img {
+  height: 200px;
+  border: 2px solid #e9ecf2;
+  margin: 5px;
+}
+/****************************************************
+                Gallery With Description
+****************************************************/
+.brick {
+  background: #ffffff;
+  color: black;
+  padding: 10px;
+  float: left;
+}
+.brick img {
+  height: 200px;
+}
+/****************************************************
+                        Gallery 2
+****************************************************/
+#gallery-header #gallery-header-center {
+  width: 80% !important;
+}
+#gallery-header-center-left-icon,
+.gallery-header-center-right-links-current {
+  background-color: #2196f3 !important;
+}
+#gallery-header-center-left-icon:hover,
+.gallery-header-center-right-links-current:hover {
+  background-color: #0c7cd5 !important;
+}
+#gallery-header-center-left-title {
+  color: #2196f3 !important;
+  font-family: 'Nunito', sans-serif !important;
+  font-size: 16px !important;
+}
+.gallery-header-center-right-links:hover {
+  background-color: #2196f3 !important;
+}
+#lightbox {
+  position: fixed;
+  /* keeps the lightbox window in the current viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  background: rgba(37, 37, 37, 0.9);
+  text-align: center;
+  z-index: 9999999;
+}
+#lightbox .lightbox-content {
+  height: 428px;
+  width: 640px;
+  margin-top: 10%;
+  margin-right: auto;
+  margin-left: auto;
+  position: relative;
+}
+#lightbox .lightbox-content i {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #2196f3;
+  color: #fff;
+  padding: 10px;
+  font-size: 16px;
+}
+#lightbox .lightbox-content img {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+@media (max-width: 745px) {
+  #gallery-header {
+    margin-bottom: 60px;
+  }
+  #gallery-header #gallery-header-center {
+    width: 100% !important;
+  }
+  #lightbox .lightbox-content {
+    width: 340px;
+  }
+  #lightbox .lightbox-content i {
+    right: -26px;
+  }
+  #lightbox .lightbox-content img {
+    width: 100%;
+  }
+}
+/****************************************************
+                        Gallery 3
+****************************************************/
+.gallery-tab-title {
+  margin-bottom: 30px;
+}
+.gallery-tab-title .gallery-tab-title-holder-controls-button {
+  background-color: #2196f3 !important;
+}
+.gallery-tab-title .gallery-tab-title-holder-controls-button:hover {
+  background-color: #0c7cd5 !important;
+}
+.gallery-tab-title .gallery-tab-title-holder-text {
+  color: #707780 !important;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 300 !important;
+  font-size: 24px !important;
+}
+.gallery-tab-title .gallery-tab-title-holder-text:hover {
+  color: #9398a0 !important;
+}
+.gallery-tab-images-slider-tab-hover {
+  background-color: rgba(33, 150, 243, 0.5) !important;
+}
+#popup #popup-box-close {
+  background-color: #2196f3 !important;
+}
+@media (max-width: 1000px) {
+  #popup #popup-box #popup-box-close {
+    background-color: #2196f3 !important;
+  }
+}

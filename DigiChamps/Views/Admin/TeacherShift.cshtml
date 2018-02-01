@@ -1,0 +1,174 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsTeachershiftModel
+@{
+    ViewBag.Title = "Teacher Shift";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("TeacherShift", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    
+     <div class="page-content-wrap">
+
+         <div id="breadcrumbs">
+             <ul class="breadcrumb">
+                 <li>
+                     <i class="fa fa-home"></i>
+                     <a href="~/Admin/AdminDashboard">Home</a>
+                     <span class="divider"><i class="fa fa-angle-right"></i></span>
+                 </li>
+                 @if (ViewBag.Breadcrumb != null)
+                 {
+                     <li class="active">@ViewBag.Breadcrumb</li>
+                 }
+             </ul>
+         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i>Teacher Shift</h3>
+                    </div>
+                    <div class="box-content">
+                        <form action="#" class="form-horizontal form-bordered form-row-stripped">
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Shift<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    
+                                    <select data-placeholder="Select Teacher Shift" id="ShiftMst_ID" name="ShiftMst_ID" class="form-control chosen" tabindex="6" data-rule-required="true" data-msg-required="select teacher shift">
+                                        <option value=""> </option>
+                                        @if (ViewBag.shiftdetails != null)
+                                        {
+                                            foreach (var v in ViewBag.shiftdetails)
+                                            {
+                                                if (Convert.ToString(@v.ShiftMst_ID) == Convert.ToString(@ViewBag.Shift))
+                                                {
+                                                   <option selected="selected" value="@v.ShiftMst_ID">@v.Shift_Name (@v.Shift_From_Time to @v.Shift_To_Time)</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@v.ShiftMst_ID">@v.Shift_Name (@v.Shift_From_Time to @v.Shift_To_Time)</option>
+                                                }          
+                                            }
+                                        }
+                                    </select>                                                                                                          
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="ajax-loader">
+                                        <div class="loader"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Teacher's Name <span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @if (ViewBag.Teachername!=null)
+                                    {
+                                        <select data-placeholder="Select Teacher Name" disabled="disabled" class="form-control chosen" id="Teacher_ID" name="Teacher_ID" data-rule-required="true"  data-msg-required="select teacher name">
+                                        <option value=""> </option>
+                                        @if (ViewBag.teachernames != null)
+                                        {
+                                            foreach (var items in ViewBag.teachernames)
+                                            {
+                                                if (Convert.ToString(@items.Teach_ID) == Convert.ToString(@ViewBag.Teachername))
+                                                {
+                                                    <option selected="selected" value="@items.Teach_ID">@items.Teacher_Name</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@items.Teach_ID">@items.Teacher_Name</option>
+                                                }
+                                                
+                                            }
+                                        }
+                                    </select>
+                                    <input type="hidden" value="@ViewBag.Teachername" name="Teacher_ID" />
+                                    }
+                                    else
+                                    {
+                                        <select data-placeholder="Select Teacher Name" class="form-control chosen" id="Teacher_ID" name="Teacher_ID" data-rule-required="true" data-msg-required="select teacher name">
+                                            <option value=""> </option>
+                                            @if (ViewBag.teachernames != null)
+                                            {
+                                                foreach (var items in ViewBag.teachernames)
+                                                {
+                                                    if (Convert.ToString(@items.Teach_ID) == Convert.ToString(@ViewBag.Teachernamed))
+                                                    {
+                                                        <option selected="selected" value="@items.Teach_ID">@items.Teacher_Name</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@items.Teach_ID">@items.Teacher_Name</option>
+                                                    }
+
+                                                }
+                                            }
+                                        </select>
+
+                                    }
+                                    
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Days<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <select data-placeholder="Select Shift Days" name="Shift_Days" id="Shift_Days" class="form-control chosen" data-rule-required="true" data-msg-required="select shift days">
+                                        <option value=""> </option>
+                                        <option value="Sunday">Sunday</option>
+                                        <option value="Monday">Monday</option>
+                                        <option value="Tuesday">Tuesday</option>
+                                        <option value="Wednesday">Wednesday</option>
+                                        <option value="Thursday">Thursday</option>
+                                        <option value="Friday">Friday</option>
+                                        <option value="Saturday">Saturday</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Effective Date <span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @if (ViewBag.Effectivedate != null)
+                                    {
+                                        <input type="text" placeholder="@DateTime.Now.ToShortDateString()" autocomplete="off" value=@ViewBag.Effectivedate data-rule-required="true" data-msg-required="select effective date" name="Efective_Date" class="datepicker form-control" />
+                                    }
+                                    else
+                                    {
+                                        <input type="text" placeholder="@DateTime.Now.ToShortDateString()" autocomplete="off" value=@ViewBag.Effectivedate data-rule-required="true" data-msg-required="Please select effective date" name="Efective_Date" class="datepicker form-control" />
+                                    }
+                                    @if (ViewBag.ids != null)
+                                    {
+                                        <input type="hidden" value="@ViewBag.ids" name="Shift_teach_ID" />
+                                    }
+                                </div>
+                            </div>
+                     
+                            <div class="form-group last box-tooll">
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                    <a href="@Url.Action("CreateShift", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                                    <button id="btnSearch" type="submit" value="search" name="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i> <span>Submit</span></button>
+                                   
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+@section scripts
+{
+    <script>
+    $(document).ready(function () {
+        $('#Shift_Days option[value="@ViewBag.Days"]').attr('selected', 'selected');
+        $('#Shift_Days').trigger('chosen:updated');
+    });
+    </script>
+       
+}
+
+
+
+
+

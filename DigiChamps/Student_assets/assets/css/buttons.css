@@ -1,0 +1,234 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito:400,300);
+/************theme fonts********************/
+/***********************theme colors*****************************/
+/*****************theme parametres*******************/
+/*sidebar-parametres*/
+/****************************************************
+                        button colors
+****************************************************/
+.btn {
+  border-radius: 0;
+  color: #ffffff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  outline: 0;
+  border: 1px solid transparent;
+}
+.btn:focus,
+.btn:active {
+  outline: 0 !important;
+  border: 1px solid transparent;
+}
+.btn:hover {
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+.btn-radius {
+  border-radius: 4px;
+}
+.btn-round {
+  border-radius: 30px;
+}
+.btn-primary {
+  background-color: #2196f3;
+  border: 1px solid transparent;
+}
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
+  background-color: #0d8aee;
+  border: 1px solid transparent;
+  color: #ffffff;
+}
+.btn-green {
+  background-color: #6fd64b;
+  border: 1px solid transparent;
+}
+.btn-green:hover,
+.btn-green:active,
+.btn-green:focus {
+  background-color: #53c22c;
+  border: 1px solid transparent;
+  color: #ffffff;
+}
+.btn-orange {
+  background-color: #f7941d;
+  border: 1px solid transparent;
+}
+.btn-orange:hover,
+.btn-orange:active,
+.btn-orange:focus {
+  background-color: #f28809;
+  border: 1px solid transparent;
+  color: #ffffff;
+}
+.btn-red {
+  background-color: #fb5d5d;
+  border: 1px solid transparent;
+}
+.btn-red:hover,
+.btn-red:active,
+.btn-red:focus {
+  background-color: #fa4444;
+  border: 1px solid transparent;
+  color: #ffffff;
+}
+.btn-black {
+  background-color: #000000;
+  border: 1px solid transparent;
+}
+.btn-black:hover,
+.btn-black:active,
+.btn-black:focus {
+  background-color: #333333;
+  border: 1px solid transparent;
+  color: #ffffff;
+}
+.btn-white {
+  background-color: #ffffff;
+  border: 1px solid #e9ecf2;
+  color: #707780;
+}
+.btn-white:hover,
+.btn-white:active,
+.btn-white:focus {
+  background-color: #f2f2f2;
+  border: 1px solid #e9ecf2;
+  color: #707780;
+}
+.btn-gray {
+  background-color: #aaaaaa;
+  border: 1px solid transparent;
+}
+.btn-gray:hover,
+.btn-gray:active,
+.btn-gray:focus {
+  background-color: #777777;
+  border: 1px solid transparent;
+  color: #ffffff;
+}
+.btn-default {
+  background-color: #ffffff;
+  border: 1px solid #d7dce5;
+  color: #000000;
+}
+.btn-default:hover,
+.btn-default:active,
+.btn-default:focus {
+  background-color: #cccccc;
+  border: 1px solid #d7dce5;
+  color: #000000;
+}
+/****************************************************
+                        paneltype-heading
+****************************************************/
+.paneltype-heading {
+  color: #707780;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  text-transform: capitalize;
+  line-height: 26px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+.paneltype-heading:first-child {
+  padding-top: 0px;
+}
+/****************************************************
+                        Button Icons
+****************************************************/
+.btn-icon-block {
+  padding: 0px;
+}
+.btn-icon-block i {
+  padding: 9px;
+}
+.btn-icon-block.btn-icon-blockleft {
+  padding: 0px 12px 0px 0px;
+}
+.btn-icon-block.btn-icon-blockleft span {
+  padding-left: 6px;
+}
+.btn-icon-block.btn-icon-blockright {
+  padding: 0px 0px 0px 12px;
+}
+.btn-icon-block.btn-icon-blockright span {
+  padding-right: 6px;
+}
+.btn-icon-block.btn-icon-primary i {
+  background-color: #0d8aee;
+}
+.btn-icon-block.btn-icon-green i {
+  background-color: #53c22c;
+}
+.btn-icon-block.btn-icon-orange i {
+  background-color: #f28809;
+}
+.btn-icon-block.btn-icon-red i {
+  background-color: #fa4444;
+}
+.btn-icon-block.btn-icon-black i {
+  background-color: #333333;
+}
+.btn-icon-block.btn-icon-white i {
+  background-color: #f2f2f2;
+}
+.btn-icon-block.btn-icon-gray i {
+  background-color: #777777;
+}
+.btn-icon-block.btn-icon-default i {
+  background-color: #cccccc;
+}
+/****************************************************
+                        Button Dropdown
+****************************************************/
+.dropdown-button-menu {
+  border-width: 0;
+  border-radius: 0;
+  background-color: #FFFFFF;
+  border-top: 2px solid #2196f3;
+  -webkit-transition: all 1s ease-out;
+  max-height: 420px;
+  overflow: auto;
+  z-index: 99;
+  padding-bottom: 0;
+}
+.dropdown-button-menu.btn-drop > li a {
+  color: #707780;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 26px;
+  letter-spacing: 0.25px;
+  text-decoration: none;
+  text-transform: capitalize;
+}
+.dropdown-button-menu.btn-drop > li a:hover {
+  background-color: #e9ecf2;
+}
+.dropdown-button-menu.btn-bgcolor {
+  background-color: #2196f3;
+  border-top: 2px solid #0d8aee;
+}
+.dropdown-button-menu.btn-bgcolor > li a {
+  color: #ffffff;
+}
+.dropdown-button-menu.btn-bgcolor > li a:hover {
+  background-color: #0d8aee;
+}
+.dropdown-button-menu.btn-bdrred {
+  border-top: 2px solid #fb5d5d !important;
+}
+.dropdown-button-menu.btn-bgred {
+  background-color: #fb5d5d;
+}
+.dropdown-button-menu.btn-bgred > li a {
+  color: #ffffff;
+}
+.dropdown-button-menu.btn-bgred > li a:hover {
+  background-color: #fa4444;
+}

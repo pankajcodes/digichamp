@@ -1,0 +1,729 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" /> <!--320-->
+<meta name="google-site-verification" content="ueIyxjdU5LK1aSwaSICD0JTbleTkFigA4TLxk_GRA8w" />  
+  <title>@ViewBag.Title</title>
+    <link href="~/Student_assets/images/fav-icon.jpg" rel="shortcut icon" />
+    <!-- Bootstrap CSS -->
+    <link rel='stylesheet' href='~/Student_assets/assets/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/material.css'>
+    <link rel="stylesheet" href="~/Student_assets/assets/css/video-js.min.css" />
+    <link href="~/Student_assets/assets/css/animate.css" rel="stylesheet">
+    <link href="~/Student_assets/assets/css/owl.carousel.css" rel="stylesheet">
+    <link rel='stylesheet' href='~/Student_assets/assets/css/animated-masonry-gallery.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/rotated-gallery.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/sweet-alerts/sweetalert.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/jtree.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/range-slider/ion.rangeSlider.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/range-slider/ion.rangeSlider.skinFlat.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/owl.carousel.min.css'>
+    <link href="~/Student_assets/assets/css/magnific-popup.css" rel="stylesheet">
+    <link href="~/css/manual.css" rel="stylesheet" />
+    <link href="~/Student_assets/assets/css/photoswipe.css" rel="stylesheet" />
+    <link rel='stylesheet' href='~/Student_assets/assets/css/style.css'>
+    <script src='~/Student_assets/assets/js/jquery.js'></script>
+    <script src='~/Student_assets/assets/js/app.js'></script>
+    <link href="~/css/rateit.css" rel="stylesheet" />
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-102578142-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!--LeadSquared Tracking Code Start-->
+    <script type="text/javascript" src="https://web.mxradon.com/t/Tracker.js"></script>
+    <script type="text/javascript">
+      pidTracker('21679');
+    </script>
+    <!--LeadSquared Tracking Code End-->
+</head>
+<body>
+    <div class="loader-ajax-container">
+        <div class="cssload-container">
+            <div class="cssload-loading"><i></i><i></i><i></i><i></i></div>
+        </div>
+    </div>
+    @RenderSection("video", required: false)
+    <div class="ntspl-preloader text-center">
+        <!-- <div class="progress">
+            <div class="indeterminate"></div>
+        </div> -->
+        @*<div class="loader">Loading...</div>*@
+        <div class="loader-container">
+            <span>Loading</span>
+            <div id="circleG">
+                <div id="circleG_1" class="circleG"></div>
+                <div id="circleG_2" class="circleG"></div>
+                <div id="circleG_3" class="circleG"></div>
+            </div>
+            <div class="clearfix"></div>
+            <p>FUN + EDUCATION = FUNDUCATION</p>
+        </div>
+    </div>
+    <div class="wrapper ">
+
+        <div class="left-bar ">
+            <div class="admin-logo">
+                <div class="logo-holder pull-left">
+                    <a href="@Url.Action("studentDashboard","Student")"><img class="logo" src="~/Student_assets/images/Digichamps-small.jpg" alt="logo"></a>
+                </div>
+                <!-- logo-holder -->
+                <a href="#" class="menu-bar  pull-right"><i class="ti-menu"></i></a>
+            </div>
+            <!-- admin-logo -->
+            <ul class="list-unstyled menu-parent" id="mainMenu">
+                <li>
+                    <a href="/student/studentdashboard" class="current waves-effect waves-light">
+                        <i class="menu-icons dashboard-icon"></i>
+                        <span class="text ">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/student/packagepreview">
+                        <i class="menu-icons package-icon"></i>
+                        <span class="text">Packages</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/student/packagelearn">
+                        <i class="menu-icons learn-icon"></i>
+                        <span class="text">Learn</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/student/exam">
+                        <i class="menu-icons online-test-icon"></i>
+                        <span class="text">Chapter Based Test</span>
+                    </a>
+
+                </li>
+                <li>
+                    <a href="/student/pre_requisite_test">
+                        <i class="menu-icons online-test-icon"></i>
+                        <span class="text">Pre Requisite Test</span>
+                    </a>
+
+                </li>
+                @{
+                    DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                    if (Session["USER_CODE"] != null)
+                    {
+                        int sid = Convert.ToInt32(Convert.ToString(Session["USER_CODE"]).Substring(1));
+                        var offline = DbContext.VW_Offline_Student_Orders.Where(x => x.Regd_ID == sid).FirstOrDefault();
+                        if (offline != null)
+                        {
+                            var Isassigned =  DbContext.SP_DC_Assign_Batch_Details().Where(x => x.Regd_ID == sid).FirstOrDefault();
+                            if(Isassigned != null)
+                            {@*if buy offline package and batch has assigned*@
+                                <text>
+                                <li>
+                                    <a href="/student/offline-exam">
+                                        <i class="menu-icons offline-test-icon"></i>
+                                        <span class="text">Offline Test</span>
+                                    </a>
+                                </li></text>
+                            }
+                        }
+                    }
+                }
+
+                <li>
+                    <a href="/student/askdoubt">
+                        <i class="menu-icons doubt-icon"></i>
+                        <span class="text">Doubts</span>
+                    </a>
+                </li>
+                @*<li>
+                            <a href="/Student/Testresult">
+                                <i class="menu-icons online-test-result-icon"></i>
+                                Online Test Result
+                            </a>
+                        </li>
+                    <li>
+                        <a href="/Student/Lead_to_board">
+                            <i class="menu-icons leader-board-icon"></i>
+                            Leader Board
+                        </a>
+                    </li>*@
+                <li>
+                    <a href="/student/orderdetails">
+                        <i class="menu-icons order-detail-icon"></i>
+                        <span class="text">Order Details</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/student/offer">
+                        <i class="menu-icons package-icon"></i>
+                        <span class="text">Offers</span>
+                    </a>
+                </li>
+                @if (Session["USER_CODE"] != null)
+                {
+                    int sid = Convert.ToInt32(Convert.ToString(Session["USER_CODE"]).Substring(1));
+                    var offline = DbContext.VW_Offline_Student_Orders.Where(x => x.Regd_ID == sid).FirstOrDefault();
+                    if (offline != null)
+                    {
+                        var Isassigned = DbContext.SP_DC_Assign_Batch_Details().Where(x => x.Regd_ID == sid).FirstOrDefault();
+                        if (Isassigned != null)
+                        {
+                            @*<li>
+                                <a href="/student/timetable_batchwise">
+                                    <i class="menu-icons timetable-icon"></i>
+                                    <span class="text">Time Table</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/student/attendance_report">
+                                    <i class="menu-icons attendance-icon"></i>
+                                    <span class="text">Attendance Report</span>
+                                </a>
+                            </li>*@
+                        }
+                    }
+                }
+                @*<li>
+                    <a href="/student/feedback">
+                        <i class="menu-icons feedback-icon"></i>
+                        <span class="text">Feedback</span>
+                    </a>
+                </li>*@
+            </ul>
+        </div>
+        <!-- left-bar -->
+        <div class="content" id="content">
+            <div class="overlay"></div>
+            <div class="top-bar">
+                <nav class="navbar navbar-default top-bar">
+                    <div class="menu-bar-mobile" id="open-left">
+                        <i class="ti-menu"></i>
+                    </div>
+                    <a href="#" class="menu-bar  pull-left"><i class="ti-menu"></i></a>
+                    @RenderSection("class_select", required: false)
+
+
+                    <ul class="nav navbar-nav navbar-right top-elements">
+                        <li class="ntspl-dropdown dropdown">
+
+                            <a href="#" class="dropdown-toggle noti" data-toggle="dropdown" role="button" aria-expanded="false"><i class="ion-ios-bell-outline icon-notification"></i><span class="badge info-number message count"></span></a>
+
+                            <form id="notyform" name="notyform"></form>
+                            <ul style="overflow-y:scroll" id="notiContent" class="dropdown-menu dropdown-ntspl-menu  animated fadeInUp wow notification-drop neat_drop dropdown-right " data-wow-duration="1500ms" role="menu">
+                                @*<li>
+                                        <a href="profile.html">
+                                            <div class="hexagon danger">
+                                                <span><i class="ion-ios-alarm-outline"></i></span>
+                                            </div>
+                                            <span class="text_info"> Privacy settings have been changed</span>
+                                            <span class="time_info">3:30am</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="profile.html" class="last_info">See all notifications</a>
+                                    </li>*@
+                            </ul>
+                        </li>
+                        <li class="ntspl-dropdown dropdown">
+                            <!-- Change design here, its bit of odd or not upto usable -->
+                            <a href="#" class="dropdown-toggle avatar_width" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <span class="avatar-holder">
+                                    @{
+                                        string name = string.Empty;
+                                        string img = string.Empty;
+                                        if (Session["USER_CODE"] != null)
+                                        {
+                                            int sid = Convert.ToInt32(Convert.ToString(Session["USER_CODE"]).Substring(1));
+                                            var student = DbContext.tbl_DC_Registration.Where(x => x.Regd_ID == sid).FirstOrDefault();
+                                            if (student != null)
+                                            {
+                                                if (student.Customer_Name.Length > 15)
+                                                {
+                                                    name = student.Customer_Name.Substring(0, 15) + "..";
+                                                }
+                                                else {
+                                                    name = student.Customer_Name;
+                                                }
+                                                img = Convert.ToString(student.Image);
+                                            }
+                                        }
+                                    }@if (img == null || img == "")
+                                    {
+                                    <text><img src="~/Student_assets/assets/images/avatar/one.png" alt="" /></text>
+                                    }
+                                    else
+                                    {
+                                    <text><img src="~/images/Profile/@img" alt=""></text>
+                                    }
+                                </span>
+                                <span class="avatar_info">
+                                    @if (name != "")
+                                    {
+                                <text>@name</text>
+                                    }
+                                </span><span class="drop-icon"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-ntspl-menu  animated fadeInUp wow avatar_drop neat_drop dropdown-right" data-wow-duration="1500ms" role="menu">
+                                @*<li>
+                                        <a href="profile.html"> <i class="ion-android-settings"></i>Settings</a>
+                                    </li>*@
+                                @*<li>
+                                        <a href="mailbox.html"> <i class="ion-android-chat"></i>Messages</a>
+                                    </li>*@
+                                <li>
+                                    <span class="login-time"><i></i> Logged in from : @Session["Time"]</span>
+                                </li>
+                                <li>
+                                    <a href="/student/addtocart"> <i class="ion-android-cart"></i>My Cart</a>
+                                </li>
+                                <li>
+                                    <a href="/student/editprofile"> <i class="ion-android-create"></i>Edit profile</a>
+                                </li>
+                                <li>
+                                    <a href="/student/logout" class="logout_button"><i class="ion-power"></i>Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Page Header -->
+            <div class="page_header page_header_tab">
+                <div class="row">
+                    <div class="col-md-8 pull-left div-buttom-margin">
+                        @RenderSection("header", required: false)
+                    </div>
+                    <div class="col-md-2 pull-right test-clock">
+                        <div id="clockbox"></div>
+                        <div id="clockboxd"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    @RenderSection("Subheader", required: false)
+                </div>
+            </div>
+            <!-- /pageheader -->
+
+            <div class="main-content">
+
+
+                @if (Session["USER_CODE"] != null)
+                {
+                    if (Session["ROLE_CODE"].ToString() != "C")
+                    {
+                        Response.Redirect("~/Student/Logout");
+                    }
+                    else
+                    {
+                        if (Session["class"] != null)
+                        {
+                @RenderBody()
+                        }
+                        else
+                        {
+                            Response.Redirect("~/Student/Logout");
+                        }
+                    }
+                }
+                else
+                {
+                    Response.Redirect("~/Student/Logout");
+                }
+                <div class="row">
+                    <div class="col-md-12 text-center footer">
+                        <p class="designed-by">©2017 Digichamps. All Rights Reserved. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" data-backdrop="static" data-keyboard="false" hidden>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="modal_form">
+                    <div class="modal-header">
+                        @*<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>*@
+                        <h4 class="modal-title" id="myModalLabel">Verify Your Account</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="verify1">
+                            <p> When you enable 1-Step Verification (also known as two-factor authentication), you add an extra layer of security to your account. You sign in with something you know (your password) and something you have (a code sent to your phone).</p>
+                            <ul>
+                                <li>Click on verify button.</li>
+                                <li>Enter the OTP and select Get started.</li>
+                                <li>Review your settings and add backup phone numbers. The next time you sign in, you'll receive a text message with a verification code. You also have the option of using a security Key.</li>
+                            </ul>
+                            <a type="button" class="btn btn-primary btn-icon-primary voffset3 pull-right" id="logout_btn"><span>Cancel</span></a>
+                            <button type="button" class="btn btn-primary btn-icon-primary btn-icon-block btn-icon-blockleft voffset3 pull-right " id="verify_btn"><i class="ion ion-link"></i><span>Verify Now</span></button>
+                        </div>
+                        <div id="verify2" hidden>
+                            <div class="form-group clearfix">
+                                <label class="col-sm-2 control-label">OTP :</label>
+                                <div class="col-sm-8">
+                                    <input type="text" maxlength="6" name="otpchk" id="otpchk" class="form-control" data-rule-required="true" data-rule-digits="true" data-msg-required="Please enter OTP." placeholder="Enter OTP" />
+                                    <span class="msg help-block"></span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <button type="submit" class="btn btn-primary btn-icon-primary btn-icon-block btn-icon-blockleft voffset3 pull-right"><i class="ion ion-link"></i><span>Submit</span></button>
+                        </div>
+
+                        <div class="modal-footer">
+                           
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src='~/Student_assets/assets/js/jquery-ui-1.10.3.custom.min.js'></script>
+    <script src='~/Student_assets/assets/js/bootstrap.min.js'></script>
+    <script src='~/Student_assets/assets/js/jquery.nicescroll.min.js'></script>
+    <script src='~/Student_assets/assets/js/wow.min.js'></script>
+    <script src='~/Student_assets/assets/js/jquery.loadmask.min.js'></script>
+    <script src='~/Student_assets/assets/js/jquery.accordion.js'></script>
+    <script src='~/Student_assets/assets/js/materialize.js'></script>
+    <script src='~/Student_assets/assets/js/build/d3.min.js'></script>
+
+    <script src='~/Student_assets/assets/js/bic_calendar.js'></script>
+    <script src='~/Student_assets/assets/js/widgets.js'></script>
+    <script src='~/Student_assets/assets/js/core.js'></script>
+    <script src="~/Student_assets/assets/js/jquery.countTo.js"></script>
+    <script src='~/Student_assets/assets/js/range-slider/ion.rangeSlider.js'></script>
+    <script src='~/Student_assets/assets/js/range-slider/custom.js'></script>
+    <script src='~/Student_assets/assets/js/tooltip-custom.js'></script>
+    <script src='~/Student_assets/assets/js/owl.carousel.min.js'></script>
+    <script src="~/Student_assets/assets/js/jquery.magnific-popup.min.js"></script>
+    @*<script src="~/Student_assets/assets/js/custom-script.js"></script>*@
+    @*//Show error msg*@
+    <script src='~/Student_assets/assets/js/gritter/jquery.gritter.js'></script>
+    <script src='~/Student_assets/assets/js/noty/jquery.noty.js'></script>
+    <script src='~/Student_assets/assets/js/noty/layouts/top.js'></script>
+    <script src="~/Student_assets/assets/js/noty/layouts/default.js"></script>
+    <script src='~/Student_assets/assets/js/noty/notifications-custom.js'></script>
+    <script>
+        jQuery(window).load(function () {
+            $('.ntspl-preloader').addClass('hidden');
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+    <!--Validation scripts-->
+    <script type="text/javascript" src="~/assets/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/assets/jquery-validation/dist/additional-methods.min.js"></script>
+    @RenderSection("scriptvideo", required: false)
+
+   
+    
+    <script type="text/javascript">
+    //Dynamic Menu Active
+    $(function () {
+        let pathParts = window.location.pathname.split("/");
+        let yourLink = pathParts[2] // in this example
+        switch (yourLink.toUpperCase()) {
+            case 'ORDERDETAILS':
+                $('#mainMenu li a:contains("Order")').parent().addClass("current");
+                break;
+            case 'OFFLINETEST':
+                $('#mainMenu li a:contains("Offline Test")').parent().addClass("current");
+                break;
+            case 'TEST':
+                $('#mainMenu li a:contains("Chapter Based Test")').parent().addClass("current");
+                break;
+            case 'PRE_REQUISITE_TEST':
+                $('#mainMenu li a:contains("Pre Requisite Test")').parent().addClass("current");
+                break;
+            case 'TIMETABLE_BATCHWISE':
+                $('#mainMenu li a:contains("Time Table")').parent().addClass("current");
+                break;
+            case 'ASKDOUBT':
+                $('#mainMenu li a:contains("Doubt")').parent().addClass("current");
+                break;
+            case 'ATTENDANCE_REPORT':
+                $('#mainMenu li a:contains("Attendance Report")').parent().addClass("current");
+                break;
+            case 'VIEWPACKAGEDETAIL':
+                $('#mainMenu li a:contains("Packages")').parent().addClass("current");
+                break;
+            case 'OFFER':
+                $('#mainMenu li a:contains("Offers")').parent().addClass("current");
+                break;
+            case 'PACKAGEPREVIEW':
+                $('#mainMenu li a:contains("Packages")').parent().addClass("current");
+                break;
+            case 'OFFLINE-EXAM':
+                $('#mainMenu li a:contains("Offline Test")').parent().addClass("current");
+                break;
+            case 'PACKAGELEARN':
+                $('#mainMenu li a:contains("Learn")').parent().addClass("current");
+                break;
+            case 'FEEDBACK':
+                $('#mainMenu li a:contains("Feedback")').parent().addClass("current");
+                break;
+            case 'EXAM':
+                $('#mainMenu li a:contains("Chapter Based Test")').parent().addClass("current");
+                break;
+            case 'CHAPTERDETAILS':
+                $('#mainMenu li a:contains("Learn")').parent().addClass("current");
+                break;
+            case 'VIDEODETAIL':
+                $('#mainMenu li a:contains("Learn")').parent().addClass("current");
+                break;
+            case 'ANSWERTICKET':
+                $('#mainMenu li a:contains("Doubt")').parent().addClass("current");
+                break;
+            default:
+                $('#mainMenu li a:contains("Dashboard")').parent().addClass("current");
+                // if yourLink is empty then default to the home page
+        }
+    });
+
+    $(window).load(function () {
+        // executes when complete page is fully loaded, including all frames, objects and images
+        
+  
+        var v='@Request.RequestContext.HttpContext.Session["USER_CODE"]';
+        
+        if (v!= null)
+        {
+            $('#notiContent').html("");
+            myFunction();
+        }
+       
+    });
+
+
+        //notification  for all data
+        //<a href="#" onclick="getthedetails()"></a>
+       
+    function myFunction() {
+        setInterval(function(){
+            $.ajax({
+                type: 'POST',
+                url: "/Student/checknoty",
+                dataType: "json",
+                data: $('form[name="notyform"]').serialize(),
+                success: function (data) {
+                    
+                    if (data != null) {
+                        if (data.length > 0) {
+                            for (var i = 0; i < data.length; i++) {
+                            //    var date = ToJavaScriptDate(data[i].Inserted_Date);
+                            //    $('#notiContent').append($('<li><a href="#' + data[i].TypeId + '">' +
+                            //        '<div class="hexagon danger"><span><i class="ion-ios-alarm-outline"></i></span></div>' +
+                            //        '<span class="text_info">' + data[i].Notification + '</span>' +
+                            //        '<span class="time_info">' + date + '</span></a></li>'));
+                                $('#notyform').append('<input type="hidden" name="notyid" value="' + data[i].Id + '"/>');
+                            }
+                        }
+                    }
+                    var count1 = data.length;
+                    if (count1 != 0) {
+                        $('span.count').html(count1);
+                        $('span.count').show();
+                    }
+                    //else {
+                    //    $('span.count').hide();
+                    //    if ($('#notiContent li').length == 0) {
+                    //        $('#notiContent').append($('<li><a href="#"><div class="hexagon danger"><span><i class="ion-ios-alarm-outline"></i></span></div>' + '<span class="text_info">No data available</span>' + '<span class="time_info"></span>' + '</a></li>'));
+                    //    }
+                    //}
+                }
+            });
+           // $('#notiContent').show();
+            
+         }, 3000);
+    }
+
+
+
+  
+
+
+    $('.noti').click(function (e) {
+        $('#notiContent').html("");
+        e.stopPropagation();
+        x = 3;
+        
+        //updateNotification();
+        $.ajax({
+            type: 'POST',
+            url: "/Student/updatenoty",
+            dataType: "json",
+            data: $('form[name="notyform"]').serialize(),
+            success: function (data) {
+                               if (data != null) {
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            var goto = '';
+                            var date = ToJavaScriptDate(data[i].Inserted_Date);
+                            if (data[i].Type == "ticket_ans")
+                            {
+                                $('#notiContent').append($('<li><a href="/student/answerticket/' + data[i].TypeId + '">' +
+                                 '<div class="hexagon danger"><span><i class="ion-ios-bell-outline"></i></span></div>' +
+                                 '<span class="text_info">' + data[i].Notification + '</span>' +
+                                 '<span style="padding-left:4px" class="text_info">' + date + '</span></a></li>'));
+                                $('#notyform').append('<input type="hidden" name="notyid" value="' + data[i].Id + '"/>');
+                            }
+                            else if (data[i].Type == "batch_assign")
+                            {
+                                $('#notiContent').append($('<li><a href="/student/timetable_batchwise/">' +
+                                '<div class="hexagon danger"><span><i class="ion-ios-bell-outline"></i></span></div>' +
+                                '<span class="text_info">' + data[i].Notification + '</span>' +
+                                '<span style="padding-left:4px" class="text_info">' + date + '</span></a></li>'));
+                                $('#notyform').append('<input type="hidden" name="notyid" value="' + data[i].Id + '"/>');
+                            }
+                          
+                            
+                        }
+                    }
+                }
+                //var count1 = data.length;
+                //if (count1 != 0) {
+                //    $('span.count').html(count1);
+                //    $('span.count').show();
+                //}
+                else {
+                    $('span.count').hide();
+                    if ($('#notiContent li').length == 0) {
+                        $('#notiContent').append($('<li><a href="#"><div class="hexagon danger"><span><i class="ion-ios-alarm-outline"></i></span></div>' + '<span class="text_info">No data available</span>' + '<span class="time_info"></span>' + '</a></li>'));
+                    }
+                }
+            }
+        });
+        $('#notiContent').show();
+    })
+     //hide notifications
+    $('html').click(function () {
+        $('#notiContent').hide();
+        $('span.count').hide();
+    })
+
+//////////////////////////////////////////////////////////
+
+
+
+
+    $(function () {
+        // Click on notification icon for show notification
+      
+        // update notification
+        //function updateNotification() {
+        //    $.ajax({
+        //        type: 'GET',
+        //        url: '/Student/GetNotification',
+        //        datatype: "json",
+        //        traditional: true,
+        //        success: function (response) {
+        //            if (response.length != 0) {
+        //                $.each(response, function (index, value) {
+        //                    var date = ToJavaScriptDate(value.Inserted_Date);
+        //                    $('#notiContent').append($('<li><a href="/Student/PackagePreview"><div class="hexagon danger"><span><i class="ion-ios-alarm-outline"></i></span></div>' + '<span class="text_info">' + value.Package_Name + '  Added by Digichamps' + '</span>' + '<span class="time_info">' + date + '</span>' + '</a></li>'));
+
+        //                });
+        //            }
+        //            else {
+
+        //            }
+        //            //$('#notiContent li:lt('+x+')').show();
+        //        }
+        //    })
+        //}
+        // update notification count
+        //function updateNotificationCount() {
+        //    var count = 0;
+        //    count = parseInt($('span.count').html()) || 0;
+        //    count++;
+        //    $('span.count').html(count);
+        //}
+        // signalr js code for start hub and send receive notification
+        //var notificationHub = $.connection.notificationHub;
+       // notificationHub.client.signalConnectionId = function (data) {
+          //  debugger;
+         //   signalConnectionId = data;
+        //}
+       // $.connection.hub.start().done(function () {
+       //     //console.log('Notification hub started');
+       // });
+       
+        //signalr method for push server message to client
+       // notificationHub.client.notify = function (message) {
+         //   if (message && message.toLowerCase() == "added") {
+          //      updateNotificationCount();
+          //  }
+        //}
+
+    })
+
+    $(function () {
+        $.ajax({
+            type: 'POST',
+            url: "/Student/getstatusoflogin",
+            dataType: "json",
+            //data: { id: 123},
+            success: function (data) {
+                if (data != 1) {
+                    location.href = "/Student/authenticateuser";
+                }
+            }
+        });
+        //$.ajax({
+        //    type: 'POST',
+        //    url: "/Student/checknoty",
+        //    dataType: "json",
+        //    success: function (data) {
+        //        if (data != null) {
+        //            if (data.length > 0) {
+        //                for (var i = 0; i < data.length; i++) {
+        //                    var date = ToJavaScriptDate(data[i].Inserted_Date);
+        //                    $('#notiContent').append($('<li><a href="/Student/ticket/' + data[i].TypeId + '">' +
+        //                        '<div class="hexagon danger"><span><i class="ion-ios-alarm-outline"></i></span></div>' +
+        //                        '<span class="text_info">' + data[i].Notification + '</span>' +
+        //                        '<span class="time_info">' + date + '</span></a></li>'));
+        //                    $('#notyform').append('<input type="hidden" name="notyid" value="' + data[i].Id + '"/>');
+        //                }
+        //            }
+        //        }
+        //        var count1 = data.length;
+        //        if (count1 != 0) {
+        //            $('span.count').html(count1);
+        //            $('span.count').show();
+        //        }
+        //        else { $('span.count').hide(); }
+        //    }
+        //});
+    })
+
+
+
+    function ToJavaScriptDate(value) {
+        var pattern = /Date\(([^)]+)\)/;
+        var results = pattern.exec(value);
+        var dt = new Date(parseFloat(results[1]));
+        return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+    }
+
+
+    </script>
+    <!-- Start of LiveChat (www.livechatinc.com) code -->
+    <script type="text/javascript">
+window.__lc = window.__lc || {};
+window.__lc.license = 9101740;
+(function() {
+  var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+  lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
+})();
+    </script>
+    <!-- End of LiveChat code -->
+</body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>LowercaseRoutesMVC4</id>
+    <version>0.4.1</version>
+    <title>LowercaseRoutesMVC4</title>
+    <authors>Lee Dumond</authors>
+    <owners>Lee Dumond</owners>
+    <licenseUrl>http://lowercaseroutesmvc.codeplex.com/license</licenseUrl>
+    <projectUrl>http://lowercaseroutesmvc.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Easily map ASP.NET MVC routes to lowercase URLs! Does not affect casing of the querystring, if one exists. Includes support for MVC Areas, as well as experimental support for ASP.NET Web API HTTP routes. See the Project Site for important usage notes.</description>
+    <summary>Maps MVC routes (both regular and Area routes) to lowercase URLs. Includes experimental support for ASP.NET Web API HTTP routes.</summary>
+    <releaseNotes>Once added as a reference in your web project, you need only make a minor change to the method calls in your RegisterArea override in Global.asax. If you are using Areas in your project, you will also make similar changes in the RegisterArea override(s) in your area registration classes. See http://lowercaseroutesmvc.codeplex.com/ for details.</releaseNotes>
+    <copyright>Lee Dumond</copyright>
+    <tags>lowercase routes routing URL MVC WebApi</tags>
+    <dependencies>
+      <dependency id="AspNetWebApi.Core" version="4.0.20126.16343" />
+    </dependencies>
+  </metadata>
+</package>

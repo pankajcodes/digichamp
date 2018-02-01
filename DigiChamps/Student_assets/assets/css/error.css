@@ -1,0 +1,107 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito:400,300);
+/************theme fonts********************/
+/***********************theme colors*****************************/
+/*****************theme parametres*******************/
+/*sidebar-parametres*/
+body,
+html {
+  background-color: #f9fafb;
+}
+.error {
+  margin-top: 300px;
+  /****************************************************
+                        404 Error
+*****************************************************/
+  /****************************************************
+                        505 Error
+*****************************************************/
+}
+.error .error-message {
+  color: #a3a7aa;
+  font-family: 'Nunito', sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  line-height: 44px;
+  text-align: center;
+  padding-top: 60px;
+}
+.error .error-bottom {
+  padding-top: 40px;
+  text-align: center;
+}
+.error .error-bottom .btn {
+  border-radius: 0;
+  color: #ffffff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  outline: 0;
+  border: 1px solid transparent;
+}
+.error .error-bottom .btn:focus,
+.error .error-bottom .btn:active {
+  outline: 0 !important;
+  border: 1px solid transparent;
+}
+.error .error-bottom .btn:hover {
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+.error .error-bottom .btn-primary {
+  background-color: #2196f3;
+  border: 1px solid transparent;
+}
+.error .error-bottom .btn-primary:hover,
+.error .error-bottom .btn-primary:active,
+.error .error-bottom .btn-primary:focus {
+  background-color: #0d8aee;
+  border: 1px solid transparent;
+  color: #ffffff;
+}
+.error .error-bottom .report-error {
+  color: #a3a7aa;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.25px;
+  line-height: 26px;
+  padding-top: 10px;
+}
+.error .error-bottom .report-error > a {
+  color: #a3a7aa;
+  font-weight: 400;
+}
+.error .error-message-two {
+  color: #2196f3;
+  font-family: 'Nunito', sans-serif;
+  font-size: 42px;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  line-height: 52px;
+  text-align: center;
+  padding-top: 50px;
+}
+.error .error-bottom-two {
+  color: #a3a7aa;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  line-height: 32px;
+  text-align: center;
+  padding-top: 20px;
+}
+.error .error-bottom-two a {
+  color: #2196f3;
+  text-decoration: none;
+}
+.error .error-bottom-two a:hover {
+  color: #51adf6;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}

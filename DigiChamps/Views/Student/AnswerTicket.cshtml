@@ -1,0 +1,738 @@
+﻿@{
+    ViewBag.Title = "Doubt Details | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+<link href="~/Student_assets/assets/css/photoswipe.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/default-skin.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/photoswipe.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/default-skin.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+<link href="~/css/croppie.css" rel="stylesheet" />
+<script src="~/js/plugins/jquery/jquery.min.js"></script>
+@section header
+{
+<i class="menu-icons doubt-icon page_header_icon"></i>
+<span class="main-text">Doubt Details</span>
+}
+<form method="post" id="validation-form" class="x-margin">
+    <div class="row">
+        <div class="col-md-12 questions-cont">
+            <!-- Question Panel Starts -->
+            <div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Your Question Details
+                    </h3>
+                </div>
+                <div class="panel-body mail_widget">
+                    <div class="list-color ">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 list-color-2">
+                                @foreach (var v in ViewBag.question)
+                            {
+
+                            if (ViewBag.isclosed == "C" )
+                                {
+                                     <p><span  class="question-section">Doubt No-</span>@v.Ticket_No (<b style="color:red">CLOSED</b>)</p>
+                                    if (ViewBag.isremark!=null)
+                                    {
+                                         <p><span class="question-section">Remark-</span>@ViewBag.isremark</p>
+                                    }
+                                   
+                                }
+                                else if (ViewBag.isclosed == "R")
+                                {
+                                    <p><span class="question-section red">Doubt No-</span>@v.Ticket_No (<b style="color:red">REJECTED</b>)</p>
+                                      if (ViewBag.isremark!=null)
+                                    {
+                                         <p><span class="question-section">Remark-</span>@ViewBag.isremark</p>
+                                    }
+                                }
+                                else
+                                {
+                                    <p><span class="question-section">Doubt No-</span>@v.Ticket_No</p>
+                                }
+                           
+                            <p> <span class="question-section">Question- </span>@v.Question</p>
+                            <div>
+                                @if (@v.Question_Image != null)
+                                {
+                                <span class="question-section">Question Image- </span>
+                                <div class="picture" itemscope itemtype="">
+                                    <figure itemprop="associatedMedia" itemscope itemtype="">
+                                        <a href="~/Images/Qusetionimages/@v.Question_Image" class="Qc" itemprop="contentUrl" data-size="500x448" data-index="0"><span class="badge bgn-color"><i class="fa fa-link"></i></span></a>
+                                    </figure>
+                                    <img id="images" src="~/Images/Qusetionimages/@v.Question_Image" hidden>
+                                    <script>
+                                        getImageSize1($('#images'), function (width, height) {
+                                            $(".Qc").attr("data-size", width + 'x' + height);
+                                        });
+                                        function getImageSize1(img, callback) {
+                                            var $img = $(img);
+
+                                            var wait = setInterval(function () {
+                                                var w = $img[0].naturalWidth,
+                                                    h = $img[0].naturalHeight;
+                                                if (w && h) {
+                                                    clearInterval(wait);
+                                                    callback.apply(this, [w, h]);
+                                                }
+                                            }, 0);
+                                        }
+                                    </script>
+                                </div>
+                                }
+
+                            </div>
+                            }
+
+                                @foreach (var v in ViewBag.all_ticketansr)
+                            {
+                            <p> <span class="question-section">Answer- </span> @v.Answer</p>
+                            <div>
+                                <input type="hidden" id="Ticket_id" value="@v.Ticket_ID" name="Ticket_id" />
+                                <input type="hidden" id="Ticket_answerid" value="@v.Ticket_Dtls_ID" name="Ticket_answerid" />
+                                @if (@v.Answer_Image != null)
+                                {
+                                 
+                                <span class="question-section">Answer Image- </span>
+                                <div class="picture" itemscope itemtype="">
+                                    <figure itemprop="associatedMedia" itemscope itemtype="">
+                                        <a href="~/Images/Answerimage/@v.Answer_Image" itemprop="contentUrl" class="ac" data-size="500x448" data-index="0"><span class="badge bgn-color"><i class="fa fa-link"></i></span></a>
+                                    </figure>
+                                    <img id="ansimg" src="~/Images/Answerimage/@v.Answer_Image" hidden>
+                                    <script>
+                                        getImageSize2($('#ansimg'), function (width, height) {
+                                            $(".ac").attr("data-size", width + 'x' + height);
+                                        });
+                                        function getImageSize2(img, callback) {
+                                            var $img = $(img);
+
+                                            var wait = setInterval(function () {
+                                                var w = $img[0].naturalWidth,
+                                                    h = $img[0].naturalHeight;
+                                                if (w && h) {
+                                                    clearInterval(wait);
+                                                    callback.apply(this, [w, h]);
+                                                }
+                                            }, 0);
+                                        }
+                                    </script>
+                                </div>
+                                 
+                                }
+                            </div>
+                            }
+                               
+                            </div>
+                        </div>
+                       @if ((ViewBag.comments).Count > 0)
+                       {
+    <div class="panel panel-ntspl inner-panel">
+        <div class="mail_list">
+            @{
+                           DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+            }
+
+            <script>
+                function getImageSize3(img, callback) {
+                    var $img = $(img);
+
+                    var wait = setInterval(function () {
+                        var w = $img[0].naturalWidth,
+                            h = $img[0].naturalHeight;
+                        if (w && h) {
+                            clearInterval(wait);
+                            callback.apply(this, [w, h]);
+                        }
+                    }, 0);
+                }
+            </script>
+            <ul class="messages messages-stripped messages-zigzag">
+                @{int loop = 1;
+                       }
+                @foreach (var v in ViewBag.comments)
+                {
+                    <li>
+                        <div>
+                            @{
+                    int id_ = Convert.ToInt32(v.User_Id);
+
+                    var student_name = DbContext.tbl_DC_Registration.Where(x => x.Regd_ID == id_ && x.Is_Active == true & x.Is_Deleted == false).FirstOrDefault();
+                    var teacher_name = DbContext.tbl_DC_Teacher.Where(x => x.Teach_ID == id_ ).FirstOrDefault();
+                            }
+                        </div>
+                        @if (student_name != null)
+                        {
+                            if (student_name.Image != null && v.Is_Teacher==false)
+                            {
+                                <img src="~/Images/Profile/@student_name.Image" />
+                            }
+                            else
+                            {
+                                <img src="~/Images/Profile/no_image.jpg" />
+                            }
+
+                        }
+                        else
+                        {
+                            if (teacher_name.Image != null)
+                            {
+                                <img src="~/Images/Teacherprofile/@teacher_name.Image" />
+                            }
+                            else
+                            {
+
+                                <img src="~/Images/Profile/no_image.jpg" />
+                            }
+
+                        }
+                        <div>
+                            <div>
+                                @if (student_name != null && v.Is_Teacher==false)
+                                {
+                                    <h5>@student_name.Customer_Name (Student)</h5>
+                                }
+                                else
+                                {
+                                    <h5>@teacher_name.Teacher_Name (Teacher)</h5>
+                                }
+                                @{
+                    string date = Convert.ToString(@v.User_Comment_Date);
+                                }
+                                <span class="time"><i class="fa fa-calendar"></i> @date.Substring(0, 9)</span>
+                            </div>
+                            <p>@v.User_Comment</p>
+                            <div>
+                                @if (@v.R_image != null)
+                                {
+
+                                    <span class="question-section">Attachment- </span>
+                                    <div class="picture" itemscope itemtype="">
+                                        <figure itemprop="associatedMedia" itemscope itemtype="">
+                                            <a href="~/Images/Qusetionimages/@v.R_image" itemprop="contentUrl" id="ans_@loop" data-size="500x448" data-index="0"><span class="badge bgn-color"><i class="fa fa-link"></i></span></a>
+                                        </figure>
+                                    </div>
+                                    <img id="t_@loop" src="~/Images/Qusetionimages/@v.R_image" hidden>
+                                    <script>
+                                        getImageSize3($('#t_@loop'), function (width, height) {
+                                            $('#ans_@loop').attr("data-size", width + 'x' + height);
+                                        });
+                                    </script>
+                                    loop++;
+                                }
+
+                            </div>
+                        </div>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+}
+                 @if (ViewBag.isclosed == "O")
+                    {
+                    if (ViewBag.check_answer != null)
+                    {
+
+                    <div class="form-group">
+                        <label class="control-label">Type Your Reply<span class="red-info">*</span></label>
+                        <textarea name="msgbody" id="msgbody" data-rule-required="true" data-msg-required="Please reply something" class="form-control text-area" cols="30" rows="10" placeholder="Type Your Reply"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Attach Image</label>
+                        <input type="file" name="RegImage333" accept=".jpg,.jpeg,.png,.gif" class="filestyle" data-icon="false" id="upload" tabindex="-1" style="position: absolute; clip: rect(0px 0px 0px 0px);">
+                        <div class="bootstrap-filestyle input-group">
+                        <input id="_txt" type="text" class="form-control " disabled=""> 
+                            <input type="hidden" name="hidans_img" id="hidans_img" />
+                        <span class="group-span-filestyle input-group-btn" tabindex="0">
+                            <label for="filestyle-1" class="btn btn-file-upload "><span class="buttonText uploadFileImg"><i class="ion-ios-folder-outline"></i> Choose file</span></label>
+                        </span></div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="upload-image-div">
+                            <img id="PrevImagesqs19" src="~/img/not_avail.jpg" />
+                            <canvas id="canvas" class="upload-image-div" hidden></canvas>
+                        </div>
+                    </div>
+
+                    }
+                    }
+                        <div class="btn-div btn-no-right">
+                            <a class="btn btn-primary btn-icon-primary btn-icon-block btn-icon-blockleft" href="/student/askdoubt">
+                                <i class="ion ion-reply"></i>
+                                <span>Back</span>
+                            </a>
+                        @if (ViewBag.isclosed == "O")
+                        {
+                        if (ViewBag.check_answer != null)
+                        {
+                        <button id="Reply" type="button" class="btn btn-green btn-icon-green btn-icon-block btn-icon-blockleft">
+                            <i class="ion ion-ios-redo"></i>
+                            <span>Reply</span>
+                        </button>
+                        }
+                        }
+                            <div class="clearfix"></div>
+                        </div>
+
+                    </div>
+                    <!-- Question Panel Ends -->
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="pswp__bg"></div>
+        <div class="pswp__scroll-wrap">
+            <div class="pswp__container">
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+            </div>
+            <div class="pswp__ui pswp__ui--hidden">
+                <div class="pswp__top-bar">
+                    <div class="pswp__counter"></div>
+                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                    <button class="pswp__button pswp__button--share" title="Share"></button>
+                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                    <div class="pswp__preloader">
+                        <div class="pswp__preloader__icn">
+                            <div class="pswp__preloader__cut">
+                                <div class="pswp__preloader__donut"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                    <div class="pswp__share-tooltip"></div>
+                </div>
+                <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+                <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+                <div class="pswp__caption">
+                    <div class="pswp__caption__center"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Profile Image Modal -->
+@*<div class="modal fade modal-full-pad in" id="defaultmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-full">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                <h4 class="modal-title" id="myModalLabel">Reply Image</h4>
+            </div>
+            <div class="modal-body">
+                <div class="demo-wrap upload-demo">
+                    <div class="container ans_tkt">
+                        <div class="grid">
+                            <div hidden>
+                                <div class="actions">
+                                    <input type="file" id="upload" style="visibility: hidden;" value="Choose a file" accept="image/*" />
+                                    @*<button class="upload-result" type="button">Result</button>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="upload-msg">
+                                    Upload a file to start cropping
+                                </div>
+                                <div class="upload-demo-wrap">
+                                    <div id="upload-demo"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <p>Scroll mouse to zoom-in and zoom-out.</p>
+                <button type="button" data-dismiss="modal" id="hl-crop-image" class="btn btn-primary upload-result">Crop Image </button>
+            </div>
+        </div>
+    </div>
+</div>**@
+<div class="modal fade" id="defaultmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                <h4 class="modal-title" id="myModalLabel">Doubt Image (<label id="msg"></label>)</h4>
+            </div>
+            <div class="modal-body">
+                <div class="demo-wrap upload-demo">
+                    <div class="ask_dbt">
+                        <div class="grid">
+                            <div hidden>
+                                <div class="actions">
+                                    <input type="file" id="upload" style="visibility: hidden;" value="Choose a file" accept="image/*" />
+                                    @*<button class="upload-result" type="button">Result</button>*@
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="upload-msg">
+                                    Upload a file to start cropping
+                                </div>
+                                <div class="upload-demo-wrap" style="width:100%;height:100%">
+                                    <div id="upload-demo">
+                                        <img src="" id="img">
+                                    </div>
+                                    <input type="hidden" name="imgX1" id="imgX1" />
+                                    <input type="hidden" name="imgY1" id="imgY1" />
+                                    <input type="hidden" name="imgWidth" id="imgWidth" />
+                                    <input type="hidden" name="imgHeight" id="imgHeight" />
+                                    <input type="hidden" name="imgCropped" id="imgCropped" />
+                                    <canvas id="canvas" class="upload-image-div" hidden></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                @* <input type="text" name="id" value="10">
+                    <p>Scroll mouse to zoom-in and zoom-out.</p>*@
+                <input type="button" id="btnCrop" class="btn btn-primary upload-result" value="Crop" style="display: none" />
+
+                @*<button type="button" data-dismiss="modal" id="btnCrop" class="btn btn-primary upload-result">Crop Image </button>*@
+                <button type="button" data-dismiss="modal" id="hl-crop-image" class="btn btn-primary upload-result1">No Crop</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    @section scripts
+  {
+<!--crop image-->
+        <script src="~/Student_assets/assets/js/photoswipe.min.js"></script>
+        <script src="~/Student_assets/assets/js/photoswipe-ui-default.min.js"></script>
+@*<script src="~/js/croppie.min.js"></script>
+<script src="~/js/exif.js"></script>*@
+<script src="~/Student_assets/crop/scripts/jquery.imgareaselect.js"></script>
+<script src="~/Student_assets/crop/scripts/jquery.imgareaselect.min.js"></script>
+<script src="~/Student_assets/crop/scripts/jquery.imgareaselect.pack.js"></script>
+<link href="~/Student_assets/crop/imgareaselect-deprecated.css" rel="stylesheet" />
+<link href="~/Student_assets/crop/imgareaselect-default.css" rel="stylesheet" />
+<link href="~/Student_assets/crop/imgareaselect-animated.css" rel="stylesheet" />
+        <script>
+            $(document).ready(function () {                
+                $("#Reply").click(function () {
+                    if ($("#validation-form").valid()) {
+                        var data = new FormData();
+                        data.append("MyImages", $("#hidans_img").val());
+                        data.append("Ticket_id", $("#Ticket_id").val())
+                        data.append("Ticket_answerid", $("#Ticket_answerid").val())
+                        data.append("msgbody", $("#msgbody").val())
+                        $.ajax({
+                            url: "/Student/AnswerReply",
+                            type: "POST",
+                            processData: false,
+                            contentType: false,
+                            data: data,
+                            success: function (response) {
+                                if (response == "3") {
+                                    $.noty.closeAll();
+                                    generate('top', 'warning', "Please enter required details.");
+                                }
+                                else if (response == "2") {
+                                    $.noty.closeAll();
+                                    generate('top', 'error', "Something went wrong.");
+
+                                }
+                                else if (response == "1") {
+                                    $.noty.closeAll();
+                                    generate('top', 'success', "Reply saved successfully.");
+                                    location.reload();
+                                }
+                                else if (response == "4") {
+                                    location.href = "/Student/logout";
+                                }
+                                else {
+                                    $.noty.closeAll();
+                                    generate('top', 'error', data);
+                                }
+                                if (response == "3") {
+                                    $.noty.closeAll();
+                                    generate('top', 'warning', "Please enter required details.");
+                                }
+                                else {
+                                    //$.noty.closeAll();
+                                    //generate('top', 'success', "Reply saved successfully.");
+                                    //location.reload ();
+                                    //$('#comments').html(response);
+                                    $('#msgbody').val('');
+                                    $('#_txt').val('');
+                                    $('#PrevImagesqs19').attr('src', "/img/not_avail.jpg");
+                                }
+                            },
+
+                        });
+                       
+                    }
+                    else {
+                        return false;
+                    }
+                })
+
+                $(function () {
+                    //photo swipe start
+                    var $pswp = $('.pswp')[0];
+                    var image = [];
+
+                    $('.picture').each(function () {
+                        var $width = "";
+                        var $height = "";
+                        var $pic = $(this),
+                                getItems = function () {
+                                    var items = [];
+                                    $pic.find('a').each(function () {
+                                        var $href = $(this).attr('href');
+                                        $size = $(this).data('size').split('x'),
+                                        $width = $size[0],
+                                        $height = $size[1];
+                                       
+                                        var item = {
+                                            src: $href,
+                                            w: $width,
+                                            h: $height
+                                        }
+
+                                        items.push(item);
+                                    });
+                                    return items;
+                                }
+
+                        var items = getItems();
+
+                        $.each(items, function (index, value) {
+                            image[index] = new Image();
+                            image[index].src = value['src'];
+                        });
+
+                        $pic.on('click', 'figure', function (event) {
+                            event.preventDefault();
+
+                            var $index = $(this).index();
+                            var options = {
+                                index: $index,
+                                bgOpacity: 0.7,
+                                showHideOpacity: true
+                            }
+
+                            var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
+                            lightBox.init();
+                        });
+                        //$('.pswp').onclick(function () {
+
+                        //    $('.pswp').hide();
+
+
+                        //})
+                    });
+                });
+
+             
+                //************************************** JavaScript for cropping of image *****************************************
+                //$(".uploadFileImg").on('click', function () {
+                //    $("#upload").trigger('click');
+                //    setTimeout(function () {
+                //        $('#defaultmodal').modal('show');
+                //    }, 1200);
+                //});
+                //$('#upload').on('change', function () {
+                //    readFile(this);
+                //    var filename = $(this).val();
+                //    var res = filename.substr(12, 200);
+                //    $("#_txt").val(res);
+                //});
+                //function output(node) {
+                //    var existing = $('#result .croppie-result');
+                //    if (existing.length > 0) {
+                //        existing[0].parentNode.replaceChild(node, existing[0]);
+                //    }
+                //    else {
+                //        $('#result')[0].appendChild(node);
+                //    }
+                //}
+
+                //var $uploadCrop;
+                //function readFile(input) {
+                //    if (input.files && input.files[0]) {
+                //        var reader = new FileReader();
+
+                //        reader.onload = function (e) {
+                //            $('.upload-demo').addClass('ready');
+                //            $uploadCrop.croppie('bind', {
+                //                url: e.target.result
+                //            }).then(function () {
+                //                //console.log('Image Bind complete');
+                //            });
+                //        }
+                //        reader.readAsDataURL(input.files[0]);
+                //    }
+                //    else {
+                //        alert("Please select image less than 2 Mb.");
+                //    }
+                //}
+
+                //$uploadCrop = $('#upload-demo').croppie({
+                //    viewport: {
+                //        width: 1000,
+                //        height: 180,
+                //        type: 'square'
+                //    },
+                //    enableExif: true
+                //});
+
+                //$('.upload-result').on('click', function (ev) {
+                //    $uploadCrop.croppie('result', {
+                //        type: 'canvas',
+                //        size: 'viewport'
+                //    }).then(function (resp) {
+                //        $('#PrevImagesqs19').attr("src", resp);
+                //        $('#hidans_img').val(resp);
+                //    });
+                //});
+
+                $('#defaultmodal').modal({ backdrop: 'static', keyboard: false, show: false })
+                $(".uploadFileImg").on('click', function () {
+                    $("#upload").trigger('click');
+                    setTimeout(function () {
+                        $('#defaultmodal').modal('show');
+                    }, 1200);
+                });
+                $('#upload').on('change', function () {
+                    debugger;
+
+                    var realWidth = $(this).width()
+                    var realHeight = $(this).height()
+                    if (realHeight > 25 && realWidth > 100) {
+                        $("#msg").addClass("error");
+                        $("#msg").html("Image size should be lesser than this")
+
+                    }
+                    else {
+                        readFile(this);
+                        var filename = $(this).val();
+                        var res = filename.substr(12, 200);
+                        $("#_txt").val(res);
+                    }
+                });
+                function output(node) {
+                    var existing = $('#result .croppie-result');
+                    if (existing.length > 0) {
+                        existing[0].parentNode.replaceChild(node, existing[0]);
+                    }
+                    else {
+                        $('#result')[0].appendChild(node);
+                    }
+                }
+
+                var $uploadCrop;
+                function readFile(input) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            $('.upload-demo').addClass('ready');
+                            //$uploadCrop.croppie('bind', {
+                            //    url: e.target.result
+                            //}).then(function () {
+                            //console.log('Image Bind complete');
+                            //});
+                            $('#PrevImagesqs19').attr('src', e.target.result);
+
+                            $('#img').attr('src', e.target.result);
+
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                    else {
+                        alert("Please select image less than 2 Mb.");
+                    }
+                }
+                $("#img").imgAreaSelect({
+                    aspectRatio: '5:2', handles: true, onSelectEnd: function (img, selection) {
+                        $('#imgX1').val(selection.x1);
+                        $('#imgY1').val(selection.y1);
+                        $('#imgWidth').val(selection.width);
+                        $('#imgHeight').val(selection.height);
+                        $('#btnCrop').show();
+                    }
+                });
+
+
+                $('#defaultmodal').modal({ backdrop: 'static', keyboard: false, show: false })
+
+                $('.close').click(function () {
+
+                    $('#defaultmodal').modal('hide');
+                    $('.imgareaselect-outer').hide();
+                    $('.imgareaselect-border4').hide();
+                    $('.imgareaselect-border3').hide();
+                    $('.imgareaselect-border2').hide();
+                    $('.imgareaselect-border1').hide();
+                    $('.imgareaselect-handle').hide();
+                    $('#PrevImagesqs19').attr('src', "/Images/-text.png");
+
+                }
+        );
+
+                $('#btnCrop').click(function () {
+                    debugger;
+                    $("#canvas").show();
+                    var x1 = $('#imgX1').val();
+                    var y1 = $('#imgY1').val();
+                    var width = $('#imgWidth').val();
+                    var height = $('#imgHeight').val();
+                    var canvas = $("#canvas")[0];
+                    var context = canvas.getContext('2d');
+                    var img = new Image();
+                    img.onload = function () {
+                        canvas.height = height;
+                        canvas.width = width;
+                        var s = img;
+                        context.drawImage(img, x1, y1, width, height, 0, 0, width, height);
+                        $('#hidans_img').val(canvas.toDataURL());
+                        // $('[id*=btnUpload]').show();
+                    };
+                    img.src = $('#img').attr("src");
+                    //$('#hidans_img').val($('#imgCropped').val());
+                    $('#defaultmodal').modal('hide');
+                    $('.imgareaselect-outer').hide();
+                    $('.imgareaselect-border4').hide();
+                    $('.imgareaselect-border3').hide();
+                    $('.imgareaselect-border2').hide();
+                    $('.imgareaselect-border1').hide();
+                    $('.imgareaselect-handle').hide();
+                    $("#PrevImagesqs19").hide();
+                    $(".imgareaselect-selection").hide();
+                   // $('#img').attr("src","");
+                    //$('#PrevImagesqs19').attr('src', $('#img').attr("src"));
+                });
+
+
+
+                $("#hl-crop-image").click(function () {
+                    $('#defaultmodal').modal('hide');
+                    $('.imgareaselect-outer').hide();
+                    $('.imgareaselect-border4').hide();
+                    $('.imgareaselect-border3').hide();
+                    $('.imgareaselect-border2').hide();
+                    $('.imgareaselect-border1').hide();
+                    $('.imgareaselect-handle').hide();
+                })
+                //************************************** JavaScript for ajax file upload END **************************************
+            });
+        </script>
+<script src="~/js/DC_Imagecrop.js"></script>
+    }

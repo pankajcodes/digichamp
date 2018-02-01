@@ -1,0 +1,185 @@
+﻿
+<link href="~/Student_assets/assets/css/photoswipe.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/default-skin.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/photoswipe.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/default-skin.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+@if ((ViewBag.comments).Count > 0)
+{
+    <div class="panel panel-ntspl inner-panel">
+        <div class="mail_list">
+            @{
+                DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+            }
+            <ul class="messages messages-stripped messages-zigzag">
+
+                @foreach (var v in ViewBag.comments)
+                {
+                    <li>
+                        <div>
+                            @{
+                                int id_ = Convert.ToInt32(v.User_Id);
+
+                                var student_name = DbContext.tbl_DC_Registration.Where(x => x.Regd_ID == id_ && x.Is_Active == true & x.Is_Deleted == false).FirstOrDefault();
+                                var teacher_name = DbContext.tbl_DC_Teacher.Where(x => x.Teach_ID == id_ && x.Is_Active == true & x.Is_Deleted == false).FirstOrDefault();
+                            }
+                        </div>
+                        @if (student_name != null)
+                        {
+                            if (student_name.Image != null)
+                            {
+                                <img src="~/Images/Profile/@student_name.Image" />
+                            }
+                            else
+                            {
+                                <img src="~/Images/Profile/no_image.jpg" />
+                            }
+
+                        }
+                        else
+                        {
+                            if (teacher_name.Image != null)
+                            {
+                                <img src="~/Images/Teacherprofile/@teacher_name.Image" />
+                            }
+                            else
+                            {
+
+                                <img src="~/Images/Profile/no_image.jpg" />
+                            }
+
+                        }
+                        <div>
+                            <div>
+                                @if (student_name != null)
+                                {
+                                    <h5>@student_name.Customer_Name (Student)</h5>
+                                }
+                                else
+                                {
+                                    <h5>@teacher_name.Teacher_Name (Teacher)</h5>
+                                }
+                                @{
+                                    string date = Convert.ToString(@v.User_Comment_Date);
+                                }
+                                <span class="time"><i class="fa fa-calendar"></i>@date.Substring(0, 9)</span>
+                            </div>
+                            <p>@v.User_Comment</p>
+                            <div>
+                                @if (@v.R_image != null)
+                                {
+                                    <span class="question-section">Attachment-</span>
+                                                            <div class="picture" itemscope itemtype="">
+                                                                <figure itemprop="associatedMedia" itemscope itemtype="">
+                                                                    <a href="~/Images/Qusetionimages/@v.R_image" itemprop="contentUrl" data-size="2000x1408" data-index="0"><span class="badge bgn-color"><i class="fa fa-link"></i></span></a>
+                                                                </figure>
+                                                            </div>
+                                }
+
+                            </div>
+                        </div>
+                    </li>
+                                    }
+
+            </ul>
+        </div>
+    </div>
+                                    }
+
+
+
+@*<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="pswp__bg"></div>
+    <div class="pswp__scroll-wrap">
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+    <script src="~/Student_assets/assets/js/photoswipe.min.js"></script>
+    <script src="~/Student_assets/assets/js/photoswipe-ui-default.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            
+                $(function () {
+            //photo swipe start
+            var $pswp = $('.pswp')[0];
+            var image = [];
+
+            $('.picture').each(function () {
+                var $pic = $(this),
+                        getItems = function () {
+                            var items = [];
+                            $pic.find('a').each(function () {
+                                var $href = $(this).attr('href'),
+                                        $size = $(this).data('size').split('x'),
+                                        $width = $size[0],
+                                        $height = $size[1];
+
+                                var item = {
+                                    src: $href,
+                                    w: $width,
+                                    h: $height
+                                }
+
+                                items.push(item);
+                            });
+                            return items;
+                        }
+
+                var items = getItems();
+
+                $.each(items, function (index, value) {
+                    image[index] = new Image();
+                    image[index].src = value['src'];
+                });
+
+                $pic.on('click', 'figure', function (event) {
+                    event.preventDefault();
+
+                    var $index = $(this).index();
+                    var options = {
+                        index: $index,
+                        bgOpacity: 0.7,
+                        showHideOpacity: true
+                    }
+
+                    var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
+                    lightBox.init();
+                });
+            });
+        });
+       
+    });
+    </script>
+

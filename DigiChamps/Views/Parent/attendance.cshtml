@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "Attendance";
+    Layout = "~/Views/Shared/_ParentLayout.cshtml";
+}
+@section header
+{
+    <i class="fa fa-leanpub page_header_icon"></i>
+    <span class="main-text">Attendance Report</span>
+}
+<div class="page-content-wrap">
+    
+    @using (Html.BeginForm("attendance", "Parent", FormMethod.Post, new { @class = "form-horizontal", @id = "validation-form" }))
+    {
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- START NEW RECORD -->
+                    <div class="panel panel-default">
+                        <div class="panel-body input-box">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <h5>From Date <span class="asterisk">*</span></h5>
+                                    <div class="input-group">
+                                        <input type="date" class="form-control datepicker" name="frm_dt" autocomplete="off" data-rule-required="true" data-msg-required="Please select From date" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <h5>To Date <span class="asterisk">*</span></h5>
+                                    <div class="input-group">
+                                        <input type="date" class="form-control datepicker" name="to_dt" autocomplete="off" data-rule-required="true" data-msg-required="Please select To date" />
+                                    </div>
+                                </div>
+                                <div class="col-md-2 vtop">
+                                    <div class="pull-left">
+                                        <button id="btnSearch" type="submit" value="search" name="submit" class="btn btn-primary btn-icon-primary btn-icon-block btn-icon-blockleft btn-buttom  voffset2 dropdown-toggle"><i class="fa fa-search"></i> Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    }
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Attendance Report</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="box">
+                        <div class="box-title">
+                                @if (ViewBag.Stu_Attendance != null)
+                                {
+                                    <div class="box-tool">
+                                        <a href="@Url.Action("Attendance_report", "Parent")" class="btn btn-primary dropdown-toggle"><i class="fa fa-refresh"></i> Refresh</a>
+                                        <a href="#" class="btn btn-primary dropdown-toggle" onclick="$('#table1').tableExport({ type: 'excel', escape: 'false' });"><i class="fa fa-file-excel-o"></i> XLS</a>
+                                    </div>
+                                }
+                        </div>
+                        <div class="box-content">
+                        @if (ViewBag.Stu_Attendance != null)
+                        {
+                            int rowNo = 0;
+                            <div class="table-responsive voffset3">
+                                <table class="table table-advance table-hover table-bordered time-table" id="table1">
+
+                                    <thead>
+                                        <tr>
+                                            <th>Sl No.</th>
+                                            <th>Date</th>
+                                            <th>Batch Name</th>
+                                            <th>Class</th>
+                                            <th>Student Name</th>
+                                            <th>Relation</th>
+                                            <th>Mobile</th>
+                                            <th>Attendance</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var item in ViewBag.Stu_Attendance)
+                                    {
+                                        <tr>
+                                            <td>@(rowNo += 1)</td>
+                                            <td>@item.Attendance_Date.ToShortDateString()</td>
+                                            <td>@item.Batch_Name</td>
+                                            <td>@item.Class_Name</td>
+                                            <td>@item.Customer_Name</td>
+                                            <td>@item.P_Relation</td>
+                                            <td>@item.Parent_Mobile</td>
+
+                                            @if (@item.Is_Present == true)
+                                            {
+                                                <td>Present</td>
+                                            }
+                                            else
+                                            {
+                                                <td>Absent</td>
+                                            }
+
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else { 
+                            <h3> Student has to attend offline class for the report.</h3>
+                        }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/js/plugins/tableexport/jspdf/libs/base64.js"></script>
+    <script src="~/js/plugins/tableexport/jspdf/libs/sprintf.js"></script>
+    <script src="~/js/plugins/tableexport/jspdf/jspdf.js"></script>
+    <script src="~/js/plugins/tableexport/html2canvas.js"></script>
+    <script src="~/js/plugins/tableexport/jquery.base64.js"></script>
+    <script src="~/js/plugins/tableexport/tableExport.js"></script>
+}

@@ -1,0 +1,251 @@
+﻿@{
+    ViewBag.Title = "Leader board | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+<link href="~/Student_assets/assets/css/magnific-popup.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+@section header
+{
+    <i class="menu-icons leaderboard-icon page_header_icon"></i>
+    <span class="main-text">Leaderboard (@ViewBag.exam_name)</span>
+}
+
+<div class="row">
+@if (ViewBag.Leaderboard !=null)
+{
+    <div class="col-md-12 questions-cont nopad-right">
+        <!-- Question Panel Starts -->
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>Leaderboard</span>
+                </h3>
+            </div>
+            @{int rowno = 0;}
+            @{int i = 0; int j = 0;}
+            <div class="panel-body ">
+              
+               
+                @foreach (var v in ViewBag.Leaderboard)
+                {
+                    
+                <div class="leader-beard-container ios-profile-widget">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 leader-personal">
+    @if (v.Image != null)
+                            {
+        <img class="profile-pic-new" src="~/Images/Profile/@v.Image" alt="">
+                            }
+                            else
+                            {
+        <img class="profile-pic-new" src="~/Student_assets/assets/images/avatar/one.png" alt="">
+                            }
+    <div class="pr-rank">
+        <h3 class="pr-name">@v.Customer_Name</h3>
+        <p class="rankk"><img class="rank-img" src="~/Student_assets/assets/images/Rank.png" alt=""><span class='rank-text'>Rank</span><span class="badge">@(rowno += 1)</span></p>
+    </div>
+    <div>
+
+        @{
+                    decimal time = (Convert.ToDecimal(@v.Totaltime) / 60000);
+
+                    string tm = Convert.ToString(time);
+        }
+
+    </div>
+    @if(i % 4 == 0)
+    {
+        j = 1;               
+        @*<div class='table-cont bd-clr-1'>*@
+
+           }
+
+         
+
+           @if (i % 4 == 1)
+           {
+               j = 2;
+           }
+            @*<div class='table-cont bd-clr-2'>*@
+
+               
+                @if(i % 4 == 2)
+                {
+                    j = 3;
+                }          
+                    @*<div class='table-cont bd-clr-3'>*@
+
+                      
+                        @if(i % 4 == 3)
+                        {
+                            j = 4;
+                        }
+                            <div class='table-cont bd-clr-@j'>
+
+                               
+
+
+
+
+
+                                <table class="table table-bordered table-hover table-top">
+                                    <tbody>
+
+                                        <tr>
+                                            @if (tm.Length > 4)
+                                        {
+                                                <th scope="row" width="160px">Duration</th>
+                                                <td>@tm.Substring(0, 4) min</td>
+                                        }
+                                        else
+                                        {
+                                                <th scope="row" width="160px">Duration</th>
+                                                <td>@tm min</td>
+                                        }
+                                        </tr>
+                                        <tr>
+                                            <td>No of Questions</td>
+                                            <td>@v.Question_Nos</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total Attempts</td>
+                                            <td><input type="text" disabled class="range-slider" name="example_name" value="@v.Appear" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>No of Correct</td>
+                                            <td>@v.Total_Correct_Ans</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    i++;
+                
+}
+
+                    </div>
+        </div>
+    </div>
+            }
+            else
+            {
+                <div class="col-md-12 questions-cont text-center">
+                    <div class="ful-hi-wi">
+                        <h2>No one has Appeared exam yet.</h2>
+                        <img src="/images/exam.png" />
+                    </div>
+                </div>
+            }
+        <!-- Question Panel Ends -->
+</div>
+@if (ViewBag.myresult != null)
+{
+       <div class="row">
+        <div class="col-md-12 questions-cont nopad-right">
+            <!-- Question Panel Starts -->
+            <div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>Your Postion In Leaderboard</span>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    @foreach (var v in ViewBag.myresult)
+                    {
+                        <div class="leader-beard-container ios-profile-widget">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 leader-personal">
+                                    @if (v.Image != null)
+                                    {
+                                        <img class="profile-pic-new" src="~/Images/Profile/@v.Image" alt="">
+                                    }
+                                    else
+                                    {
+                                        <img class="profile-pic-new" src="~/Student_assets/assets/images/avatar/one.png" alt="">
+                                    }
+                                    <div class="pr-rank">
+                                        <h3 class="pr-name">@v.Customer_Name</h3>
+                                        <p class="rankk">Rank:<span class="badge">@ViewBag.myrank</span></p>
+                                    </div>
+                                    <div>
+                                        @{
+
+                                    decimal time = (Convert.ToDecimal(@v.Totaltime) / 60000);
+
+                                    string tm = Convert.ToString(time);
+                                        }
+
+                                    </div>
+                                    <table class="table table-bordered table-hover table-top">
+                                        <tbody>
+
+                                            <tr>
+                                                @if (tm.Length > 4)
+                                                {
+                                                    <th scope="row" width="250px">Duration</th>
+                                                    <td>@tm.Substring(0, 4) min</td>
+                                                }
+                                                else
+                                                {
+                                                    <th scope="row" width="250px">Duration</th>
+                                                    <td>@tm min</td>
+                                                }
+                                            </tr>
+                                            <tr>
+                                                <td>No of Questions</td>
+                                                <td>@v.Question_Nos</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Attempts</td>
+                                                <td><input type="text" disabled class="range-slider" name="example_name" value="@v.Appear" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>No of Correct</td>
+                                                <td>@v.Total_Correct_Ans</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+  </div>
+}
+
+@section scripts
+{
+    <script src="~/Student_assets/assets/js/tooltip-custom.js"></script>
+    <script src="~/Student_assets/assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/Student_assets/assets/js/range-slider/ion.rangeSlider.js"></script>
+    <script src="~/Student_assets/assets/js/range-slider/custom.js"></script>
+    <script>
+
+        var player = videojs('example-video');
+        player.play();
+
+        $('.popup-player').magnificPopup({
+            type: 'iframe',
+            mainClass: 'mfp-fade',
+            removalDelay: 160,
+            preloader: false,
+            fixedContentPos: false,
+            iframe: {
+                markup: '<div class="mfp-iframe-scaler">' +
+                    '<div class="mfp-close"></div>' +
+                    '<iframe class="mfp-iframe" frameborder="0" allowfullscreen></iframe>' +
+                    '</div>',
+                srcAction: 'iframe_src'
+            }
+        });
+        $(document).ready(function () {
+            $('.image-link').magnificPopup({ type: 'image' });
+        });
+    </script>
+}

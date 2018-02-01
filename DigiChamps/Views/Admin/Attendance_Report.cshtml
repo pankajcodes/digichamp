@@ -1,0 +1,144 @@
+﻿@{
+    ViewBag.Title = "Attendance Report";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content-wrap">
+    <div class="page-title">
+        <div>
+            <h1>
+                <i class="fa fa-file-o"></i> Attendance Report
+                <div class="btn-toolbar pull-right">
+                    <div class="box-tool">
+                    </div>
+                </div>
+            </h1>
+
+        </div>
+    </div>
+    <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i>Reports</span>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active">@ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-title">
+                <h3><i class="fa fa-list-ul"></i>Search Attendance By Date</h3>
+            </div>
+            <div class="box-content">
+                <div class="page-content-wrap">
+                    <div class="row">
+                        <div class="">
+                            @using (Html.BeginForm("Attendance_Report", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+                            {
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">From Date<span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                        <input type="text" class="form-control datepicker" name="frm_dt" autocomplete="off" data-rule-required="true" data-msg-required="Please select From date" onkeypress="return false;" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">To Date<span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                        <input type="text" class="form-control datepicker" name="to_dt" autocomplete="off" data-rule-required="true" data-msg-required="Please select To date" onkeypress="return false;" />
+                                    </div>
+                                </div>
+                                <div class="form-group last box-tooll">
+                                    <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                        <button id="btnadd" type="submit" class="btn btn-primary"><i class="fa fa-search"></i><span> Search</span></button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+
+                <div class="box-title">
+                    <h3><i class="fa fa-file-text"></i>Attendance Report</h3>
+                    <div class="box-tool box-tooll">
+                        <a href="@Url.Action("Attendance_Report", "Admin")" class="btn btn-primary dropdown-toggle"><i class="fa fa-refresh"></i> Refresh</a>
+                        <a href="#" class="btn btn-primary dropdown-toggle" onclick="$('#table1').tableExport({ type: 'excel', escape: 'false' });"><i class="fa fa-file-excel-o"></i> XLS</a>
+                        
+                    </div>
+                </div>
+                <div class="box-content">
+
+                    <div class="table-responsive voffset3">
+                        <table class="table table-advance" id="table1">
+
+                            <thead>
+                                <tr>
+                                    <th>Sl No.</th>
+                                    <th>Date</th>
+                                    <th>Batch Name</th>
+                                    <th>Teacher Name</th>
+                                    <th>Student Name</th>
+                                    <th>Mobile</th>
+                                    <th>Email</th>
+                                    <th>Class</th>
+                                    <th>Attendance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Attendance != null)
+                                {
+                                    int rowNo = 0;
+                                    foreach (var item in ViewBag.Attendance)
+                                    {
+                                        <tr>
+                                            <td>@(rowNo += 1)</td>
+                                            <td>@item.Attendance_Date.ToShortDateString()</td>
+                                            <td>@item.Batch_Name</td>
+                                            <td>@item.Teacher_Name</td>
+                                            <td>@item.Customer_Name</td>
+                                            <td>@item.Mobile</td>
+                                            <td>@item.Email</td>
+                                            <td>@item.Class_Name</td>
+                                            @if (@item.Is_Present == true)
+                                            {
+                                                <td>Present</td>
+                                            }
+                                            else
+                                            {
+                                                <td>Absent</td>
+                                            }
+                                            
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/plugins/tableexport/jspdf/libs/base64.js"></script>
+    <script src="~/js/plugins/tableexport/jspdf/libs/sprintf.js"></script>
+    <script src="~/js/plugins/tableexport/jspdf/jspdf.js"></script>
+    <script src="~/js/plugins/tableexport/html2canvas.js"></script>
+    <script src="~/js/plugins/tableexport/jquery.base64.js"></script>
+    <script src="~/js/plugins/tableexport/tableExport.js"></script>
+}

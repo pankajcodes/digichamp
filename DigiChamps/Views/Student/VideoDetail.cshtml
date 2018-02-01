@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.Title = "Video Detail | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<link href="~/Student_assets/assets/css/magnific-popup.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+@section header
+{
+<i class="menu-icons learn-icon page_header_icon"></i>
+<span class="main-text">Video Details</span>  
+}
+<style>
+    video::-internal-media-controls-download-button {
+        display: none;
+    }
+
+    video::-webkit-media-controls-enclosure {
+        overflow: hidden;
+    }
+
+    video::-webkit-media-controls-panel {
+        width: calc(100% + 30px); /* Adjust as needed */
+    }
+</style>
+
+<div class="row">
+
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 questions-cont nopad-right">
+        <!-- Question Panel Starts -->
+        <div class="panel panel-ntspl">
+            <div class="panel-body ">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="full-video-section">
+                            <div id="@("vdo" + ViewBag.otp)" style="height:400px;width:640px;max-width:100%;"></div>
+                            <script>
+                                (function (v, i, d, e, o) {
+                                    v[o] = v[o] || {}; v[o].add = v[o].add || function V(a) { (v[o].d = v[o].d || []).push(a); };
+                                    if (!v[o].l) {
+                                        v[o].l = 1 * new Date(); a = i.createElement(d), m = i.getElementsByTagName(d)[0];
+                                        a.async = 1; a.src = e; m.parentNode.insertBefore(a, m);
+                                    }
+                                })(window, document, 'script', '//de122v0opjemw.cloudfront.net/vdo.js', 'vdo');
+                                vdo.add({
+                                    o: "@ViewBag.otp",
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="detail-modulevideo-name">@ViewBag.module_name</h3>
+                <div class="summary-sec">
+                    <h4>Summary</h4>
+                    <p>@ViewBag.module_desc</p>
+
+                    <p></p>
+                </div>
+            </div>
+        </div>
+        <!-- Question Panel Ends -->
+
+
+
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Recommend Videos
+                </h3>
+            </div>
+            <div class="panel-body">
+               @if (ViewBag.all_video1 != null)
+    {
+                   foreach (var v in ViewBag.all_video1)
+                            {
+                <div class="related-thumb-conteiner">
+                    <a href="javascript:viod(0)">
+                        <div class="related-thumb">
+                            <a href="@Url.Action("VideoDetail", "student", new {id = @v.Module_video })">
+                                <video id="example-video" class="video-js vjs-default-skin" preload="auto" poster="@v.Module_Image" id="example-video" width="100" height="70"
+                                       preload="auto" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2], "autoplay": false, }'>
+                                    <source class="vsrc" src="http://content.jwplatform.com/videos/@v.Module_video-ozl7iD1S.mp4" type='video/mp4' />
+
+                                </video>
+                            </a>
+                                <div class="rel-right">
+                                    @if (v.Is_Free==true)
+                                    {
+                                    <a href="@Url.Action("VideoDetail", "student", new {id = @v.Module_video })">
+                                        <p>@v.Module_Name.</p>
+                                    </a>
+                                    }
+                                    else
+                                    {
+                                      <a href="#" class="fa fa-lock">
+                                        <p>@v.Module_Name.</p>
+                                    </a>  
+                                    }                               
+                                    <span>Chapter:@v.Chapter</span>
+                                </div>
+</div>
+                    </a>
+                </div>
+               }
+               }
+               else            
+                  {
+                   foreach (var v in ViewBag.all_video)
+                            {
+                <div class="related-thumb-conteiner">
+                    <a href="javascript:viod(0)">
+                        <div class="related-thumb">
+                            <a href="@Url.Action("VideoDetail", "student", new {id = @v.Module_video })">
+                                <video id="example-video" class="video-js vjs-default-skin" preload="auto" poster="@v.Module_Image" id="example-video" width="100" height="70"
+                                       preload="auto" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2], "autoplay": false, }'>
+                                    <source class="vsrc" src="http://content.jwplatform.com/videos/@v.Module_video-ozl7iD1S.mp4" type='video/mp4' />
+
+                                </video>
+                            </a>
+                                <div class="rel-right">
+                                    <a href="@Url.Action("VideoDetail", "student", new {id = @v.Module_video })">
+                                        <p>@v.Module_Name.</p>
+                                    </a>
+                                    <span>Chapter:@v.Chapter</span>
+                                </div>
+</div>
+                    </a>
+                </div>
+               }
+               }
+               
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+<script src="~/Student_assets/assets/js/range-slider/ion.rangeSlider.js"></script>
+<script src="~/Student_assets/assets/js/jquery.magnific-popup.min.js"></script>
+<script src="~/Student_assets/assets/js/tooltip-custom.js"></script>
+@*<script src="~/Student_assets/assets/js/video.js"></script>*@
+<script src="~/Student_assets/assets/js/videojs-contrib-hls.min.js"></script>
+<script src="~/jwplayer-7.9.3/jwplayer.js"></script>
+<script>jwplayer.key = "cxb/fhH3Z9Oh3TulqzBk1tMznPqKXQ0fj8cZYfZ5tRA=";</script>    
+
+
+}
+
+

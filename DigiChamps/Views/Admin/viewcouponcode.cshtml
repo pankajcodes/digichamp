@@ -1,0 +1,198 @@
+﻿@{
+ 
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content-wrap">
+    
+    <div id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="~/Admin/AdminDashboard">Home</a>
+                <span class="divider"><i class="fa fa-angle-right"></i></span>
+            </li>
+            @if (ViewBag.Breadcrumb != null)
+            {
+                <li class="active">@ViewBag.Breadcrumb</li>
+            }
+        </ul>
+    </div>
+
+
+    <div class="row no_display">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-title">
+                    <h3><i class="fa fa-file-text"></i>Coupon Code Details</h3>
+                    <div class="box-tool box-tooll">
+                        <a class="btn btn-primary" href="/Admin/addcouponcode"><i class="fa fa-plus"></i><span>Add New</span> </a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="clearfix"></div>
+                    <div class="table-responsive voffset3">
+                        <table class="table table-advance" id="table1">
+
+                            <thead>
+                                <tr>
+                                    <th>Sl No.</th>
+                                    <th>Coupon Type</th>
+                                    <th>Coupon Code</th>
+                                    <th>Discount Price</th>
+                                    <th>Discount Percentage</th>
+                                    <th>Valid From Date</th>
+                                    <th>Valid To Date</th>
+                                    <th>Is Default</th>
+                                    <th>Price Range From</th>
+                                    <th>Price Range To</th>
+                                    <th>Coupon Image</th>
+                                    <th style="width: 15%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.coupon != null)
+                                {
+                                    DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                                    int rowNo = 0;
+                                    foreach (var item in ViewBag.coupon)
+                                    {
+                                        int cid = Convert.ToInt16(item.Coupon_Type);
+                                        <tr>
+                                            @{var coupontype = DbContext.tbl_DC_CouponType.Where(x => x.Id == cid && x.Is_Active == true && x.Is_Delete == false).FirstOrDefault();}
+                                            <td>@(rowNo += 1)</td>
+                                          
+                                            <td>@coupontype.Coupon_Type</td>
+                                            <td>@item.Coupon_Code</td>
+                                          
+                                            @if (item.Discount_Price != null)
+                                            {
+                                                <td>
+                                                    @item.Discount_Price
+                                                </td>
+                                            }
+                                            else
+                                            {
+    
+                                                <td>
+                                                    @item.Discount_Price
+                                                </td>
+                                            }
+                                                                                
+
+                                          
+                                           @if (item.Discount_Percent != null)
+                                           {
+                                            <td>
+                                                @item.Discount_Percent %
+                                            </td>
+                                           }
+                                           else
+                                           {
+
+                                            <td>
+                                                @item.Discount_Percent 
+                                            </td>
+                                           }
+
+                                            <td>@Convert.ToDateTime(item.Valid_From).ToShortDateString()</td>
+                                            <td>@Convert.ToDateTime(item.Valid_To).ToShortDateString()</td>
+                                           @if( @item.Is_Default==true)
+                                           {
+                                               <td>True</td>
+                                                <td></td>
+                                                <td></td>
+
+                                           }
+                                           else
+                                           {
+                                               <td>--</td>
+                                               if (@item.Pricerange_From != null)
+                                               {
+                                                <td>@string.Format("{0:0.00}", item.Pricerange_From)</td>
+
+                                               }
+                                               else
+                                               {
+                                                   <td>@item.Pricerange_From</td>
+                                               }
+                                               if (@item.Pricertange_To != null)
+                                               {
+                                                <td>@string.Format("{0:0.00}", item.Pricertange_To)</td>
+
+                                               }
+                                               else
+                                               {
+                                                <td>@item.Pricertange_To</td>
+                                               }
+                                               
+                                                            @*@if (@item.Pricerange_From != null && @item.Pricertange_To != null)
+                                                            {
+                                                                <td>@string.Format("{0:0.00}", item.Pricerange_From)</td>
+                                                                <td>@string.Format("{0:0.00}", item.Pricertange_To)</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>0.00</td>
+                                                                <td>0.00</td>
+                                                            }*@
+                                           }
+                                           
+                                           <td>  <a href="javascript:void(0);" class="btn btn-sm btn-primary show-tooltip fa fa-download vwcpnimg" code_id="@item.Code_Id"> view</a></td>
+                                            
+                                            <td>
+
+                                                @Html.ActionLink(" ", "addcouponcode", "Admin", new { ID = @item.Code_Id }, new { @class = "btn btn-sm btn-primary show-tooltip fa fa-edit", @title = "Edit" })
+
+
+                                                @Html.ActionLink(" ", "deletecouponcode", "Admin", new { ID = @item.Code_Id}, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the tax?')", @data_original_title = "Delete", @title = "Delete" })
+
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    <div class="modal fade" id="myModal" role="dialog" >
+            @*<div class="row">
+                <h4 class="text-center"><u>With Business Info</u></h4>
+            </div>*@
+
+
+        </div>
+    </div>
+
+
+@section scripts
+  {
+    <script>
+        $(document).ready(function () {
+            $(".vwcpnimg").click(function () {
+                debugger;
+                var $buttonClicked = $(this);
+                var cid = $buttonClicked.attr('code_id');
+                $.ajax({
+                    type: "POST",
+                    url: '/admin/addcouponimage',
+                    data: { id : cid },
+                    datatype: "json",
+                    success: function (data) {
+                        debugger;
+                        $('#myModal').modal('show');
+                        $('#myModal').html(data);
+                    }
+                });
+            });
+          
+        });
+        
+</script>
+
+  }

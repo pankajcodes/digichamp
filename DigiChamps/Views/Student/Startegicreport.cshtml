@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Startegic report";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+
+<div class="panel panel-ntspl">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Your Strategic Report
+            <span class="panel-options">
+                <a href="#" class="panel-refresh">
+                    <i class="icon ti-reload"></i>
+                </a>
+                <a href="#" class="panel-minimize">
+                    <i class="icon ti-angle-up"></i>
+                </a>
+                <a href="#" class="panel-close">
+                    <i class="icon ti-close"></i>
+                </a>
+            </span>
+        </h3>
+    </div>
+    <div class="panel-body">
+        <div class="row small_pie_chart">
+            <ul class="tabs light-tab">
+                <li class="tab col-md-4">
+                    <a href="#market2">Progress</a>
+                </li>
+                <li class="tab col-md-4">
+                    <a href="#market3">Remark</a>
+                </li>
+            </ul>
+            <div class="content-holder">
+                <div id="market2" class="col-md-12 no_padding">
+                 
+                    <table class="table table-bordered" >
+                            <thead>
+                                <tr>
+                                    <th>Sl No.</th>
+                                    <th>Topic Name</th>
+                                    <th>Total Question</th>
+                                    <th>Correct Answer</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Startegicreport != null)
+                                {
+                                    int rowNo = 0;
+                                    foreach (var item in ViewBag.Startegicreport)
+                                {
+                                        <tr>
+                                            <td>@(rowNo += 1)</td>
+                                            <td>@item.Topic_Name</td>
+                                            <td>@item.Total_Question</td>
+                                            <td>@item.correct_answer</td>
+                                            <td>@item.Percentage</td>
+                                        </tr>
+                                    }
+                                 }
+                            </tbody>
+                        </table>
+                  </div>
+                
+                <div id="market3" class="col-md-12 no_padding">
+                    @foreach (var item in ViewBag.Startegicreport)
+                    {
+                        <label>Topic Name:</label><p>@item.Topic_Name<br /> <label>Remark:</label>@item.Remark</p>
+                       
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+</div>

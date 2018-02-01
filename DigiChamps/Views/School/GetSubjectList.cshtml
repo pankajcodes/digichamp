@@ -1,0 +1,92 @@
+﻿@model IEnumerable<DigiChamps.Models.SchoolModel.CreateSubject>
+
+@{
+    ViewBag.Title = "GetSchoolAdminList";
+    Layout = "~/Views/Shared/_SchoolLayout.cshtml";
+}
+
+<form class="form-horizontal" id="validation-form">
+
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-title">
+                    <h3><i class="fa fa-file"></i> Subject List </h3>
+                    <div class="box-tool box-tooll">
+                        <a class="btn btn-primary" href="/School/CreateOrEditSubject/"><i class="fa fa-plus"></i><span> Add Subject List </span></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="table-responsive">
+                        <table class="table table-advance" id="table1">
+
+                            <thead>
+                                <tr>
+                                    <th>S No.</th>
+                                    <th> Name </th>
+                                    
+                                    <th style="display:none;">SchoolId</th>
+                                    <th style="display:none;">UserId</th>
+                                    @*<th> Email </th>
+                                    <th> Password </th>*@
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    int rowNo = 0;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@(rowNo += 1)</td>
+                                            <td>@item.SubjectName</td>
+                                            <td style="display:none;">@item.SchoolId</td>
+                                            <td style="display:none;">@item.SubjectId</td>
+                                            @*<td>@item.EmailAddress</td>
+                                            <td>@item.Password</td>*@
+                                            <td>
+                                                @Html.ActionLink(" ", "CreateOrEditSubject", "School", new { id = @item.SubjectId }, new { @class = "btn btn-sm btn-primary fa fa-pencil", @title = "View" })
+                                                @Html.ActionLink(" ", "DeleteSubject", "School", new { id = @item.SubjectId }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the role type?')", @data_original_title = "Delete", @title = "Delete" })
+
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+<script>
+
+    function Delete(id) {
+        debugger
+        $(".loader-ajax-container").css("display", "block");
+        $.ajax({
+            type: 'POST',
+            url: "/School/DeleteSubject",
+            contentType: false, // Not to set any content header
+            processData: false,
+            data: id,
+            success: function (data) {
+                $(".loader-ajax-container").css("display", "none");
+                console.log(data.Data);
+                if (data.Data)
+                    window.location.reload();
+            }
+        });
+
+    }
+</script>

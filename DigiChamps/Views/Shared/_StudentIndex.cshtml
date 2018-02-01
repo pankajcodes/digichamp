@@ -1,0 +1,643 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DIGICHAMPS | Learners Beyond Classrooms</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    
+	<meta name="google-site-verification" content="ueIyxjdU5LK1aSwaSICD0JTbleTkFigA4TLxk_GRA8w" />
+	 <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Student_assets/images/fav-icon.jpg" rel="shortcut icon" />
+    <!-- Bootstrap -->
+    <link href="~/Student_assets/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/datepicker/css/datepicker.css" rel="stylesheet" />
+
+    <link href="~/Student_assets/assets/css/animate.css" rel="stylesheet">
+    <link href="~/Student_assets/assets/css/owl.carousel.css" rel="stylesheet">
+    <link href="~/Student_assets/assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Student_assets/assets/css/themify-icons.css" rel="stylesheet">
+    <link href="~/Student_assets/assets/css/magnific-popup.css" rel="stylesheet">
+    <link href="~/Student_assets/assets/css/style-student.css" rel="stylesheet">
+    <link href="~/Student_assets/assets/css/responsive.css" rel="stylesheet">
+    <link href="~/css/manual.css" rel="stylesheet" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]> <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script> <![endif]-->
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-102578142-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!--LeadSquared Tracking Code Start-->
+    <script type="text/javascript" src="https://web.mxradon.com/t/Tracker.js"></script>
+    <script type="text/javascript">
+      pidTracker('21679');
+    </script>
+    <!--LeadSquared Tracking Code End-->
+</head>
+<body>
+    <div class="loader-ajax-container">
+        <div class="cssload-container">
+            <div class="cssload-loading"><i></i><i></i><i></i><i></i></div>
+        </div>
+    </div> 
+    <!--login and signup start-->
+    <span class="menu-overlay"></span>
+    <span class="login-sing-overlay"></span>
+    <!--sign in popup start-->
+    <div class="s-popup">
+        <div class="login-sign-popup-container clearfix">
+            <span class="close-popup c-hover"><i class="ti-close"></i></span>
+            <div class="sign-in-popup">Sign Up</div>
+            <div class="clearfix"></div>
+            <form class="form-div" id="sign_up_form">
+                <span class="error_alert_message"></span>
+                <span class="success_alert_message"></span>
+                <div class="pre-pop">
+                    <div class="group">
+                        <input type="text" class="Mobile" name="mobile" id="sign_mob" maxlength="10" data-rule-required="true" data-rule-minlength="10" data-rule-number="true" data-msg-required="Please enter mobile number">
+                        <!--<span class="highlight"></span>-->
+                        <!--<span class="bar"></span>-->
+                        <label>Enter Your Mobile Number</label>
+                    </div>
+                    <div class="group">
+                        <input type="text" name="name" maxlength="120" onkeypress="return isAlfa(event)" data-rule-required="true" data-msg-required="Please enter name">
+                        <!--<span class="highlight"></span>-->
+                        <!--<span class="bar"></span>-->
+                        <label>Enter Your Name</label>
+                    </div>
+                    <div class="group">
+                        <input type="email" name="email" maxlength="120" data-rule-required="true" data-msg-required="Please enter email id" data-rule-email="true">
+                        <!--<span class="highlight"></span>-->
+                        <!--<span class="bar"></span>-->
+                        <label>Enter Your Email</label>
+                    </div>
+                    <button class="new-sign-in" type="button" id="next_btn">Next</button>
+                    <p class="already">Already have an account with DigiChamps?</p>
+                    @*<div class="already-log-in click-login">Forgot Password</div>*@
+                    <div class="already-log-in f-color click-login">Log In</div>
+                </div>
+                <div class="sc-pop" hidden>
+                    <span class="sel-gen">You Are a</span>
+                    <ul class="list-inline checkboxes-radio">
+                        <li>
+                            <input type="radio" name="gender" id="c5" value="1" />
+                            <label for="c5"><span class="male"></span>Male</label>
+                        </li>
+                        <li>
+                            <input type="radio" name="gender" id="c6" value="0" />
+                            <label for="c6"><span class="female"></span>Female</label>
+                        </li>
+                    </ul>
+                    <div class="group">
+                        <input type="text" name="txtdob" autocomplete="off" class="datepicker" data-rule-required="true" data-msg-required="Please Enter DOB">
+                        <label>Enter Your DOB</label>
+                    </div>
+
+                    <button class="new-sign-in" type="submit" id="next_signup">Get Started</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--sign in popup end-->
+    <!--login popup start-->
+    <div class="l-popup">
+        <div class="login-sign-popup-container clearfix">
+            <span class="close-popup c-hover"><i class="ti-close"></i></span>
+            <div class="sign-in-popup">Login</div>
+            <div class="clearfix"></div>
+            <form class="form-div has-validation-callback" id="login_form">
+                <span class="error_alert_message"></span>
+                <span class="success_alert_message"></span>
+                <div id="for-msg" class="group">
+                    <input type="text" class="Mobile" id="log_mob" name="User_name" maxlength="10" data-rule-minlength="10" data-rule-required="true" data-msg-required="Please enter mobile number">
+                    <!--<span class="highlight"></span>-->
+                    <!--<span class="bar"></span>-->
+                    <label>Enter Your Mobile Number</label>
+                </div>
+
+                <div class="group">
+                    <input type="password" id="txtname"  name="password" maxlength="25" data-rule-required="true" data-msg-required="Please enter password">
+                    <!--<span class="highlight"></span>-->
+                    <!--<span class="bar"></span>-->
+                    <label>Enter Your Password</label>
+                </div>
+                <button class="new-sign-in" type="submit">Login</button>
+               
+                <p class="already f-color f-get-pass">Forgot Password</p>
+                <p class="already">Are you a new user?</p>
+                <div class="already-log-in click-sign">Sign Up</div>
+            </form>
+        </div>
+    </div>
+    <!--login popup end-->
+    <!--forgot password popup start-->
+    <div class="for-password">
+        <div class="login-sign-popup-container clearfix">
+            <span class="back-login c-hover"><i class="ti-arrow-left"></i></span>
+            <span class="close-fp c-hover"><i class="ti-close"></i></span>
+            <div class="sign-in-popup">Forgot Password</div>
+            <div class="clearfix"></div>
+            <form class="form-div" id="forgot_form">
+                <span class="error_alert_message"></span>
+                <span class="success_alert_message"></span>
+                <div class="group">
+                    <input type="text" data-rule-number="true" data-rule-required="true" data-rule-minlength="10" data-msg-required="Please enter mobile number" maxlength="10" name="mobile" id="forgot_mobile">
+                    <!--<span class="highlight"></span>-->
+                    <!--<span class="bar"></span>-->
+                    <label>Enter Your Mobile Number</label>
+                </div>
+                <button class="new-sign-in" type="submit">Send OTP</button>
+            </form>
+        </div>
+    </div>
+    <!--forgot password popup end-->
+    <!--confirm start-->
+    <div class="otp-popup">
+        <div class="login-sign-popup-container clearfix">
+            <span class="close-otp-popup c-hover"><i class="ti-close"></i></span>
+            <div class="sign-in-popup">Verification</div>
+            <div class="clearfix"></div>
+            <form class="form-div" id="otp_form">
+                <span class="error_alert_message"></span>
+                <span class="success_alert_message"></span>
+                <p class="already per-mobile">Enter the 6-digit OTP sent to <span class="number-block">9999999999</span></p>
+
+                <div class="group">
+                    <input type="text" name="Mobile_OTP" data-rule-required="true" data-msg-required="Enter OTP" data-rule-minlength="6" maxlength="6">
+                    <!--<span class="highlight"></span>-->
+                    <!--<span class="bar"></span>-->
+                    <label>Enter Your OTP</label>
+                </div>
+
+                <div class="group">
+                    <input type="password" name="New_Password" maxlength="20" id="New_Password" data-rule-required="true" data-msg-required="Enter new password" data-rule-minlength="6" >
+                    <!--<span class="highlight"></span>-->
+                    <!--<span class="bar"></span>-->
+                    <label>Enter New Password</label>
+                </div>
+
+                <div class="group">
+                    <input type="password" name="Confirm_Password" maxlength="20" data-rule-required="true" data-rule-minlength="6" data-msg-required="Enter confirm password" data-rule-equalto="#New_Password">
+                    <!--<span class="highlight"></span>-->
+                    <!--<span class="bar"></span>-->
+                    <label>Confirm New Password</label>
+                </div>
+
+                <button class="new-sign-in" type="submit">Verify</button>
+                <p class="already re-otp">Did not receive OTP? <span class="re-col" id="click-count">Resend</span></p>
+            </form>
+        </div>
+    </div>
+    <!--confirm popup end-->
+    <!--select-course start-->
+    <div class="select-course-and-board-popup">
+        <div class="login-sign-popup-container clearfix">
+            <span class="close-otp-popup c-hover select-popup"><i class="ti-close"></i></span>
+            <div class="sign-in-popup">Academic Details</div>
+            <div class="clearfix"></div>
+            <form class="form-div" id="board_form">
+                <span class="error_alert_message"></span>
+                <span class="success_alert_message"></span>
+                <p class="already per-mobile">Champs, Just one step away from "FUNDUCATION".</p>
+
+                <div class="group">
+                    <input type="text" name="school_name" maxlength="120" data-rule-required="true" data-msg-required="Please enter School Name">
+                    <!--<span class="highlight"></span>-->
+                    <!--<span class="bar"></span>-->
+                    <label>Enter Your School Name</label>
+                </div>
+                <div class="group">
+
+                    @Html.DropDownList("Board_Id", ViewBag.Board_Id as SelectList, "Select board", new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please select board", @id = "ddlboard" })
+                    <!--<span class="highlight"></span>-->
+                    <!--<span class="bar"></span>-->
+                </div>
+
+                <div class="group">
+                    @Html.DropDownList("Class_Id", new List<SelectListItem>(), "Select class", new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please select class", @id = "ddlclass" })
+                    <!--<span class="highlight"></span>-->
+                    <!--<span class="bar"></span>-->
+                </div>
+                <div class="group">
+                    @Html.DropDownList("secureqstn", ViewBag.secureqsn as SelectList, "Select Secure Question", new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please select security question", @id = "ddlsecureqsn" })
+                    <!--<span class="highlight"></span>-->
+                    <!--<span class="bar"></span>-->
+                </div>
+                <div class="group">
+                    <input type="text" name="answer" maxlength="98" data-rule-required="true" data-msg-required="Please enter answer">
+                    <!--<span class="highlight"></span>-->
+                    <!--<span class="bar"></span>-->
+                    <label>Enter Secure Answer</label>
+                </div>
+
+                <button class="new-sign-in">Get Started</button>
+            </form>
+        </div>
+    </div>
+    <!--select-course popup end-->
+    <!-- Main Header / Header Style Two-->
+
+    <header class="site-header header-style-two">
+        <div class="container">
+            <div class="main-box">
+                <div class="outer-container clearfix">
+<div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="logo-box">
+                            <div class="logo">
+                                <a href="http://thedigichamps.com/" class="logo-sticky-no">
+                                    <img src="../Student_assets/images/digi-champ-logo.png" alt="DIGICHAMPS LOGO">
+                                </a>
+                                <a href="http://thedigichamps.com/" class="logo-sticky">
+                                    <img src="../Student_assets/images/digichamps-side-logo.jpg" alt="DIGICHAMPS LOGO">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="sign-in-div">
+                            <a href="javascript:void(0)"><button class="full-btn transperent-btn sign-in">Sign Up </button></a>
+                        </div>
+                        <div class="download-div">
+                            <a href="javascript:void(0)"><button class="full-btn login-click">Login</button></a>
+                        </div>
+                        @*<div class="download-div">
+                            <a href="javascript:void(0)"><button class="full-btn pre_book">Pre-Book</button></a>
+                        </div>*@
+                        <div class="nav-toggler">
+                            <button class="hidden-bar-opener">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <div class="main-menu">
+                                <ul>
+                                  
+                                    <li><a href="/student/Aboutus"><i class="fa fa-users ico-and3"></i>About Us</a></li>
+                                    <li><a href="/student/career"><i class="fa fa-graduation-cap ico-and4"></i>Career</a></li>
+                                    <li><a href="/student/faq"><i class="fa fa-question-circle ico-and5"></i>FAQs</a></li>
+                                    <li><a href="/student/contact"><i class="fa fa-map-marker ico-and2"></i>Contact Us</a></li>
+                                    <li><a href="https://play.google.com/store/apps/details?id=com.sseduventures.digichamps" target="_blank"><i class="fa fa-android ico-and"></i>Download App</a></li>
+                                    
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </header>
+    <!--End Main Header -->
+    <!--Start body Section -->
+    @RenderBody()
+    <!--End body Section -->
+    <!--Footer section End-->
+    <footer class="footer">
+        <div class="container">
+            <div class="top-footer">
+                <img class="footer-logo" src="../Student_assets/images/digichamp-footer-logo.png" />
+                <p class="address">
+                    Plot No- 346/2729, ODM Educational Group Campus, Patia
+                    <span class="display-block">Bhubaneswar-24, Odisha</span>
+                </p>
+                <div class="social-media-footer">
+                    <ul class="social_icons clearfix">
+                        <li class="facebook new-1">
+                            <a href="https://www.facebook.com/thedigichamps/" target="_blank">
+                                <i class="fa fa-facebook"></i>
+                                <i class="fa fa-facebook"></i>
+                            </a>
+                        </li>
+                        <li class="twitter new-1">
+                            <a href="https://twitter.com/thedigichamps16/" target="_blank">
+                                <i class="fa fa-twitter"></i>
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        </li>
+                        <li class="googleplus new-1">
+                            <a href="https://www.linkedin.com/company/digichamps" target="_blank">
+                                <i class="fa fa-linkedin"></i>
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        </li>
+                        <li class="youtube new-1">
+                            <a href="https://www.youtube.com/channel/UCzAIAxzYmwubv1CcPJej8pw" target="_blank">
+                                <i class="fa fa-youtube-play"></i>
+                                <i class="fa fa-youtube-play"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                @*<div class="bottom-menu">
+                    <ul class="but-menu">
+                        <li>
+                            <a href="javascript:void(0)">About Us</a>|
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)">Career</a>|
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)">FAQs</a>|
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)">Terms of Services</a>|
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)">Privacy Policy</a>
+                        </li>
+                    </ul>
+                </div>*@
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 half-width">
+                    <p class="copy-right">© 2017 Digichamps.  All Rights Reserved.</p>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 half-width">
+                    <p class="design"><a href="https://thedigichamps.com/student/PrivacyPolicy" target="_blank">Privacy Policy</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--Footer section End-->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../Student_assets/assets/js/jquery-1.12.4.min.js"></script>
+    <script src="../Student_assets/assets/js/bootstrap.min.js"></script>
+    <script src="../assets/datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="../Student_assets/assets/js/owl.carousel.min.js"></script>
+    <script src="../Student_assets/assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="../Student_assets/assets/js/waypoints.min.js"></script>
+    <!--Validation scripts-->
+    <script type="text/javascript" src="../assets/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="../assets/jquery-validation/dist/additional-methods.min.js"></script>
+
+    <script>
+        $(function () {
+            $('input').change(function () {
+                if ($.trim($(this).val()) !== '') {
+                    $(this).closest(".group").addClass("filled-in");
+                } else {
+                    $(this).closest(".group").removeClass("filled-in");
+                }
+            });
+
+           
+
+        });
+
+        $('.datepicker').datepicker().on('changeDate', function (e) {
+            $(this).datepicker('hide');
+            $(this).closest(".group").addClass("filled-in");
+        });
+        $('.Mobile').keyup(function (e) {
+            if (/\D/g.test(this.value)) {
+                this.value = this.value.replace(/\D/g, '');
+            }
+        });
+        function isAlfa(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 32 && (charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122)) {
+                return false;
+            }
+            return true;
+        }
+        //validating each form in student-index
+        if (jQuery().validate) {
+            var removeSuccessClass = function (e) {
+                $(e).closest('.form-group').removeClass('has-success');
+            }
+            var $validator = $('#sign_up_form').validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block', // default input error message class
+                errorPlacement: function (error, element) {
+                    if (element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    } else if (element.next('.chosen-container').length) {
+                        error.insertAfter(element.next('.chosen-container'));
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                focusInvalid: false, // do not focus the last invalid input
+                ignore: "",
+
+                invalidHandler: function (event, validator) { //display error alert on form submit              
+                    var el = $(validator.errorList[0].element);
+                    if ($(el).hasClass('chosen')) {
+                        $(el).trigger('chosen:activate');
+                    } else {
+                        $(el).focus();
+                    }
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) { // revert the change dony by hightlight
+                    $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
+                    setTimeout(function () { removeSuccessClass(element); }, 2000);
+                },
+
+                success: function (label) {
+                    label.closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                }
+            });
+        }
+        if (jQuery().validate) {
+            var removeSuccessClass = function (e) {
+                $(e).closest('.form-group').removeClass('has-success');
+            }
+            var $validator = $('#login_form').validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block', // default input error message class
+                errorPlacement: function (error, element) {
+                    if (element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    } else if (element.next('.chosen-container').length) {
+                        error.insertAfter(element.next('.chosen-container'));
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                focusInvalid: false, // do not focus the last invalid input
+                ignore: "",
+
+                invalidHandler: function (event, validator) { //display error alert on form submit              
+                    var el = $(validator.errorList[0].element);
+                    if ($(el).hasClass('chosen')) {
+                        $(el).trigger('chosen:activate');
+                    } else {
+                        $(el).focus();
+                    }
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) { // revert the change dony by hightlight
+                    $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
+                    setTimeout(function () { removeSuccessClass(element); }, 2000);
+                },
+
+                success: function (label) {
+                    label.closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                }
+            });
+        }
+        if (jQuery().validate) {
+            var removeSuccessClass = function (e) {
+                $(e).closest('.form-group').removeClass('has-success');
+            }
+            var $validator = $('#forgot_form').validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block', // default input error message class
+                errorPlacement: function (error, element) {
+                    if (element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    } else if (element.next('.chosen-container').length) {
+                        error.insertAfter(element.next('.chosen-container'));
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                focusInvalid: false, // do not focus the last invalid input
+                ignore: "",
+
+                invalidHandler: function (event, validator) { //display error alert on form submit              
+                    var el = $(validator.errorList[0].element);
+                    if ($(el).hasClass('chosen')) {
+                        $(el).trigger('chosen:activate');
+                    } else {
+                        $(el).focus();
+                    }
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) { // revert the change dony by hightlight
+                    $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
+                    setTimeout(function () { removeSuccessClass(element); }, 2000);
+                },
+
+                success: function (label) {
+                    label.closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                }
+            });
+        }
+        if (jQuery().validate) {
+            var removeSuccessClass = function (e) {
+                $(e).closest('.form-group').removeClass('has-success');
+            }
+            var $validator = $('#otp_form').validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block', // default input error message class
+                errorPlacement: function (error, element) {
+                    if (element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    } else if (element.next('.chosen-container').length) {
+                        error.insertAfter(element.next('.chosen-container'));
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                focusInvalid: false, // do not focus the last invalid input
+                ignore: "",
+
+                invalidHandler: function (event, validator) { //display error alert on form submit              
+                    var el = $(validator.errorList[0].element);
+                    if ($(el).hasClass('chosen')) {
+                        $(el).trigger('chosen:activate');
+                    } else {
+                        $(el).focus();
+                    }
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) { // revert the change dony by hightlight
+                    $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
+                    setTimeout(function () { removeSuccessClass(element); }, 2000);
+                },
+
+                success: function (label) {
+                    label.closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                }
+            });
+        }
+        if (jQuery().validate) {
+            var removeSuccessClass = function (e) {
+                $(e).closest('.form-group').removeClass('has-success');
+            }
+            var $validator = $('#board_form').validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block', // default input error message class
+                errorPlacement: function (error, element) {
+                    if (element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    } else if (element.next('.chosen-container').length) {
+                        error.insertAfter(element.next('.chosen-container'));
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                focusInvalid: false, // do not focus the last invalid input
+                ignore: "",
+
+                invalidHandler: function (event, validator) { //display error alert on form submit              
+                    var el = $(validator.errorList[0].element);
+                    if ($(el).hasClass('chosen')) {
+                        $(el).trigger('chosen:activate');
+                    } else {
+                        $(el).focus();
+                    }
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) { // revert the change dony by hightlight
+                    $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
+                    setTimeout(function () { removeSuccessClass(element); }, 2000);
+                },
+
+                success: function (label) {
+                    label.closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                }
+            });
+        }
+       
+    </script>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    @RenderSection("scripts", required: false)
+    <script src="../Student_assets/assets/js/custom-script.js"></script>
+	    <!-- Start of LiveChat (www.livechatinc.com) code -->
+    <script type="text/javascript">
+window.__lc = window.__lc || {};
+window.__lc.license = 9101740;
+(function() {
+  var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+  lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
+})();
+    </script>
+    <!-- End of LiveChat code -->
+</body>
+</html>

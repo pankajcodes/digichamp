@@ -1,0 +1,50 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito:400,300);
+/************theme fonts********************/
+/***********************theme colors*****************************/
+/*****************theme parametres*******************/
+/*sidebar-parametres*/
+/****************************************************
+            Animation Demo purpose only
+****************************************************/
+#animateTest {
+  position: fixed;
+  z-index: 1000;
+}
+.animate-demo-buttons {
+  margin-top: 100px;
+}
+.demo-input-group {
+  margin-top: 10px;
+}
+.btn-animate-demo {
+  margin-top: 10px;
+}
+.animate-list a {
+  border: 1px solid #e9ecf2;
+  color: #9398a0;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.25px;
+  line-height: 24px;
+}
+.animate-list a:hover,
+.animate-list a:active,
+.animate-list a:focus {
+  background-color: #f2f4f7;
+}
+.animate-list a.active {
+  background-color: #f2f4f7 !important;
+  border: 1px solid transparent !important;
+  color: #707780;
+}
+.animate-list a.active:hover,
+.animate-list a.active:active,
+.animate-list a.active:focus {
+  background-color: #f2f4f7;
+  color: #707780;
+}
+.animate-list a:first-child,
+.animate-list a:last-child {
+  border-radius: 0px;
+}

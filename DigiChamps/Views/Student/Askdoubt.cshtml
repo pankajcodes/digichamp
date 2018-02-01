@@ -1,0 +1,899 @@
+﻿@{
+    ViewBag.Title = "Ask Doubt | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.css" rel="stylesheet" />
+<link href="~/Student_assets/assets/css/range-slider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+<link href="~/css/croppie.css" rel="stylesheet" />
+
+@section header
+{
+  <i class="menu-icons doubt-icon page_header_icon"></i>
+    <span class="main-text">Doubts</span>
+
+
+    <div class='row'>
+<div  class='col-md-6 col-lg-6 col-sm-6' >
+        <!-- Nav tabs -->
+        <ul class="tabs" >
+            <li class="tab" ><a href="#home" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true" class="active">Ask Doubts</a></li>
+            <li class="tab" ><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">Doubt History</a></li>
+        </ul>
+        <!-- Tab panes -->
+    </div>
+</div>
+    
+
+
+}
+
+
+<div class="row">
+    <div class="tab-content piluku-tab-content">
+        <div role="tabpanel" class="tab-pane active" id="home">
+            @using (Html.BeginForm("askdoubt", "student", FormMethod.Post, new { data_ajax = "false", enctype = "multipart/form-data", id = "validation-form" }))
+            {
+                <div class="col-md-12 questions-cont">
+                    <!-- Question Panel Starts -->
+                    <div class="panel panel-ntspl">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Ask Your Doubt
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <form class="form">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 nopad-right">
+                                        <div class="form-group">
+                                            <label class="control-label">Select Board<span class="red-info">*</span></label>
+                                            <select data-rule-required="true" data-msg-required="Please select board" name="_board_id" id="ddlboard" class="form-control chosen-choices">
+                                                <option value="">Select Board</option>
+                                                @foreach (var v in ViewBag.Boards)
+                                                {
+                                                    <option value="@v.Board_ID">@v.Board_Name</option>
+                                                }
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 nopad-right">
+                                        <div class="form-group">
+                                            <label class="control-label">Select Class<span class="red-info">*</span></label>
+                                            <select data-rule-required="true" data-msg-required="Please select class" name="_class_id" id="ddlclass" class="form-control">
+                                                <option value="">Select Class</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 nopad-right">
+                                        <div class="form-group">
+                                            <label class="control-label">Select Subject<span class="red-info">*</span></label>
+                                            <select data-rule-required="true" data-msg-required="Please select subject" name="Subject_ID" id="ddlsubject" class="form-control">
+                                                <option value="">Select Subject</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Select Chapter<span class="red-info">*</span></label>
+                                            <select name="Chapter_ID" id="ddlchapter" data-rule-required="true" data-msg-required="Please select chapter" class="form-control">
+                                                <option value="">Select Chapter</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="col-lg-6 nopad-right">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Your Question<span class="red-info">*</span></label>
+                                                    <textarea name="Question_Detail" id="Qsn" data-rule-required="true" data-msg-required="Please enter question" class="form-control text-area" cols="30" rows="10" placeholder="Type Your Question Here"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Attach Image</label>
+                                                    <input type="file" accept=".jpg,.jpeg,.png,.gif" name="RegImage33" class="filestyle" data-icon="false" id="upload" tabindex="-1" style="position: absolute; clip: rect(0px 0px 0px 0px);">
+                                                    <div class="bootstrap-filestyle input-group">
+                                                        <input type="hidden" name="hidans_img" id="hidans_img" />
+                                                        <input readonly="readonly" type="text" id="_txt" class="form-control ">
+                                                        <span class="group-span-filestyle input-group-btn" tabindex="0">
+                                                            <label for="filestyle-1" class="btn btn-file-upload btn-orange">
+                                                                <span class="buttonText uploadFileImg"><i class="ion-ios-folder-outline"></i> Choose file</span>
+                                                            </label>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="upload-image-div" style="border:none">
+                                                    <img id="PrevImagesqs19" width="495" height="198" src="~/Images/-text.png" />
+                                                    <canvas id="canvas"  class="upload-image-div" hidden ></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="btn-div">
+                                        <button type="button" id="btn" class="btn btn-green btn-icon-green btn-icon-block voffset3 btn-icon-blockleft">
+                                            <i class="ion ion-checkmark"></i>
+                                            <span>Submit</span>
+                                        </button>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 nopad-right">
+                        <div class="dashboard-stats">
+                            <div class="left">
+                                <h3 class="flatBluec counter" data-to="@ViewBag.Student_ticket_Count_ask" data-speed="4000">@ViewBag.Student_ticket_Count_ask</h3>
+                                <h4 class='top-15'><span>Doubts</span><span>Asked</span></h4>
+                            </div>
+                            <div class="right flatBlue">
+                                <i class="ion ion-ios-help-outline"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="dashboard-stats">
+                            <div class="left">
+                                <h3 class="flatGreenc counter" data-to="@ViewBag.Student_ticket_Count_ans" data-speed="4000">@ViewBag.Student_ticket_Count_ans</h3>
+                                <h4 class='top-15'><span>Doubts</span><span>Answered</span></h4>
+                            </div>
+                            <div class="right flatGreen">
+                                <i class="ion ion-ios-checkmark-outline"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12  nopad-right">
+                        <div class="dashboard-stats">
+                            <div class="left">
+                                <h3 class="flatRedc counter" data-to="@ViewBag.Student_ticket_Count_uans" data-speed="4000">@ViewBag.Student_ticket_Count_uans</h3>
+                                <h4 class='top-15'><span>Doubts</span><span>Unanswered</span></h4>
+                            </div>
+                            <div class="right flatRed">
+                                <i class="ion ion-ios-information-outline"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="dashboard-stats">
+                            <div class="left">
+                                <h3 class="flatRedc counter" data-to="@ViewBag.Rejectec_Doubt" data-speed="4000">@ViewBag.Rejectec_Doubt</h3>
+                                <h4 class='top-15'><span>Doubts</span><span>Rejected</span></h4>
+                            </div>
+                            <div class="right flatRed">
+                                <i class="ion ion-ios-information-outline"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-lg-12">
+                <div class="panel panel-ntspl pannel-border">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Recent Answered Doubts
+                        </h3>
+                    </div>
+                    @if ((ViewBag.studentallquestion_recent).Count > 0)
+                    {
+                        <div class="panel-body mail_widget padding-top">
+                            <div class="mail_list">
+                                <ul class="list-unstyled mails_holder" tabindex="5" style="overflow: hidden; outline: none;">
+                                    <li class="list-color">
+                                        @{int i = 0; int j = 0;}
+                                        @foreach (var v in ViewBag.studentallquestion_recent)
+                                        {
+                                            if(i % 4 == 0)
+    {
+        j = 1;               
+        @*<div class='table-cont bd-clr-1'>*@
+
+           }
+
+         
+
+           if (i % 4 == 1)
+           {
+               j = 2;
+           }
+            @*<div class='table-cont bd-clr-2'>*@
+
+               
+                if(i % 4 == 2)
+                {
+                    j = 3;
+                }          
+                    @*<div class='table-cont bd-clr-3'>*@
+
+
+                                            if (i % 4 == 3)
+                                            {
+                                                j = 4;
+                                            }
+                                             <div class="bd-clr-@j">
+                                            <a href="/student/answerticket/@v.Ticket_ID">
+                                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                    @{
+                                            DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                                            int ticket_id = Convert.ToInt32(v.Ticket_ID);
+                                            var tk_status = DbContext.tbl_DC_Ticket.Where(x => x.Ticket_ID == ticket_id).Select(x => x.Status).FirstOrDefault();
+                                                    
+                                                    }
+                                                    <span class="que-number">@v.Ticket_No</span>
+                                                    <p> <span class="question-section">Question - </span>@v.Question</p>
+                                                    <p> <span class="question-section">Subject - </span>@v.Subject</p>
+                                                    <p>
+                                                        <span class="question-section">
+                                                            Date - @{
+                                            DateTime date = Convert.ToDateTime(@v.Inserted_Date);
+                                                            }
+                                                        </span>@date.ToShortDateString()
+                                                    </p>
+                                                    @if (@v.Ticket_Dtls_ID != null)
+                                                    {
+                                                        if(tk_status=="R")
+                                                        {
+                                                              <p> <span class="question-section">Status - </span><span class="badge bg-danger">Rejected</span></p>
+                                                        }
+                                                        else if(tk_status=="C")
+                                                        {
+                                                              <p> <span class="question-section">Status - </span><span class="badge bg-danger">Closed</span></p>
+                                                        }
+                                                        else 
+                                                        {
+                                                             <p> <span class="question-section">Status - </span><span class="badge bg-success">Answered</span></p>
+                                                        }
+                                                       
+                                                    }
+                                                    else
+                                                    {
+                                                          if(tk_status=="R")
+                                                        {
+                                                              <p> <span class="question-section">Status - </span><span class="badge bg-danger">Unanswered</span></p>
+                                                        }
+                                                        else 
+                                                        {
+                                                            <p> <span class="question-section">Status - </span><span class="badge bg-danger">Unanswered</span></p>
+                                                        }
+                                                        
+
+                                                    }
+
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+
+                                                    <button class="btn btn-primary btn-icon-primary btn-icon-block btn-icon-blockleft btn-buttom  voffset2 view-details-btn">
+                                                        <i class="ion ion-checkmark"></i>
+                                                        <span>View Details</span>
+                                                    </button>
+
+                                                </div>
+                                            </a>
+                                                 </div>
+                                            
+                                        }
+
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+
+                        <div class="row">
+                            <div class="col-md-12 questions-cont text-center">
+                                <div class="ful-hi-wi">
+                                   
+                                     <div class="no-content-notification voffset3">You have not subscribed for any package yet.</div>
+                                    @{
+                        DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                        var list = DbContext.tbl_DC_Sample_Image.Where(x => x.Image_Type == "doubt" && x.Is_Active == true && x.Is_Deleted == false).FirstOrDefault();
+                        ViewBag.list = list.Image_URL;
+                                <img src="~/Images/SampleImage/@ViewBag.list" class="img-responsive voffset3" />
+                                    }
+                                    <div class="foraddbtn">
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="profile">
+            <div class="col-lg-12">
+                <div class="panel panel-ntspl pannel-border">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Doubt History
+                        </h3>
+                    </div>
+                    @if ((ViewBag.studentallquestion).Count > 0)
+                    {
+                        <div class="panel-body doubt-wedget padding-top">
+                            <div id="container" class="mail_list">
+                                <ul class="list-unstyled mails_holder" tabindex="5" style="overflow: hidden; outline: none;">
+                                    <li id="appenddata" class="list-color">
+                                        @{int i = 0; int j = 0;}
+                                        @foreach (var v in ViewBag.studentallquestion)
+                                        {if(i % 4 == 0)
+    {
+        j = 1;               
+        @*<div class='table-cont bd-clr-1'>*@
+
+           }
+
+         
+
+           if (i % 4 == 1)
+           {
+               j = 2;
+           }
+            @*<div class='table-cont bd-clr-2'>*@
+
+               
+                if(i % 4 == 2)
+                {
+                    j = 3;
+                }          
+                    @*<div class='table-cont bd-clr-3'>*@
+
+
+                                            if (i % 4 == 3)
+                                            {
+                                                j = 4;
+                                            }
+
+                                            <div class="bd-clr-@j">
+                                                <a href="/student/answerticket/@v.Ticket_ID">
+
+
+                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                        @{
+                                            DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                                            int ticket_ids = Convert.ToInt32(v.Ticket_ID);
+                                            var tk_statuss = DbContext.tbl_DC_Ticket.Where(x => x.Ticket_ID == ticket_ids).Select(x => x.Status).FirstOrDefault();
+
+                                                        }
+                                                        <span class="que-number">@v.Ticket_No</span>
+                                                        <p> <span class="question-section">Question - </span>@v.Question</p>
+                                                        <p> <span class="question-section">Subject - </span>@v.Subject</p>
+                                                        <p>
+                                                            <span class="question-section">
+                                                                Date - @{
+                                            DateTime dates = Convert.ToDateTime(@v.Inserted_Date);
+                                                                }
+                                                            </span>@dates.ToShortDateString()
+                                                        </p>
+                                                        @if (@v.Ticket_Dtls_ID != null)
+                                                        {
+                                                            if (tk_statuss == "R")
+                                                            {
+                                                                <p> <span class="question-section">Status - </span><span class="badge bg-danger">Rejected</span></p>
+                                                            }
+                                                            else if (tk_statuss == "C")
+                                                            {
+                                                                <p> <span class="question-section">Status - </span><span class="badge bg-danger">Closed</span></p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p> <span class="question-section">Status - </span><span class="badge bg-success">Answered</span></p>
+                                                            }
+
+                                                        }
+                                                        else
+                                                        {
+                                                            if (tk_statuss == "R")
+                                                            {
+                                                                <p> <span class="question-section">Status - </span><span class="badge bg-danger">Rejected</span></p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p> <span class="question-section">Status - </span><span class="badge bg-danger">Unanswered</span></p>
+                                                            }
+
+
+                                                        }
+
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+
+                                                        <button class="btn btn-primary btn-icon-primary btn-icon-block btn-icon-blockleft btn-buttom  voffset2 view-details-btn">
+                                                            <i class="ion ion-checkmark"></i>
+                                                            <span>View Details</span>
+                                                        </button>
+
+                                                    </div>
+
+                                                </a>
+                                            </div>
+                                                        i++;
+                                        }
+
+
+                                    </li>
+                                </ul>
+                            </div>
+                            <a id="get_it" class="btn btn-blue resviewbtn">View More</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-md-12 questions-cont text-center">
+                                <div class="ful-hi-wi">
+ <div class="no-content-notification voffset3">You have not asked any doubt yet.</div>
+                                    
+                                    @{
+                        DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                        var list = DbContext.tbl_DC_Sample_Image.Where(x => x.Image_Type == "Doubt" && x.Is_Active == true && x.Is_Deleted == false).FirstOrDefault();
+                        ViewBag.list = list.Image_URL;
+                                <img src="~/Images/SampleImage/@ViewBag.list" style="width:100%" class="img-responsive voffset3" />
+                                    }
+
+                                    <div class="foraddbtn">
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Question Panel Ends -->
+    </div>
+</div>
+<!-- Profile Image Modal -->
+<div class="modal fade" id="defaultmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                <h4 class="modal-title" id="myModalLabel">Doubt Image (<label id="msg"></label>)</h4>
+            </div>
+            <div class="modal-body">
+                <div class="demo-wrap upload-demo">
+                    <div class="ask_dbt">
+                        <div class="grid">
+                            <div hidden>
+                                <div class="actions">
+                                    <input type="file" id="upload" style="visibility: hidden;" value="Choose a file" accept="image/*" />
+                                    @*<button class="upload-result" type="button">Result</button>*@
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="upload-msg">
+                                    Upload a file to start cropping
+                                </div>
+                                <div class="upload-demo-wrap" style="width:100%;height:100%">
+                                    <div id="upload-demo">
+                                        <img src="" id="img">
+                                    </div>
+                                    <input type="hidden" name="imgX1" id="imgX1" />
+                                    <input type="hidden" name="imgY1" id="imgY1" />
+                                    <input type="hidden" name="imgWidth" id="imgWidth" />
+                                    <input type="hidden" name="imgHeight" id="imgHeight" />
+                                    <input type="hidden" name="imgCropped" id="imgCropped" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              
+               @* <input type="text" name="id" value="10">
+    <p>Scroll mouse to zoom-in and zoom-out.</p>*@
+                <input type="button" id="btnCrop" class="btn btn-primary upload-result" value="Crop" style="display: none" />
+
+                @*<button type="button" data-dismiss="modal" id="btnCrop" class="btn btn-primary upload-result">Crop Image </button>*@
+                <button type="button"  data-dismiss="modal" id="hl-crop-image" class="btn btn-primary upload-result1">No Crop</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+
+    @*<script src="~/Student_assets/assets/js/range-slider/ion.rangeSlider.js"></script>
+    <script src="~/Student_assets/assets/js/range-slider/custom.js"></script>*@
+    <script src="~/Student_assets/assets/js/tooltip-custom.js"></script>
+    @*<script src="~/js/croppie.min.js"></script>
+    <script src="~/js/exif.js"></script>*@
+<script src="~/Student_assets/crop/scripts/jquery.imgareaselect.js"></script>
+<script src="~/Student_assets/crop/scripts/jquery.imgareaselect.min.js"></script>
+<script src="~/Student_assets/crop/scripts/jquery.imgareaselect.pack.js"></script>
+<link href="~/Student_assets/crop/imgareaselect-deprecated.css" rel="stylesheet" />
+<link href="~/Student_assets/crop/imgareaselect-default.css" rel="stylesheet" />
+<link href="~/Student_assets/crop/imgareaselect-animated.css" rel="stylesheet" />
+    <script>
+
+    $(document).ready(function () {
+        $('#ddlboard').change(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Student/GetAllClassdoubt",
+                data: { brdId: $('#ddlboard').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta = "<select id='ddlclass'>";
+                    sta = sta + '<option value="">Please Select Class</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    sta = sta + '</select>';
+                    $('#ddlclass').html(sta);
+                    setTimeout(function () {
+                        $('#ddlclass').closest('.form-group').removeClass('display-loader');
+                    }, 800);
+                }
+            });
+        });
+        $('#ddlclass').change(function () {
+
+            $('#ddlsubject').closest('.form-group').addClass('display-loader');
+            $.ajax({
+                type: "POST",
+                url: "/Student/GetAllSubjectdoubt",
+                data: { ClsId: $('#ddlclass').val(), brdId: $('#ddlboard').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta1 = "<select id='ddlsubject'>";
+                    sta1 = sta1 + '<option value="">Please Select Subject</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta1 = sta1 + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    sta1 = sta1 + '</select>';
+                    $('#ddlsubject').html(sta1);
+                    setTimeout(function () {
+                        $('#ddlsubject').closest('.form-group').removeClass('display-loader');
+                    }, 800);
+                }
+            });
+        });
+        $('#ddlsubject').change(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Student/GetAllChapterdoubt",
+                data: { SubId: $('#ddlsubject').val(), ClsId: $('#ddlclass').val(), brdId: $('#ddlboard').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var fst = "<select id='ddlchapter'>";
+                    fst = fst + '<option value="">Please Select Chapter</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        fst = fst + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    fst = fst + '</select>';
+                    $('#ddlchapter').html(fst);
+                }
+            });
+
+        });
+
+        var pageSize = 5;
+        var pageIndex = 1;
+
+        $("#get_it").click(function () {
+            GetData();
+        })
+        function GetData() {
+            $(".ntspl-preloader").removeClass('hidden');
+            $.ajax({
+
+                type: 'Post',
+                url: '/Student/GetData',
+                data: { "pageindex": pageIndex, "pagesize": pageSize },
+                dataType: 'json',
+                success: function (data) {
+                    var ans_status = "";
+                    var go_thr = "";
+                    if (data != "") {
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i].Ticket_Dtls_ID == "" || data[i].Ticket_Dtls_ID == null) {
+                                var ans_status = "<span class='badge bg-danger'>Unanswered</span>";
+
+                            }
+                            else {
+                                var ans_status = "<span class='badge bg-success'>Answered</span>";
+                            }
+                            $("li#appenddata").append("<a href='/student/answerticket/" + data[i].Ticket_ID + "'>" +
+                                                "<div class='col-lg-8 col-md-8 col-sm-8 col-xs-12'>" +
+                                                    "<span class='que-number'>" + data[i].Ticket_No + "</span>" +
+                                                    "<p><span class='question-section'>Question - </span>" + data[i].Question + "</p>" +
+                                                    "<p><span class='question-section'>Subject - </span>" + data[i].Subject + "</p>" +
+                                                        "<p> <span class='question-section'>Status - </span>" + ans_status + "</p></div>" +
+
+                                                "<div class='col-lg-4 col-md-4 col-sm-4 col-xs-12'>" +
+                                                    "<button class='btn btn-primary btn-icon-primary btn-icon-block btn-icon-blockleft btn-buttom  voffset2 view-details-btn'>" +
+                                                        "<i class='ion ion-checkmark'></i>" +
+                                                        "<span>View Details</span>" +
+                                                    "</button>" +
+                                                "</div>" +
+                                            "</a>");
+                        }
+                        pageIndex++;
+                    }
+                    else {
+                        $("#get_it").hide();
+                    }
+
+
+                    $(".ntspl-preloader").addClass('hidden');
+
+                },
+                beforeSend: function () {
+                    $("#progress").show();
+                },
+                complete: function () {
+                    $("#progress").hide();
+                },
+
+            });
+        }
+
+        $("#btn").click(function () {
+
+            if ($("#validation-form").valid()) {
+
+                var data = new FormData();
+                data.append("MyImages", $("#hidans_img").val());
+                data.append("Subject_ID", $("#ddlsubject").val())
+                data.append("Chapter_ID", $("#ddlchapter").val())
+                data.append("Question_Detail", $("#Qsn").val())
+                data.append("_board_id", $("#ddlboard").val())
+                data.append("_class_id", $("#ddlclass").val())
+                $(".loader-ajax-container").css("display", "block");
+                $.ajax({
+                    url: "/Student/Askdoubt",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (response) {
+                        if (response == "3") {
+                            $.noty.closeAll();
+                            generate('top', 'warning', "Please enter required details.");
+
+                        }
+                        else if (response == "2") {
+                            $.noty.closeAll();
+                            generate('top', 'error', "Something went wrong.");
+
+                        }
+                            //else if (response == "1") {
+                            //    $.noty.closeAll();
+                            //    location.href("student/AnswerTicket?id"++"")
+                            //    $('#validation-form')[0].reset();
+
+                            //    $('#PrevImagesqs19').attr('src', "/img/not_avail.jpg");
+
+
+                            //}
+                        else if (response == "4") {
+                            location.href = "/student/logout";
+
+
+                        }
+                        else {
+                            $.noty.closeAll();
+                            generate('top', 'success', "Question saved successfully.");
+                            location.href = "/student/answerticket?id=" + response + "";
+
+                        }
+                        $(".loader-ajax-container").css("display", "none");
+                    },
+
+                });
+            }
+
+        });
+        //************************************** JavaScript for cropping of image *****************************************
+
+
+        $("#hl-crop-image").click(function () {
+            $('#defaultmodal').modal('hide');
+            $('.imgareaselect-outer').hide();
+            $('.imgareaselect-border4').hide();
+            $('.imgareaselect-border3').hide();
+            $('.imgareaselect-border2').hide();
+            $('.imgareaselect-border1').hide();
+            $('.imgareaselect-handle').hide();
+        })
+
+
+        $(".uploadFileImg").on('click', function () {
+            $("#upload").trigger('click');
+            setTimeout(function () {
+                $('#defaultmodal').modal('show');
+            }, 1200);
+        });
+        $('#upload').on('change', function () {
+            debugger;
+            readFile(this);
+
+        });
+      
+    });
+    function output(node) {
+        var existing = $('#result .croppie-result');
+        if (existing.length > 0) {
+            existing[0].parentNode.replaceChild(node, existing[0]);
+        }
+        else {
+            $('#result')[0].appendChild(node);
+        }
+    }
+
+    var $uploadCrop;
+    var widths;
+    var heights;
+    var actualh = 800;
+    var actualw = 600;
+    function readFile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('.upload-demo').addClass('ready');
+
+                $('#img').attr('src', e.target.result);
+                $('#PrevImagesqs19').attr('src', e.target.result);
+                
+                getImageSize1($('#img'), function (width, height) {
+                    widths = width;
+                    heights = height;
+                    if (actualh < heights && actualw < widths) {
+                        alert("Image should not exceed the size of 800 x 600");
+                        $('#btnCrop').hide();
+                        location.reload();
+                    }
+
+
+
+                });
+                function getImageSize1(img, callback) {
+                    var $img = $(img);
+
+                    var wait = setInterval(function () {
+                        var w = $img[0].naturalWidth,
+                            h = $img[0].naturalHeight;
+                        if (w && h) {
+                            clearInterval(wait);
+                            callback.apply(this, [w, h]);
+                        }
+                    }, 0);
+
+                   
+                }
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+        else {
+            alert("Please select image less than 2 Mb.");
+        }
+    }
+   
+    $("#img").imgAreaSelect({
+        aspectRatio: '5:2', handles: true, onSelectEnd: function (img, selection) {
+            $('#imgX1').val(selection.x1);
+            $('#imgY1').val(selection.y1);
+            $('#imgWidth').val(selection.width);
+            $('#imgHeight').val(selection.height);
+            $('#btnCrop').show();
+        }
+    });
+
+
+    $('#defaultmodal').modal({ backdrop: 'static', keyboard: false, show: false })
+
+    $('.close').click(function () {
+
+        $('#defaultmodal').modal('hide');
+        $('.imgareaselect-outer').hide();
+        $('.imgareaselect-border4').hide();
+        $('.imgareaselect-border3').hide();
+        $('.imgareaselect-border2').hide();
+        $('.imgareaselect-border1').hide();
+        $('.imgareaselect-handle').hide();
+		$('.imgareaselect-selection').parent().removeAttr("style");
+        $('#PrevImagesqs19').attr('src', "/Images/-text.png");
+
+    
+    });
+
+    $('#btnCrop').click(function () {
+        debugger;
+        $("#canvas").show();
+        var x1 = $('#imgX1').val();
+        var y1 = $('#imgY1').val();
+        var width = $('#imgWidth').val();
+        var height = $('#imgHeight').val();
+        var canvas = $("#canvas")[0];
+        var context = canvas.getContext('2d');
+        var img = new Image();
+        img.onload = function () {
+            canvas.height = height;
+            canvas.width = width;
+            var s = img;
+            context.drawImage(img, x1, y1, width, height, 0, 0, width, height);
+            $('#hidans_img').val(canvas.toDataURL());
+            // $('[id*=btnUpload]').show();
+        };
+        img.src = $('#img').attr("src");
+        //$('#hidans_img').val($('#imgCropped').val());
+        $('#defaultmodal').modal('hide');
+        $('.imgareaselect-outer').hide();
+        $('.imgareaselect-border4').hide();
+        $('.imgareaselect-border3').hide();
+        $('.imgareaselect-border2').hide();
+        $('.imgareaselect-border1').hide();
+        $('.imgareaselect-handle').hide();
+        $("#PrevImagesqs19").hide();
+        $(".imgareaselect-selection").hide();
+		$('.imgareaselect-selection').parent().removeAttr("style");
+        //$('#img').attr("src","");
+        //$('#PrevImagesqs19').attr('src', $('#img').attr("src"));
+    });
+
+    //$uploadCrop = $('#upload-demo').croppie({
+    //    viewport: {
+    //        width: 500,
+    //        height: 150,
+    //        type: 'square'
+    //    },
+    //    enableExif: true
+    //});
+
+    //$('.upload-result').on('click', function (ev) {
+    //    $uploadCrop.croppie('result', {
+    //        type: 'canvas',
+    //        size: 'viewport'
+    //    }).then(function (resp) {
+    //        $('#PrevImagesqs19').attr("src", resp);
+    //        $('#hidans_img').val(resp);
+    //    });
+    //});
+
+    $('.upload-result1').on('click', function (ev) {
+        debugger;
+
+        var resp = $('#PrevImagesqs19').attr('src')
+        $('#hidans_img').val(resp);
+        $("#canvas").hide();
+        $("#PrevImagesqs19").show();
+    });
+
+
+    //************************************** JavaScript for ajax file upload END **************************************})
+    
+</script>
+    <script src="~/js/DC_Imagecrop.js"></script>
+}

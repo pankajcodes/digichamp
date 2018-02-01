@@ -1,0 +1,94 @@
+﻿@model IEnumerable<DigiChamps.Models.View_DC_Exam_Setup>
+@{
+    ViewBag.Title = "Exam Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content-wrap">
+    <div class="page-title">
+        <div>
+            <h1>
+                <i class="fa fa-pencil-square-o"></i> Exam
+                <div class="btn-toolbar pull-right">
+                    <div class="box-tool">
+                        <a class="btn btn-inverse show-tooltip" href="/Admin/QuestionBank" data-toggle="tooltip" data-placement="top" title="Question bank"><span>Q</span></a>
+                    </div>
+                </div>
+            </h1>
+
+        </div>
+    </div>
+    <div id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="~/Admin/AdminDashboard">Home</a>
+                <span class="divider"><i class="fa fa-angle-right"></i></span>
+            </li>
+            @if (ViewBag.Breadcrumb != null)
+            {
+                <li class="active">@ViewBag.Breadcrumb</li>
+            }
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-title">
+
+                    <h3><i class="fa fa-pencil-square-o"></i>Exam Setup</h3>
+                    <div class="box-tool box-tooll">
+                        <a href="/Admin/examsetup" class="btn btn-primary"><i class="fa fa-plus"></i><span>Add New</span> </a>
+                    </div>
+                </div>
+                <div class="box-content">
+
+                    <div class="table-responsive voffset3">
+                        <table class="table table-advance" id="table1">
+                            <thead>
+                                <tr>
+                                    <th>Sl No.</th>
+                                    <th>Exam</th>
+                                    <th>Subject</th>
+                                    <th>Chapter</th>
+                                    <th>Questions</th>
+                                    <th>Time</th>
+                                    <th style="width: 20%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{   int i = 1;}
+                                @if (Model != null)
+                                                    {
+                                                        foreach (var examdetails in Model)
+                                                        {
+                                                    <tr>
+                                                        <td>@Html.Raw(i++)</td>
+                                                        <td>@examdetails.Exam_Name</td>
+                                                        <td>@examdetails.Subject</td>
+                                                        <td>@examdetails.Chapter</td>
+                                                        <td>@examdetails.Question_nos</td>
+                                                        <td>@examdetails.Time</td>
+                                                        <td>
+
+                                                            @Html.ActionLink(" ", "examsetup", "Admin", new { id = @examdetails.Exam_ID }, new { @class = "btn btn-sm btn-primary show-tooltip fa fa-edit", @title = "Edit" })
+
+
+                                                            @Html.ActionLink(" ", "deletexam", "Admin", new { id = @examdetails.Exam_ID }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete?')", @data_original_title = "Delete", @title = "Delete" })
+
+                                                        </td>
+                                                    </tr>
+                                                        }
+                                                    }
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

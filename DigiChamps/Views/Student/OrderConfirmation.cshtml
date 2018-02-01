@@ -1,0 +1,287 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" /> <!--320-->
+    <title>Order Confirmation | DIGICHAMPS | Learners Beyond Classrooms</title>
+    <link href="~/Student_assets/images/fav-icon.jpg" rel="shortcut icon" />
+    <!-- Bootstrap CSS -->
+    <link rel='stylesheet' href='~/Student_assets/assets/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/material.css'>
+    <link href="~/Student_assets/assets/css/video-js.min.css" rel="stylesheet" />
+    <link rel='stylesheet' href='~/Student_assets/assets/css/animated-masonry-gallery.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/rotated-gallery.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/sweet-alerts/sweetalert.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/jtree.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/range-slider/ion.rangeSlider.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/range-slider/ion.rangeSlider.skinFlat.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/owl.carousel.min.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/style.css'>
+    <script src='~/Student_assets/assets/js/jquery.js'></script>
+    <script src='~/Student_assets/assets/js/app.js'></script>
+    <script>
+        jQuery(window).load(function () {
+            $('.ntspl-preloader').addClass('hidden');
+        });
+    </script>
+    <link rel='stylesheet' href='assets/css/range-slider/ion.rangeSlider.css'>
+    <link rel='stylesheet' href='assets/css/range-slider/ion.rangeSlider.skinFlat.css'>
+</head>
+<body class="checkout-page">
+    <div class="ntspl-preloader text-center">
+        <!-- <div class="progress">
+            <div class="indeterminate"></div>
+        </div> -->
+        @*<div class="loader">Loading...</div>*@
+        <div class="loader-container">
+            <span>Loading</span>
+            <div id="circleG">
+                <div id="circleG_1" class="circleG"></div>
+                <div id="circleG_2" class="circleG"></div>
+                <div id="circleG_3" class="circleG"></div>
+            </div>
+            <div class="clearfix"></div>
+            <p>FUN + EDUCATION</p>
+        </div>	
+    </div>
+    <div class="wrapper ">
+        <!-- left-bar -->
+        <!-- left-bar ends -->
+        <div class="content full-page full-res" id="content">
+            <div class="overlay"></div>
+            <!-- /top-bar -->
+            <div class="top-bar">
+                <nav class="navbar navbar-default top-bar">
+                    <div class="full-logo">
+                        <a href="/Student/StudentDashboard"><img class="logo" src="~/Student_assets/images/Digichamps-small.jpg" alt="logo"></a>
+                    </div>
+                    <div class="menu-bar-mobile" id="open-left">
+                        <i class="ti-menu"></i>
+                    </div>
+                    <a href="#" class="menu-bar  pull-left"><i class="ti-menu"></i></a>
+
+                    <ul class="nav navbar-nav navbar-right top-elements">
+
+                        <li class="ntspl-dropdown dropdown">
+                            <!-- todo Change design here, its bit of odd or not upto usable -->
+
+                            <a href="#" class="dropdown-toggle avatar_width" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <span class="avatar-holder">
+                                    @{
+                                        string name = string.Empty;
+                                        string img = string.Empty;
+                                        DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                                        if (Session["USER_CODE"] != null)
+                                        {
+                                            int sid = Convert.ToInt32(Convert.ToString(Session["USER_CODE"]).Substring(1));
+                                            var student = DbContext.tbl_DC_Registration.Where(x => x.Regd_ID == sid).FirstOrDefault();
+                                            name = Convert.ToString(student.Customer_Name);
+                                            img = Convert.ToString(student.Image);
+                                        }
+                                    }
+                                    @if (img == null || img == "")
+                                    {
+                                        <text><img src="~/Student_assets/assets/images/avatar/three.png" alt="" /></text>
+                                    }
+                                    else
+                                    {
+                                        <text><img src="~/images/Profile/@img" alt=""></text>
+                                    }
+                                </span>
+                                <span class="avatar_info">
+                                    @if (name != "")
+                                    {
+                                        <text>@name</text>
+                                    }
+                                </span><span class="drop-icon"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-ntspl-menu  animated fadeInUp wow avatar_drop neat_drop dropdown-right" data-wow-duration="1500ms" role="menu">
+
+                                <li>
+                                    <a href="/student/addtocart"> <i class="ion-android-cart"></i>My Cart</a>
+                                </li>
+                                <li>
+                                    <a href="/student/editprofile"> <i class="ion-android-create"></i>Edit profile</a>
+                                </li>
+                                <li>
+                                    <a href="/student/logout" class="logout_button"><i class="ion-power"></i>Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </nav>
+
+            </div>                <!-- /top-bar ends -->
+            <!-- Page Header -->
+            <div class="page_header page_header_tab">
+                <div class="row">
+                    <div class="col-md-8 pull-left div-buttom-margin">
+
+                        <span class="main-text">Order Confirmation</span>
+                    </div>
+                    <div class="col-md-2 pull-right test-clock">
+                        <div id="clockbox"></div>
+                        <div id="clockboxd"></div>
+                    </div>
+                    <div class="col-md-12">
+                        <h1 class="head-text">Order Confirmation</h1>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <!-- /pageheader -->
+
+            <div class="main-content">
+                @if (Session["USER_CODE"] == null)
+                {
+                    Response.Redirect("/Student/Logout");
+                }
+                else
+                {
+                    <div class="panel panel-ntspl">
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+								@if (TempData["errormessgae"]  != null)
+                                        {
+   <blockquote>										
+										<p class="sucess-message">@TempData["errormessgae"] </p>
+														
+										 </blockquote>
+										}else{
+                                    <blockquote>
+                                       
+ 
+										 <p class="sucess-message">Thank you for your order!</p>
+                                        <p>Your order has been successfully placed with order number @TempData["ordernumber"]. Now you can access your subscribed packages.</p>
+                                   </blockquote>
+								    }
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <a href="/student/orderdetails" class="btn btn-primary btn-icon-primary btn-icon-block btn-icon-blockleft voffset3 btn-buttom view-details-btn">
+                                        <i class="ion ion-bag"></i>
+                                        <span>View Order Details</span>
+                                    </a>
+                                </div>
+                                <div>@TempData["message"]</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8 questions-cont nopad-right">
+                            <!-- Question Panel Starts -->
+                            <div class="panel panel-ntspl">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        Order Details
+                                    </h3>
+                                </div>
+                                @if (ViewBag.cartitems != null)
+                                {
+                                    foreach (var item in ViewBag.cartitems)
+                                    {
+                                        <div class="panel-body">
+                                            <div class="panel panel-ntspl inner-panel">
+                                                <div class="panel-heading header-style">
+                                                    <h3 class="panel-title">
+                                                        @item.Package_Name
+                                                    </h3>
+                                                </div>
+                                                <div class="panel-body test-panel-body pannel-padding">
+                                                    <table class="table table-hover">
+                                                        <tbody>
+                                                            @*<tr>
+                                                                <th scope="row" class="td-width-one">Subjects</th>
+                                                                <td class="right-td td-width-two">Science and Mathematics</td>
+                                                            </tr>*@
+                                                            <tr>
+                                                                <th scope="row" class="td-width-one">Package Name</th>
+                                                                <td class="right-td td-width-two">@item.Package_Name</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Duration</td>
+                                                                <td class="right-td">@item.Subscripttion_Period Days</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Price</td>
+                                                                <td class="price-color small-bolt">Rs. @string.Format("{0:0.00}", item.Price)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <!-- Question Panel Ends -->
+
+                        <div class="col-md-4">
+                            <div class="panel panel-ntspl pannel-border">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        Order Info
+                                    </h3>
+                                </div>
+									@if (TempData["errormessgae"]  != null){}else{
+                                <div class="panel-body pannel-padding">
+							
+                                    <div class="cart-summery">
+                                        <div class="total-item">
+                                            <p>Order Number - <span class="price-color">@TempData["ordernumber"]</span></p>
+                                        </div>
+                                        <div class="total-price">
+                                            <p>Purchased Date - <span class="price-color">@TempData["Purcahse_date"]</span></p>
+                                        </div>
+                                    </div>
+                                    <div class="grand-total1 g-margin">
+									 
+                                        <p>Total Paid - <span>Rs. @TempData["payblamt"]</span></p>
+										
+                                    </div>
+									
+                                    <br />
+                                </div>
+								}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row -->
+                }
+                <div class="row">
+                    <div class="col-md-12 text-center footer">
+                        <p class="designed-by">Copyrights 2017 Digichamps. All Rights Reserved. |  Designed By <a href="https://www.ntsplhosting.com/">NTSPL</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- wrapper -->
+
+    <script src='~/Student_assets/assets/js/jquery-ui-1.10.3.custom.min.js'></script>
+    <script src='~/Student_assets/assets/js/bootstrap.min.js'></script>
+    <script src='~/Student_assets/assets/js/jquery.nicescroll.min.js'></script>
+    <script src='~/Student_assets/assets/js/wow.min.js'></script>
+    <script src='~/Student_assets/assets/js/jquery.loadmask.min.js'></script>
+    <script src='~/Student_assets/assets/js/jquery.accordion.js'></script>
+    <script src='~/Student_assets/assets/js/materialize.js'></script>
+    <script src='~/Student_assets/assets/js/build/d3.min.js'></script>
+    @*<script src='~/Student_assets/assets/js/nvd3/nv.d3.js'></script>*@
+    <script src='~/Student_assets/assets/js/sparkline.js'></script>
+    <script src='~/Student_assets/assets/js/bic_calendar.js'></script>
+    <script src='~/Student_assets/assets/js/widgets.js'></script>
+    <script src='~/Student_assets/assets/js/core.js'></script>
+    <script src="~/Student_assets/assets/js/jquery.countTo.js"></script>
+    <script src='~/Student_assets/assets/js/range-slider/ion.rangeSlider.js'></script>
+    <script src='~/Student_assets/assets/js/range-slider/custom.js'></script>
+    <script src='~/Student_assets/assets/js/tooltip-custom.js'></script>
+    <script src='~/Student_assets/assets/js/owl.carousel.min.js'></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.Title = "Assign Course";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("TeacherAssignCourse", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", id = "validation-form" }))
+{
+    @Html.AntiForgeryToken();
+    <div class="page-content-wrap">
+
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active">@ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> Assign Course</h3>
+
+                    </div>
+                    <div class="box-content">
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Teacher's Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                             
+                                @if (ViewBag.teachername == null)
+                                {
+                                <select data-placeholder="Select Teacher's Name" name="Teacher_ID" id="Teacher_ID" multiple="multiple" class="form-control chosen" data-rule-required="true" data-msg-required="Please select teacher">
+                                        @if (ViewBag.teacherdata != null)
+                                        {
+                                            foreach (var b in ViewBag.teacherdata)
+                                            {
+                                                <option value="@b.Teach_ID">
+                                                    @b.Teacher_Name
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+                                    }
+                                    else
+                                    {
+                                        int id = Convert.ToInt32(ViewBag.teachername);
+                                        DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                                        var teacher_nm = DbContext.tbl_DC_Teacher.Where(x => x.Teach_ID == id).Select(x => x.Teacher_Name).FirstOrDefault();
+                                        <input type="hidden" name="Teacher_ID" value="@id">
+                                        <input type="text" readonly="readonly" value="@teacher_nm" class="form-control" />
+                                    }
+</div>
+
+                        </div>
+                        <br /><br />
+
+                        <h3><u>Assign Course Details</u></h3>
+                                <div class="btn-toolbar pull-right">
+                                    
+                                    <div class="btn-group">
+                                        @if (TempData["EditAssign"] != null)
+                                        {
+                                            <span class="pull-right">@TempData["EditAssign"]</span>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-advance" id="table1">
+                                        <thead>
+                                            <tr>
+                                                <th>Sl No.</th>
+                                                <th>Board</th>
+                                                <th>Class</th>
+                                                <th>Subject</th>
+                                                <th>Select</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (ViewBag.Assigned_Details != null)
+                                                    {
+                                                        int rn = 0;
+                                                        foreach (var item in ViewBag.Assigned_Details)
+                                                        {
+                                                            <tr>
+                                                                <td>@(rn += 1)</td>
+                                                                <td>@item.Board_Name</td>
+                                                                <td>@item.Class_Name</td>
+                                                                <td>@item.Subject</td>
+                                                                <td>
+                                                                    @if (ViewBag.subid != null)
+                                                                    {
+                                                                        if (@item.Subject_Id == ViewBag.subid)
+                                                                        {
+                                                                            <input type="checkbox" id="chk_course" name="chk_course" checked="checked" value="@item.Subject_Id" />
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <input type="checkbox" id="chk_course" name="chk_course" value="@item.Subject_Id" />
+                                                                        }
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input type="checkbox" id="chk_course" name="chk_course" value="@item.Subject_Id" />
+                                                                    }
+
+                                                                </td>
+
+                                                            </tr>
+                                                        }
+                                                    }
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                        <div class="form-group last box-tooll ">
+                            <div class="col-sm-9 col-lg-7">
+                                <a href="@Url.Action("ViewAssignedCourse", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i><span>  Back</span>  </a>
+                                <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span>Submit</span> </button>
+                            </div>
+                        </div>
+
+                            </div>
+                        </div>
+                    </div>
+        </div>
+
+    </div>
+
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+        mySelect = $('#Teacher_ID');
+        mySelect.val([@ViewBag.teachername]);
+        mySelect.trigger('chosen:updated');
+        $('#Teacher_ID').attr('readonly', 'readonly');
+    });
+    </script>
+ }

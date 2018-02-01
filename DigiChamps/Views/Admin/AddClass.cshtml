@@ -1,0 +1,73 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsClassModel
+
+@{
+    ViewBag.Title = "Add Class";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using (Html.BeginForm("AddClass", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    <div class="page-content-wrap">
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active"> @ViewBag.pagetitle @ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="box">
+                    <div class="box-title">
+                        @if (ViewBag.pagetitle != null)
+                        {
+                            <h3><i class="fa fa-file"></i> @ViewBag.pagetitle Class</h3>
+                        }
+                    </div>
+                    <div class="box-content">
+                        <div class="form-group voffset3">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Board<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.brd_name == null)
+                                {
+                                    @(Html.DropDownListFor(x => x.Board_Id, ViewBag.Board_Id as SelectList, "Please Select Board Name", new { @class = "form-control ", data_rule_required = "true", data_msg_required = "Please select board" }))
+                                }
+                                else
+                                {
+                                    @(Html.DropDownListFor(x => x.Board_Id, ViewBag.brd_name as SelectList, "Please Select Board Name", new { @class = "form-control ", data_rule_required = "true", data_msg_required = "Please select board", disabled = "true" }))
+                                    @Html.HiddenFor(x => x.Board_Id)
+                                }
+                            </div>
+                        </div>
+
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Class<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <input type="hidden" id="class_id" name="class_id" value="@ViewBag.Class_Id" />
+                                    <input type="text" placeholder="Please Enter Class Name" id="Class_Name" name="Class_Name" class="form-control" value="@ViewBag.Class_Name" data-msg-required="Please enter class" data-rule-required="true" data-rule-minlength="3" />
+                                    <span class="help-inline">Class format should be uniform. ie: Class - X</span>
+                                </div>
+                            </div>
+                        <div class="validation-summary-valid" data-valmsg-summary="true">
+                            <ul><li style="display:none"></li></ul>
+                        </div>
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2 ">
+                                <a href="@Url.Action("ClassMaster", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i><span>Back</span></a>
+                                <button id="btnSearch" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span>Submit</span></button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}

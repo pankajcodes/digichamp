@@ -1,0 +1,1038 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsChapterModel
+
+@{
+    ViewBag.Title = "Add Package";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using (Html.BeginForm("AddNewPackage", "Admin", FormMethod.Post, new { @class = "form-horizontal", @id = "validation-form" }))
+{
+    <div class="page-content-wrap">
+
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active">@ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> Create Package</h3>
+                        <input id="pkg_id" type="hidden" name="hpid" value="@ViewBag.hbid" />
+                        <input type="hidden" name="pkid" value="@ViewBag.pkdtlid">
+                    </div>
+                    <div class="box-content">
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Package Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.Package_Name != null)
+                                {
+                                    <input type="text" name="package_name" value="@ViewBag.Package_Name" class="form-control" data-rule-required="true" data-msg-required="Please enter package name">
+                                }
+                                else
+                                {
+                                    <input type="text" name="package_name" value="@TempData["Package_Name"]" class="form-control" data-rule-required="true" data-msg-required="Please enter package name">
+                                }
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Upload Image<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <div class="fileupload fileupload-new">
+                                    <input type="hidden">
+                                    <div class="input-group">
+                                        <div class="form-control uneditable-input">
+                                            @if (ViewBag.profimage != null)
+                                            {
+                                            <i class="fa fa-file fileupload-exists"></i>
+                                            <span class="fileupload-preview">@ViewBag.profimage</span>
+                                            }
+                                            else{
+                                            <i class="fa fa-file fileupload-exists"></i>
+                                            <span class="fileupload-preview"></span>
+                                            }
+                                        </div>
+                                        <div class="input-group-btn">
+                                            <a class="btn bun-default btn-file">
+                                                <span class="fileupload-new trigger_upload">Select file</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Crop image in modal*@
+                        @*<div id="myModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <div class="demo-wrap upload-demo">
+                                            <div class="container">
+                                                <div class="grid">
+                                                    <div class="col-md-2" hidden>
+                                                        <div class="actions">
+                                                            <input type="file" id="upload" style="visibility: hidden;" value="Choose a file" accept="image/*" />
+
+                                                            <button class="upload-result" type="button">Result</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="upload-msg">
+                                        Upload a file to start cropping
+                                    </div>
+                                    <div class="upload-demo-wrap">
+                                        <div id="upload-demo"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="imagebase64" name="imagebase64">
+                    <button type="button" data-dismiss="modal" class="btn btn-primary upload-result">Crop Image </button>
+                </div>
+            </div>
+
+        </div>
+    </div>*@
+
+                        <div class="modal fade" id="defaultmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                                        <h4 class="modal-title" id="myModalLabel">Package Image (<label id="msg"></label>)</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="demo-wrap upload-demo">
+                                            <div class="ask_dbt">
+                                                <div class="grid">
+                                                    <div hidden>
+                                                        <div class="actions">
+                                                            <input type="file" id="upload" style="visibility: hidden;" value="Choose a file" accept="image/*" />
+                                                            @*<button class="upload-result" type="button">Result</button>*@
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="upload-msg">
+                                                            Upload a file to start cropping
+                                                        </div>
+                                                        <div class="upload-demo-wrap" style="width:100%;height:100%">
+                                                            <div id="upload-demo">
+                                                                <img src="" id="img">
+                                                            </div>
+                                                            <input type="hidden" name="imgX1" id="imgX1" />
+                                                            <input type="hidden" name="imgY1" id="imgY1" />
+                                                            <input type="hidden" name="imgWidth" id="imgWidth" />
+                                                            <input type="hidden" name="imgHeight" id="imgHeight" />
+                                                            <input type="hidden" name="imagebase64" id="imgCropped" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        @* <input type="text" name="id" value="10">
+                        <p>Scroll mouse to zoom-in and zoom-out.</p>*@
+                                        <input type="button" id="btnCrop" class="btn btn-primary upload-result" value="Crop" style="display: none" />
+
+                                        @*<button type="button" data-dismiss="modal" id="btnCrop" class="btn btn-primary upload-result">Crop Image </button>*@
+                                        @*<button type="button" data-dismiss="modal" id="hl-crop-image" class="btn btn-primary upload-result1">No Crop</button>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div id="dv"class="form-group pkg_img" hidden>
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Package Image<span class="asterisk"></span></label>
+                            @if (ViewBag.profimage != null)
+                            {
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <p><img id="cropped_image" src="~/Images/@ViewBag.profimage" width="250" height="190" /></p>
+                                    <canvas id="canvas"  hidden></canvas>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <p><img id="cropped_image"  style="display:none;" width="250" height="190" /></p>
+                                    <canvas id="canvas"  hidden></canvas>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Description<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.Package_Desc != null)
+                                {
+                                    <textarea placeholder="Description" name="Package_Desc" class="form-control" rows="5" data-rule-required="true" data-msg-required="Please enter package description">@ViewBag.Package_Desc</textarea>
+                                }
+                                else
+                                {
+                                    <textarea placeholder="Description" name="Package_Desc" class="form-control" rows="5" data-rule-required="true" data-msg-required="Please enter package description">@TempData["Package_Desc"]</textarea>
+                                }
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Subc.Period(In Days)<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.sub_period != null)
+                                {
+                                    <input type="number" value="@ViewBag.sub_period" max="100000" data-rule-required="true" id="sub_period" name="Subscripttion_Period" class="form-control" data-rule-digits="true" />
+                                }
+                                else
+                                {
+                                    <input type="number" value="@TempData["subscripttion_period"]" max="100000" id="sub_period" name="Subscripttion_Period" class="form-control" data-rule-required="true" data-rule-digits="true" data-msg-required="The subc.Period must be a number." />
+                                }
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Price (<i class="fa fa-inr"></i>)<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.price != null)
+                                {
+                                    <input type="number" value="@ViewBag.price" min="10" max="100000000" id="price" name="price" class="form-control" data-rule-required="true" data-msg-required="Please enter package price" />
+                                }
+                                else
+                                {
+                                    <input type="number" value="@TempData["Price"]" min="10" max="100000000" id="price" name="price" class="form-control" data-rule-required="true" data-msg-required="Please enter package price" />
+                                }
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">
+                                Board Name<span class="asterisk">*</span>
+                            </label>
+                            <div class="col-sm-9 col-lg-7  controls">
+                                @if (ViewBag.Boardid != null)
+                                {
+                                    <select id='ddlboard' name="Board_Id" class="form-control">
+                                        <option value="">Please Select Board Name</option>
+                                        @foreach (var v in ViewBag.Boarddetails)
+                                        {
+                                            if (ViewBag.Boardid == v.Board_Id)
+                                            {
+                                                <option value="@v.Board_Id" selected="selected">@v.Board_Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@v.Board_Id">@v.Board_Name</option>
+                                            }
+                                        }
+                                    </select>
+                                }
+                                else
+                                {
+                                    @(Html.DropDownListFor(x => x.Board_Id, ViewBag.Board_Id as SelectList, "Please Select Board Name", new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter board", @id = "ddlboard" }))
+                                }
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Class Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @(Html.DropDownListFor(x => x.Class_Id, new List<SelectListItem>(), "Please Select Class", new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter class", @id = "ddlclass" }))
+                            </div>
+                        </div>
+
+                        <div class="form-group sub_toggle">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Subject<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @(Html.DropDownListFor(x => x.Subject_Id, new List<SelectListItem>(), "Please Select Subject", new { @class = "form-control", @id = "ddlchapter" }))
+                            </div>
+                        </div>
+                        <div class="form-group ch_limit">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Chapter Limit<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+
+                                <input type="number" name="chapter_limit" id="chapter_limit" max="99" class="form-control">
+
+                                <span style="color:red" id="span6"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group" id="chapid" style="display:none">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Chapter<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <div id="dvCheckBoxListControl" class="table table-advance">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label"></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <input id="btnadd" type="button" value="Add" onclick="" style="display:none" name="submit" class="btn btn-primary" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">package details<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls" id="dvtable">
+                                <span style="color:red" id="span7"></span>
+                                
+                                <table class="table table-advance" style="display:none" id="ans_tbl">
+                                    <thead>
+                                        <tr>
+                                            <th>Subject</th>
+                                            <th>Chapter</th>
+                                            <th>Chapter limit</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ans_body">
+                                        @if (ViewBag.tabledtls != null)
+                                        {
+                                            foreach (var item in ViewBag.tabledtls)
+                                            {
+                                                <tr>
+                                                    <td>@item.Subject</td>
+                                                    <td>@item.Chapter</td>
+                                                    <td>@item.Chapterlimit</td>
+                                                    <td><button id="@item.Chapter_Id" type="button" class='btn btn-sm btn-danger show-tooltip fa fa-trash-o btndelete'></button>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr></tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Is Offline<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls" id="dvtable">
+                                <span style="color:red" id="span7"></span>
+                                @if (ViewBag.isoffline != false)
+                                {
+                                    <input type="checkbox" name="isoffline" value="@ViewBag.isoffline" class="Isoffline" checked />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name="isoffline" value="@ViewBag.isoffline" class="Isoffline" />
+                                }
+                                
+                            </div>
+                        </div>
+                        @if (ViewBag.isoffline != false)
+                        {
+                            <div id="dvIsOffline" >
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Package Type<span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls" id="dvtable">
+                                        <span style="color:red" id="span7"></span>
+                                        <select name="packagetype" class="form-control" val="@ViewBag.Packagetype">
+                                            <option value="">
+                                                Select
+                                            </option>
+                                            <option value="Quarterly">
+                                                Quarterly
+                                            </option>
+                                            <option value="Halfyearly">
+                                                Halfyearly
+                                            </option>
+                                            <option value="Annually">
+                                                Annually
+                                            </option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Start Time <span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls" id="dvtable">
+                                        <span style="color:red" id="span7"></span>
+
+                                        <input type="text" class="form-control datepicker" value="@ViewBag.Package_To" name="to_dt" autocomplete="off" data-rule-required="true" data-msg-required="Please select To date" onkeypress="return false;" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">End Time <span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls" id="dvtable">
+                                        <span style="color:red" id="span7"></span>
+
+                                        <input type="text" class="form-control datepicker" value="@ViewBag.Package_From" name="from_dt" autocomplete="off" data-rule-required="true" data-msg-required="Please select To date" onkeypress="return false;" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label"> Included Price<span class="asterisk">*</span></label>
+                                    <div class="col-sm-3 col-lg-2 controls" id="dvtable">
+                                        <span style="color:red" id="span7"></span>
+                                        <input type="text" value="@ViewBag.Included_Price" id="price" name="inprice" class="form-control" data-rule-required="true" />
+
+                                    </div>
+
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Excluded Price<span class="asterisk">*</span></label>
+
+
+                                    <div class="col-sm-3 col-lg-2 controls" id="dvtable">
+                                        <span style="color:red" id="span7"></span>
+                                        <input type="text" value="@ViewBag.Excluded_Price" id="exprice" name="exprice" class="form-control" data-rule-required="true" />
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        { 
+                        <div id="dvIsOffline" hidden>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Package Type<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls" id="dvtable">
+                                    <span style="color:red" id="span7"></span>
+                                 <select name="packagetype" class="form-control" value="">
+                                     <option value="">
+                                         Select
+                                     </option>
+                                     <option value="Quarterly">
+                                         Quarterly
+                                     </option>
+                                     <option value="Halfyearly">
+                                         Halfyearly
+                                     </option>
+                                     <option value="Annually">
+                                         Annually
+                                     </option>
+                                 </select>
+
+                                </div>
+                            </div>
+                              <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Start Time <span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls" id="dvtable">
+                                    <span style="color:red" id="span7"></span>
+                                   
+                                    <input type="text" class="form-control datepicker" value="" name="to_dt" autocomplete="off" onkeypress="return false;" />
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">End Time <span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls" id="dvtable">
+                                    <span style="color:red" id="span7"></span>
+                                   
+                                      <input type="text" class="form-control datepicker" value="" name="from_dt" autocomplete="off" onkeypress="return false;" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label"> Included Price<span class="asterisk">*</span></label>
+                                <div class="col-sm-3 col-lg-2 controls" id="dvtable">
+                                    <span style="color:red" id="span7"></span>
+                                    <input type="number" value="" id="price" max="1000000" name="inprice" class="form-control" />
+
+                                </div>
+
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Excluded Price<span class="asterisk">*</span></label>
+
+
+                                <div class="col-sm-3 col-lg-2 controls" id="dvtable">
+                                    <span style="color:red" id="span7"></span>
+                                    <input type="number" value="" id="exprice" max="1000000" name="exprice" class="form-control" />
+
+                                </div>
+                            </div>
+                        </div>
+                        }
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">
+                                Tablet<span></span>
+                            </label>
+                            <div class="col-sm-9 col-lg-7  controls">
+                                @if (ViewBag.Tabletid != null)
+                                {
+                                    <select id='ddlboard' name="Board_Id" class="form-control">
+                                        <option value="">Please Select Tablet</option>
+                                        @foreach (var v in ViewBag.TabletIds)
+                                        {
+                                            if (Convert.ToInt32(ViewBag.Tabletid) ==Convert.ToInt32( v.Value))
+                                            {
+                                                <option value="@v.Value" selected="selected">@v.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@v.Value">@v.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                }
+                                else
+                                {
+                                    @(Html.DropDownListFor(x => x.Tablet_Id, ViewBag.TabletIds as SelectList, "Please Select Tablet", new { @class = "form-control",  data_msg_required = "Please enter board", @id = "ddltablet" }))
+                                }
+
+                            </div>
+                        </div>
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("PackageCreate", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i><span> Back </span></a>
+                                <button id="btnadd" type="submit" value="search" name="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i> <span>Submit</span></button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END NEW RECORD -->
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts
+        {
+    <!--crop image-->
+    @*<script src="~/js/croppie.min.js"></script>
+    <script src="~/js/exif.js"></script>*@
+
+<script src="~/Student_assets/crop/scripts/jquery.imgareaselect.js"></script>
+<script src="~/Student_assets/crop/scripts/jquery.imgareaselect.min.js"></script>
+<script src="~/Student_assets/crop/scripts/jquery.imgareaselect.pack.js"></script>
+<link href="~/Student_assets/crop/imgareaselect-deprecated.css" rel="stylesheet" />
+<link href="~/Student_assets/crop/imgareaselect-default.css" rel="stylesheet" />
+<link href="~/Student_assets/crop/imgareaselect-animated.css" rel="stylesheet" />
+<script>
+    $('#ddlboard').change(function () {
+        if ($('#ddlclass').closest('.form-group').find('.ajax-loader').length) {
+            // do nothing
+        } else {
+            $('#ddlclass').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+        }
+        $('#ddlclass').closest('.form-group').addClass('display-loader');
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetAllClass",
+            data: { brdId: $('#ddlboard').val() },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var sta = "<select id='ddlclass'>";
+                sta = sta + '<option value="">Please Select Class</option>';
+                for (var i = 0; i < data.length; i++) {
+                    sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                }
+                sta = sta + '</select>';
+                $('#ddlclass').html(sta);
+                setTimeout(function () {
+                    $('#ddlclass').closest('.form-group').removeClass('display-loader');
+                }, 800);
+            }
+        });
+    });
+    $('#ddlclass').change(function () {
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetAllSubject",
+            data: { clsid: $('#ddlclass').val() },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var sta = "";
+                sta = sta + '<option value="">Please Select Subject</option>';
+                for (var i = 0; i < data.length; i++) {
+                    sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                }
+                $("#ddlchapter").html(sta);
+                $(".sub_toggle").show(1500);
+                $("#ddlchapter").trigger('chosen:updated');
+            }
+        });
+    });
+    $(".btndelete").click(function () {
+        var delval = $(this).attr("id");
+        var packgid = $('#pkg_id').val();
+        var par = $(this).parent().parent();
+        $.ajax({
+            type: 'POST',
+            url: "/Admin/delete_chapter",
+            dataType: "json",
+            data: { id: delval, packgid: packgid },
+            success: function (data) {
+                if (data == "cvv") {
+                    par.remove();
+                    $('#errormsg').hide();
+                    $("#span7").html("Chapter deleted successfully");
+                }
+            }
+        })
+    })
+    $("#btnadd").click(function () {
+        $("#span6").show();
+        var sublimit = $('#chapter_limit').val();
+
+        if (sublimit == "") {
+            $("#span6").show();
+            $("#span6").html("Please enter chapter limit ");
+
+        }
+        else {
+            if ($('#dvCheckBoxListControl').find('tbody input[type=checkbox]').is(':checked')) {
+                $.ajax({
+                    type: 'POST',
+                    url: "/Admin/package_chapter",
+                    dataType: "json",
+                    data: $('#validation-form').serialize(),
+                    success: function (data) {
+                        debugger
+                        if (sublimit > data.length) {
+                            $("#span6").html("Chapter limit should be less than or equal to no of chapter selected.");
+                        }
+                        else {
+                            var tr;
+                            //Append each row to html table
+                            for (var i = 0; i < data.length; i++) {
+                                tr = $('<tr/>');
+                                tr.append("<td><input type='hidden' name='h_sub' value='" + data[i].Subject_Id + "'/> " + data[i].Subject + " </td>");
+                                tr.append("<td><input type='hidden' name='h_chap' value='" + data[i].Chapter_Id + "'/>" + data[i].Chapter + "</td>");
+                                tr.append("<td><input type='hidden' name='h_limit' value='" + sublimit + "'/>" + sublimit + "</td>");
+                                tr.append("<td><button' id='" + data[i].Chapter_Id + "' class='btn btn-sm btn-danger show-tooltip fa fa-trash-o BtnMinus'  /></td>");
+                                $('#ans_body').append(tr);
+                            }
+                            $("#ans_body").on("click", ".BtnMinus", deleteRow);
+                            $('#ans_tbl').show();
+
+                            $('#dvCheckBoxListControl').hide();
+                            $('#btnadd').hide();
+                            $('#bagtble').hide();
+                            $("#span6").hide();
+
+                            $('#ddlboard').css("pointer-events", "none");
+                            $('#ddlclass').css("pointer-events", "none");
+                            $('.search-choice').hide();
+                            $("#chapter_limit").hide();
+                            $("#chapter_limit").val("");
+                            $('#chapid').hide();
+
+                        }
+                    }
+                });
+            }
+            else {
+
+            }
+        }
+    })
+    function deleteRow() {
+        var delval = $(this).attr("id");
+        var packgid = $('#pkg_id').val();
+        if (packgid = " ") {
+            var par = $(this).parent().parent();
+            par.remove();
+            $("#span7").html("Chapter deleted successfully");
+        }
+        var par = $(this).parent().parent();
+        $.ajax({
+            type: 'POST',
+            url: "/Admin/delete_chapter",
+            dataType: "json",
+            data: { id: delval, packgid: packgid },
+            success: function (data) {
+                if (data == cvv) {
+                    par.remove();
+                    $("#span7").html("Chapter deleted successfully");
+                }
+            }
+        });
+    };
+
+    $('#ddlchapter').change(function () {
+        $('#dvCheckBoxListControl').show();
+        $('#dvCheckBoxListControl').empty();
+        $(".ch_limit").show(1000);
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetAllChapter_subwise",
+            data: { subid: $('#ddlchapter').val() },
+            datatype: "json",
+            traditional: true,
+            success: function CreateCheckBoxList(checkboxlistItems) {
+                var table = $('<table></table>');
+                var counter = 0;
+                $(checkboxlistItems).each(function () {
+                    table.append($('<tr></tr>').append($('<td></td>').append($('<input>').attr({
+                        type: 'checkbox', name: 'checklistitem', value: this.Value, id: 'checklistitem'
+                    })).append(
+                    $('<label>').attr({
+                        for: 'checklistitem'
+                    }).text(this.Text))));
+                });
+
+                $('#dvCheckBoxListControl').append(table);
+                $("#chapter_limit").show();
+                $('#chapid').show();
+                $('#btnadd').show();
+
+            }
+        });
+    });
+
+    @if(ViewBag.Boardid != null)
+        {
+         <text>
+    var hide = $("#pkg_id").val();
+    if (hide != null) {
+        $(".ch_limit").hide();
+        $('#ddlboard').css("pointer-events", "none");
+        $('#ddlclass').css("pointer-events", "none");
+        $("#ans_tbl").show();
+        var bod_id = '@ViewBag.Boardid';
+        var classAvailable = '@ViewBag.classid';
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetAllClass",
+            data: { brdId: bod_id },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var sta = "<select id='ddlclass'>";
+                sta = sta + '<option value="">Please Select Class</option>';
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].Value == classAvailable) {
+                        sta = sta + '<option selected="selected" value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    else {
+                        sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                }
+                sta = sta + '</select>';
+                $('#ddlclass').html(sta);
+            }
+        });
+        var subavl = '@ViewBag.subid';
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetAllSubject",
+            data: { ClsId: classAvailable },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].Value == subavl) {
+                        var fst = fst + '<option selected value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    else {
+                        var fst = fst + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                }
+                $('#ddlchapter').html(fst);
+            }
+        });
+    }
+    </text>
+        }
+
+    //************************************** JavaScript for cropping of image *****************************************
+    //$(".trigger_upload").on('click', function () {
+    //    $("#upload").trigger('click');
+    //    setTimeout(function() {
+    //        $('#myModal').modal('show');
+    //    }, 1700);
+    //});
+    //$('#upload').on('change', function () {
+    //    readFile(this);
+    //    var filename = $(this).val();
+    //    var res = filename.substr(12, 200);
+    //    $(".uneditable-input span").text(res);
+    //});
+    //function output(node) {
+    //    var existing = $('#result .croppie-result');
+    //    if (existing.length > 0) {
+    //        existing[0].parentNode.replaceChild(node, existing[0]);
+    //    }
+    //    else {
+    //        $('#result')[0].appendChild(node);
+    //    }
+    //}
+
+    //var $uploadCrop;
+    //function readFile(input) {
+    //    if (input.files && input.files[0]) {
+    //        var reader = new FileReader();
+
+    //        reader.onload = function (e) {
+    //            $('.upload-demo').addClass('ready');
+    //            $uploadCrop.croppie('bind', {
+    //                url: e.target.result
+    //            }).then(function () {
+    //                console.log('Image Bind complete');
+    //            });
+    //        }
+    //        reader.readAsDataURL(input.files[0]);
+    //    }
+    //    else {
+    //        alert("Please select image less than 2 Mb.");
+    //    }
+    //}
+
+    //$uploadCrop = $('#upload-demo').croppie({
+    //    viewport: {
+    //        width: 250,
+    //        height: 190,
+    //        type: 'square'
+    //    },
+    //    enableExif: true
+    //});
+
+    //$('.upload-result').on('click', function (ev) {
+    //    debugger;
+    //    $uploadCrop.croppie('result', {
+    //        type: 'canvas',
+    //        size: 'viewport'
+    //    }).then(function (resp) {
+    //        $('#imagebase64').val(resp);
+    //        $('#cropped_image').attr("src", resp);
+    //        $('.pkg_img').show();
+    //        $('#cropped_image').css('display', 'block');
+    //    });
+    //});
+
+
+
+    $("#hl-crop-image").click(function () {
+        $('#defaultmodal').modal('hide');
+        $('.imgareaselect-outer').hide();
+        $('.imgareaselect-border4').hide();
+        $('.imgareaselect-border3').hide();
+        $('.imgareaselect-border2').hide();
+        $('.imgareaselect-border1').hide();
+        $('.imgareaselect-handle').hide();
+    })
+
+
+    $(".trigger_upload").on('click', function () {
+        $("#upload").trigger('click');
+        setTimeout(function () {
+            $('#defaultmodal').modal('show');
+        }, 1200);
+    });
+    $('#upload').on('change', function () {
+        debugger;
+
+        var realWidth = $(this).width()
+        var realHeight = $(this).height()
+        if (realHeight > 25 && realWidth > 100) {
+            $("#msg").addClass("error");
+            $("#msg").html("Image size should be lesser than this")
+
+        }
+        else {
+            readFile(this);
+            var filename = $(this).val();
+            var res = filename.substr(12, 200);
+            $("#_txt").val(res);
+        }
+    });
+    function output(node) {
+        var existing = $('#result .croppie-result');
+        if (existing.length > 0) {
+            existing[0].parentNode.replaceChild(node, existing[0]);
+        }
+        else {
+            $('#result')[0].appendChild(node);
+        }
+    }
+
+    var $uploadCrop;
+    function readFile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('.upload-demo').addClass('ready');
+                //$uploadCrop.croppie('bind', {
+                //    url: e.target.result
+                //}).then(function () {
+                //console.log('Image Bind complete');
+                //});
+                $('#cropped_image').attr('src', e.target.result);
+
+                $('#img').attr('src', e.target.result);
+
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+        else {
+            alert("Please select image less than 2 Mb.");
+        }
+    }
+    $("#img").imgAreaSelect({
+        aspectRatio: '1:1', handles: true, onSelectEnd: function (img, selection) {
+            $('#imgX1').val(selection.x1);
+            $('#imgY1').val(selection.y1);
+            $('#imgWidth').val(selection.width);
+            $('#imgHeight').val(selection.height);
+            $('#btnCrop').show();
+        }
+    });
+
+
+    $('#defaultmodal').modal({ backdrop: 'static', keyboard: false, show: false })
+
+    $('.close').click(function () {
+
+        $('#defaultmodal').modal('hide');
+        $('.imgareaselect-outer').hide();
+        $('.imgareaselect-border4').hide();
+        $('.imgareaselect-border3').hide();
+        $('.imgareaselect-border2').hide();
+        $('.imgareaselect-border1').hide();
+        $('.imgareaselect-handle').hide();
+        $('#PrevImagesqs19').attr('src', "/Images/-text.png");
+
+    }
+);
+
+    $('#btnCrop').click(function () {
+        debugger;
+        $("#canvas").show();
+        var x1 = $('#imgX1').val();
+        var y1 = $('#imgY1').val();
+        var width = $('#imgWidth').val();
+        var height = $('#imgHeight').val();
+        var canvas = $("#canvas")[0];
+        var context = canvas.getContext('2d');
+        var img = new Image();
+        img.onload = function () {
+            canvas.height = height;
+            canvas.width = width;
+            var s = img;
+            context.drawImage(img, x1, y1, width, height, 0, 0, width, height);
+            $('#imgCropped').val(canvas.toDataURL());
+            // $('[id*=btnUpload]').show();
+        };
+        img.src = $('#img').attr("src");
+        $("#dv").show();
+        //$('#hidans_img').val($('#imgCropped').val());
+        $('#defaultmodal').modal('hide');
+        $('.imgareaselect-outer').hide();
+        $('.imgareaselect-border4').hide();
+        $('.imgareaselect-border3').hide();
+        $('.imgareaselect-border2').hide();
+        $('.imgareaselect-border1').hide();
+        $('.imgareaselect-handle').hide();
+        $("#cropped_image").hide();
+        $(".imgareaselect-selection").hide();
+        //$('#img').attr("src","");
+        //$('#PrevImagesqs19').attr('src', $('#img').attr("src"));
+    });
+    //************************************** JavaScript for ajax file upload END **************************************
+
+    $(function () {
+        $('#validation-form').submit(function (event) {
+            event.preventDefault();
+            if ($(this).valid()) {
+                $(".loader-ajax-container").css("display", "block");
+                //var submitButton = $('input[type=submit]', formEl);
+                debugger
+                var rowCount = $('#ans_tbl >tbody >tr').length;
+                if (rowCount > 1) {
+                    $.ajax({
+                        type: 'POST',
+                        url: $(this).prop('action'),
+                        accept: {
+                            javascript: 'application/javascript'
+                        },
+                        data: $(this).serialize(),
+                        beforeSend: function () {
+                            $('input[type=submit]').prop('disabled', 'disabled');
+                        }
+                    }).done(function (data) {
+                        if (data == "success") {
+                            location.href = "/Admin/PackageCreate";
+
+                        }
+                        if (data == "exist") {
+                            location.href = "/Admin/PackageCreate";
+
+                        }
+
+                        $(".loader-ajax-container").css("display", "none");
+                    });
+                }
+                else {
+                    alert("Please select chapter for the subject.");
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+        });
+    });
+
+    $(document).on('click', '.Isoffline', function () {
+
+        if ($(this).is(':checked')) {
+
+            $('#dvIsOffline').show();
+            $("select[name='packagetype']").attr("data-rule-required", "true");
+            $("input[name='to_dt']").attr("data-rule-required", "true");
+            $("input[name='from_dt']").attr("data-rule-required", "true");
+            $("input[name='exprice']").attr("data-rule-required", "true");
+            $("input[name='inprice']").attr("data-rule-required", "true");
+
+        }
+        else {
+            $('#dvIsOffline').hide();
+            //$("#dvIsOffline").load(location.href + "#dvIsOffline>*", "");
+            $("select[name='packagetype']").attr("data-rule-required", "false");
+            $("input[name='to_dt']").attr("data-rule-required", "false");
+            $("input[name='from_dt']").attr("data-rule-required", "false");
+            $("input[name='exprice']").attr("data-rule-required", "false");
+            $("input[name='inprice']").attr("data-rule-required", "false");
+        }
+
+    });
+
+    //***************** get tablet price  START **********************************
+
+    $('#ddltablet').change(function () {
+        debugger
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetTabletPrice",
+            data: { id: $('#ddltablet').val() },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+            debugger
+                $("#exprice").val(data);
+                $("#price").val(data);
+                }
+               
+              //  $("#ddlchapter").trigger('chosen:updated');
+            
+        });
+    });
+    //***************** get tablet price  START **********************************
+
+</script>
+<script src="~/js/DC_Imagecrop.js"></script>
+}

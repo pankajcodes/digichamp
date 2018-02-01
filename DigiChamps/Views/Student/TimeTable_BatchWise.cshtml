@@ -1,0 +1,77 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsBatchModel
+@{
+    ViewBag.Title = "TimeTable | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+@section header
+{
+    <i class="menu-icons timetable-icon page_header_icon"></i>
+    <span class="main-text">Time Table</span>
+}
+
+
+<div class="panel panel-ntspl">
+    <div class="panel-heading">
+        <h3 class="panel-title">Time Table Details</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-content">
+
+                        <div class="table-responsive voffset3">
+                            <table class="table table-advance table-hover table-bordered time-table" id="table1">
+
+                                <thead>
+                                    <tr>
+                                        <th>Sl No.</th>
+                                        <th hidden="hidden">Id</th>
+                                        <th>Batch Name</th>
+                                        <th>From Time</th>
+                                        <th>To Time</th>
+                                        <th>Days</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.TimeTable_Details != null)
+                                    {
+                                        int rowNo = 0;
+                                        foreach (var item in ViewBag.TimeTable_Details)
+                                        {
+                                            <tr>
+                                                <td>@(rowNo += 1)</td>
+                                                <td hidden="hidden">@item.Batch_Id</td>
+                                                <td>@item.Batch_Name</td>
+                                                <td>
+
+                                                    @{
+                                            DateTime dtf = Convert.ToDateTime(item.Batch_From_Time);
+                                                    }
+                                                    @dtf.ToShortTimeString()
+
+                                                </td>
+
+                                                <td>
+                                                    @{
+                                            DateTime dt = Convert.ToDateTime(item.Batch_To_Time);
+                                                    }
+                                                    @dt.ToShortTimeString()
+                                                </td>
+
+                                                <td>@item.Batch_Days</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+     </div>
+ </div>

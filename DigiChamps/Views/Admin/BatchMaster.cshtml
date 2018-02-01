@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "Batch Master";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content-wrap">
+    <div class="page-title">
+        <div>
+            <h1>
+                <i class="fa fa-graduation-cap"></i> Academic
+                <div class="btn-toolbar pull-right">
+                    <div class="box-tool">
+                        <a class="btn btn-primary show-tooltip" href="/Admin/BoardMaster" data-toggle="tooltip" data-placement="top" title="Board"><span>B</span></a>
+                        <a class="btn btn-primary show-tooltip" href="/Admin/ClassMaster" data-toggle="tooltip" data-placement="top" title="Class" data-original-title="Class"><span>C</span></a>
+                        <a class="btn btn-primary show-tooltip" href="/Admin/SubjectMaster" data-toggle="tooltip" data-placement="top" title="Subject"><span>S</span></a>
+                        <a class="btn btn-primary show-tooltip" href="/Admin/ChapterMaster" data-toggle="tooltip" data-placement="top" title="Chapter"><span>C</span></a>
+                        <a class="btn btn-primary show-tooltip" href="/Admin/Topics" data-toggle="tooltip" data-placement="top" title="Topics"><span>T</span></a>
+                        <a class="btn btn-primary show-tooltip" href="/Admin/ShowTopicStartegic" data-toggle="tooltip" data-placement="top" title="Topic Startegic"><span>T</span></a>
+                        <a class="btn btn-primary show-tooltip" href="/Admin/CentreMaster" data-toggle="tooltip" data-placement="top" title="Centre"><span>C</span></a>
+                        <a class="btn btn-primary show-tooltip" href="/Admin/TeacherBatchAssign" data-toggle="tooltip" data-placement="top" title="Assign Batch"><span>A</span></a>
+                        @*<a class="btn btn-primary show-tooltip" href="/Admin/BatchMaster" data-toggle="tooltip" data-placement="top" title="Batch"><span>B</span></a>*@
+                        <a class="btn btn-primary show-tooltip" href="/Admin/Power" data-toggle="tooltip" data-placement="top" title="Power"><span>P</span></a>
+                        <a class="btn btn-primary show-tooltip" href="/Admin/percentage" data-toggle="tooltip" data-placement="top" title="Percentage Entry" data-original-title="Percentage Entry"><span>P</span></a>
+
+                    </div>
+                </div>
+            </h1>
+
+        </div>
+    </div>
+    <div id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="~/Admin/AdminDashboard">Home</a>
+                <span class="divider"><i class="fa fa-angle-right"></i></span>
+            </li>
+            @if (ViewBag.Breadcrumb != null)
+            {
+                <li class="active">@ViewBag.Breadcrumb</li>
+            }
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+
+                <div class="box-title">
+                    <h3><i class="fa fa-file-text"></i>Batch Details</h3>
+                    <div class="box-tool box-tooll">
+                        <a href="/Admin/AddBatch" class="btn btn-primary"><i class="fa fa-plus"></i><span> Add New</span> </a>
+                    </div>
+                </div>
+                <div class="box-content">
+
+                    <div class="table-responsive voffset3">
+                        <table class="table table-advance" id="table1">
+
+                            <thead>
+                                <tr>
+                                    <th>Sl No.</th>
+                                    <th hidden="hidden">Id</th>
+                                    <th>Board</th>
+                                    <th>Class</th>
+                                    <th>Subject</th>
+                                    <th>Batch Name</th>
+                                    <th>From Time</th>
+                                    <th>To Time</th>
+                                    <th>Days</th>
+                                    <th>Batch Code</th>
+                                    <th hidden></th>
+                                    <th>Centre Name</th>
+                                    <th style="width: 10%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Batch_Timing != null)
+                                {
+                                    int rowNo = 0;
+                                    foreach (var item in ViewBag.Batch_Timing)
+                                    {
+                                        <tr>
+                                            <td>@(rowNo += 1)</td>
+                                            <td hidden="hidden">@item.Batch_Id</td>
+                                            <td>@item.Board_Name</td>
+                                            <td>@item.Class_Name</td>
+                                            <td>@item.Subject</td>
+                                            <td>@item.Batch_Name</td>
+                                            <td>
+
+                                               @{
+                                        DateTime dtf = Convert.ToDateTime(item.Batch_From_Time);
+                                                }
+                                                @dtf.ToShortTimeString()
+
+                                            </td>
+                                            <td>
+                                                @{
+                                        DateTime dt = Convert.ToDateTime(item.Batch_To_Time);
+                                                }
+                                                @dt.ToShortTimeString()
+                                            </td>
+                                            <td>@item.Batch_Days</td>
+                                            <td>@item.Batch_Code</td>
+                                            <td hidden>
+                                                @{
+                                        int id = Convert.ToInt32(item.Centre_Id);
+                                        DigiChamps.Models.DigiChampsEntities dg = new DigiChamps.Models.DigiChampsEntities();
+                                        var name = dg.tbl_DC_Centre.Where(x => x.Centre_Id == id).Select(x => x.Centre_Name).FirstOrDefault();
+                                                }
+
+                                            </td>
+                                            <td>
+                                                @name
+                                            </td>
+                                            <td>
+
+                                                @Html.ActionLink(" ", "AddBatch", "Admin", new { id = @item.Batch_Id }, new { @class = "btn btn-sm btn-primary show-tooltip fa fa-edit", @title = "Edit" })
+
+
+                                                @Html.ActionLink(" ", "DeleteBatch", "Admin", new { bid = @item.Batch_Id }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the batch?')", @data_original_title = "Delete", @title = "Delete" })
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

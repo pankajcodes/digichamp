@@ -1,0 +1,976 @@
+﻿@{
+    ViewBag.Title = "Chapter Details | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+@section header
+{
+    <i class="menu-icons learn-icon page_header_icon"></i>
+    @if (ViewBag.all_video != null)
+    {
+        if ((ViewBag.all_video).Count > 0)
+        {
+            if (ViewBag.chapter_name != null)
+            { 
+                <span class="main-text">@ViewBag.chapter_name<input type="checkbox" id="id" value="1" class="rating_star" /></span>
+            }
+        else { 
+        <span class="main-text">Chapter Videos</span>
+        }
+        }
+    }
+    else
+    {
+        <span class="main-text">Chapter Details</span>
+    }
+
+}
+<style>
+    video::-internal-media-controls-download-button {
+        display: none;
+    }
+
+    video::-webkit-media-controls-enclosure {
+        overflow: hidden;
+    }
+
+    video::-webkit-media-controls-panel {
+        width: calc(100% + 30px); /* Adjust as needed */
+    }
+</style>
+@section video
+{<div class="light_box_container">
+        <div class="light_box_inner">
+            <div class="light_box_content">
+                <div class="light_box_content_inner" style="height: 300px; position: relative;">
+                    <span class="close_btn">X</span>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="light_box_container lock1">
+    <div class="light_box_inner">
+        <div class="light_box_content">
+            <div class="light_box_content_inner lock2">
+                <span class="close_btn">X</span>
+
+             
+                        <div class="welcome-container">
+                           
+                            <div class="clearfix"></div>
+                            @*<h3>Welcome Back</h3>*@
+                            <p>Please contact DigiChamps team to upgrade your package</p>
+                            <a href="@Url.Action("PackagePreview", "student")" class="take-a-tour">
+                                <span>BUY NOW</span>
+                            </a> 
+                        </div>
+                    
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+}
+
+<div class="row">
+    @if (ViewBag.all_video != null)
+    {
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 questions-cont nopad-right">
+            <!-- Question Panel Starts -->
+            <div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Video Lecture
+                    </h3>
+                </div>
+                <div class="panel-body ">
+                    <div class="row">
+                        @if (ViewBag.all_video != null)
+                        {
+                            int row = 0;
+                            foreach (var v in ViewBag.all_video)
+                            {
+                                row += 1;
+                                string nopad = "";
+                                if (row % 2 == 0)
+                                {
+
+                                    nopad = "";
+                                }
+                                else
+                                {
+                                    nopad = "nopad-right";
+
+                                }
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 box-box @nopad">
+                                    <div class="post thumb-border post-new">
+                                        <div class="post-thumb">
+                                            @{
+                                                 string url = string.Empty; 
+                                                 
+                                            }
+                                                @if(Convert.ToString(v.Is_Free)=="True")
+                                              {
+                                                    
+                                                int moduleid = v.Module_ID;
+                                                int stuid = Convert.ToInt32(Convert.ToString(Session["USER_CODE"].ToString()).Substring(1));
+                                                DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                                                DateTime today = DigiChamps.Models.Digichamps.datetoserver();
+                                                DateTime dt = Convert.ToDateTime(DbContext.tbl_DC_Registration.Where(x => x.Regd_ID == stuid).FirstOrDefault().Inserted_Date);
+                                                int getday = Convert.ToInt32(DbContext.tbl_DC_Module.Where(x => x.Module_ID == moduleid).FirstOrDefault().Validity);
+												 var subjects = DbContext.VW_DC_Package_Learn.Where(x => x.Regd_ID == stuid).GroupBy(x => x.Subject_ID).ToList();
+                                                DateTime dtnn = Convert.ToDateTime(dt.AddDays(getday));
+												if (subjects.Count > 0)
+                                                    {
+
+                                                        <video preload="auto" poster="@v.Module_Image" id="example-video" width="100%" height="100%"
+                                                               preload="auto" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2], "autoplay": false, }'>
+                                                            <source class="vsrc" src="http://content.jwplatform.com/videos/@v.Module_video-ozl7iD1S.mp4" type='video/mp4' />
+
+                                                        </video>
+                                                        <div class="hover-posts">
+                                                            <div class="hover-value">
+                                                                <a href="javascript:void(0)" id="@v.Module_video" class="play-now-in-popup">
+                                                                    <span><i class="fa fa-play"></i>Watch Video</span>
+                                                                </a>
+                                                                <a href="@Url.Action("VideoDetail", "student", new { id = @v.Module_video })">
+                                                                    <span><i class="fa fa-eye"></i>View Details</span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+
+
+
+
+
+                                                    }
+                                                    else
+                                                    {
+                                                if (dtnn > today)
+                                                    {
+                                                        <video preload="auto" poster="@v.Module_Image" id="example-video" width="100%" height="100%"
+                                                   preload="auto" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2], "autoplay": false, }'>
+                                                            <source class="vsrc" src="http://content.jwplatform.com/videos/@v.Module_video-ozl7iD1S.mp4" type='video/mp4' />
+
+                                                   </video>
+                                                     <div class="hover-posts">
+                                                <div class="hover-value">
+                                                    <a href="javascript:void(0)" id="@v.Module_video" class="play-now-in-popup">
+                                                        <span><i class="fa fa-play"></i>Watch Video</span>
+                                                    </a>
+                                                    <a href="@Url.Action("VideoDetail", "student", new {id = @v.Module_video })">
+                                                        <span><i class="fa fa-eye"></i>View Details</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <video disabled preload="auto" poster="@v.Module_Image" id="example-video" width="100%" height="100%"
+                                                   preload="auto" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2], "autoplay": false, }'>
+                                                   <source class="vsrc" src="" type='video/mp4' />
+
+                                                   </video>
+                                                     <div class="hover-posts">
+                                                         <div class="hover-value">
+                                                             <a id="lock" href="javascript:void(0)" class="lock">
+                                                                 <span><i class="fa fa-lock">Video Expired</i></span>
+                                                             </a>
+                                                             
+                                                         </div>
+                                                       </div>
+                                                    }
+
+}
+                                              }
+                                                else
+                                                {
+                                                    if (ViewBag.orderid == null)
+                                                    {
+                                                        <video preload="auto" poster="@v.Module_Image" id="example-video" width="100%" height="100%"
+                                                               preload="auto" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2], "autoplay": false, }'>
+                                                            <source class="vsrc" src="#" type='video/mp4' />
+                                                        </video>
+                                                     <div class="hover-posts">
+                                                    <div class="hover-value">
+                                                        <a id="lock" href="javascript:void(0)" class="lock">
+                                                            <span><i class="fa fa-lock"></i>Unsubscribed</span>
+                                                        </a>
+                                                    @*<a  href="@Url.Action("PackagePreview", "student")">
+                                                        <span><i class="fa fa-eye"></i>View Details</span>
+                                                    </a>*@
+                                                    </div>
+                                                       </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <video  preload="auto" poster="@v.Module_Image" id="example-video" width="100%" height="100%"
+                                                               preload="auto" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2], "autoplay": false, }'>
+                                                            <source class="vsrc" src="http://content.jwplatform.com/videos/@v.Module_video-ozl7iD1S.mp4" type='video/mp4' />
+
+                                                        </video>
+                                                     <div class="hover-posts">
+                                                    <div class="hover-value">
+                                                    <a href="javascript:void(0)" id="@v.Module_video" class="play-now-in-popup">
+                                                        <span><i class="fa fa-play"></i>Watch Video</span>
+                                                    </a>
+                                                    <a href="@Url.Action("VideoDetail", "student", new { id = @v.Module_video })">
+                                                        <span><i class="fa fa-eye"></i>View Details</span>
+                                                    </a>
+                                                    </div>
+                                                       </div>
+                                                    }
+                                                   
+                                                }
+                                          
+                                        </div>
+                                        <div class="post-des">
+                                            <h6><a href="javascript:void(0)">@v.Module_Name.</a></h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <!-- Question Panel Ends -->
+
+
+            <div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Study Material
+                    </h3>
+                </div>
+                <div class="panel-body study-material-div">
+                    @if (ViewBag.all_pdf != null)
+                    {
+                        foreach (var v in ViewBag.all_pdf)
+                        {
+                            if (v.Module_Content != null)
+                            {
+                                @*<div class="panel panel-ntspl inner-panel">
+                                    <div class="panel-heading">
+                                        <a href="~/Module/PDF/@v.Module_Content" target="_blank" class="plain-link">
+                                            <h3 class="panel-title">
+                                                @v.Module_Name
+                                            </h3>
+                                            <div class="clearfix"></div>
+                                        </a>
+                                    </div>
+                                </div>*@
+                    if (Convert.ToString(v.Is_Free) == "True")
+                    {
+                        if (ViewBag.orderid == null)
+                        {
+                            int moduleid = v.Module_ID;
+                            int stuid = Convert.ToInt32(Convert.ToString(Session["USER_CODE"].ToString()).Substring(1));
+                            DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                            DateTime today = DigiChamps.Models.Digichamps.datetoserver();
+                            DateTime dt = Convert.ToDateTime(DbContext.tbl_DC_Registration.Where(x => x.Regd_ID == stuid).FirstOrDefault().Inserted_Date);
+                            int getday = Convert.ToInt32(DbContext.tbl_DC_Module.Where(x => x.Module_ID == moduleid).FirstOrDefault().Validity);
+                            DateTime dtnn = Convert.ToDateTime(dt.AddDays(getday));
+                            if (dtnn > today)
+                            {
+                                                       <div class="panel panel-ntspl inner-panel">
+                                    <div class="panel-heading">
+                                        <a href="~/Module/PDF/@v.Module_Content" target="_blank" title="free" class="plain-link">
+                                            <h3 class="panel-title">
+                                               @if (@v.Module_Content_Name != null)
+                                               {
+                                                @v.Module_Content_Name
+                                               }
+                                               else
+                                               {
+                                                @v.Module_Name
+                                               }
+                                            </h3>
+                                            <div class="clearfix"></div>
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                                        <div class="panel panel-ntspl inner-panel">
+                                    <div class="panel-heading">
+                                        @*<a href="#" target="#" class="plain-link">*@
+                                            <h3 class="panel-title">
+                                               @if (@v.Module_Content_Name != null)
+                                               {
+                                                @v.Module_Content_Name
+                                               }
+                                               else
+                                               {
+                                                @v.Module_Name
+                                               }
+                                            </h3>
+                                            <div class="clearfix"></div>
+                                        @*</a>*@
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        { <div class="panel panel-ntspl inner-panel">
+                        <div class="panel-heading">
+                            <a href="~/Module/PDF/@v.Module_Content" target="_blank" title="free" class="plain-link">
+                                <h3 class="panel-title">
+                                   @if (@v.Module_Content_Name != null)
+                                   {
+                                    @v.Module_Content_Name
+                                   }
+                                   else
+                                   {
+                                    @v.Module_Name
+                                   }
+                                </h3>
+                                <div class="clearfix"></div>
+                            </a>
+                        </div>
+                    </div>
+
+                        }
+
+                    }
+
+                    else
+                    {
+                        if (ViewBag.orderid != null)
+                        {
+                                                        <div class="panel panel-ntspl inner-panel">
+                                    <div class="panel-heading">
+                                        <a href="~/Module/PDF/@v.Module_Content" target="_blank" class="plain-link">
+                                            <h3 class="panel-title">
+                                               @if (@v.Module_Content_Name != null)
+                                               {
+                                                @v.Module_Content_Name
+                                               }
+                                               else
+                                               {
+                                                @v.Module_Name
+                                               }
+                                            </h3>
+                                            <div class="clearfix"></div>
+                                        </a>
+                                    </div>
+                                </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="panel panel-ntspl inner-panel" disabled>
+                                                            <div class="panel-heading">
+                                                                @*<a href="#" target="#" class="plain-link">*@
+                                                                    <h3 class="panel-title">
+                                                                       @if (@v.Module_Content_Name != null)
+                                                                       {
+                                                                        @v.Module_Content_Name
+                                                                       }
+                                                                       else
+                                                                       {
+                                                                        @v.Module_Name
+                                                                       }
+                                                                    </h3>
+                                                                    <div class="clearfix"></div>
+                                                                @*</a>*@
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                }
+                            }
+                        }
+                    }
+                </div>
+            </div>
+
+            @if (ViewBag.questionpdf != null)
+             {
+                <div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Sample question
+                    </h3>
+                </div>
+                
+                <div class="panel-body study-material-div">
+                    
+                        @foreach (var v in ViewBag.questionpdf)
+                        {
+                            if (v.Question_PDF != null)
+                            {
+                                if(Convert.ToString(v.Is_Free)=="True")
+                                {
+                                    if (ViewBag.orderid == null)
+                                    {
+                                        int moduleid = v.Module_ID;
+                                        int stuid = Convert.ToInt32(Convert.ToString(Session["USER_CODE"].ToString()).Substring(1));
+                                        DateTime today = DigiChamps.Models.Digichamps.datetoserver();
+                                        DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                                        DateTime dt = Convert.ToDateTime(DbContext.tbl_DC_Registration.Where(x => x.Regd_ID == stuid).FirstOrDefault().Inserted_Date);
+                                        int getday = Convert.ToInt32(DbContext.tbl_DC_Module.Where(x => x.Module_ID == moduleid).FirstOrDefault().Validity);
+                                        DateTime dtnn = Convert.ToDateTime(dt.AddDays(getday));
+                                        if (dtnn > today)
+                                        {
+                                                       <div class="panel panel-ntspl inner-panel">
+                                    <div class="panel-heading">
+                                        <a href="~/Module/Question_PDF/@v.Question_PDF" target="_blank" class="plain-link">
+                                            <h3 class="panel-title">
+                                                @if (@v.Question_PDF_Name != null)
+                                                {
+                                                    @v.Question_PDF_Name
+                                                }
+                                                else
+                                                {
+                                                    @v.Module_Name
+                                                }
+                                            </h3>
+                                            <div class="clearfix"></div>
+                                        </a>
+                                    </div>
+                                </div>
+                                        }
+                                        else
+                                        {
+
+
+                                                    <div class="panel panel-ntspl inner-panel">
+                                    <div class="panel-heading">
+                                        <a  class="plain-link">
+                                            <h3 class="panel-title">
+                                                @if (@v.Question_PDF_Name != null)
+                                                {
+                                                    @v.Question_PDF_Name
+                                                }
+                                                else
+                                                {
+                                                    @v.Module_Name
+                                                }
+                                            </h3>
+                                            <div class="clearfix"></div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <div class="panel panel-ntspl inner-panel">
+                                            <div class="panel-heading">
+                                                <a href="~/Module/Question_PDF/@v.Question_PDF" target="_blank" class="plain-link">
+                                                    <h3 class="panel-title">
+                                                        @if (@v.Question_PDF_Name != null)
+                                                        {
+                                                            @v.Question_PDF_Name
+                                                        }
+                                                        else
+                                                        {
+                                                            @v.Module_Name
+                                                        }
+                                                    </h3>
+                                                    <div class="clearfix"></div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+
+                                    if (ViewBag.orderid != null)
+                                    {
+                                        <div class="panel panel-ntspl inner-panel">
+                                            <div class="panel-heading">
+                                                <a href="~/Module/Question_PDF/@v.Question_PDF" target="_blank" class="plain-link">
+                                                    <h3 class="panel-title">
+                                                        @if (@v.Question_PDF_Name != null)
+                                                        {
+                                                            @v.Question_PDF_Name
+                                                        }
+                                                        else
+                                                        {
+                                                            @v.Module_Name
+                                                        }
+                                                    </h3>
+                                                    <div class="clearfix"></div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="panel panel-ntspl inner-panel">
+                                            <div class="panel-heading">
+                                               
+                                                    <h3 class="panel-title">
+                                                        @if (@v.Question_PDF_Name != null)
+                                                        {
+                                                            @v.Question_PDF_Name
+                                                        }
+                                                        else
+                                                        {
+                                                            @v.Module_Name
+                                                        }
+                                                    </h3>
+                                                    <div class="clearfix"></div>
+                                              
+                                            </div>
+                                        </div>
+                                    }
+
+                                }
+
+                            }
+                        }
+
+                </div>
+                    
+            </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="col-md-8 questions-cont text-center nopad-right">
+            <div class="ful-hi-wi">
+                <h2>Your package has been expired.</h2>
+                <img src="/images/expired-package.png" />
+            </div>
+        </div>
+    }
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    What's Inside
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="inside-box">
+                    <span class="video-neww"></span>
+                    <div class="right-p">
+                        <h3>Lectures Video</h3>
+                        <p>Best lectures are guide you to study.</p>
+                    </div>
+                </div>
+                <div class="inside-box inside-box-margin">
+                    <span class="study-neww"></span>
+                    <div class="right-p">
+                        <h3>Study Material</h3>
+                        <p>Best study material will be provided by our lectures. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (ViewBag.all_test != null)
+        {
+           
+            int k = 0;
+                                                                                                                                                                                                                                                   
+             foreach (var v in ViewBag.all_test)
+             {
+
+                 if (@v.Exam_type == 1)
+                 {
+                     k++;
+                 }
+             }
+               if (@k != 0)
+                {
+            @*<div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Pre Requisite Test
+                    </h3>
+                </div>
+                @if (ViewBag.all_test != null)
+                {
+                    if ((ViewBag.all_test).Count > 0)
+                    {
+                        <div class="panel-body mail_widget">
+                            <p class="how-much">Test yourself to know how much you learned.</p>
+                            @foreach (var v in ViewBag.all_test)
+                            {
+
+                                if (@v.Exam_type == 1)
+                                {
+
+                                    if (ViewBag.orderid != null)
+                                    {
+                                        <div class="mail_list">
+                                            <div class="panel panel-ntspl inner-panel">
+                                                <div class="panel-heading">
+                                                    @{
+                                        int exam_id = Convert.ToInt32(@v.Exam_ID);
+                                        int student_id = Convert.ToInt32(@ViewBag.stu_id);
+                                        DigiChamps.Models.DigiChampsEntities ent = new DigiChamps.Models.DigiChampsEntities();
+                                        var count = ent.tbl_DC_Exam_Result.Where(x => x.Exam_ID == exam_id && x.Regd_ID == student_id).Select(x => x.Result_ID).ToList().Count();
+                                        var counter = ent.tbl_DC_Exam.Where(x => x.Exam_ID == exam_id).Select(x => x.Attempt_nos).FirstOrDefault();
+
+                                                    }
+                                                    <a href="@Url.Action("pre_requisite_test", "student",  new {id = @v.Exam_type })" class="plain-link">
+                                                        <h3 class="panel-title">
+                                                            @v.Exam_Name
+                                                            @if (count != 0)
+                                                            {
+                                                                <span class="chapter-sec">Total Attempt: @count/@counter</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="chapter-sec">Total Attempt: 0/@counter</span>
+                                                            }
+                                                        </h3>
+                                                        <div class="clearfix"></div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="mail_list">
+                                            <div class="panel panel-ntspl inner-panel">
+                                                <div class="panel-heading">
+                                                    @{
+                                        int exam_id = Convert.ToInt32(@v.Exam_ID);
+                                        int student_id = Convert.ToInt32(@ViewBag.stu_id);
+                                        DigiChamps.Models.DigiChampsEntities ent = new DigiChamps.Models.DigiChampsEntities();
+                                        var count = ent.tbl_DC_Exam_Result.Where(x => x.Exam_ID == exam_id && x.Regd_ID == student_id).Select(x => x.Result_ID).ToList().Count();
+                                                    }
+                                                    <a class="plain-link">
+                                                        <h3 class="panel-title">
+                                                            @v.Exam_Name
+                                                            @if (count != 0)
+                                                            {
+                                                                <span class="chapter-sec">Total Attempt: @count/3</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="chapter-sec">Total Attempt: 0/3</span>
+                                                            }
+                                                        </h3>
+                                                        <div class="clearfix"></div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                }
+                            }
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="panel-body mail_widget">
+                            <div class="no-content-notification ">There is no test in this chapter.</div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="panel-body mail_widget">
+                        <div class="no-content-notification">Free tests are not available.</div>
+                    </div>
+                }
+            </div>*@
+               }
+        }
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Chapterwise Test
+                </h3>
+            </div>
+            @if (ViewBag.all_test != null)
+            {
+                if ((ViewBag.all_test).Count > 0)
+                {
+                    <div class="panel-body mail_widget">
+                        <p class="how-much">Test yourself to know how much you learned.</p>
+                        @foreach (var v in ViewBag.all_test)
+                        {
+                            if (@v.Exam_type == 5)
+                            {
+                                if (ViewBag.orderid!=null)
+                                {
+                                    <div class="mail_list">
+                                    <div class="panel panel-ntspl inner-panel">
+                                        <div class="panel-heading">
+                                            <a href="@Url.Action("exam","student")" class="plain-link">
+                                                <h3 class="panel-title">
+                                                    @v.Exam_Name
+                                                    @{
+                                int exam_id = Convert.ToInt32(@v.Exam_ID);
+                                int student_id = Convert.ToInt32(@ViewBag.stu_id);
+                                DigiChamps.Models.DigiChampsEntities ent = new DigiChamps.Models.DigiChampsEntities();
+                                var count = ent.tbl_DC_Exam_Result.Where(x => x.Exam_ID == exam_id && x.Regd_ID == student_id).Select(x => x.Result_ID).ToList().Count();
+                                var counter = ent.tbl_DC_Exam.Where(x => x.Exam_ID == exam_id).Select(x => x.Attempt_nos).FirstOrDefault();                                 
+								 }
+                                                    @if (count != 0)
+                                                    {
+                                                        <span class="chapter-sec">Total Attempt: @count/@counter</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="chapter-sec">Total Attempt: 0/@counter</span>
+                                                    }
+
+                                                </h3>
+                                                <div class="clearfix"></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                                else
+                                {
+                                    <div class="mail_list">
+                                    <div class="panel panel-ntspl inner-panel">
+                                        <div class="panel-heading">
+                                            <a  class="plain-link">
+                                                <h3 class="panel-title">
+                                                    @v.Exam_Name
+                                                    @{
+                                int exam_id = Convert.ToInt32(@v.Exam_ID);
+                                int student_id = Convert.ToInt32(@ViewBag.stu_id);
+                                DigiChamps.Models.DigiChampsEntities ent = new DigiChamps.Models.DigiChampsEntities();
+                                var count = ent.tbl_DC_Exam_Result.Where(x => x.Exam_ID == exam_id && x.Regd_ID == student_id).Select(x => x.Result_ID).ToList().Count();
+                                var counter = ent.tbl_DC_Exam.Where(x => x.Exam_ID == exam_id).Select(x => x.Attempt_nos).FirstOrDefault();                                   
+								  }
+                                                    @if (count != 0)
+                                                    {
+                                                        <span class="chapter-sec">Total Attempt: @count/@counter</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="chapter-sec">Total Attempt: 0/@counter</span>
+                                                    }
+
+                                                </h3>
+                                                <div class="clearfix"></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                                
+                            }
+                            if (@v.Exam_type == 1 || @v.Exam_type == 2 || @v.Exam_type == 3)
+                            {
+                                
+                                if (ViewBag.orderid!=null)
+                                {
+                                    <div class="mail_list">
+                                    <div class="panel panel-ntspl inner-panel">
+                                        <div class="panel-heading">                                            
+                                            @{
+                                        int exam_id = Convert.ToInt32(@v.Exam_ID);
+                                        int student_id = Convert.ToInt32(@ViewBag.stu_id);
+                                        DigiChamps.Models. DigiChampsEntities ent = new DigiChamps.Models. DigiChampsEntities();
+                                        var count = ent.tbl_DC_Exam_Result.Where(x => x.Exam_ID == exam_id && x.Regd_ID == student_id).Select(x => x.Result_ID).ToList().Count();
+                                        var counter = ent.tbl_DC_Exam.Where(x => x.Exam_ID == exam_id).Select(x => x.Attempt_nos).FirstOrDefault();                                   
+								                                       
+									   }
+                                            <a href="@Url.Action("offlinetest", "student",  new {id = @v.Exam_type })" class="plain-link">
+                                                <h3 class="panel-title">
+                                                    @v.Exam_Name
+                                                    @if (count != 0)
+                                                    {
+                                                        <span class="chapter-sec">Total Attempt: @count/@counter</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="chapter-sec">Total Attempt: 0/@counter</span>
+                                                    }
+                                                </h3>
+                                                <div class="clearfix"></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                                else
+                                {
+                                    <div class="mail_list">
+                                    <div class="panel panel-ntspl inner-panel">
+                                        <div class="panel-heading">                                            
+                                            @{
+                                        int exam_id = Convert.ToInt32(@v.Exam_ID);
+                                        int student_id = Convert.ToInt32(@ViewBag.stu_id);
+                                        DigiChamps.Models. DigiChampsEntities ent = new DigiChamps.Models. DigiChampsEntities();
+                                        var count = ent.tbl_DC_Exam_Result.Where(x => x.Exam_ID == exam_id && x.Regd_ID == student_id).Select(x => x.Result_ID).ToList().Count();
+                                            }
+                                            <a  class="plain-link">
+                                                <h3 class="panel-title">
+                                                    @v.Exam_Name
+                                                    @if (count != 0)
+                                                    {
+                                                        <span class="chapter-sec">Total Attempt: @count/3</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="chapter-sec">Total Attempt: 0/3</span>
+                                                    }
+                                                </h3>
+                                                <div class="clearfix"></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                                
+                            }
+                        }
+
+                    </div>
+                }
+                else
+                {
+                    <div class="panel-body mail_widget">
+                     <div class="no-content-notification ">There is no test in this chapter.</div>
+                    </div>
+                }
+            }
+                else
+                {
+                    <div class="panel-body mail_widget">
+                        <div class="no-content-notification">Free tests are not available.</div>
+                    </div>
+                }
+        </div>
+      
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+           
+        </div>
+
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Student_assets/assets/js/video.js"></script>
+    <script src="~/Student_assets/assets/js/videojs-contrib-hls.min.js"></script>
+    <script src="~/jwplayer-7.9.3/jwplayer.js"></script>
+    <script>jwplayer.key = "cxb/fhH3Z9Oh3TulqzBk1tMznPqKXQ0fj8cZYfZ5tRA=";</script>
+}
+@section scriptvideo{
+    <script>
+        $(function () {
+            var chapter = '@ViewBag.chapters';
+            var limit = '@ViewBag.limit';
+            debugger;
+            if (chapter == limit) {
+                $('input:checkbox').prop('checked', true);
+            }
+            $('.post-thumb .play-now-in-popup').on('click', function () {
+                debugger;
+                var video_key = $(this).attr('id');
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/ciphervideo",
+                    data: { video_key: video_key },
+                    datatype: "json",
+                    success: function (data) {
+                        (function (v, i, d, e, o) {
+                            v[o] = v[o] || {}; v[o].add = v[o].add || function V(a) { (v[o].d = v[o].d || []).push(a); };
+                            if (!v[o].l) {
+                                v[o].l = 1 * new Date(); a = i.createElement(d), m = i.getElementsByTagName(d)[0];
+                                a.async = 1; a.src = e; m.parentNode.insertBefore(a, m);
+                            }
+                        })(window, document, 'script', '//de122v0opjemw.cloudfront.net/vdo.js', 'vdo');
+                        vdo.add({
+                            o: data,
+
+                        })
+                       // $('.vidoscls').attr('id', "vdo" + data);
+                        $('.light_box_content_inner ').attr('id', "vdo" + data);
+                        $('.light_box_content_inner ').load();
+                       
+                        $(".light_box_container").fadeIn(500);
+						 $(".lock1").css("display", "none");
+                    }
+
+
+                })
+                $('.light_box_inner .close_btn').on('click', function () {
+                    $('.light_box_container').fadeOut(1000);
+                });
+
+
+            })
+
+            $('.lock').on('click', function () {
+                debugger;
+             
+                //var video_url = $(this).parents(".post-thumb").find('video').find('source.vsrc').attr('src');
+                //$('.light_box_content_inner video').find('#v2src').attr('src', data);
+                //$('.light_box_content_inner video').load();
+                $(".lock1").fadeIn(500);
+            });
+                $('.light_box_inner .close_btn').on('click', function () {
+                    $('.light_box_container').fadeOut(1000);
+                });
+
+
+            })
+       
+        $(document).bind("contextmenu", function (e) {
+            e.preventDefault();
+
+        });
+        $(document).keydown(function (e) {
+            return false;
+        });
+        with ((window && window.console && window.console._commandLineAPI) || {}) {
+            (function () {
+
+                var _z = console;
+                Object.defineProperty(window, "console", {
+                    get: function () {
+                        if (_z._commandLineAPI) {
+                            throw "Sorry, Can't execute scripts!";
+                        }
+                        return _z;
+                    },
+                    set: function (val) {
+                        _z = val;
+                    }
+                });
+
+            })();
+        }
+		
+
+    $('.close_btn').click(function () {
+
+
+        location.reload();
+        $(".light_box_container").fadeOut(1000);
+
+    });
+
+
+    </script>
+}

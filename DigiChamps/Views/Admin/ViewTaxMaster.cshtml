@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "View Tax Master";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content-wrap">
+    <div class="page-title">
+    <div>
+        <h1>
+            <i class="fa fa-table"></i> Tax Master
+            <div class="btn-toolbar pull-right">
+                <div class="box-tool">
+                    <a class="btn btn-primary show-tooltip" href="/Admin/ViewTaxTypeMaster" data-toggle="tooltip" data-placement="top" title="Tax Type"><span>T</span></a>
+                </div>
+            </div>
+        </h1>
+
+    </div>
+    </div>
+<div id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a href="~/Admin/AdminDashboard">Home</a>
+            <span class="divider"><i class="fa fa-angle-right"></i></span>
+        </li>
+        @if (ViewBag.Breadcrumb != null)
+        {
+            <li class="active">@ViewBag.Breadcrumb</li>
+        }
+    </ul>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-title">
+                <h3><i class="fa fa-file-text"></i>Tax Master Details</h3>
+                <div class="box-tool box-tooll">
+                    <a class="btn btn-primary" href="/Admin/TaxMaster"><i class="fa fa-plus"></i><span>Add New</span> </a>
+                </div>
+            </div>
+            <div class="box-content">
+                <div class="clearfix"></div>
+                <div class="table-responsive voffset3">
+                    <table class="table table-advance" id="table1">
+
+                        <thead>
+                            <tr>
+                                <th>Sl No.</th>
+                                <th hidden="hidden">Id</th>
+                                <th>Tax Type</th>
+                                <th>Tax Rate</th>
+                                <th>Effect Date</th>
+                                <th style="width: 15%;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.taxrate != null)
+                            {
+                                int rowNo = 0;
+                                foreach (var item in ViewBag.taxrate)
+                                {
+                                    <tr>
+                                        <td>@(rowNo += 1)</td>
+                                        <td hidden="hidden">@item.Tax_ID</td>
+                                        <td>@item.Tax_Type</td>
+                                        <td>@string.Format("{0:0.00}", item.Tax_Rate)</td>
+                                        <td>@Convert.ToDateTime(item.TAX_Efect_Date).ToShortDateString()</td>
+
+                                        <td>
+
+                                            @Html.ActionLink(" ", "EditTaxRate", "Admin", new { ID = @item.Tax_ID }, new { @class = "btn btn-sm btn-primary show-tooltip fa fa-edit", @title = "Edit" })
+
+
+                                            @Html.ActionLink(" ", "DeleteTaxRate", "Admin", new { ID = @item.Tax_ID }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the tax?')", @data_original_title = "Delete", @title = "Delete" })
+
+
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+

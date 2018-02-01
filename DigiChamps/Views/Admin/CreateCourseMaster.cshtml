@@ -1,0 +1,165 @@
+﻿@{
+    ViewBag.Title = "Create Course Master";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("CreateCourseMaster", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Create Packages</h3>
+                            </div>
+                       
+                            <div class="panel-body">
+
+                                <div class="form-group">
+                                    <h3>Section.1</h3>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <h5>Title<span class="asterisk">*</span></h5>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-11">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input type="text" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <h5>Package Type<span class="asterisk">*</span></h5>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <select class="form-control" required>
+                                                        <option value="1">Free</option>
+                                                        <option value="2">Premium</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+
+                                        <h5>Description<span class="asterisk">*</span></h5>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <textarea placeholder="Description" class="form-control" rows="5" required></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <h5>Uplaod Video<span class="asterisk">*</span></h5>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-11">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input type="file" id="RegImage3" name="RegImage3" accept=".mp4" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <h5>Video Preview</h5>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-11">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <video id="PreviewVideo" height="250" width="400" controls>
+                                                        <source src="#" type="video/mp4">
+                                                    </video>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <h5>Upload PDF<span class="asterisk">*</span></h5>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input type="file" accept=".pdf" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-6">
+                                        <div class="pull-left">
+                                            <button id="btnSearch" type="submit" value="search" name="submit" class="btn btn-info">Submit</button>
+                                            <button type="reset" id="btn_clr" class="btn btn-default">Clear Form</button>
+                                            <a href="@Url.Action("index", "Admin")" class="btn btn-inverse dropdown-toggle"><i class="fa fa-caret-left"></i> Back </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END NEW RECORD -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@section scripts
+  {
+    <script>
+        function readURL3(input) {
+            debugger;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#PreviewVideo').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#RegImage3").change(function () {
+            readURL3(this);
+        });
+    </script>
+}

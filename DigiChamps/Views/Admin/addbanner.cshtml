@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "Add Banner";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("addbanner", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", id = "validation-form" }))
+{
+    @Html.AntiForgeryToken();
+    <div class="page-content-wrap">
+
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active"> @ViewBag.pagetitle @ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row ">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> Add New</h3>
+                    </div>
+                    <input type="hidden" id="hid" name="hid" value="@ViewBag.id" />
+                    <div class="box-content">
+                        
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Title<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.id != null)
+                                {
+                                    <input type="text" name="txttitle" class="form-control" id="txttype" value="@ViewBag.imagettle" data-rule-required="true" data-msg-required="Please Enter Image Title" />
+                                }
+                                else
+                                {
+                                    <input type="text" name="txttitle" class="form-control" id="txttype" />
+                                }
+
+                            </div>
+                        </div>
+                        <div id="test">
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Image Upload<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls file-new">
+                                    <input type="file" accept=".png, .jpg, .jpeg" name="fileupload" id="fileupload" />
+                                    <label for="textfield10" class="col-sm-5 col-lg-5 control-label new-lable">(Image size should be 1400*450)</label>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <div class="form-group">
+                            <div class="col-sm-3 col-lg-2 controls"></div>
+                            <div class="col-sm-9 col-lg-7 col-md-7 col-xs-12 controls">
+                                @if (ViewBag.image != null)
+                                {
+                                    <img src="~/Images/banner/@ViewBag.image" id="img_" class="img-responsive" />
+                                }
+                                else
+                                {
+                                    <img src="~/Images/Banner/No_image_available.png" id="img_" class="img-responsive" />
+                                }
+                            </div>
+                        </div>
+
+
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("viewbanner", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i> <span> Back</span>  </a>
+                                <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span>Submit</span> </button>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}
+@section scripts
+{
+    <script type="text/javascript">
+
+
+       
+
+
+      
+
+        var _URL = window.URL || window.webkitURL;
+
+        
+
+
+        $("#fileupload").change(function (e) {
+            var file, img;
+            debugger;
+            if ((file = this.files[0])) {
+                var param = $(this);
+                img = new Image();
+                img.onload = function () {
+                    var realWidth = this.width;
+                    var realHeight = this.height;
+                    if (realWidth != 1400 && realHeight != 450) {
+                        alert("Please select image of mentioned dimension.");
+                        $("#fileupload").val("");
+                        $('#img_').attr('src', "/Images/Banner/No_image_available.png");
+                    }
+                }
+                img.onerror = function () {
+                    alert("not a valid file: " + file.type);
+                };
+                img.src = _URL.createObjectURL(file);
+                $('#img_').attr('src', img.src);
+            };
+        });
+
+
+
+    </script>
+
+}
+
+

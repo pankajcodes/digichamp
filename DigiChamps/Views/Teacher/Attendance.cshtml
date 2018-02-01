@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewBag.Title = "Attendance";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+@using (Html.BeginForm("Attendance", "Teacher", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    <div class="page-content-wrap">
+        <div class="page-title">
+            <div>
+                <h1>
+                    <i class="fa fa-file-o"></i> Attendance
+                </h1>
+
+            </div>
+        </div>
+        <div id="breadcrumbs">
+            @*<ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Teacher/TeacherDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active">@ViewBag.Breadcrumb</li>
+                }
+            </ul>*@
+        </div>
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title" style="padding:15px;">
+
+                        <h3><i class="fa fa-file"></i>Add Attendance</h3>
+
+                        <div class="box-tool">
+
+                            <input type="datetime" style="text-align:center" id="Attend_Date" name="Attend_Date" class="form-control datepicker" value="@DateTime.Now.ToShortDateString()" />
+
+                        </div>
+
+                        @Html.Hidden("Attendance_Id", new { @id = "Bid" })
+                    </div>
+                    <div class="box-content">
+                        <form action="#" class="form-horizontal form-bordered form-row-stripped">
+                            <div class="form-group voffset3">
+                                <label for=" textfield5" class="col-sm-3 col-lg-2 control-label">
+                                    Batch_Name <span class="asterisk">*</span>
+                                </label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @{
+                                        string typ = "-";
+                                     }
+                                    <select class="form-control" data-rule-required="true" value="" data-msg-required="Please select batch name" id="ddlbatch" name="ddlbatch">
+                                        @if (ViewBag.batchofteacher!=null)
+                                        {
+                                            <option value="">Please Select Batch</option>
+                                            foreach (var v in ViewBag.batchofteacher)
+                                            {
+                                                <option value="@v.Batch_Id"> @v.Center_name - @v.Batch_Name - @v.Batch_Days -@v.Subject_Name - ( @v.Batch_From_Time - @v.Batch_To_Time) </option>
+                                            }
+                                        }
+
+
+                                        @*<option value="Batch_Id">Batch_Name @typ Batch_Code</option>*@
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-advance" id="table1">
+                                    <thead>
+                                        <tr>
+                                            <th>Sl No.</th>
+                                            <th>Student Name</th>
+                                            <th>Class</th>
+                                            <th>Attendance</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ans_body"></tbody>
+                                </table>
+                            </div>
+
+                            <div class="form-group last">
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2 box-tooll">
+                                    <button id="btnSearch" type="submit" class="btn btn-primary"><i class="fa fa-check"></i><span>Submit</span></button>
+                                   
+                                    <a class="btn btn-large btn-primary" title="Back To List" href="@Url.Action("ViewAttendance", "Teacher")"><i class="fa fa-undo"></i> <span>Back</span></a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ }
+
+@section scripts
+{
+    <script>
+        var bid = "";
+    @if (ViewBag.Batch_id != null)
+    {
+        <text> bid = @ViewBag.Batch_id </text>
+    }
+     //$.ajax({
+     //    type: "POST",
+     //    url: "/Teacher/GetAllBatch_att",
+     //    datatype: "json",
+     //    traditional: true,
+     //    success: function (data) {
+     //        debugger;
+     //        var sta = "";
+     //        for (var i = 0; i < data.length; i++) {
+     //            if (bid == data[i].Value) {
+                  
+     //                sta = sta + '<option value=' + data[i].Value + ' selected = "selected">' + data[i].Text + '</option>';
+     //            }
+     //            else {
+     //                sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+     //            }
+     //        }
+     //        $('#ddlbatch').append(sta);
+     //    }
+     //});
+        $('#ddlbatch').change(function () {
+            $.ajax({
+                type: 'POST',
+                url: "/Teacher/GetAllStudent_Batchwise",
+                dataType: "json",
+                data: { Bid: $('#ddlbatch').val() },
+                success: function (data) {
+                    debugger;
+                    var tr = "";
+                    var count = 1;
+                    //Append each row to html table
+                    for (var i = 0; i < data.length; i++) {
+                        tr += "<tr>" + "<td>" + count++ + "</td>" + "<td><input type='hidden' name=ddlRegd value=" + data[i].Regd_ID + " >" + data[i].Customer_Name + "</td>" + "</td>" + "<td><input type='hidden' name=ddlClass value=" + data[i].Class_Id + ">" + data[i].Class_Name + "</td>"
+                            + "<td><select class='form-control' name=ddlpresent><option value='1'>Present</option><option value='0'>Absent</option>select></td>" + "</tr>";
+                    }
+                    $('#ans_body').html(tr);
+                }
+
+            });
+        });
+
+ </script>
+
+}

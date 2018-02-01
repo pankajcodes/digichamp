@@ -1,0 +1,457 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsTeacherRegModel
+@{
+    ViewBag.Title = "Registration";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@*@using (Html.BeginForm("AddRegistration", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", @id = "" }))
+    {*@
+<form class="form-horizontal" id="validation-form">
+    <div class="alert alert-warning" role="alert" hidden id="errormsg">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <div style="font-size: 13px; color:#ffaf36;" id="dlt_msg"></div>
+    </div>
+    <div class="alert alert-success" role="alert" hidden id="successmsg">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <div style="font-size: 13px; color: #5ead34;" id="alt_msg"></div>
+    </div>
+    @Html.AntiForgeryToken()
+    <div class="page-content-wrap">
+
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active">@ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> Registration</h3>
+                        @if (ViewBag.tid != null)
+                        {
+                            <input type="hidden" id="teacher_id" name="teacher_id" value="@ViewBag.tid" />
+                        }
+                        else if (ViewBag.uid != null)
+                        {
+                            <input type="hidden" id="adm_user_id" name="adm_user_id" value="@ViewBag.uid" />
+                        }
+                    </div>
+                    <div class="box-content">
+
+                        <div class="form-group voffset3">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">User Type<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+
+                                @if (ViewBag.uid != null)
+                                {
+                                    <select name="selectuser" id="selectuser" class="form-control" data-rule-required="true" data-msg-required="Please select user type" readonly>                                       
+                                        <option value="@ViewBag.ROLE_ID1">@ViewBag.ROLE_TYPE1</option>                                      
+                                    </select>
+
+                                }
+                                else if (ViewBag.tid != null)
+                                {
+                                    <select name="selectuser" id="selectuser" class="form-control" data-rule-required="true" data-msg-required="Please select user type" readonly>
+                                        <option value="@ViewBag.ROLE_ID">@ViewBag.ROLE_TYPE</option>
+                                    </select>
+                                }
+                                else
+                                {
+                                    <select name="selectuser" id="selectuser" class="form-control" data-rule-required="true" data-msg-required="Please select user type">
+                                        <option>Please Select User</option>
+                                        @if (ViewBag.role_type != null)
+                                        {
+                                            foreach (var item in ViewBag.role_type)
+                                            {
+                                                <option value="@item.ROLE_ID">@item.ROLE_TYPE</option>
+                                            }
+                                        }                                      
+                                    </select>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">User Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+
+                                <input type="text" name="name" id="name" value="@ViewBag.name" class="form-control" data-rule-required="true" data-msg-required="Please enter user name">
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Designation<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+
+                                <input type="text" id="designation" name="designation" onkeypress="return isNumberKey(event);" value="@ViewBag.designation" class="form-control" data-rule-required="true" data-msg-required="Please enter designation">
+
+                            </div>
+                        </div>
+                        <div class="form-group input-cont">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Gender<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                
+                                @Html.DropDownListFor(x => x.Gender, new List<SelectListItem> { new SelectListItem { Text = "Male", Value = "Male" }, new SelectListItem { Text = "Female", Value = "Female" } }, " Select ", new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please select gender" })
+                                @*}*@
+                            </div>
+                        </div>
+                        <div class="form-group input-cont">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Date Of Birth<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.dateofbirth != null)
+                                {
+                                    <span>
+                                        @{
+                                            string dob = Convert.ToDateTime(ViewBag.dateofbirth).ToShortDateString();
+                                         }
+                                    </span>
+
+                                    <input type="text" name="dateofbirth" value="@dob" class="form-control datepicker" autocomplete="off" data-rule-required="true" data-msg-required="Please select date" onkeypress="return false"/>
+                                }
+                                else
+                                {
+                                    <input type="text" name="dateofbirth" value="@ViewBag.dateofbirth" class="form-control datepicker" autocomplete="off" data-rule-required="true" data-msg-required="Please select date" onkeypress="return false"/>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="form-group input-cont">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Email Id<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.email != null)
+                                {
+                                    <input type="email" name="emailid" value="@ViewBag.email" id="emailid" disabled="disabled" class="form-control" autocomplete="off" data-rule-required="true" data-msg-required="Please enter email id">
+                                }
+                                else
+                                {
+                                    <input type="email" name="emailid" id="emailid" class="form-control" autocomplete="off" data-rule-required="true" data-msg-required="Please enter email id">
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group input-cont">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Password<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+
+                                <input type="password" readonly name="password1" id="password1" value="@ViewBag.auto_pass" class="form-control">
+
+                            </div>
+                        </div>
+
+                        <div class="form-group input-cont">
+                            <label for="textarea5" class="col-sm-3 col-lg-2 control-label">Mobile Number<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+
+                                <input type="text" name="Mobile" id="Mobile" value="@ViewBag.mobile" class="form-control" autocomplete="off" data-rule-required="true" data-msg-required="Please enter mobile number" maxlength="10">
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textarea5" class="col-sm-3 col-lg-2 control-label">Address</label>
+                            <div class="col-sm-9 col-lg-7 controls">
+
+                                <textarea name="address" class="form-control" rows="5">@ViewBag.address</textarea>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Upload Image<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <div class="fileupload fileupload-new">
+                                    <input type="hidden">
+                                    <div class="input-group">
+                                        <div class="form-control uneditable-input">
+                                        @if (ViewBag.image != null)
+                                        {
+                                            <i class="fa fa-file fileupload-exists"></i>
+                                            <span class="fileupload-preview">@ViewBag.image</span>
+                                        }
+                                        else { 
+                                            <i class="fa fa-file fileupload-exists"></i>
+                                            <span class="fileupload-preview"></span>
+                                        }
+                                        </div>
+                                        <div class="input-group-btn">
+                                            <a class="btn bun-default btn-file">
+                                                <span class="fileupload-new trigger_upload">Select file</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Crop image in modal*@
+                        <div id="myModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <div class="demo-wrap upload-demo">
+                                            <div class="container">
+                                                <div class="grid">
+                                                    <div class="col-md-2" hidden>
+                                                        <div class="actions">
+                                                            <input type="file" id="upload" style="visibility: hidden;" value="Choose a file" accept="image/*" />
+
+                                                            @*<button class="upload-result" type="button">Result</button>*@
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="upload-msg">
+                                                            Upload a file to start cropping
+                                                        </div>
+                                                        <div class="upload-demo-wrap">
+                                                            <div id="upload-demo"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="hidden" id="imagebase64" name="imagebase64">
+                                        <button type="button" data-dismiss="modal" class="btn btn-primary upload-result">Crop Image </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Profile Preview</label>
+                            @if (ViewBag.image != null)
+                            {
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <p><img id="cropped_image" src="~/Images/Teacherprofile/@ViewBag.image" width="100" height="130" /></p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <p><img id="cropped_image" src="#" style="display:none;" width="100" height="130" /></p>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("Registration", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                                <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span> Submit</span></button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@*}*@
+
+@section scripts
+{
+    <!--crop image-->
+<script src="~/js/croppie.min.js"></script>
+<script src="~/js/exif.js"></script>
+
+    <script type="text/javascript">
+
+        $('#Mobile').keyup(function (e) {
+            debugger;
+            if (/\D/g.test(this.value)) {
+                // Filter non-digits from input value.
+                this.value = this.value.replace(/\D/g, '');
+            }
+        });
+ 
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return true;
+
+            return false;
+        }                    
+
+        $('#name').click(function () {
+            var textValues = new Array();
+            $("input.destination_points").each(function () {
+
+                doesExisit = ($.inArray($(this).val(), textValues) == -1) ? false : true;
+                console.log(textValues)
+                if (!doesExisit) {
+                    textValues.push($(this).val())
+                } else {
+                    alert('dup');
+                    return false;
+                }
+            });
+        });
+
+        $('#validation-form').submit(function (e) {
+            e.preventDefault();
+            if ($(this).valid()) {
+                $(".loader-ajax-container").css("display", "block");
+                $.ajax({
+                    type: 'POST',
+                    url: "/Admin/AddRegistration",
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        if (data == "0") {
+                            $("#dlt_msg").html("<i class='fa fa-exclamation-circle'></i> Please enter name or mobile number.");
+                            //$(".alert-warning").show();
+                            $('#errormsg').show();
+                        }
+                        else if (data == "-1") {
+                            $("#dlt_msg").html("<i class='fa fa-exclamation-circle'></i> Mobile number already exist.");
+                            //$(".alert-warning").show();
+                            $('#errormsg').show();
+                        }
+                        else if (data == "11") {
+                            setTimeout(function () {
+                                $("#alt_msg").html("<i class='fa fa-check-circle'></i> Teacher details saved successfully.");
+                                $('#successmsg').show();
+                            }, 2000);
+                                                     
+                            setTimeout(function () {
+                                $("#validation-form").get(0).reset();
+                                location.href = "/Admin/Registration";
+                            }, 2000);
+                        }
+                        else if (data == "12") {
+                                $("#alt_msg").html("<i class='fa fa-check-circle'></i> Teacher details updated successfully.");
+                                $('#successmsg').show();
+                                  
+                            setTimeout(function () {  
+                                $("#validation-form").get(0).reset();
+                                location.href = "/Admin/Registration";
+                            }, 2000);
+                        }
+                        else if (data == "21") {
+                                $("#alt_msg").html("<i class='fa fa-check-circle'></i> User details saved successfully.");
+                                $('#successmsg').show();
+
+                            setTimeout(function () {
+                                $("#validation-form").get(0).reset();
+                                location.href = "/Admin/Registration";
+                            }, 2000);
+                        }
+                        else if (data == "22") {
+                                $("#alt_msg").html("<i class='fa fa-check-circle'></i> User details updated successfully.");
+                                $('#successmsg').show();
+                             
+                            setTimeout(function () {       
+                                $("#validation-form").get(0).reset();
+                                location.href = "/Admin/Registration";
+                            }, 2000);
+                        }
+                        else if (data == "-2") {
+                            $("#dlt_msg").html("<i class='fa fa-exclamation-circle'></i> Please select a user type.");
+                            $('#errormsg').show();
+                        }
+                        else if (data == "-3") {
+                            $("#dlt_msg").html("<i class='fa fa-exclamation-circle'></i> Please enter data properly.");
+                            $("#errormsg").show();
+                        }
+                        else if (data == "-4") {
+                            $("#dlt_msg").html("<i class='fa fa-exclamation-circle'></i> Date of birth should be less than today date.");
+                            $('#errormsg').show();
+                        }
+                        else if (data == "-5") {
+                            $("#dlt_msg").html("<i class='fa fa-exclamation-circle'></i> Email-Id already exist.");
+                            //$(".alert-warning").show();
+                            $('#errormsg').show();
+                        }
+                        else {
+                            $("#dlt_msg").html(data);
+                            //$(".alert-warning").show();
+                            $('#errormsg').show();
+                        }
+
+                        setTimeout(function () {
+                            $(".loader-ajax-container").css("display", "none");
+                        }, 2000);
+                    }
+                });
+            }
+        });
+
+        //************************************** JavaScript for cropping of image *****************************************
+        $(".trigger_upload").on('click', function () {
+            $("#upload").trigger('click');
+            setTimeout(function () {
+                $('#myModal').modal('show');
+            }, 1700);
+        });
+        $('#upload').on('change', function () {
+            readFile(this);
+            var filename = $(this).val();
+            var res = filename.substr(12, 200);
+            $(".uneditable-input span").text(res);
+        });
+        function output(node) {
+            var existing = $('#result .croppie-result');
+            if (existing.length > 0) {
+                existing[0].parentNode.replaceChild(node, existing[0]);
+            }
+            else {
+                $('#result')[0].appendChild(node);
+            }
+        }
+
+        var $uploadCrop;
+        function readFile(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.upload-demo').addClass('ready');
+                    $uploadCrop.croppie('bind', {
+                        url: e.target.result
+                    }).then(function () {
+                        console.log('Image Bind complete');
+                    });
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+            else {
+                alert("Please select crop area.");
+            }
+        }
+
+        $uploadCrop = $('#upload-demo').croppie({
+            viewport: {
+                width: 100,
+                height: 130,
+                type: 'square'
+            },
+            enableExif: true
+        });
+
+        $('.upload-result').on('click', function (ev) {
+            debugger;
+            $uploadCrop.croppie('result', {
+                type: 'canvas',
+                size: 'viewport'
+            }).then(function (resp) {
+                $('#imagebase64').val(resp);
+                $('#cropped_image').attr("src", resp);
+                $('#cropped_image').css('display', 'block');
+            });
+        });
+        //************************************** JavaScript for ajax file upload END **************************************
+ </script>
+<script src="~/js/DC_Imagecrop.js"></script>
+   }

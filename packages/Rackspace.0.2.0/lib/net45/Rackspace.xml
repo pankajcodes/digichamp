@@ -1,0 +1,1518 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Rackspace</name>
+  </assembly>
+  <members>
+    <member name="T:Rackspace.Identifier">
+      <summary>
+            Represents a unique identifier.
+            <para /><para>
+            This is a Guid which has implicit and explicit conversions to/from Guid and String.
+            </para></summary>
+    </member>
+    <member name="M:Rackspace.Identifier.#ctor(System.Guid)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Rackspace.Identifier" /> class.
+            </summary>
+      <param name="id">The identifier.</param>
+    </member>
+    <member name="M:Rackspace.Identifier.#ctor(System.String)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Rackspace.Identifier" /> class.
+            </summary>
+      <param name="id">The identifier.</param>
+    </member>
+    <member name="M:Rackspace.Identifier.Equals(System.Object)">
+      <summary>Determines whether the specified object is equal to the current object.</summary>
+      <param name="obj">The object to compare with the current object. </param>
+      <returns>true if the specified object  is equal to the current object; otherwise, false.</returns>
+    </member>
+    <member name="M:Rackspace.Identifier.GetHashCode">
+      <summary>Serves as the default hash function. </summary>
+      <returns>A hash code for the current object.</returns>
+    </member>
+    <member name="M:Rackspace.Identifier.op_Equality(Rackspace.Identifier,Rackspace.Identifier)">
+      <summary>
+            Implements the operator ==.
+            </summary>
+      <param name="left">The left.</param>
+      <param name="right">The right.</param>
+      <returns>
+            The result of the operator.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Identifier.op_Explicit(System.String)~Rackspace.Identifier">
+      <summary>
+            Performs an explicit conversion from <see cref="T:System.String" /> to <see cref="T:Rackspace.Identifier" />.
+            </summary>
+      <param name="id">The identifier.</param>
+      <returns>
+            The result of the conversion.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Identifier.op_Implicit(Rackspace.Identifier)~System.String">
+      <summary>
+            Performs an implicit conversion from <see cref="T:Rackspace.Identifier" /> to <see cref="T:System.String" />.
+            </summary>
+      <param name="id">The identifier.</param>
+      <returns>
+            The result of the conversion.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Identifier.op_Implicit(System.Guid)~Rackspace.Identifier">
+      <summary>
+            Performs an implicit conversion from <see cref="T:System.Guid" /> to <see cref="T:Rackspace.Identifier" />.
+            </summary>
+      <param name="id">The identifier.</param>
+      <returns>
+            The result of the conversion.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Identifier.op_Inequality(Rackspace.Identifier,Rackspace.Identifier)">
+      <summary>
+            Implements the operator !=.
+            </summary>
+      <param name="left">The left.</param>
+      <param name="right">The right.</param>
+      <returns>
+            The result of the operator.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Identifier.ToString">
+      <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+      <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+    </member>
+    <member name="T:Rackspace.IPage`1">
+      <summary>
+            A page of resources.
+            </summary>
+      <typeparam name="T">The item type.</typeparam>
+    </member>
+    <member name="M:Rackspace.IPage`1.GetNextPageAsync(System.Threading.CancellationToken)">
+      <summary>
+            Retrieves the next page of items, if one is available. If <see cref="P:Rackspace.IPage`1.HasNextPage" /> is <c>false</c>, an empty page is returned.
+            </summary>
+    </member>
+    <member name="P:Rackspace.IPage`1.HasNextPage">
+      <summary>
+            Specifies if another page can be retrieved with additional items
+            </summary>
+    </member>
+    <member name="T:Rackspace.RackspaceNet">
+      <summary>
+            A static container for global configuration settings affecting Rackspace.NET behavior.
+            </summary>
+    </member>
+    <member name="F:Rackspace.RackspaceNet.Configuration">
+      <summary>
+            Global configuration which affects OpenStack.NET's behavior.
+            <para>Modify using <see cref="M:Rackspace.RackspaceNet.Configure(System.Action{Flurl.Http.Configuration.FlurlHttpConfigurationOptions},System.Action{Newtonsoft.Json.JsonSerializerSettings},System.Action{Rackspace.RackspaceNetConfigurationOptions})" />.</para></summary>
+    </member>
+    <member name="M:Rackspace.RackspaceNet.Configure(System.Action{Flurl.Http.Configuration.FlurlHttpConfigurationOptions},System.Action{Newtonsoft.Json.JsonSerializerSettings},System.Action{Rackspace.RackspaceNetConfigurationOptions})">
+      <summary>
+            Provides thread-safe accesss to Rackspace.NET's global configuration options.
+            <para>
+            Can only be called once at application start-up, before instantiating any Rackspace.NET objects.
+            </para></summary>
+      <param name="configureFlurl">Addtional configuration of Flurl's global settings <seealso cref="M:Flurl.Http.FlurlHttp.Configure(System.Action{Flurl.Http.Configuration.FlurlHttpConfigurationOptions})" />.</param>
+      <param name="configureJson">Additional configuration of Json.NET's global settings <seealso cref="P:Newtonsoft.Json.JsonConvert.DefaultSettings" />.</param>
+      <param name="configure">Additional configuration of Rackspace.NET's global settings.</param>
+    </member>
+    <member name="M:Rackspace.RackspaceNet.ResetDefaults">
+      <summary>
+            Resets all configuration (Rackspace.NET, OpenStack.NET, Flurl and Json.NET) so that <see cref="M:Rackspace.RackspaceNet.Configure(System.Action{Flurl.Http.Configuration.FlurlHttpConfigurationOptions},System.Action{Newtonsoft.Json.JsonSerializerSettings},System.Action{Rackspace.RackspaceNetConfigurationOptions})" /> can be called again.
+            </summary>
+    </member>
+    <member name="T:Rackspace.RackspaceNet.Tracing">
+      <summary>
+            Provides global point for programmatically configuraing tracing
+            </summary>
+    </member>
+    <member name="F:Rackspace.RackspaceNet.Tracing.Http">
+      <summary>
+            Trace source for all HTTP requests. Default level is Error.
+            <para>
+            In your app or web.config the trace soruce name is "Flurl.Http".
+            </para></summary>
+    </member>
+    <member name="T:Rackspace.RackspaceNetConfigurationOptions">
+      <summary>
+            A set of properties that affect the SDK's behavior.
+            <para>Generally set via the static <see cref="M:Rackspace.RackspaceNet.Configure(System.Action{Flurl.Http.Configuration.FlurlHttpConfigurationOptions},System.Action{Newtonsoft.Json.JsonSerializerSettings},System.Action{Rackspace.RackspaceNetConfigurationOptions})" /> method.</para></summary>
+    </member>
+    <member name="M:Rackspace.RackspaceNetConfigurationOptions.ResetDefaults">
+      <summary>
+            Clear all custom global options and set default values.
+            </summary>
+    </member>
+    <member name="T:Rackspace.ServiceOperationFailedException">
+      <summary>
+            The exception that is thrown when a service operation, such as Create, Delete or Update, fails.
+            </summary>
+    </member>
+    <member name="M:Rackspace.ServiceOperationFailedException.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:Rackspace.ServiceOperationFailedException" /> class.
+            </summary>
+    </member>
+    <member name="M:Rackspace.ServiceOperationFailedException.#ctor(System.String)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Rackspace.ServiceOperationFailedException" /> class.
+            </summary>
+      <param name="message">The message that describes the error.</param>
+    </member>
+    <member name="M:Rackspace.ServiceOperationFailedException.#ctor(System.String,System.Exception)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Rackspace.ServiceOperationFailedException" /> class.
+            </summary>
+      <param name="message">The error message that explains the reason for the exception.</param>
+      <param name="innerException">The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified.</param>
+    </member>
+    <member name="T:Rackspace.CloudNetworks.IPVersion">
+      <summary>
+            Internet Protocol Version
+            </summary>
+    </member>
+    <member name="F:Rackspace.CloudNetworks.IPVersion.IPv4">
+      <summary>
+            IPv4
+            </summary>
+    </member>
+    <member name="F:Rackspace.CloudNetworks.IPVersion.IPv6">
+      <summary>
+            IPv6
+            </summary>
+    </member>
+    <member name="T:Rackspace.CloudNetworks.v2.AllocationPool">
+      <summary>
+            Represents a range of IP addresses
+            </summary>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.AllocationPool.#ctor(System.String,System.String)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Rackspace.CloudNetworks.v2.AllocationPool" /> class.
+            </summary>
+      <param name="start">The initial IP address.</param>
+      <param name="end">The final IP address.</param>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.AllocationPool.End">
+      <summary>
+            The final IP address.
+            </summary>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.AllocationPool.Equals(System.Object)">
+      <summary>Determines whether the specified object is equal to the current object.</summary>
+      <param name="obj">The object to compare with the current object. </param>
+      <returns>true if the specified object  is equal to the current object; otherwise, false.</returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.AllocationPool.GetHashCode">
+      <summary>Serves as the default hash function. </summary>
+      <returns>A hash code for the current object.</returns>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.AllocationPool.Start">
+      <summary>
+            The initial IP address.
+            </summary>
+    </member>
+    <member name="T:Rackspace.CloudNetworks.v2.CloudNetworkService">
+      <summary>
+            The Rackspace Cloud Networks service.
+            </summary>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.#ctor(OpenStack.Authentication.IAuthenticationProvider,System.String)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Rackspace.CloudNetworks.v2.CloudNetworkService" /> class.
+            </summary>
+      <param name="authenticationProvider">The authentication provider.</param>
+      <param name="region">The region.</param>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.CreateNetworkAsync(Rackspace.CloudNetworks.v2.NetworkDefinition,System.Threading.CancellationToken)">
+      <summary>
+            Creates a network.
+            </summary>
+      <param name="network">The network definition.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            The created network.
+            </returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.CreatePortAsync(Rackspace.CloudNetworks.v2.PortCreateDefinition,System.Threading.CancellationToken)">
+      <summary>
+            Creates a port.
+            </summary>
+      <param name="port">The port definition.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            The created port.
+            </returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.CreateSubnetAsync(Rackspace.CloudNetworks.v2.SubnetCreateDefinition,System.Threading.CancellationToken)">
+      <summary>
+            Creates a subnet.
+            </summary>
+      <param name="subnet">The subnet definition.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            The created subnet.
+            </returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.DeleteNetworkAsync(Rackspace.Identifier,System.Threading.CancellationToken)">
+      <summary>
+            Deletes the specified network.
+            </summary>
+      <param name="networkId">The network identifier.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:OpenStack.Networking.v2.NetworkingApiBuilder.DeleteNetworkAsync(System.String,System.Threading.CancellationToken)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.DeletePortAsync(Rackspace.Identifier,System.Threading.CancellationToken)">
+      <summary>
+            Deletes the specified port.
+            </summary>
+      <param name="portId">The port identifier.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:OpenStack.Networking.v2.NetworkingApiBuilder.DeletePortAsync(System.String,System.Threading.CancellationToken)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.DeleteSubnetAsync(Rackspace.Identifier,System.Threading.CancellationToken)">
+      <summary>
+            Deletes the specified subnet.
+            </summary>
+      <param name="subnetId">The subnet identifier.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:OpenStack.Networking.v2.NetworkingApiBuilder.DeleteSubnetAsync(System.String,System.Threading.CancellationToken)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.GetNetworkAsync(Rackspace.Identifier,System.Threading.CancellationToken)">
+      <summary>
+            Gets the specified network.
+            </summary>
+      <param name="networkId">The network identifier.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            The network associated with the specified identifier.
+            </returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.GetPortAsync(Rackspace.Identifier,System.Threading.CancellationToken)">
+      <summary>
+            Gets the specified port.
+            </summary>
+      <param name="portId">The port identifier.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            The port associated with the specified identifier.
+            </returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.GetSubnetAsync(Rackspace.Identifier,System.Threading.CancellationToken)">
+      <summary>
+            Gets the specified subnet.
+            </summary>
+      <param name="subnetId">The subnet identifier.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            The subnet associated with the specified identifier.
+            </returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.ListNetworksAsync(Rackspace.Identifier,System.Nullable{System.Int32},System.Threading.CancellationToken)">
+      <summary>
+            Lists all networks associated with the account.
+            </summary>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            A collection of network resources associated with the account.
+            </returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.ListPortsAsync(Rackspace.Identifier,System.Nullable{System.Int32},System.Threading.CancellationToken)">
+      <summary>
+            Lists all ports associated with the account.
+            </summary>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            A collection of port resources associated with the account.
+            </returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.ListSubnetsAsync(Rackspace.Identifier,System.Nullable{System.Int32},System.Threading.CancellationToken)">
+      <summary>
+            Lists all subnets associated with the account.
+            </summary>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            A collection of subnet resources associated with the account.
+            </returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.UpdateNetworkAsync(Rackspace.Identifier,Rackspace.CloudNetworks.v2.NetworkDefinition,System.Threading.CancellationToken)">
+      <summary>
+            Updates the specified network.
+            </summary>
+      <param name="networkId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>networkId</parameter>
+            <parameter>M:OpenStack.Networking.v2.NetworkingApiBuilder.UpdateNetworkAsync(System.String,System.Object,System.Threading.CancellationToken)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="network">The updated network definition.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            The updated network.
+            </returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.UpdatePortAsync(Rackspace.Identifier,Rackspace.CloudNetworks.v2.PortUpdateDefinition,System.Threading.CancellationToken)">
+      <summary>
+            Updates the specified port.
+            </summary>
+      <param name="portId">The port identifier.</param>
+      <param name="port">The updated port definition.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            The updated port.
+            </returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.CloudNetworkService.UpdateSubnetAsync(Rackspace.Identifier,Rackspace.CloudNetworks.v2.SubnetUpdateDefinition,System.Threading.CancellationToken)">
+      <summary>
+            Updates the specified subnet.
+            </summary>
+      <param name="subnetId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>subnetId</parameter>
+            <parameter>M:OpenStack.Networking.v2.NetworkingApiBuilder.UpdateSubnetAsync(System.String,System.Object,System.Threading.CancellationToken)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="subnet">The updated subnet definition.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            The updated subnet.
+            </returns>
+    </member>
+    <member name="T:Rackspace.CloudNetworks.v2.HostRoute">
+      <summary>
+            Represents a subnet host route.
+            </summary>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.HostRoute.#ctor(System.String,System.String)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Rackspace.CloudNetworks.v2.HostRoute" /> class.
+            </summary>
+      <param name="destinationCIDR">The destination CIDR.</param>
+      <param name="nextHop">The next hop IP address.</param>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.HostRoute.DestinationCIDR">
+      <summary>
+            The destination CIDR.
+            </summary>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.HostRoute.Equals(System.Object)">
+      <summary>Determines whether the specified object is equal to the current object.</summary>
+      <param name="obj">The object to compare with the current object. </param>
+      <returns>true if the specified object  is equal to the current object; otherwise, false.</returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.HostRoute.GetHashCode">
+      <summary>Serves as the default hash function. </summary>
+      <returns>A hash code for the current object.</returns>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.HostRoute.NextHop">
+      <summary>
+            The IP address of the next hop.
+            </summary>
+    </member>
+    <member name="T:Rackspace.CloudNetworks.v2.IPAddressAssociation">
+      <summary>
+            Represents an IP address associated with a port resource of the <see cref="T:Rackspace.CloudNetworks.v2.CloudNetworkService" />.
+            </summary>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.IPAddressAssociation.#ctor(Rackspace.Identifier)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Rackspace.CloudNetworks.v2.IPAddressAssociation" /> class.
+            <para>
+            an available IP from that subnet will be allocated to the port.
+            </para></summary>
+      <param name="subnetId">The subnet identifier.</param>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.IPAddressAssociation.#ctor(Rackspace.Identifier,System.String)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Rackspace.CloudNetworks.v2.IPAddressAssociation" /> class.
+            </summary>
+      <param name="subnetId">The subnet identifier.</param>
+      <param name="ipAddress">The ip address.</param>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.IPAddressAssociation.Equals(System.Object)">
+      <summary>Determines whether the specified object is equal to the current object.</summary>
+      <param name="obj">The object to compare with the current object. </param>
+      <returns>true if the specified object  is equal to the current object; otherwise, false.</returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.IPAddressAssociation.GetHashCode">
+      <summary>Serves as the default hash function. </summary>
+      <returns>A hash code for the current object.</returns>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.IPAddressAssociation.IPAddress">
+      <summary>
+            The associated IP address.
+            </summary>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.IPAddressAssociation.op_Equality(Rackspace.CloudNetworks.v2.IPAddressAssociation,Rackspace.CloudNetworks.v2.IPAddressAssociation)">
+      <summary>
+            Implements the operator ==.
+            </summary>
+      <param name="left">The left.</param>
+      <param name="right">The right.</param>
+      <returns>
+            The result of the operator.
+            </returns>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.IPAddressAssociation.op_Inequality(Rackspace.CloudNetworks.v2.IPAddressAssociation,Rackspace.CloudNetworks.v2.IPAddressAssociation)">
+      <summary>
+            Implements the operator !=.
+            </summary>
+      <param name="left">The left.</param>
+      <param name="right">The right.</param>
+      <returns>
+            The result of the operator.
+            </returns>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.IPAddressAssociation.SubnetId">
+      <summary>
+            The subnet identifier.
+            </summary>
+    </member>
+    <member name="T:Rackspace.CloudNetworks.v2.Network">
+      <summary>
+            Represents a network resource of the <see cref="T:Rackspace.CloudNetworks.v2.CloudNetworkService" />.
+            <para /><para>
+            Isolated virtual Layer-2 domains; a network can also be regarded as a virtual (or logical) switch.
+            </para></summary>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.Network.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Rackspace.CloudNetworks.v2.Network</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.Network.Id">
+      <summary>
+            The network identifier.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.Network.IsShared">
+      <summary>
+            Indicates whether this network is shared across all tenants.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.Network.IsUp">
+      <summary>
+            The administrative state of the network.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.Network.Status">
+      <summary>
+            The network status.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.Network.Subnets">
+      <summary>
+            The associated subnet identifiers.
+            </summary>
+    </member>
+    <member name="T:Rackspace.CloudNetworks.v2.NetworkDefinition">
+      <summary>
+            Represents the definition of a network resource of the <see cref="T:Rackspace.CloudNetworks.v2.CloudNetworkService" />.
+            </summary>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.NetworkDefinition.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Rackspace.CloudNetworks.v2.NetworkDefinition</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.NetworkDefinition.Name">
+      <summary>
+            The network name.
+            </summary>
+    </member>
+    <member name="T:Rackspace.CloudNetworks.v2.NetworkStatus">
+      <summary>
+        <see cref="T:Rackspace.CloudNetworks.v2.Network" /> Status
+            </summary>
+    </member>
+    <member name="F:Rackspace.CloudNetworks.v2.NetworkStatus.Unknown">
+      <summary>
+            The network status is unknown.
+            </summary>
+    </member>
+    <member name="F:Rackspace.CloudNetworks.v2.NetworkStatus.Active">
+      <summary>
+            The network is active.
+            </summary>
+    </member>
+    <member name="T:Rackspace.CloudNetworks.v2.Port">
+      <summary>
+            Represents a port resource of the <see cref="T:Rackspace.CloudNetworks.v2.CloudNetworkService" />.
+            <para /><para>
+            Virtual (or logical) switch ports on a given network.
+            </para></summary>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.Port.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Rackspace.CloudNetworks.v2.Port</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.Port.Id">
+      <summary>
+            The ID of the port.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.Port.IsUp">
+      <summary>
+            The administrative state of the port.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.Port.MACAddress">
+      <summary>
+            The MAC address.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.Port.Status">
+      <summary>
+            The port status.
+            </summary>
+    </member>
+    <member name="T:Rackspace.CloudNetworks.v2.PortCreateDefinition">
+      <summary>
+            Represents the set of properties which can be initialized when creating a <see cref="T:Rackspace.CloudNetworks.v2.Port" />.
+            </summary>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.PortCreateDefinition.#ctor(Rackspace.Identifier)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Rackspace.CloudNetworks.v2.PortCreateDefinition" /> class.
+            </summary>
+      <param name="networkId">The network identifier.</param>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.PortCreateDefinition.DeviceId">
+      <summary>
+            The ID of the device that uses this port. For example, a virtual server.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.PortCreateDefinition.DeviceOwner">
+      <summary>
+            The ID of the entity that uses this port. For example, a DHCP agent.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.PortCreateDefinition.NetworkId">
+      <summary>
+            The ID of the attached network.
+            </summary>
+    </member>
+    <member name="T:Rackspace.CloudNetworks.v2.PortStatus">
+      <summary>
+        <see cref="T:Rackspace.CloudNetworks.v2.Port" /> Status
+            </summary>
+    </member>
+    <member name="F:Rackspace.CloudNetworks.v2.PortStatus.Unknown">
+      <summary>
+            The port status is unknown.
+            </summary>
+    </member>
+    <member name="F:Rackspace.CloudNetworks.v2.PortStatus.Active">
+      <summary>
+            The port is active.
+            </summary>
+    </member>
+    <member name="F:Rackspace.CloudNetworks.v2.PortStatus.Down">
+      <summary>
+            The port is down.
+            </summary>
+    </member>
+    <member name="T:Rackspace.CloudNetworks.v2.PortUpdateDefinition">
+      <summary>
+            Represents the set of properties which can be modified when updating a <see cref="T:Rackspace.CloudNetworks.v2.Port" />.
+            </summary>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.PortUpdateDefinition.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:Rackspace.CloudNetworks.v2.PortUpdateDefinition" /> class.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.PortUpdateDefinition.FixedIPs">
+      <summary>
+            IP addresses for the port.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.PortUpdateDefinition.Name">
+      <summary>
+            The port name.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.PortUpdateDefinition.SecurityGroups">
+      <summary>
+            The IDs of any attached security groups.
+            </summary>
+    </member>
+    <member name="T:Rackspace.CloudNetworks.v2.Subnet">
+      <summary>
+        <para>Represents a subnet resource of the <see cref="T:Rackspace.CloudNetworks.v2.CloudNetworkService" />.</para>
+        <para />
+        <para>IPv4 or IPv6 address blocks from which IPs to be assigned to VMs on a given network are selected.</para>
+      </summary>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.Subnet.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Rackspace.CloudNetworks.v2.Subnet</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.Subnet.Id">
+      <summary>
+            The ID of the subnet.
+            </summary>
+    </member>
+    <member name="T:Rackspace.CloudNetworks.v2.SubnetCreateDefinition">
+      <summary>
+            Represents the set of properties which can be initialized when creating a <see cref="T:Rackspace.CloudNetworks.v2.Subnet" />.
+            </summary>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.SubnetCreateDefinition.#ctor(Rackspace.Identifier,Rackspace.CloudNetworks.IPVersion,System.String)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Rackspace.CloudNetworks.v2.SubnetCreateDefinition" /> class.
+            </summary>
+      <param name="networkId">The network identifier.</param>
+      <param name="ipVersion">The ip version.</param>
+      <param name="cidr">The cidr.</param>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.SubnetCreateDefinition.CIDR">
+      <summary>
+            The CIDR.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.SubnetCreateDefinition.IPVersion">
+      <summary>
+            The IP version.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.SubnetCreateDefinition.NetworkId">
+      <summary>
+            The ID of the attached network.
+            </summary>
+    </member>
+    <member name="T:Rackspace.CloudNetworks.v2.SubnetUpdateDefinition">
+      <summary>
+            Represents the set of properties which can be modified when updating a <see cref="T:Rackspace.CloudNetworks.v2.Subnet" />.
+            </summary>
+    </member>
+    <member name="M:Rackspace.CloudNetworks.v2.SubnetUpdateDefinition.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:Rackspace.CloudNetworks.v2.SubnetUpdateDefinition" /> class.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.SubnetUpdateDefinition.AllocationPools">
+      <summary>
+            The IP address allocation pools.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.SubnetUpdateDefinition.GatewayIP">
+      <summary>
+            The gateway IP address.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.SubnetUpdateDefinition.HostRoutes">
+      <summary>
+            The host routes.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.SubnetUpdateDefinition.Name">
+      <summary>
+            The subnet name.
+            </summary>
+    </member>
+    <member name="P:Rackspace.CloudNetworks.v2.SubnetUpdateDefinition.Nameservers">
+      <summary>
+            The DNS nameserver IP addresses.
+            </summary>
+    </member>
+    <member name="T:Rackspace.RackConnect.v3.ListPublicIPsFilter">
+      <summary>
+            Defines filters which can be applied when listing Public IPs.
+            </summary>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.ListPublicIPsFilter.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Rackspace.RackConnect.v3.ListPublicIPsFilter</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.ListPublicIPsFilter.IsRetained">
+      <summary>
+            Filter the results based on their <see cref="P:Rackspace.RackConnect.v3.PublicIP.ShouldRetain" /> setting.
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.ListPublicIPsFilter.ServerId">
+      <summary>
+            Filter the results to only those associated with the specified server.
+            </summary>
+    </member>
+    <member name="T:Rackspace.RackConnect.v3.NetworkReference">
+      <summary>
+            Represents a reference to a RackConnect Cloud Network.
+            </summary>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.NetworkReference.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Rackspace.RackConnect.v3.NetworkReference</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.NetworkReference.CIDR">
+      <summary>
+            The CIDR.
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.NetworkReference.Created">
+      <summary>
+            Timestamp when the network was created.
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.NetworkReference.Id">
+      <summary>
+            The network identifier.
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.NetworkReference.Name">
+      <summary>
+            The network name.
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.NetworkReference.Updated">
+      <summary>
+            Timestamp when the network was last updated.
+            </summary>
+    </member>
+    <member name="T:Rackspace.RackConnect.v3.PublicIP">
+      <summary>
+            Represents a public IP address resource of the <see cref="T:Rackspace.RackConnect.v3.RackConnectService" />.
+            </summary>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.PublicIP.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Rackspace.RackConnect.v3.PublicIP</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.PublicIP.AssignAsync(System.String,System.Threading.CancellationToken)">
+      <summary>
+            Assigns the Public IP to a cloud server.
+            </summary>
+      <exception cref="T:System.InvalidOperationException">When the <see cref="T:Rackspace.RackConnect.v3.PublicIP" /> instance was not constructed by the <see cref="T:Rackspace.RackConnect.v3.RackConnectService" />, as it is missing the appropriate internal state to execute service calls.</exception>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIP.Created">
+      <summary>
+            Timestamp when the public IP address was allocated.
+            </summary>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.PublicIP.DeleteAsync(System.Threading.CancellationToken)">
+      <summary>
+            Removes the public IP address from the current account.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <exception cref="T:System.InvalidOperationException">When the <see cref="T:Rackspace.RackConnect.v3.PublicIP" /> instance was not constructed by the <see cref="T:Rackspace.RackConnect.v3.RackConnectService" />, as it is missing the appropriate internal state to execute service calls.</exception>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIP.Id">
+      <summary>
+            The public IP address identifier.
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIP.PublicIPv4Address">
+      <summary>
+            The allocated public IP address (IPv4).
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIP.Server">
+      <summary>
+            The server to which the public IP address has been allocated.
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIP.ShouldRetain">
+      <summary>
+            Determines whether a Public IP is removed from your environment once the server to which it is attached is deleted.
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIP.Status">
+      <summary>
+            The public IP address status.
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIP.StatusDetails">
+      <summary>
+            Provides additional information when <see cref="P:Rackspace.RackConnect.v3.PublicIP.Status" /> is in a failed state.
+            </summary>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.PublicIP.UnassignAsync(System.Threading.CancellationToken)">
+      <summary>
+            Removes the Public IP from the server to which it is currently assigned.
+            </summary>
+      <exception cref="T:System.InvalidOperationException">When the <see cref="T:Rackspace.RackConnect.v3.PublicIP" /> instance was not constructed by the <see cref="T:Rackspace.RackConnect.v3.RackConnectService" />, as it is missing the appropriate internal state to execute service calls.</exception>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIP.Updated">
+      <summary>
+            Timestamp when the public IP address allocation was last updated.
+            </summary>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.PublicIP.WaitUntilActiveAsync(System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan},System.IProgress{System.Boolean},System.Threading.CancellationToken)">
+      <summary>
+            Waits for the public IP address to become active.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="refreshDelay">The amount of time to wait between requests.</param>
+      <param name="timeout">The amount of time to wait before throwing a <see cref="T:System.TimeoutException" />.</param>
+      <param name="progress">The progress callback.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <exception cref="T:System.InvalidOperationException">When the <see cref="T:Rackspace.RackConnect.v3.PublicIP" /> instance was not constructed by the <see cref="T:Rackspace.RackConnect.v3.RackConnectService" />, as it is missing the appropriate internal state to execute service calls.</exception>
+      <exception cref="T:System.TimeoutException">If the <paramref name="timeout" /> value is reached.</exception>
+      <exception cref="T:Flurl.Http.FlurlHttpException">If the API call returns a bad <see cref="T:System.Net.HttpStatusCode" />.</exception>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.PublicIP.WaitUntilDeletedAsync(System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan},System.IProgress{System.Boolean},System.Threading.CancellationToken)">
+      <summary>
+            Waits for the public IP address to be removed from the current account.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="refreshDelay">The amount of time to wait between requests.</param>
+      <param name="timeout">The amount of time to wait before throwing a <see cref="T:System.TimeoutException" />.</param>
+      <param name="progress">The progress callback.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <exception cref="T:System.InvalidOperationException">When the <see cref="T:Rackspace.RackConnect.v3.PublicIP" /> instance was not constructed by the <see cref="T:Rackspace.RackConnect.v3.RackConnectService" />, as it is missing the appropriate internal state to execute service calls.</exception>
+      <exception cref="T:System.TimeoutException">If the <paramref name="timeout" /> value is reached.</exception>
+      <exception cref="T:Flurl.Http.FlurlHttpException">If the API call returns a bad <see cref="T:System.Net.HttpStatusCode" />.</exception>
+    </member>
+    <member name="T:Rackspace.RackConnect.v3.PublicIPCreateDefinition">
+      <summary>
+            Represents a request to the <see cref="T:Rackspace.RackConnect.v3.RackConnectService" /> to provision a public IP address.
+            </summary>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.PublicIPCreateDefinition.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Rackspace.RackConnect.v3.PublicIPCreateDefinition</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIPCreateDefinition.ServerId">
+      <summary>
+            If specified, requests that the IP address be associated to the specified server.
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIPCreateDefinition.ShouldRetain">
+      <summary>
+            Determines whether a Public IP is removed from your environment once the server to which it is attached is deleted.
+            </summary>
+    </member>
+    <member name="T:Rackspace.RackConnect.v3.PublicIPNetworkAssociation">
+      <summary>
+            Represents an association between a Public IP and a RackConnect Cloud Network.
+            </summary>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.PublicIPNetworkAssociation.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Rackspace.RackConnect.v3.PublicIPNetworkAssociation</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIPNetworkAssociation.PrivateIPv4Address">
+      <summary>
+            The private IP (v4) address on the network.
+            </summary>
+    </member>
+    <member name="T:Rackspace.RackConnect.v3.PublicIPServerAssociation">
+      <summary>
+            Represents a reference to a cloud server which has been allocated a <see cref="T:Rackspace.RackConnect.v3.PublicIP" />.
+            </summary>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.PublicIPServerAssociation.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Rackspace.RackConnect.v3.PublicIPServerAssociation</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIPServerAssociation.Created">
+      <summary>
+            Timestamp of when the server was created.
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIPServerAssociation.Network">
+      <summary>
+            The network to which the cloud server is attached. 
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIPServerAssociation.ServerId">
+      <summary>
+            The cloud server identitifer
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIPServerAssociation.ServerName">
+      <summary>
+            The cloud server name
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIPServerAssociation.Updated">
+      <summary>
+            Timestamp of when the server was last updated.
+            </summary>
+    </member>
+    <member name="T:Rackspace.RackConnect.v3.PublicIPStatus">
+      <summary>
+        <see cref="T:Rackspace.RackConnect.v3.PublicIP" /> Status
+            </summary>
+    </member>
+    <member name="F:Rackspace.RackConnect.v3.PublicIPStatus.Unknown">
+      <summary>
+            The status is unknown.
+            </summary>
+    </member>
+    <member name="F:Rackspace.RackConnect.v3.PublicIPStatus.Active">
+      <summary>
+            The public IP address is active.
+            </summary>
+    </member>
+    <member name="F:Rackspace.RackConnect.v3.PublicIPStatus.Creating">
+      <summary>
+            The public IP address is being added.
+            </summary>
+    </member>
+    <member name="F:Rackspace.RackConnect.v3.PublicIPStatus.Updating">
+      <summary>
+            The public IP address is being updated.
+            </summary>
+    </member>
+    <member name="F:Rackspace.RackConnect.v3.PublicIPStatus.PendingBuild">
+      <summary>
+            The server associated with the public IP is still being built.
+            </summary>
+    </member>
+    <member name="F:Rackspace.RackConnect.v3.PublicIPStatus.CreateFailed">
+      <summary>
+            The public IP address add operation failed.
+            </summary>
+    </member>
+    <member name="F:Rackspace.RackConnect.v3.PublicIPStatus.UpdateFailed">
+      <summary>
+            The public IP address update operation failed.
+            </summary>
+    </member>
+    <member name="F:Rackspace.RackConnect.v3.PublicIPStatus.DeleteFailed">
+      <summary>
+            The public IP address remove operation failed.
+            </summary>
+    </member>
+    <member name="F:Rackspace.RackConnect.v3.PublicIPStatus.Deleted">
+      <summary>
+            The public IP address has been removed.
+            </summary>
+    </member>
+    <member name="T:Rackspace.RackConnect.v3.PublicIPUpdateDefinition">
+      <summary>
+            Represents a request to the <see cref="T:Rackspace.RackConnect.v3.RackConnectService" /> to update a public IP address.
+            <para /><para>
+            All properties are optional, anything that is set will be updated and null properties will remain unchanged.
+            </para></summary>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.PublicIPUpdateDefinition.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Rackspace.RackConnect.v3.PublicIPUpdateDefinition</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIPUpdateDefinition.ServerId">
+      <summary>
+            If specified, requests that the IP address be associated to the specified server.
+            </summary>
+    </member>
+    <member name="P:Rackspace.RackConnect.v3.PublicIPUpdateDefinition.ShouldRetain">
+      <summary>
+            Determines whether a Public IP is removed from your environment once the server to which it is attached is deleted.
+            </summary>
+    </member>
+    <member name="T:Rackspace.RackConnect.v3.RackConnectService">
+      <summary>
+            The Rackspace RackConnect (Hybrid Cloud) service.
+            </summary>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.RackConnectService.#ctor(OpenStack.Authentication.IAuthenticationProvider,System.String)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Rackspace.RackConnect.v3.RackConnectService" /> class.
+            </summary>
+      <param name="authenticationProvider">The authentication provider.</param>
+      <param name="region">The region.</param>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.RackConnectService.CreatePublicIPAsync(Rackspace.RackConnect.v3.PublicIPCreateDefinition,System.Threading.CancellationToken)">
+      <summary>
+            Allocates a public IP address to the current account.
+            </summary>
+      <param name="definition">The public IP definition.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>The identifer of the public IP address while it is being provisioned. Use <see cref="M:Rackspace.RackConnect.v3.RackConnectService.WaitUntilPublicIPIsActiveAsync(Rackspace.Identifier,System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan},System.IProgress{System.Boolean},System.Threading.CancellationToken)" /> to wait for the IP address to be fully active.</returns>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.RackConnectService.DeletePublicIPAsync(Rackspace.Identifier,System.Threading.CancellationToken)">
+      <summary>
+            Removes the public IP address from the current account.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.RackConnectService.GetNetworkAsync(Rackspace.Identifier,System.Threading.CancellationToken)">
+      <summary>
+            Gets the specified RackConnect Cloud Network.
+            </summary>
+      <param name="networkId">The network identifier.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.RackConnectService.GetPublicIPAsync(Rackspace.Identifier,System.Threading.CancellationToken)">
+      <summary>
+            Gets the specified public IP address.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.RackConnectService.ListNetworksAsync(System.Threading.CancellationToken)">
+      <summary>
+            Lists Cloud Networks associated with a RackConnect Configuration.
+            </summary>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            A collection of networks associated with the account.
+            </returns>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.RackConnectService.ListPublicIPsAsync(Rackspace.RackConnect.v3.ListPublicIPsFilter,System.Threading.CancellationToken)">
+      <summary>
+            Lists all public IP addresses associated with the account.
+            </summary>
+      <param name="filter">Optional filter parameters.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            A collection of public IP addresses associated with the account.
+            </returns>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.RackConnectService.UpdatePublicIPAsync(Rackspace.Identifier,Rackspace.RackConnect.v3.PublicIPUpdateDefinition,System.Threading.CancellationToken)">
+      <summary>
+            Updates the public IP address.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="definition">The updated public IP definition.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.RackConnectService.WaitUntilPublicIPIsActiveAsync(Rackspace.Identifier,System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan},System.IProgress{System.Boolean},System.Threading.CancellationToken)">
+      <summary>
+            Waits for the public IP address to become active.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="refreshDelay">The amount of time to wait between requests.</param>
+      <param name="timeout">The amount of time to wait before throwing a <see cref="T:System.TimeoutException" />.</param>
+      <param name="progress">The progress callback.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <exception cref="T:System.TimeoutException">If the <paramref name="timeout" /> value is reached.</exception>
+      <exception cref="T:Flurl.Http.FlurlHttpException">If the API call returns a bad <see cref="T:System.Net.HttpStatusCode" />.</exception>
+    </member>
+    <member name="M:Rackspace.RackConnect.v3.RackConnectService.WaitUntilPublicIPIsDeletedAsync(Rackspace.Identifier,System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan},System.IProgress{System.Boolean},System.Threading.CancellationToken)">
+      <summary>
+            Waits for the public IP address to be removed from the current account.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="refreshDelay">The amount of time to wait between requests.</param>
+      <param name="timeout">The amount of time to wait before throwing a <see cref="T:System.TimeoutException" />.</param>
+      <param name="progress">The progress callback.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <exception cref="T:System.TimeoutException">If the <paramref name="timeout" /> value is reached.</exception>
+      <exception cref="T:Flurl.Http.FlurlHttpException">If the API call returns a bad <see cref="T:System.Net.HttpStatusCode" />.</exception>
+    </member>
+    <member name="T:Rackspace.Synchronous.CloudNetworkServiceExtensions">
+      <summary>
+            Provides synchronous extention methods for an <see cref="T:Rackspace.CloudNetworks.v2.CloudNetworkService" /> instance.
+            </summary>
+    </member>
+    <member name="M:Rackspace.Synchronous.CloudNetworkServiceExtensions.CreateNetwork(Rackspace.CloudNetworks.v2.CloudNetworkService,Rackspace.CloudNetworks.v2.NetworkDefinition)">
+      <summary>
+            Creates a network.
+            </summary>
+      <param name="networkingService">The networking service.</param>
+      <param name="network">The network definition.</param>
+      <returns>
+            The created network.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Synchronous.CloudNetworkServiceExtensions.CreatePort(Rackspace.CloudNetworks.v2.CloudNetworkService,Rackspace.CloudNetworks.v2.PortCreateDefinition)">
+      <summary>
+            Creates a port.
+            </summary>
+      <param name="networkingService">The networking service.</param>
+      <param name="port">The port definition.</param>
+      <returns>
+            The created port.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Synchronous.CloudNetworkServiceExtensions.CreateSubnet(Rackspace.CloudNetworks.v2.CloudNetworkService,Rackspace.CloudNetworks.v2.SubnetCreateDefinition)">
+      <summary>
+            Creates a subnet.
+            </summary>
+      <param name="networkingService">The networking service.</param>
+      <param name="subnet">The subnet definition.</param>
+      <returns>
+            The created subnet.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Synchronous.CloudNetworkServiceExtensions.DeleteNetwork(Rackspace.CloudNetworks.v2.CloudNetworkService,Rackspace.Identifier)">
+      <summary>
+            Deletes the specified network.
+            </summary>
+      <param name="networkingService">The networking service.</param>
+      <param name="networkId">The network identifier.</param>
+    </member>
+    <member name="M:Rackspace.Synchronous.CloudNetworkServiceExtensions.DeletePort(Rackspace.CloudNetworks.v2.CloudNetworkService,Rackspace.Identifier)">
+      <summary>
+            Deletes the specified port.
+            </summary>
+      <param name="networkingService">The networking service.</param>
+      <param name="portId">The port identifier.</param>
+    </member>
+    <member name="M:Rackspace.Synchronous.CloudNetworkServiceExtensions.DeleteSubnet(Rackspace.CloudNetworks.v2.CloudNetworkService,Rackspace.Identifier)">
+      <summary>
+            Deletes the specified subnet.
+            </summary>
+      <param name="networkingService">The networking service.</param>
+      <param name="subnetId">The subnet identifier.</param>
+    </member>
+    <member name="M:Rackspace.Synchronous.CloudNetworkServiceExtensions.GetNetwork(Rackspace.CloudNetworks.v2.CloudNetworkService,Rackspace.Identifier)">
+      <summary>
+            Gets the specified network.
+            </summary>
+      <param name="networkingService">The networking service.</param>
+      <param name="networkId">The network identifier.</param>
+      <returns>
+            The network associated with the specified identifier.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Synchronous.CloudNetworkServiceExtensions.GetPort(Rackspace.CloudNetworks.v2.CloudNetworkService,Rackspace.Identifier)">
+      <summary>
+            Gets the specified port.
+            </summary>
+      <param name="networkingService">The networking service.</param>
+      <param name="portId">The port identifier.</param>
+      <returns>
+            The port associated with the specified identifier.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Synchronous.CloudNetworkServiceExtensions.GetSubnet(Rackspace.CloudNetworks.v2.CloudNetworkService,Rackspace.Identifier)">
+      <summary>
+            Gets the specified subnet.
+            </summary>
+      <param name="networkingService">The networking service.</param>
+      <param name="subnetId">The subnet identifier.</param>
+      <returns>
+            The subnet associated with the specified identifier.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Synchronous.CloudNetworkServiceExtensions.ListNetworks(Rackspace.CloudNetworks.v2.CloudNetworkService,Rackspace.Identifier,System.Nullable{System.Int32})">
+      <summary>
+            Lists all networks associated with the account.
+            </summary>
+      <param name="networkingService">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>networkingService</parameter>
+            <parameter>M:OpenStack.Synchronous.NetworkingServiceExtensions.ListNetworks(OpenStack.Networking.v2.NetworkingService)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+            A collection of network resources associated with the account.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Synchronous.CloudNetworkServiceExtensions.ListPorts(Rackspace.CloudNetworks.v2.CloudNetworkService,Rackspace.Identifier,System.Nullable{System.Int32})">
+      <summary>
+            Lists all ports associated with the account.
+            </summary>
+      <param name="networkingService">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>networkingService</parameter>
+            <parameter>M:OpenStack.Synchronous.NetworkingServiceExtensions.ListPorts(OpenStack.Networking.v2.NetworkingService)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+            A collection of port resources associated with the account.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Synchronous.CloudNetworkServiceExtensions.ListSubnets(Rackspace.CloudNetworks.v2.CloudNetworkService,Rackspace.Identifier,System.Nullable{System.Int32})">
+      <summary>
+            Lists all subnets associated with the account.
+            </summary>
+      <param name="networkingService">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>networkingService</parameter>
+            <parameter>M:OpenStack.Synchronous.NetworkingServiceExtensions.ListSubnets(OpenStack.Networking.v2.NetworkingService)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+            A collection of subnet resources associated with the account.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Synchronous.CloudNetworkServiceExtensions.UpdateNetwork(Rackspace.CloudNetworks.v2.CloudNetworkService,Rackspace.Identifier,Rackspace.CloudNetworks.v2.NetworkDefinition)">
+      <summary>
+            Updates the specified network.
+            </summary>
+      <param name="networkingService">The networking service.</param>
+      <param name="networkId">The network identifier.</param>
+      <param name="network">The updated network definition.</param>
+      <returns>
+            The updated network.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Synchronous.CloudNetworkServiceExtensions.UpdatePort(Rackspace.CloudNetworks.v2.CloudNetworkService,Rackspace.Identifier,Rackspace.CloudNetworks.v2.PortUpdateDefinition)">
+      <summary>
+            Updates the specified port.
+            </summary>
+      <param name="networkingService">The networking service.</param>
+      <param name="portId">The port identifier.</param>
+      <param name="port">The updated port definition.</param>
+      <returns>
+            The updated port.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Synchronous.CloudNetworkServiceExtensions.UpdateSubnet(Rackspace.CloudNetworks.v2.CloudNetworkService,Rackspace.Identifier,Rackspace.CloudNetworks.v2.SubnetUpdateDefinition)">
+      <summary>
+            Updates the specified subnet.
+            </summary>
+      <param name="networkingService">The networking service.</param>
+      <param name="subnetId">The subnet identifier.</param>
+      <param name="subnet">The updated subnet definition.</param>
+      <returns>
+            The updated port.
+            </returns>
+    </member>
+    <member name="T:Rackspace.Synchronous.PageExtensions">
+      <summary>
+            Provides synchronous extention methods for an <see cref="T:Rackspace.IPage`1" /> instance.
+            </summary>
+    </member>
+    <member name="M:Rackspace.Synchronous.PageExtensions.GetNextPage``1(Rackspace.IPage{``0})">
+      <summary>
+            Retrieves the next page of items, if one is available. If <see cref="P:Rackspace.IPage`1.HasNextPage" /> is <c>false</c>, an empty page is returned.
+            </summary>
+    </member>
+    <member name="T:Rackspace.Synchronous.PublicIPExtensions">
+      <summary>
+            Provides synchronous extention methods for a <see cref="T:Rackspace.RackConnect.v3.PublicIP" /> instance.
+            </summary>
+    </member>
+    <member name="M:Rackspace.Synchronous.PublicIPExtensions.Assign(Rackspace.RackConnect.v3.PublicIP,System.String)">
+      <summary>
+            Assigns the Public IP to a cloud server.
+            </summary>
+      <exception cref="T:System.InvalidOperationException">When the <see cref="T:Rackspace.RackConnect.v3.PublicIP" /> instance was not constructed by the <see cref="T:Rackspace.RackConnect.v3.RackConnectService" />, as it is missing the appropriate internal state to execute service calls.</exception>
+    </member>
+    <member name="M:Rackspace.Synchronous.PublicIPExtensions.Delete(Rackspace.RackConnect.v3.PublicIP)">
+      <summary>
+            Removes the public IP address from the current account.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <exception cref="T:System.InvalidOperationException">When the <see cref="T:Rackspace.RackConnect.v3.PublicIP" /> instance was not constructed by the <see cref="T:Rackspace.RackConnect.v3.RackConnectService" />, as it is missing the appropriate internal state to execute service calls.</exception>
+    </member>
+    <member name="M:Rackspace.Synchronous.PublicIPExtensions.Unassign(Rackspace.RackConnect.v3.PublicIP)">
+      <summary>
+            Removes the Public IP from the server to which it is currently assigned.
+            </summary>
+      <exception cref="T:System.InvalidOperationException">When the <see cref="T:Rackspace.RackConnect.v3.PublicIP" /> instance was not constructed by the <see cref="T:Rackspace.RackConnect.v3.RackConnectService" />, as it is missing the appropriate internal state to execute service calls.</exception>
+    </member>
+    <member name="M:Rackspace.Synchronous.PublicIPExtensions.WaitUntilActive(Rackspace.RackConnect.v3.PublicIP,System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan},System.IProgress{System.Boolean})">
+      <summary>
+            Waits for the public IP address to become active.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="refreshDelay">The amount of time to wait between requests.</param>
+      <param name="timeout">The amount of time to wait before throwing a <see cref="T:System.TimeoutException" />.</param>
+      <param name="progress">The progress callback.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <exception cref="T:System.InvalidOperationException">When the <see cref="T:Rackspace.RackConnect.v3.PublicIP" /> instance was not constructed by the <see cref="T:Rackspace.RackConnect.v3.RackConnectService" />, as it is missing the appropriate internal state to execute service calls.</exception>
+      <exception cref="T:System.TimeoutException">If the <paramref name="timeout" /> value is reached.</exception>
+      <exception cref="T:Flurl.Http.FlurlHttpException">If the API call returns a bad <see cref="T:System.Net.HttpStatusCode" />.</exception>
+    </member>
+    <member name="M:Rackspace.Synchronous.PublicIPExtensions.WaitUntilDeleted(Rackspace.RackConnect.v3.PublicIP,System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan},System.IProgress{System.Boolean})">
+      <summary>
+            Waits for the public IP address to be removed from the current account.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="refreshDelay">The amount of time to wait between requests.</param>
+      <param name="timeout">The amount of time to wait before throwing a <see cref="T:System.TimeoutException" />.</param>
+      <param name="progress">The progress callback.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <exception cref="T:System.InvalidOperationException">When the <see cref="T:Rackspace.RackConnect.v3.PublicIP" /> instance was not constructed by the <see cref="T:Rackspace.RackConnect.v3.RackConnectService" />, as it is missing the appropriate internal state to execute service calls.</exception>
+      <exception cref="T:System.TimeoutException">If the <paramref name="timeout" /> value is reached.</exception>
+      <exception cref="T:Flurl.Http.FlurlHttpException">If the API call returns a bad <see cref="T:System.Net.HttpStatusCode" />.</exception>
+    </member>
+    <member name="T:Rackspace.Synchronous.RackConnectServiceExtensions">
+      <summary>
+            Provides synchronous extention methods for the <see cref="T:Rackspace.RackConnect.v3.RackConnectService" />.
+            </summary>
+    </member>
+    <member name="M:Rackspace.Synchronous.RackConnectServiceExtensions.CreatePublicIP(Rackspace.RackConnect.v3.RackConnectService,Rackspace.RackConnect.v3.PublicIPCreateDefinition)">
+      <summary>
+            Allocates a public IP address to the current account.
+            </summary>
+      <param name="definition">The public IP definition.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>The identifer of the public IP address while it is being provisioned. Use <see cref="M:Rackspace.RackConnect.v3.RackConnectService.WaitUntilPublicIPIsActiveAsync(Rackspace.Identifier,System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan},System.IProgress{System.Boolean},System.Threading.CancellationToken)" /> to wait for the IP address to be fully active.</returns>
+    </member>
+    <member name="M:Rackspace.Synchronous.RackConnectServiceExtensions.DeletePublicIP(Rackspace.RackConnect.v3.RackConnectService,Rackspace.Identifier)">
+      <summary>
+            Removes the public IP address from the current account.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+    </member>
+    <member name="M:Rackspace.Synchronous.RackConnectServiceExtensions.GetNetwork(Rackspace.RackConnect.v3.RackConnectService,Rackspace.Identifier)">
+      <summary>
+            Gets the specified RackConnect Cloud Network.
+            </summary>
+      <param name="networkId">The network identifier.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+    </member>
+    <member name="M:Rackspace.Synchronous.RackConnectServiceExtensions.GetPublicIP(Rackspace.RackConnect.v3.RackConnectService,Rackspace.Identifier)">
+      <summary>
+            Gets the specified public IP address.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+    </member>
+    <member name="M:Rackspace.Synchronous.RackConnectServiceExtensions.ListNetworks(Rackspace.RackConnect.v3.RackConnectService)">
+      <summary>
+            Lists Cloud Networks associated with a RackConnect Configuration.
+            </summary>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            A collection of networks associated with the account.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Synchronous.RackConnectServiceExtensions.ListPublicIPs(Rackspace.RackConnect.v3.RackConnectService,Rackspace.RackConnect.v3.ListPublicIPsFilter)">
+      <summary>
+            Lists all public IP addresses associated with the account.
+            </summary>
+      <param name="filter">Optional filter parameters.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <returns>
+            A collection of public IP addresses associated with the account.
+            </returns>
+    </member>
+    <member name="M:Rackspace.Synchronous.RackConnectServiceExtensions.UpdatePublicIP(Rackspace.RackConnect.v3.RackConnectService,Rackspace.Identifier,Rackspace.RackConnect.v3.PublicIPUpdateDefinition)">
+      <summary>
+            Updates the public IP address.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="definition">The updated public IP definition.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+    </member>
+    <member name="M:Rackspace.Synchronous.RackConnectServiceExtensions.WaitUntilPublicIPIsActive(Rackspace.RackConnect.v3.RackConnectService,Rackspace.Identifier,System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan},System.IProgress{System.Boolean})">
+      <summary>
+            Waits for the public IP address to become active.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="refreshDelay">The amount of time to wait between requests.</param>
+      <param name="timeout">The amount of time to wait before throwing a <see cref="T:System.TimeoutException" />.</param>
+      <param name="progress">The progress callback.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <exception cref="T:System.TimeoutException">If the <paramref name="timeout" /> value is reached.</exception>
+      <exception cref="T:Flurl.Http.FlurlHttpException">If the API call returns a bad <see cref="T:System.Net.HttpStatusCode" />.</exception>
+    </member>
+    <member name="M:Rackspace.Synchronous.RackConnectServiceExtensions.WaitUntilPublicIPIsDeleted(Rackspace.RackConnect.v3.RackConnectService,Rackspace.Identifier,System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan},System.IProgress{System.Boolean})">
+      <summary>
+            Waits for the public IP address to be removed from the current account.
+            </summary>
+      <param name="publicIPId">The public IP address identifier.</param>
+      <param name="refreshDelay">The amount of time to wait between requests.</param>
+      <param name="timeout">The amount of time to wait before throwing a <see cref="T:System.TimeoutException" />.</param>
+      <param name="progress">The progress callback.</param>
+      <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <exception cref="T:System.TimeoutException">If the <paramref name="timeout" /> value is reached.</exception>
+      <exception cref="T:Flurl.Http.FlurlHttpException">If the API call returns a bad <see cref="T:System.Net.HttpStatusCode" />.</exception>
+    </member>
+    <member name="T:Rackspace.Testing.HttpTest">
+      <summary>
+            Use this instead of Flurl.Http.Testing.HttpTest when writing unit tests against the Rackspace APIs.
+            <para /><para>
+            This extends <see href="http://tmenier.github.io/Flurl/">Flurl's</see> the appropriate HttpMessageHandler in unit tests. 
+            If you use the default HttpTest, then any tests which rely upon authentication handling (e.g retrying a request when a token expires) will fail.
+            </para></summary>
+    </member>
+    <member name="M:Rackspace.Testing.HttpTest.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Rackspace.Testing.HttpTest</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+  </members>
+</doc>

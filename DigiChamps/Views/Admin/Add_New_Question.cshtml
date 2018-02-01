@@ -1,0 +1,588 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsChapterModel
+@{
+    ViewBag.Title = "Add new question";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a href="~/Admin/AdminDashboard">Home</a>
+            <span class="divider"><i class="fa fa-angle-right"></i></span>
+        </li>
+        @if (ViewBag.Breadcrumb != null)
+        {
+            <li class="active">@ViewBag.Breadcrumb</li>
+        }
+    </ul>
+</div>
+
+<div class="page-content-wrap">
+
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("View_Question", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", id = "validation-form" }))
+            {
+                @Html.AntiForgeryToken();
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i>Create Question</h3>
+                    </div>
+
+                    <div class="box-content">
+                        <div class="form-group voffset3">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Board<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <select name="ddlboard" id="ddlboard" class="form-control chosen" data-rule-required="true" data-msg-required="Please select board">
+                                    @if (ViewBag.Board_details != null)
+                                    {
+                                    <option value="">Please Select Board</option>
+                                        foreach (var vb in ViewBag.Board_details)
+                                        {
+                                    <option value="@vb.Board_Id">@vb.Board_Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ddlclass" class="col-sm-3 col-lg-2 control-label">Class<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <select name="ddlclass" id="ddlclass" class="form-control" data-rule-required="true" data-msg-required="Please select class"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ddlsubject" class="col-sm-3 col-lg-2 control-label">Subject<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <select name="ddlsubject" id="ddlsubject" class="form-control" data-rule-required="true" data-msg-required="Please select subject"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ddlchapter" class="col-sm-3 col-lg-2 control-label">Chapter<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <select name="ddlchapter" id="ddlchapter" class="form-control" data-rule-required="true" data-msg-required="Please select chapter"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ddltopic" class="col-sm-3 col-lg-2 control-label">Topic<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <select name="ddltopic" id="ddltopic" class="form-control" data-rule-required="true" data-msg-required="Please select topic"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ddlpower" class="col-sm-3 col-lg-2 control-label">Power<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <select name="ddlpower" class="form-control chosen" id="ddlpower" data-rule-required="true" data-msg-required="Please select power">
+                                    @if (ViewBag.Power_Id != null)
+                                    {
+                                    <option value="">Select Power</option>
+                                        foreach (var v in ViewBag.Power_Id)
+                                        {
+                                    <option value="@v.Power_Id">@v.Power_Type</option>
+                                        }
+                                    }
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Question<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <textarea name="Quest_" class="form-control" placeholder="Enter Your Question" rows="4" data-rule-required="true" data-rule-minlength="5" data-msg-required="Please enter question"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @*Question image*@
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Answer Images</label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <div class="fileupload fileupload-new">
+                                    <input type="hidden">
+                                    <div class="input-group">
+                                        <div class="form-control uneditable-input">
+                                            <i class="fa fa-file fileupload-exists"></i>
+                                            <span class="fileupload-preview"></span>
+                                        </div>
+                                        <div class="input-group-btn">
+                                            <a class="btn bun-default btn-file">
+                                                <span class="fileupload-new trigger_upload">Select file</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id='imageloadstatus' style='display:none'><img src="~/img/loader.gif" alt="Uploading...." /></div>
+                                <span class="label label-important">NOTE!</span>
+                                <span>Max attached file size should be 1 MB.</span>
+
+                                @*Image Temporary Table*@
+                                <table class="table table-advance voffset2" id="img_tbl" hidden>
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">Sl.no</th>
+                                            <th width="0%"></th>
+                                            <th>Question Images</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="img_body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Question Description</label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <textarea class="form-control" name="Quest_desc" placeholder="Enter Question Description" rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Question Type</label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="online" value="1"> Online
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="Practice" value="1"> Practice
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="Pre_requisite" value="1"> Pre-requisite
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="Global" value="1"> Global
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="freetest" value="1"> Free Test
+                                </label><br />
+                                <span class="help-inline">Please select Exam Question type</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i>Question Options</h3>
+                    </div>
+
+                    <div class="box-content">
+                        <div class="answer-box voffset3">
+                            <div class="form-group grp">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label option">Option #1</label>
+                                <div class="col-sm-7 col-lg-7 controls">
+                                    <textarea name="answernew" class="form-control" placeholder="Answer Option" rows="3"></textarea>
+
+                                    @*Option image if required*@
+                                    <div class="fileupload fileupload-new voffset3" data-provides="fileupload">
+                                        <div class="fileupload-new img-thumbnail" style="">
+                                            <img class="optimg" src="~/img/not_avail.jpg" alt="" />
+                                        </div>
+                                        <div class="fileupload-preview fileupload-exists img-thumbnail" style="line-height: 20px;"></div>
+                                        <div>
+                                            <span class="btn btn-default btn-file">
+                                                <span class="fileupload-new">Select image</span>
+                                                <span class="fileupload-exists">Change</span>
+                                                <input name="optn_img" type="file" class="file-input img_prvw">
+                                            </span>
+                                            <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-2 col-lg-3 controls">
+                                    <label class="check-box">
+                                        <input type="checkbox" name="chk_ans" class="is_answer" value=""><span> Is correct answer?</span>
+                                    </label>
+                                    <div class="clearfix"></div>
+                                    <a type="button" value="Add New" name="submit" class="btn btn-sm btn-success voffset2 addnew">
+                                        <i class="fa fa-plus"></i> Add New
+                                    </a>
+                                    <a type="button" class="btn btn-danger btn-sm  voffset2 delete"><i class="fa fa-trash-o"></i> Delete</a>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="option-box">
+                                    <div class="form-group">
+                                        <label for="textarea5" class="col-sm-3 col-lg-2 control-label">Answer Description</label><div class="col-sm-9 col-lg-7 controls">
+                                            <textarea name="des_text" class="form-control" placeholder="Enter Answer Description" rows="4"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 col-lg-2 control-label">Answer Desc. Image</label>
+                                        <div class="col-sm-9 col-lg-7 controls">
+                                            <div class="fileupload fileupload-new" data-provides="fileupload">
+                                                <div class="fileupload-new img-thumbnail">
+                                                    <img class="optimg" src="../img/not_avail.jpg" alt="no_image">
+                                                </div>
+                                                <div class="fileupload-preview fileupload-exists img-thumbnail" style=" line-height: 20px;"></div>
+                                                <div>
+                                                    <span class="btn btn-default btn-file">
+                                                        <span class="fileupload-new">Select image</span>
+                                                        <span class="fileupload-exists">Change</span>
+                                                        <input name="ans_img" id="ans_img" type="file" class="img_prvw">
+                                                    </span>
+                                                    <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group last box-tooll" >
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("QuestionBank", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i><span>  Back</span>  </a>
+                                <button id="btnSearch" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span>Submit</span> </button>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-title">
+                    <h3><i class="fa fa-file"></i>Question Bulk Upload</h3>
+                </div>
+
+                <div class="box-content">
+                    @using (Html.BeginForm("UploadQuestion", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+                        {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Sample Format</th>
+                                    <th>Upload Excel</th>
+                                    <th>Upload Images</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="~/Content/question.xlsx"><span class="fa fa-download" title="Download Question Format"></span> Download</a></td>
+                                    <td><input type="file" id="qstnupld" name="qstnupld" accept=".xls,.xlsx" class="form-control" required/></td>
+                                    <td>
+                                        <input type="file" id="imagefiles" multiple="multiple" accept=".jpg,.png" name="imagefiles" class="form-control" />
+                                    </td>
+                                    <td><button id="btnupld" type="submit" name="btnupld" class="btn btn-danger">Upload</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_3" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel2"></h3>
+            </div>
+            <div class="modal-body">
+                <div class="demo-wrap upload-demo">
+                    <div class="container">
+                        <div class="grid">
+                            <div class="col-md-2" hidden>
+                                <div class="actions">
+                                    <input type="file" id="upload" style="visibility: hidden;" value="Choose a file" accept="image/*" />
+
+                                    @*<button class="upload-result" type="button">Result</button>*@
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="upload-msg">
+                                    Upload a file to start cropping
+                                </div>
+                                <div class="upload-demo-wrap">
+                                    <div id="upload-demo"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-primary upload-result">Crop Image </button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+    {<!--crop image-->
+    <script src="~/js/croppie.min.js"></script>
+    <script src="~/js/exif.js"></script>
+    <script>
+        function readURL1(input, this2) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    this2.parents('.fileupload').find(".optimg").attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $(".answer-box").on("change", '.img_prvw', function () {
+            readURL1(this, $(this));
+        });
+        var A = $("#imageloadstatus");
+
+        //************************************** JavaScript for cropping of image *****************************************
+        $(".trigger_upload").on('click', function () {
+            $("#upload").trigger('click');
+            setTimeout(function () {
+                $('#modal_3').modal('show');
+                $("#myModalLabel2").text("Crop Image");
+            }, 1700);
+        });
+        $('#upload').on('change', function () {
+            readFile(this);
+            var filename = $(this).val();
+            var res = filename.substr(12, 200);
+            $(".uneditable-input span").text(res);
+        });
+        function output(node) {
+            var existing = $('#result .croppie-result');
+            if (existing.length > 0) {
+                existing[0].parentNode.replaceChild(node, existing[0]);
+            }
+            else {
+                $('#result')[0].appendChild(node);
+            }
+        }
+
+        var $uploadCrop;
+        function readFile(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.upload-demo').addClass('ready');
+                    $uploadCrop.croppie('bind', {
+                        url: e.target.result
+                    }).then(function () {
+                        console.log('Image Bind complete');
+                    });
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+            else {
+                alert("Please select crop area.");
+            }
+        }
+
+        $uploadCrop = $('#upload-demo').croppie({
+            viewport: {
+                width: 551,
+                height: 350,
+                type: 'square'
+            },
+            enableExif: true
+        });
+
+        $('.upload-result').on('click', function (ev) {
+            debugger;
+            $uploadCrop.croppie('result', {
+                type: 'canvas',
+                size: 'viewport'
+            }).then(function (resp) {
+                readURL(resp);
+                A.hide(1200);
+            });
+        });
+        //************************************** JavaScript for ajax file upload END **************************************
+
+        var i = 1;
+        //add div when checked
+        $(".option-box").hide();
+        $('body').on("change", '.is_answer', function () {
+            if ($(this).is(":checked")) {
+                $(this).parents('.form-group').find(".option-box").show(1200);
+                $(this).parents('.form-group').addClass('show_add');
+            }
+            else {
+                $(this).parents('.form-group').find(".option-box").hide(700);
+                $(this).parents('.form-group').removeClass('show_add');
+            }
+        });
+        var chkbox = "";
+        var answerbox = $('.answer-box').html();
+        $(document).on('click', '.addnew', function () {
+            if ($('.answer-box .is_answer').length <= 5) {
+                $('.answer-box').append(answerbox);
+
+                setTimeout(function () {
+
+                    $('.answer-box').find('.grp').each(function () {
+                        var num = $('.grp').index($(this));
+
+                        var number = num + 1;
+                        $('.answer-box .grp:nth-child(' + number + ')').find('.option').text("Option #" + number);
+                        $('.answer-box .grp:nth-child(' + number + ')').find('.is_answer').val(number);
+
+                    });
+                }, 1200);
+            }
+        });
+
+        $(document).on('click', '.delete', function () {
+            $(this).closest('.form-group').remove();
+            var ans = 1;
+            $('.answer-box').find('.option').each(function () {
+                $('.answer-box .grp:nth-child(' + ans + ')').find('.option').text("Option #" + ans);
+                $('.answer-box .grp:nth-child(' + ans + ')').find('.is_answer').val(ans);
+                ans = ans + 1;
+            });
+        });
+
+        //Dropdownlist Casceding
+        $('#ddlboard').change(function () {
+            if ($('#ddlclass').closest('.form-group').find('.ajax-loader').length) {
+                // do nothing
+            } else {
+                $('#ddlclass').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+            }
+            $('#ddlclass').closest('.form-group').addClass('display-loader');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllClass",
+                data: { brdId: $('#ddlboard').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta = sta + '<option value="">Please Select Class</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    $('#ddlclass').html(sta);
+                    setTimeout(function () {
+                        $('#ddlclass').closest('.form-group').removeClass('display-loader');
+                    }, 800);
+                }
+            });
+        });
+        $('#ddlclass').change(function () {
+            if ($('#ddlsubject').closest('.form-group').find('.ajax-loader').length) {
+                // do nothing
+            } else {
+                $('#ddlsubject').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+            }
+            $('#ddlsubject').closest('.form-group').addClass('display-loader');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllSubject",
+                data: { ClsId: $('#ddlclass').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta1 = sta1 + '<option value="">Please Select Subject</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta1 = sta1 + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    $('#ddlsubject').html(sta1);
+                    setTimeout(function () {
+                        $('#ddlsubject').closest('.form-group').removeClass('display-loader');
+                    }, 800);
+                }
+            });
+        });
+        $('#ddlsubject').change(function () {
+            if ($('#ddlchapter').closest('.form-group').find('.ajax-loader').length) {
+                // do nothing
+            } else {
+                $('#ddlchapter').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+            }
+            $('#ddlchapter').closest('.form-group').addClass('display-loader');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllChapter",
+                data: { SubId: $('#ddlsubject').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta1 = sta1 + '<option value="">Please Select Chapter</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta1 = sta1 + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    $('#ddlchapter').html(sta1);
+                    setTimeout(function () {
+                        $('#ddlchapter').closest('.form-group').removeClass('display-loader');
+                    }, 800);
+                }
+            });
+          
+        });
+
+        $('#ddlchapter').change(function () {
+            if ($('#ddltopic').closest('.form-group').find('.ajax-loader').length) {
+                // do nothing
+            } else {
+                $('#ddltopic').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+            }
+            $('#ddltopic').closest('.form-group').addClass('display-loader');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllTopic",
+                data: { SubId: $('#ddlchapter').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta1 = sta1 + '<option value="">Please Select Topic</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta1 = sta1 + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    $('#ddltopic').html(sta1);
+                    setTimeout(function () {
+                        $('#ddltopic').closest('.form-group').removeClass('display-loader');
+                    }, 800);
+                }
+            });
+           
+        });
+
+        $("#btnSearch").click(function () {
+            if ($('form').valid()) {
+                if (!$("input[name='chk_ans']:checked").val()) {
+                    $("#modal_3 .modal-body").html("<p>Please select at least one answer.</p>");
+                    $("#modal_3 .modal-footer button").text("Ok");
+                    $("#modal_3 #myModalLabel2").html("<i class='fa fa-exclamation-triangle'></i> Warning");
+                    $("#modal_3").modal("show");
+                    return false;
+                }
+            }
+        });
+
+        $("#img_tbl").on("click", ".deleterow", function () {
+            $(this).closest("tr").remove();
+        });
+        var ch = "Z";
+        function nextLetter(s) {
+            return s.replace(/([a-zA-Z])[^a-zA-Z]*$/, function (a) {
+                var c = a.charCodeAt(0);
+                switch (c) {
+                    case 90: return 'A';
+                    case 122: return 'a';
+                    default: return String.fromCharCode(++c);
+                }
+            });
+        }
+        function readURL(pathto_save) {
+            A.show();
+            debugger
+            var data = "<tr><td><input name='Qphotos' type='hidden' value=" + pathto_save + " />" + nextLetter(ch) + "<td><td><img src='" + pathto_save + "'/></td>" +
+                "<td><span class='btn btn-sm btn-danger deleterow' title='DELETE'><i class='fa fa-trash-o'></i></span></td></tr>";
+            $('#img_body').append(data);
+            $("#img_tbl").show();
+            ch = nextLetter(ch);
+        }
+    </script>
+    <script src="~/js/DC_Imagecrop.js"></script>
+}

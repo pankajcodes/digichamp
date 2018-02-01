@@ -1,0 +1,82 @@
+﻿@{
+    Layout = null;
+}
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+       <div class="box box-blue">
+                <div class="box-title">
+                    <h3><i class="fa fa-file-text"></i>Module Names</h3>
+                    <div class="box-tool">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="table-responsive">
+                        <table class="table table-advance" id="table2">
+                            <thead>
+                                <tr>
+                                    <th>Sl No.</th>
+                                    <th>Module Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int i = 0;
+                                }
+                                @foreach (var b in ViewBag.Pacakge_Modules)
+                                {
+                                    <tr>
+                                        <td>@(i += 1)</td>
+                                        <td>@b.Module_Name</td>
+                                        <td>@Html.ActionLink(" ", "Deletemodule_frmpackage", "Admin", new { id = @b.PackageDtl_ID, pkid = @b.Package_ID }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the package?')", @data_original_title = "Delete", @title = "Delete" })</td>
+                                        @*<td>
+                                            <a href="#" id="Dlt" onclick="return confirm('Are you sure want to delete the Module?')" class="btn btn-sm btn-danger show-tooltip fa fa-trash-o" title="Delete" />
+                                        </td>*@
+</tr>
+
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $('#table2').dataTable({
+        "aLengthMenu": [
+            [10, 15, 25, 50, 100, -1],
+            [10, 15, 25, 50, 100, "All"]
+        ],
+        "iDisplayLength": 10,
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ Records per page",
+            "sInfo": "_START_ - _END_ of _TOTAL_",
+            "sInfoEmpty": "0 - 0 of 0",
+            "oPaginate": {
+                "sPrevious": "Prev",
+                "sNext": "Next"
+            }
+        },
+        "aoColumnDefs": [{
+            'bSortable': false,
+            'aTargets': [0]
+        }]
+    });
+ 
+</script>
+
+
+    
+
+
+.

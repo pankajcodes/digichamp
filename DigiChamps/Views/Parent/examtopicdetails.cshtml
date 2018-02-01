@@ -1,0 +1,514 @@
+﻿@{
+    ViewBag.Title = "Exam Topic details";
+    Layout = "~/Views/Shared/_ParentLayout.cshtml";
+}
+
+@section header
+{
+    <i class="ion-compose ti-image page_header_icon"></i>
+    <span class="main-text">Test Result</span>
+}
+<!-- /pageheader -->
+<div class="row">
+    @if (ViewBag.examresult != null)
+    {
+        if ((ViewBag.examresult).Count > 0)
+        {
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 nopad-right">
+                <!-- Question Panel Starts -->
+                <div class="panel panel-ntspl">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Question and Answer (<span id="qid"></span>)
+                            <span class="panel-options">
+                                <a href="#" class="panel-refresh">
+                                    <i class="icon ti-reload"></i>
+                                </a>
+
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="panel-body test-result">
+                        <div class="owl-carousel">
+                            @if (ViewBag.allquestions_appeard != null)
+                            {
+                                foreach (var item in ViewBag.allquestions_appeard)
+                                {
+                                    <div id="@item.RowID" class="carousel-slides childcls">
+                                        <p>
+                                            @item.Question
+                                        </p>
+                                        <p>@item.Qustion_Desc</p>
+                                        @{
+                                    int quesid = Convert.ToInt32(item.Question_ID);
+                                    DigiChamps.Models.DigiChampsEntities DbContext4 = new DigiChamps.Models.DigiChampsEntities();
+                                    var question_image = DbContext4.tbl_DC_Question_Images.Where(x => x.Question_ID == quesid && x.Is_Active == true && x.Is_Deleted == false).ToList();
+                                        }
+                                        @foreach (var item1 in question_image)
+                                        {
+
+                                            <div class="image-zoom-container qsn-img-cont">
+                                                <img class="question-image qsn-zoom" src="~/Content/Qusetion/@item1.Question_desc_Image" data-zoom-image="~/Content/Qusetion/@item1.Question_desc_Image">
+
+
+                                                <div class="clearfix"></div>
+                                                <div class="picture pull-right" itemscope itemtype="">
+                                                    <figure itemprop="associatedMedia" itemscope itemtype="">
+                                                        <a href="~/Content/Qusetion/@item1.Question_desc_Image" itemprop="contentUrl" data-size="2000x1408" data-index="0">
+                                                            <button class="btn btn-white btn-icon-white btn-icon-block btn-icon-blockleft  btn-xs pull-right">
+                                                                <i class="ion ion-android-search"></i>
+                                                                <span>Zoom</span>
+                                                            </button>
+                                                        </a>
+                                                    </figure>
+                                                </div>
+
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        }
+                                        @{
+                                        int id = Convert.ToInt32(item.Question_ID);
+                                        DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                                        var question_details = DbContext.tbl_DC_Question_Answer.Where(x => x.Question_ID == id && x.Is_Active == true && x.Is_Deleted == false).ToList();
+                                        }
+                                        <ul class="list-group cus-list">
+
+                                            @foreach (var item1 in question_details)
+                                            {
+                                                if (item1.Is_Answer == true)
+                                                {
+                                                    <li class="list-group-item correct-answer">
+                                                        <i class="answer-check">*</i>
+                                                        <p>@item1.Option_Desc</p>
+
+                                                        <div class="image-zoom-container voffset3">
+                                                            @if (@item1.Option_Image != null)
+{
+    <img class="question-image qsn-zoom" src="~/Content/Qusetion/@item1.Option_Image" data-zoom-image="~/Content/Qusetion/@item1.Option_Image">
+                                                                <div class="clearfix"></div>
+                                                                <div class="picture pull-right" itemscope itemtype="">
+                                                                    <figure itemprop="associatedMedia" itemscope itemtype="">
+                                                                        <a href="~/Content/Qusetion/@item1.Option_Image" itemprop="contentUrl" data-size="2000x1408" data-index="0">
+                                                                            <button class="btn btn-white btn-icon-white btn-icon-block btn-icon-blockleft  btn-xs pull-right">
+                                                                                <i class="ion ion-android-search"></i>
+                                                                                <span>Zoom</span>
+                                                                            </button>
+                                                                        </a>
+
+
+                                                                    </figure>
+                                                                </div>
+                                                            }
+
+
+                                                            <div class="clearfix"></div>
+
+                                                        </div>
+
+                                                    </li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="list-group-item">
+                                                        <i class="answer-check">*</i>
+                                                        <p>@item1.Option_Desc</p>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+
+                                        <h3>
+                                            Description
+
+
+                                            @{
+                                            int ids = Convert.ToInt32(item.Question_ID);
+
+                                            var question_detailss = DbContext.tbl_DC_Question_Answer.Where(x => x.Question_ID == id && x.Is_Active == true && x.Is_Deleted == false).ToList();
+                                            }
+                                        </h3>
+                                        @foreach (var v in question_detailss)
+                                        {
+                                            if (v.Is_Answer == true)
+                                            {
+                                                <p>
+                                                    @v.Answer_desc
+                                                </p>
+                                                <div class="image-zoom-container qsn-img-cont">
+                                                    @if (@v.Answer_Image != null)
+{
+    <img class="question-image qsn-zoom" src="~/Content/Qusetion/@v.Answer_Image" data-zoom-image="~/Content/Qusetion/@v.Answer_Image">
+                                                        <div class="clearfix"></div>
+                                                        <div class="picture pull-right" itemscope itemtype="">
+                                                            <figure itemprop="associatedMedia" itemscope itemtype="">
+                                                                <a href="~/Content/Qusetion/@v.Answer_Image" itemprop="contentUrl" data-size="2000x1408" data-index="0">
+                                                                    <button class="btn btn-white btn-icon-white btn-icon-block btn-icon-blockleft  btn-xs pull-right">
+                                                                        <i class="ion ion-android-search"></i>
+                                                                        <span>Zoom</span>
+                                                                    </button>
+                                                                </a>
+                                                            </figure>
+                                                        </div>
+
+                                                        <div class="clearfix"></div>
+                                                    }
+
+                                                </div>
+                                            }
+
+                                        }
+
+
+
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div class="row voffset2">
+                            <div class="col-md-12">
+                                <button class="btn btn-primary btn-icon-primary btn-icon-block btn-icon-blockright btn-lg pull-right Nextcls">
+                                    <span>Next</span><i class="ion ion-chevron-right"></i>
+                                </button>
+                                <button class="btn btn-primary btn-icon-primary btn-icon-block btn-icon-blockleft btn-lg pull-right prev-btn prevcls">
+                                    <i class="ion ion-chevron-left"></i>
+                                    <span>Prev</span>
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance -->
+                <div class="panel panel-ntspl score">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Performance
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>You can check your performance in different topics.</p>
+                        <div class="ios-profile-widget">
+                            <div class="row">
+                                @foreach (var v in ViewBag.Startegicreport)
+                                {
+                                    <div class="col-lg-6">
+                                        <h3>Topic : @v.Topic_Name</h3>
+                                        <ul class="list-group">
+                                            <li class="list-group-item">
+                                                <span class="badge">@v.Total_question</span>
+                                                Total Question
+                                            </li>
+                                            <li class="list-group-item">
+                                                <span class="badge">@v.Correct_answer</span>
+                                                Correct Answer
+                                            </li>
+                                            @{
+                                    //string pfo = Convert.ToString(v.Percentage);
+                                    //string[] spp = pfo.Split('.');
+                                    int pf = Convert.ToInt32(v.Percentage);
+                                            }
+                                            <li class="list-group-item">
+                                                @if ((pf >= 70) || (pf <= 100))
+                                                {
+                                                    <span class="badge">@v.Percentage %</span>
+                                                }
+                                                else if ((pf >= 40) || (pf < 70))
+                                                {
+                                                    <span class="badge">@v.Percentage %</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge">@v.Percentage %</span>
+                                                }
+                                                Percentage
+                                            </li>
+                                            <li class="list-group-item">
+                                                <span class="badge">@v.Remark</span>
+                                                Remark
+                                            </li>
+                                        </ul>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Performance Ends -->
+            </div>
+        }
+    }
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+
+        <!-- Test Statistics Starts -->
+        <!-- Test Statistics Ends -->
+        <!-- Other Test -->
+        @if (ViewBag.Questions != null)
+        {
+            if ((ViewBag.Questions).Count > 0)
+            {
+            <!-- Question Pallete Starts -->
+                <div class="panel panel-ntspl question-pallete">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Question Pallete
+                            <span class="panel-options">
+                                <a href="#" class="panel-refresh">
+                                    <i class="icon ti-reload"></i>
+                                </a>
+
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="panel-body " id="anser">
+                        @foreach (var item in ViewBag.Questions)
+                        {
+                            DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                            int r_id = Convert.ToInt32(ViewBag.rid);
+                            int q_id = Convert.ToInt32(item.Question_ID);
+                            var data = DbContext.tbl_DC_Exam_Result_Dtl.Where(x => x.Result_ID == r_id && x.Question_ID == q_id).FirstOrDefault();
+                            if (data.Is_Correct == false)
+                            {
+                                string quesclr = "plt" + @item.RowID;
+                                <span id="@quesclr" class="label label-danger palletcls" title="Wrong Answer">@item.RowID</span>
+                            }
+                            if (data.Is_Correct == true)
+                            {
+                                string quesclr = "plt" + @item.RowID;
+                                <span id="@quesclr" class="label label-success palletcls" title="Correct Answer">@item.RowID</span>
+                            }
+                        }
+
+                        <div class="badge-counters">
+                            <button class="btn btn-success btn-xs" type="button">
+                                Correct Answer <span id="answered" class="badge"></span>
+                            </button>
+                            <button class="btn btn-danger btn-xs" type="button">
+                                Wrong Answer <span id="awating" class="badge"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            <!-- Question Pallete Ends -->
+            }
+        }
+
+    </div>
+
+    <!-- wrapper -->
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="pswp__bg"></div>
+        <div class="pswp__scroll-wrap">
+            <div class="pswp__container">
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+            </div>
+            <div class="pswp__ui pswp__ui--hidden">
+                <div class="pswp__top-bar">
+                    <div class="pswp__counter"></div>
+                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                    <button class="pswp__button pswp__button--share" title="Share"></button>
+                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                    <div class="pswp__preloader">
+                        <div class="pswp__preloader__icn">
+                            <div class="pswp__preloader__cut">
+                                <div class="pswp__preloader__donut"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                    <div class="pswp__share-tooltip"></div>
+                </div>
+                <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+                <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+                <div class="pswp__caption">
+                    <div class="pswp__caption__center"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script src="~/Student_assets/assets/js/photoswipe.min.js"></script>
+    <script src="~/Student_assets/assets/js/photoswipe-ui-default.min.js"></script>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/owl.carousel.min.css'>
+    <!-- Tooltip -->
+    <script src="~/Student_assets/assets/js/tooltip-custom.js"></script>
+    <!-- Tooltip -->
+
+    <script>
+        history.pushState(null, null, document.URL);
+        window.addEventListener('popstate', function () {
+            history.pushState(null, null, document.URL);
+        });
+        $(function () {
+            debugger
+            //generate('top','success');
+            // generate('top','warning','This is a message.');
+            //photo swipe start
+            var $pswp = $('.pswp')[0];
+
+            var image = [];
+            $('#qid').html('1');
+            btnshowhide();
+            $('.picture').each(function () {
+                var $pic = $(this),
+                        getItems = function () {
+                            var items = [];
+                            $pic.find('a').each(function () {
+                                var $href = $(this).attr('href'),
+                                        $size = $(this).data('size').split('x'),
+                                        $width = $size[0],
+                                        $height = $size[1];
+
+                                var item = {
+                                    src: $href,
+                                    w: $width,
+                                    h: $height
+                                }
+
+                                items.push(item);
+                            });
+                            return items;
+                        }
+
+                var items = getItems();
+
+                $.each(items, function (index, value) {
+                    image[index] = new Image();
+                    image[index].src = value['src'];
+                });
+
+                $pic.on('click', 'figure', function (event) {
+                    event.preventDefault();
+
+                    var $index = $(this).index();
+                    var options = {
+                        index: $index,
+                        bgOpacity: 0.7,
+                        showHideOpacity: true
+                    }
+
+                    var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
+                    lightBox.init();
+                });
+            });
+
+        }); //photo swipe end
+
+        var countitm = parseInt($('#anser span.palletcls').length);
+        function btnshowhide() {
+            if ($('#qid').html() == "1") {
+                $('.prevcls').hide();
+                $('.Nextcls').show();
+            }
+            else if ($('#qid').html() == countitm) {
+                $('.Nextcls').hide();
+                $('.prevcls').show();
+            }
+            else {
+                $('.prevcls').show();
+                $('.Nextcls').show();
+            }
+        };
+
+
+        /* result chart */
+
+
+
+        var data = {
+            series: [5, 3]
+        };
+
+        var sum = function (a, b) { return a + b };
+
+        new Chartist.Pie('#small_pie_chart', data, {
+            labelInterpolationFnc: function (value) {
+                return Math.round(value / data.series.reduce(sum) * 100) + '%';
+            }
+        });
+        /* result chart ends */
+
+    </script>
+
+
+    <script>
+
+        $(function () {
+            var owl = $('.owl-carousel').owlCarousel({
+                loop: false,
+                margin: 17,
+                responsiveClass: true,
+                autoHeight: true,
+                touchDrag: false,
+                mouseDrag: false,
+                responsive: {
+                    0: {
+                        items: 1,
+                        nav: true
+                    },
+                    600: {
+                        items: 1,
+                        nav: false
+                    },
+                    1000: {
+                        items: 1,
+                        nav: false,
+                        loop: true
+                    }
+                }
+            });
+            $('.prevcls').click(function () {
+
+                owl.trigger('prev.owl.carousel');
+                var id1 = $(".active").find(".childcls").attr("id");
+                //$('#qid').html(id1);
+                var id3 = parseInt(id1) - 1;
+
+                if (id3 == 0) {
+                    id3 = countitm;
+                }
+                $('#qid').html(id3);
+                btnshowhide();
+            });
+            $('.Nextcls').click(function () {
+
+                owl.trigger('next.owl.carousel');
+                var id1 = $(".active").find(".childcls").attr("id");
+                var id3 = parseInt(id1) + 1;
+
+                if (id3 > countitm) {
+                    id3 = 1;
+                }
+                $('#qid').html(id3);
+                btnshowhide();
+            });
+            $('.palletcls').on('click', function (e) {
+                debugger;
+                $('.clrresponse').attr("disabled", false);
+                $('.reviewcls').attr("disabled", false);
+                var myattr = $(this).text();
+                owl.trigger('to.owl.carousel', [myattr - 1, 0])
+                //var id = $(this).attr("id");
+                //$('div.childcls').find("#" + id).parent().addClass('active');
+
+                ////$('#' + id).show().siblings('div').hide();
+                ////$('#' + id).addClass('active');
+                $('#qid').html(myattr);
+                btnshowhide();
+
+            });
+
+        });
+
+
+    </script>
+}
+

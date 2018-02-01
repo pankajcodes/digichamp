@@ -1,0 +1,320 @@
+﻿@{
+    ViewBag.Title = "Teacher Answer Tickett";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="~/assets/bootstrap-wysihtml5/bootstrap-wysihtml5.css" />
+
+@using (Html.BeginForm("TeacherAnswerTickett", "Admin", FormMethod.Post, new { @class = "form-horizontal", data_ajax = "false", enctype = "multipart/form-data", id = "validations-form" }))
+{
+    if (ViewBag.check_answer == null)
+    {
+        <div class="page-content-wrap">
+            <div id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="~/Admin/AdminDashboard">Home</a>
+                        <span class="divider"><i class="fa fa-angle-right"></i>Reports</span>
+                        <span class="divider"><i class="fa fa-angle-right"></i></span>
+                    </li>
+                    @if (ViewBag.Breadcrumb != null)
+                    {
+                        <li class="active">@ViewBag.Breadcrumb</li>
+                    }
+                </ul>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-title">
+                            <h3><i class="fa fa-file"></i>Teacher Answer Ticket</h3>
+                        </div>
+                        <div class="box-content">
+
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Answer<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <textarea class="form-control" rows="4" id="Answer_Ticket" name="Answer_Ticket" data-rule-required="true" data-msg-required="Please enter answer description"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="hidden" name="h_tkid" value="@ViewBag.h_tkid">
+                                <input type="hidden" name="h_ticno" value="@ViewBag.ticketno">
+                                <input type="hidden" name="h_sname" value="@ViewBag.studentname"><label for="textfield5" class="col-sm-3 col-lg-2 control-label">Answer Image</label>
+                                <div class="col-sm-4 col-lg-3 controls">
+                                    <input type="file" id="Redimage12" name="RegImage3" accept=".jpg,.jpeg,.png,.gif" />
+                                </div>
+                                <div class="col-sm-4 col-lg-3 controls">
+                                    <img id="PrevImage19" src="~/Images/giphy.gif" title="Image is optional" width="200" height="100" alt="Image" />
+                                </div>
+                            </div>
+
+                            <div class="form-group last">
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                    <div>
+                                        @{
+                                        string rjs = "R";
+                                        }
+                                        @if (@ViewBag.status != rjs)
+                                        {
+                                            <button id="btnSearch" type="submit" name="Answer" class="btn btn-info"><i class="fa fa-check"></i>Answer</button>
+                                        }
+                                        else
+                                        {
+                                            <button id="btnSearch" type="submit" disabled name="Answer" class="btn btn-info">Question Rejected</button>
+                                        }
+                                        @Html.ActionLink(" ", "TeacherAnswerTicket", "Admin", new { id = @ViewBag.h_tkid }, new { @class = "btn  btn-warning btn-group fa fa-arrow-left", @title = "Back" })
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+
+    if (ViewBag.check_answer != null)
+    {
+        <div class="box">
+            <div class="box-title">
+                <h3><i class="fa fa-chat"></i>Teacher Answer and Reply</h3>
+                <div class="box-tool">
+                    <a data-action="collapse" href="#"><i class="fa fa-chevron-up"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+
+                <div class="mail-page">
+                    <div class="mail-content">
+                        <div class="mail-msg-subject">
+                            @foreach (var v in ViewBag.all_ticketansr)
+                            {
+                                <div>
+                                    @{
+                                int question_id = Convert.ToInt32(@v.Ticket_ID);
+                                DigiChamps.Models.DigiChampsEntities dg = new DigiChamps.Models.DigiChampsEntities();
+                                var quetion = dg.tbl_DC_Ticket.Where(x => x.Ticket_ID == question_id && x.Is_Active == true && x.Is_Deleted == false).Select(x => x.Question).FirstOrDefault();
+                                    }
+                                </div>
+
+                                <span style="color:red">Question : </span><label>@quetion</label><br />
+                                <span style="color:red">Answer : </span><label>@v.Answer</label><br />
+                                if (v.Answer_Image != null)
+                                {
+                                    <br /><span style="color:red">Answer Image:</span>
+                                    <img src="~/Images/Answerimage/@v.Answer_Image" width="100" height="100" />
+                                }
+
+                                <input type="hidden" value="@v.Ticket_ID" name="Ticket_id" />
+                                <input type="hidden" value="@v.Ticket_Dtls_ID" name="Ticket_answerid" />
+
+                            }
+                        </div>
+                        <ul class="mail-messages">
+                            @if (ViewBag.comments != null)
+                            {
+                                foreach (var v in ViewBag.comments)
+                                {
+                                    <li>
+                                        <div class="mail-msg-header">
+                                            <img src="~/Images/images.png" />
+                                            <div class="msg-sender-recver">
+                                                @{
+
+                                    int id_ = Convert.ToInt32(v.User_Id);
+                                    DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                                    var student_name = DbContext.tbl_DC_Registration.Where(x => x.Regd_ID == id_ && x.Is_Active == true & x.Is_Deleted == false).Select(x => x.Customer_Name).FirstOrDefault();
+                                    var teacher_name = DbContext.tbl_DC_Teacher.Where(x => x.Teach_ID == id_ && x.Is_Active == true & x.Is_Deleted == false).Select(x => x.Teacher_Name).FirstOrDefault();
+
+                                                }
+                                                @if (student_name != null)
+                                                {
+                                                    <strong>@student_name (Student)</strong><br>
+                                                }
+                                                else
+                                                {
+                                                    <strong>@teacher_name (Teacher)</strong><br>
+                                                }
+                                                @Html.Raw(v.User_Comment)
+                                            </div>
+                                            <div class="msg-collapse">
+
+                                            </div>
+                                            <div class="msg-options">
+                                                <span>
+                                                    <a href="#" class="show-tooltip" data-placement="top" data-original-title="Important"></a>
+                                                </span>
+                                                <br>
+                                                @{
+                                                  string date = Convert.ToString(@v.User_Comment_Date);
+                                                }
+                                                <i>Replied on:@date.Substring(0, 10)</i>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                }
+                            }
+
+
+                            @if (ViewBag.isclosed != "C")
+                            {
+                                if (ViewBag.check_answer != null)
+                                {
+                                    <li class="msg-reply">
+
+                                        <p>
+                                            <textarea class="form-control" id="msgbody" name="msgbody" placeholder="Reply" rows="5"></textarea>
+                                        </p>
+                                        <p id="hidden_txt">
+                                            <textarea class="form-control" id="remark" name="remark" placeholder="Remark" rows="5"></textarea>
+                                        </p>
+                                        <p>
+                                            Close Ticket:<input type="checkbox" id="chk_close" name="close" />
+                                            <a id="Reply" class="btn btn-primary" title="Reply" href="#"><i class="fa fa-reply"></i>Reply</a>
+
+                                        </p>
+
+                                    </li>
+                                }
+                            }
+                            @Html.ActionLink(" ", "TeacherAnswerTicket", "Admin", new { id = ViewBag.h_tkid }, new { @class = "btn  btn-warning btn-group fa fa-arrow-left", @title = "Back" })
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @*Previously answered*@
+}
+
+<div id="modal_th" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel2"><i class="fa fa-exclamation-triangle"></i>Message</h3>
+            </div>
+            <div class="modal-body">
+                <h5></h5>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+  {
+    <script type="text/javascript" src="~/assets/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
+    <script type="text/javascript" src="~/assets/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#hidden_txt").hide();
+
+            function readURL1(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#PrevImage19').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#Redimage12").change(function () {
+                readURL1(this);
+            });
+
+            $("#chk_close").click(function () {
+                var check = $("#chk_close").is(':checked');
+                if (check) {
+                    $("#hidden_txt").show();
+                } else {
+                    $("#hidden_txt").hide();
+                }
+            })
+
+            $("#Reply").click(function () {
+
+                if ($("#msgbody").val() != "") {
+                    if ($("#chk_close").is(':checked') == true) {
+                        if ($("#chk_close").is(':checked') == true && $("#remark").val() != "") {
+                            $.ajax({
+                                type: 'POST',
+                                url: "/Teacher/AnswerReply",
+                                dataType: "json",
+                                data: $('#validations-form').serialize(),
+                                success: function (data) {
+                                    if (data == "1") {
+
+                                        location.reload();
+
+                                    }
+
+                                    else if (data == "3") {
+                                        $("#modal_th .modal-body h5").html("Put data correctly.");
+                                        $("#modal_th").modal("show");
+                                    }
+
+                                    else if (data = "4") {
+                                        location.href = "/Teacher/Logout";
+                                    }
+
+                                    else {
+                                        $("#modal_th .modal-body h5").html("Something went wrong.");
+                                        $("#modal_th").modal("show");
+                                    }
+                                }
+                            });
+
+                        } else {
+                            $("#modal_th .modal-body h5").html("Please give a remark.");
+                            $("#modal_th").modal("show");
+                        }
+                    }
+                    else {
+
+                        $.ajax({
+                            type: 'POST',
+                            url: "/Teacher/AnswerReply",
+                            dataType: "json",
+                            data: $('#validations-form').serialize(),
+                            success: function (data) {
+                                if (data == "1") {
+
+                                    location.reload();
+
+                                }
+
+                                else if (data == "3") {
+                                    $("#modal_th .modal-body h5").html("Put data correctly.");
+                                    $("#modal_th").modal("show");
+                                }
+
+                                else if (data = "4") {
+                                    location.href = "/Teacher/Logout";
+                                }
+
+                                else {
+                                    $("#modal_th .modal-body h5").html("Something went wrong.");
+                                    $("#modal_th").modal("show");
+                                }
+                            }
+                        });
+                    }
+
+                } else {
+                    $("#modal_th .modal-body h5").html("Please give a reply.");
+                    $("#modal_th").modal("show");
+                }
+
+            })
+        });
+    </script>
+   }

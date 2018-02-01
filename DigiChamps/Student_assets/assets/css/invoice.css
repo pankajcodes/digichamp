@@ -1,0 +1,138 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito:400,300);
+/************theme fonts********************/
+/***********************theme colors*****************************/
+/*****************theme parametres*******************/
+/*sidebar-parametres*/
+/****************************************************
+                        Company Title
+****************************************************/
+.invoice {
+  color: #e9ecf2;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: 0.25px;
+  line-height: 26px;
+  text-transform: uppercase;
+  float: right;
+  padding-right: 35px;
+}
+.company-title {
+  color: #707780;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 400;
+  font-size: 26px;
+  letter-spacing: 0.25px;
+  line-height: 26px;
+  text-align: center;
+  text-transform: uppercase;
+  padding-top: 52px;
+  padding-bottom: 26px;
+}
+.company-title .company-addess {
+  color: #9398a0;
+  font-weight: 300;
+  font-size: 14px;
+  padding-top: 20px;
+}
+/****************************************************
+                        Client Address
+****************************************************/
+.client-address {
+  color: #9398a0;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 0.25px;
+  line-height: 26px;
+  text-transform: capitalize;
+  padding-bottom: 30px;
+}
+.client-address .client-heading {
+  color: #707780;
+  font-weight: 400;
+  font-size: 16px;
+}
+.client-address.bottom-pad {
+  padding-bottom: 0px;
+}
+/****************************************************
+                Invoice & Payment Details
+****************************************************/
+.invoice-details {
+  color: #9398a0;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 0.25px;
+  line-height: 26px;
+  text-transform: capitalize;
+}
+.invoice-details span {
+  color: #707780;
+  font-weight: 400;
+}
+/****************************************************
+                        Invoice Table
+****************************************************/
+.invoice-table {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+.invoice-table thead tr th {
+  color: #9398a0;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.25px;
+  line-height: 26px;
+  text-transform: capitalize;
+  border-bottom: 1px solid #e9ecf2;
+}
+.invoice-table tbody tr td {
+  color: #707780;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 0.25px;
+  line-height: 26px;
+  text-transform: capitalize;
+  border-bottom: 1px solid #e9ecf2;
+}
+/****************************************************
+                        Total Payment
+****************************************************/
+.total-payment {
+  color: #707780;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 0.25px;
+  line-height: 26px;
+  text-transform: capitalize;
+  text-align: right;
+}
+.total-payment.total-primary {
+  color: #2196f3;
+  font-weight: 400;
+}
+.payment-value {
+  color: #9398a0;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 0.25px;
+  line-height: 26px;
+  text-transform: capitalize;
+  text-align: left;
+}
+.payment-value.total-primary {
+  color: #2196f3;
+  font-weight: 400;
+}
+/****************************************************
+                        Buttons
+****************************************************/
+.invoice-btn {
+  font-size: 16px;
+}

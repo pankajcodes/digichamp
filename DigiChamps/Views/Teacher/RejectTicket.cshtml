@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Reject ticket";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+@using (Html.BeginForm("RejectTicket", "Teacher", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    <div class="page-content-wrap">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i>Reject Ticket</h3>
+                       
+                    </div>
+                    <div class="box-content">
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Remark<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                   @if (@ViewBag.remark != null)
+                                   {
+                                      
+                                        <textarea class="form-control" rows="8" id="Remark_Reject" name="Remark_Reject" readonly>     @ViewBag.remark</textarea>
+                                    }
+                                   else
+                                   {
+                                       if (@ViewBag.status == "R"  )
+                                       {
+                                            <textarea class="form-control" rows="8" id="Remark_Reject" name="Remark_Reject"  readonly>Question rejected</textarea>
+                                       }
+                                       else if(@ViewBag.status == "C")
+                                       {
+                                           <textarea class="form-control" rows="8" id="Remark_Reject" name="Remark_Reject"  readonly>Question closed</textarea>
+                                       }
+                                       else
+                                       {
+                                            <textarea class="form-control" rows="8" id="Remark_Reject" name="Remark_Reject" data-rule-required="true" data-msg-required="Please enter remark"></textarea>
+                                       }
+                                   
+                                   }
+                                </div>
+                            </div>
+                       
+                            <div class="form-group last">
+                                <input type="hidden" value="@ViewBag.tkid" name="h_tkid" />
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2 box-tooll ">
+                                    @if (@ViewBag.status == "R"  || @ViewBag.status == "C")
+                                    {
+                                        
+                                    }
+                                    else
+                                    {
+    
+                                         <button id="btnSearch" type="submit" name="Reject" class="btn btn-large btn-primary btn-success"><i class="fa fa-check green-i"></i> <span>Submit Remark</span></button>
+                                    }
+                                   <a class="btn btn-large btn-primary" title="Back" href="@Url.Action("ViewTickectDetail", "Teacher", new {id = @ViewBag.tkid })"><i class="fa fa-undo"></i> <span>Back</span></a>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    }

@@ -1,0 +1,189 @@
+﻿@{
+    ViewBag.Title = "Contactus";
+    Layout = "~/Views/Shared/_StudentIndex.cshtml";
+}
+
+    <section class="inner-banner background">
+        <div class="inner-banner-patter-screen">
+            <span class="shape-one"></span>
+            <span class="shape-two"></span>
+            <span class="shape-thre"></span>
+            <span class="shape-four"></span>
+            <div class="content-a">
+                <div class="content-b">
+                    <div class="caption_contain">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p>Ready to leave a mark?</p>
+                                    <h2>MEET US</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Banner Section End-->
+
+    <section class="content-area contact-us">
+        <div class="container">
+            <h1>Get In Touch With Us!</h1>
+           
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <form id="contact-form" method="post">
+                        <div class="row">
+                            <span class="error_alert_message"></span>
+                            <span class="success_alert_message"></span>
+                            <div class="form-group">
+                                <div class="col-lg-6">
+                                    <lable>First Name</lable>
+                                    <input type="text" name="fname" class="form-control" placeholder="Enter first name" data-rule-required="true" data-msg-required="Enter first name" />
+
+                                </div>
+                                <div class="col-lg-6">
+                                    <lable>Last Name</lable>
+                                    <input type="text" name="lname" class="form-control" placeholder="Enter last name" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-6">
+                                    <lable>Email</lable>
+                                    <input type="email" name="email" class="form-control" placeholder="Enter emailid" data-rule-email="true" data-rule-required="true" data-msg-required="Enter a valid email" />
+
+                                </div>
+                                <div class="col-lg-6">
+                                    <lable>Subject</lable>
+                                    <input type="text" class="form-control" placeholder="Enter subject" name="subject" data-rule-required="true" data-msg-required="Enter subject">
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <lable>Message</lable>
+                                    <textarea name="message" class="form-control" rows="3" placeholder="Enter message" data-rule-required="true" data-msg-required="Enter message"></textarea>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-6">
+                                    <lable>Captcha</lable>
+                                    <input type="text" disabled="true" class="form-control captcha-text input-box" value="@ViewBag.captcha">
+
+                                </div>
+                                <div class="col-lg-6">
+                                    <lable>Captcha Text</lable>
+                                    <input type="hidden" name="captcha" class="input-box" value="@ViewBag.captcha">
+                                    <input type="text" name="captcha_code" class="form-control" placeholder="Type the text exactly as shown*" data-rule-required="true" data-msg-required="Enter captcha text" autocomplete="off">
+
+
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="submit-btn"> Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="address-container">
+
+
+                        <img src="~/Student_assets/assets/images/location-mark.png" />
+                        <p class="address">Plot No- 346/2729, ODM Educational Group Campus, Patia, Bhubaneswar-24, Odisha</p>
+                        <p class="mail-id">Mail Id: info@thedigichamps.com</p>
+                        <p class="mobile">Toll Free Number: 1800 212 4322</p>
+                        <p class="mobile">Missed Call On: 080 306 36331</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="canvas1" class="map">
+        <iframe id="map_canvas1" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14963.717120818385!2d85.819887!3d20.34454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x4506a935f7ec1ede!2sDigichamps!5e0!3m2!1sen!2sin!4v1482571958674" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+    </section>
+
+@section scripts
+{
+<script>
+    if (jQuery().validate) {
+        var removeSuccessClass = function (e) {
+            $(e).closest('.form-group').removeClass('has-success');
+        }
+        var $validator = $('#contact-form').validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'help-block', // default input error message class
+            errorPlacement: function (error, element) {
+                if (element.parent('.input-group').length) {
+                    error.insertAfter(element.parent());
+                } else if (element.next('.chosen-container').length) {
+                    error.insertAfter(element.next('.chosen-container'));
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: "",
+
+            invalidHandler: function (event, validator) { //display error alert on form submit              
+                var el = $(validator.errorList[0].element);
+                if ($(el).hasClass('chosen')) {
+                    $(el).trigger('chosen:activate');
+                } else {
+                    $(el).focus();
+                }
+            },
+
+            highlight: function (element) { // hightlight error inputs
+                $(element).closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+            },
+
+            unhighlight: function (element) { // revert the change dony by hightlight
+                $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
+                setTimeout(function () { removeSuccessClass(element); }, 2000);
+            },
+
+            success: function (label) {
+                label.closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+            }
+        });
+    }
+    $('#contact-form').submit(function (e) {
+        $("span.success_alert_message").css('display', 'none');
+        $("span.error_alert_message").css('display', 'none');
+        e.preventDefault();
+        if ($(this).valid()) {
+            $(".loader-ajax-container").css("display", "block");
+            $.ajax({
+                type: 'POST',
+                url: "/Student/Contact",
+                data: $(this).serialize(),
+                success: function (data) {
+                    if (data == "1") {
+                        $('#contact-form').find("span.error_alert_message").html("Captcha text not matching, Please try again.");
+                        $('#contact-form').find("span.error_alert_message").css('display', 'block');
+                    }
+                    else if (data == "2") {
+                        $('#contact-form').find("span.success_alert_message").html("Your message has been sent.");
+                        $('#contact-form').find("span.success_alert_message").css('display', 'block');
+                        $('#contact-form').get(0).reset();
+                        }
+                    else {
+                        $('#contact-form').find("span.error_alert_message").html("Something went wrong.");
+                        $('#contact-form').find("span.error_alert_message").css('display', 'block');
+                    }
+                    setTimeout(function () {
+                        $(".loader-ajax-container").css("display", "none");
+                    }, 2000);
+                }
+            });
+        }
+    });
+
+
+  
+</script>
+}

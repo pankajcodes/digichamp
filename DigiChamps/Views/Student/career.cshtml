@@ -1,0 +1,160 @@
+﻿@{
+    ViewBag.Title = "Career";
+    Layout = "~/Views/Shared/_StudentIndex.cshtml";
+}
+
+<section class="inner-banner background">
+    <div class="inner-banner-patter-screen">
+        <span class="shape-one"></span>
+        <span class="shape-two"></span>
+        <span class="shape-thre"></span>
+        <span class="shape-four"></span>
+        <div class="content-a">
+            <div class="content-b">
+                <div class="caption_contain">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                @*<p>Ready to leave a mark?</p>*@
+                                <h2>Career</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Banner Section End-->
+
+<section class="content-area contact-us career-sec">
+    <div class="container">
+        @*<h1>Career</h1>*@
+
+        <div class="row">
+            <div class="col-xs-12">
+                <p>
+					If you are interested in applying for any of the current positions, Please e-mail your resume to hr@thedigichamps.com
+				</p>
+				<h2>Current Openings at Digichamps</h2>
+				<div class="demo">
+    
+    <div class="panel-group crer-acdn" id="accordion" role="tablist" aria-multiselectable="true">
+
+        @if (ViewBag.career != null)
+        {
+           int i = 0;
+            foreach (var item in ViewBag.career)
+            {
+                i = i + 1;
+                    
+             <div class="panel panel-default">
+                
+                 <div class="panel-heading" role="tab" id="heading@(i)">
+                     <h4 class="panel-title">
+
+
+
+                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse@(i)" aria-expanded="true" aria-controls="collapse@(i)">
+                             <!-- <i class="more-less glyphicon glyphicon-plus"></i> -->
+                             @item.career_Name
+                         </a>
+                     </h4>
+                 </div>
+                 <div id="collapse@(i)" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading@(i)">
+                     <div class="panel-body">
+                         <!--<p class="crer-acdn-p">acd1</p> -->
+                         <div class="row">
+                             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><h5>No. of Vacancy</h5></div>
+                             <div class="col-lg-10 col-md-10 col-sm-9 col-xs-8"><p>: @item.No_of_vacancy</p></div>
+                         </div>
+                         <div class="row for-pdng">
+                             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><h5>Experience</h5></div>
+                             <div class="col-lg-10 col-md-10 col-sm-9 col-xs-8"><p>: @item.Experience</p></div>
+                         </div>
+                         <div class="row for-pdng">
+                             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><h5>Location</h5></div>
+                             <div class="col-lg-10 col-md-10 col-sm-9 col-xs-8"><p>: @item.Location</p></div>
+                         </div>
+                         <div class="row for-pdng">
+                             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><h5>Qualification</h5></div>
+                             <div class="col-lg-10 col-md-10 col-sm-9 col-xs-8"><p>: @item.Qualification</p></div>
+                         </div>
+                         <div class="row for-pdng">
+                             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><h5>Opening Date</h5></div>
+                             <div class="col-lg-10 col-md-10 col-sm-9 col-xs-8">
+                                 <p>
+                                     : @if (item.Opening_Date != null)
+                                     {
+                                         @item.Opening_Date.ToString("dd/MM/yyyy")
+                                     }
+                                    
+                                 </p>
+                             </div>
+                         </div>
+                         <div class="row for-pdng">
+                             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><h5>Close Date</h5></div>
+                             <div class="col-lg-10 col-md-10 col-sm-9 col-xs-8">
+                                 <p>
+                                        : @if (item.Close_Date != null)
+                                        {
+                                            @item.Close_Date.ToString("dd/MM/yyyy")
+                                        }
+                                        
+                                 </p>
+                             </div>
+                         </div>
+                         <div class="row for-pdng">
+                             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><h5>Walk in Time</h5></div>
+                             <div class="col-lg-10 col-md-10 col-sm-9 col-xs-8"><p>: @item.Walk_in_Time</p></div>
+                         </div>
+                         <div class="row for-pdng">
+                             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><h5>phone</h5></div>
+                             <div class="col-lg-10 col-md-10 col-sm-9 col-xs-8"><p>: @item.Phone</p></div>
+                         </div>
+                         <div class="row for-pdng">
+                             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><h5>Job Description</h5></div>
+                             <div class="col-lg-10 col-md-10 col-sm-9 col-xs-8"><p>: @item.Job_Description</p></div>
+                         </div>
+                     </div>
+                 </div>
+
+        </div>
+            }
+        }
+        else
+        {
+            <p>
+                Currently no openings
+            </p>
+
+        }
+
+    </div><!-- panel-group -->
+    
+    
+</div><!-- container -->
+				
+				
+				
+				
+				
+				
+				
+				
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+	function toggleIcon(e) {
+    $(e.target)
+        .prev('.panel-heading')
+        .find(".more-less")
+        .toggleClass('glyphicon-plus glyphicon-minus');
+}
+$('.panel-group').on('hidden.bs.collapse', toggleIcon);
+$('.panel-group').on('shown.bs.collapse', toggleIcon);
+
+</script>

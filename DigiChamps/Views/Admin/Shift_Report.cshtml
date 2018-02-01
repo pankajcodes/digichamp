@@ -1,0 +1,128 @@
+﻿@model IEnumerable<DigiChamps.Models.DigiChampsModel.DigiChampsShiftModel>
+
+@{
+    ViewBag.Title = "Shift Report";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!--page specific css styles-->
+<link rel="shortcut icon" href="img/favicon.html">
+
+<div class="page-title">
+    <div>
+        <h1>
+            <i class="fa fa-file-text-o"></i> Shift Report
+            <div class="btn-toolbar pull-right">
+                <div class="box-tool">
+                    <a class="btn btn-primary show-tooltip" data-toggle="tooltip" data-placement="top" title="Login Report" data-original-title="Login Report" href="@Url.Action("Login_report", "Admin")"><span>L</span></a>
+                    @*<a data-action="collapse" href="#"><i class="fa fa-chevron-up"></i></a>*@
+                </div>
+            </div>
+        </h1>
+
+    </div>
+</div>
+<div id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a href="~/Admin/AdminDashboard">Home</a>
+            <span class="divider"><i class="fa fa-angle-right"></i>Reports</span>
+            <span class="divider"><i class="fa fa-angle-right"></i></span>
+        </li>
+        @if (ViewBag.Breadcrumb != null)
+        {
+            <li class="active">@ViewBag.Breadcrumb</li>
+        }
+    </ul>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-title">
+                <h3><i class="fa fa-file-text-o"></i>Shift Report</h3>
+                <div class="box-tool box-tooll">
+                  @if(ViewBag.subjectdata!=null)
+                  {
+                      <a href="#" class="btn btn-primary dropdown-toggle" onclick="$('#table1').tableExport({ type: 'excel', escape: 'false' });"><i class="fa fa-file-excel-o"></i> XLS</a>
+                  }
+                </div>
+            </div>
+            <div class="box-content">
+                <div class="row">
+                    @using (Html.BeginForm("Shift_Report", "Admin", FormMethod.Post, new { @class = "form-horizontal", @id = "validation-form", data_ajax = "false", enctype = "multipart/form-data" }))
+                    {
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:20px 0">
+                            <!-- BEGIN Teacher EVENTS PORTLET-->
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-3 col-lg-2 control-label">Teacher Name</label>
+                                    <div class="col-sm-6 col-lg-8 controls">
+                                        <select id="event_priority" name="Teacher_name" data-rule-required="true" data-msg-required="Please select Teacher" data-placeholder="Select Teacher" class="col-md-12 chosen form-control">
+                                            <option value="">Select Teacher</option>
+                                            @if (@ViewBag.teacher_name != null)
+                                            {
+                                                foreach (var v in ViewBag.teacher_name)
+                                                {
+                                                    <option value="@v.Teach_ID">@v.Teacher_Name</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3 col-lg-2 controls box-tooll">
+                                        <button id="btnadd" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> <span>Search</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="col-md-12">
+                        <table class="table table-advance" id="table1">
+                            <thead>
+                                <tr>
+                                    <th>Sl No.</th>
+                                    <th>Shift day</th>
+                                    <th>Effective date</th>
+                                    <th>Shift timing</th>
+                                    <th>Teacher Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.subjectdata != null)
+                                {
+                                    int rowNo = 0;
+                                    foreach (var item in ViewBag.subjectdata)
+                                    {
+                                        <tr>
+                                            @{
+                                        string date = Convert.ToString(@item.Effectivedate);
+
+                                            }
+                                            <td>@(rowNo += 1)</td>
+                                            <td>@item.Shift_Days</td>
+                                            <td>@date.Substring(0, 10)</td>
+                                            <td>@item.Shifttiming</td>
+                                            <td>@item.Teacher_Name</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $("#validation-form").validate();
+    </script>
+<script src="~/js/plugins/tableexport/jspdf/libs/base64.js"></script>
+<script src="~/js/plugins/tableexport/jspdf/libs/sprintf.js"></script>
+<script src="~/js/plugins/tableexport/jspdf/jspdf.js"></script>
+<script src="~/js/plugins/tableexport/html2canvas.js"></script>
+<script src="~/js/plugins/tableexport/jquery.base64.js"></script>
+<script src="~/js/plugins/tableexport/tableExport.js"></script>
+}

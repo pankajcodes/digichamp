@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "Coupon Type";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content-wrap">
+    
+    <div id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="~/Admin/AdminDashboard">Home</a>
+                <span class="divider"><i class="fa fa-angle-right"></i></span>
+            </li>
+            @if (ViewBag.Breadcrumb != null)
+            {
+                <li class="active">@ViewBag.Breadcrumb</li>
+            }
+        </ul>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+
+
+                <div class="box-title">
+
+                    <h3><i class="fa fa-file-text"></i>View Coupon Details</h3>
+                    <div class="box-tool box-tooll">
+                        <a href="/Admin/addcoupon" class="btn btn-primary"><i class="fa fa-plus"></i><span> Add Coupon</span></a>
+                    </div>
+                </div>
+                <div class="box-content">
+
+                    <div class="table-responsive voffset3">
+                        <table class="table table-advance" id="table1">
+
+                            <thead>
+                                <tr>
+                                    <th>Sl No.</th>
+                                    <th>Coupon Type</th>
+                                   
+                                    <th style="width: 20%;">Action</th>
+                                    <th hidden>id</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.data != null)
+                                {
+                                    int rowNo = 0;
+                                    foreach (var v in ViewBag.data)
+                                    {
+
+                                        <tr>
+                                            <td>@(rowNo += 1)</td>
+
+                                            <td>@v.Coupon_Type</td>
+                                            <td>
+
+                                                @Html.ActionLink(" ", "addcoupon", "Admin", new { id = @v.Id }, new { @class = "btn btn-sm btn-primary show-tooltip fa fa-edit", @title = "Edit" })
+
+                                                @Html.ActionLink(" ", "deletecoupon", "Admin", new { id = @v.Id }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the assigned course?')", @data_original_title = "Delete", @title = "Delete" })
+
+
+                                            </td>
+                                            <td  hidden>@v.Id </td>
+
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

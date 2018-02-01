@@ -1,0 +1,21 @@
+﻿
+@{
+
+
+}
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+           $(document).ready(function () {
+               $("#loginForm").submit();
+           });
+</script>
+
+
+@using (Html.BeginForm("OrderNow", "student", FormMethod.Post, new { name = "loginForm", id = "loginForm", action = "https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction" }))
+{
+
+    <input type="hidden" id="encRequest" name="encRequest" value="@ViewBag.strEncRequest" />
+    <input type="hidden" name="access_code" id="Hidden1" value="@ViewBag.strAccessCode" />
+
+
+}

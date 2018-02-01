@@ -1,0 +1,278 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsTeacherRegModel
+@{
+    ViewBag.Title = "TecaherProfile";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="box">
+            <div class="box-title">
+                <h3><i class="fa fa-file"></i> Profile Info</h3>
+                <div class="box-tool">
+                    <a data-action="collapse" href="#"><i class="fa fa-chevron-up"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        @if (ViewBag.image != null)
+                        {
+                            <div class="fileupload-new img-thumbnail" style="width: 160px; height: 190px; ">
+                                <img src="/Images/Teacherprofile/@ViewBag.image" width="150" height="180" alt="" />
+                            </div>
+                        }
+                        else
+                        {
+                            <img src="~/Images/-text.png" alt="" />
+                        }
+                        <br /><br />
+                    </div>
+                    <div class="col-md-6 user-profile-info">
+                        <p><span>Teacher name:</span>@ViewBag.Teacher_name</p>
+                        <p><span>Gender:</span>@ViewBag.gender</p>
+                        <p><span>Date of Birth:</span>@ViewBag.dateofbirth</p>
+                        <p><span>Designation:</span>@ViewBag.degination</p>
+                        <p><span>Mobile Number:</span>@ViewBag.mobile</p>
+                        <p><span>Email:</span><a href="mailto:#">@ViewBag.email</a></p>
+                        <p><span>Address:</span>@ViewBag.address</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="box box-red">
+            <div class="box-title">
+                <h3><i class="fa fa-file"></i>Change Password</h3>
+                <div class="box-tool">
+                    <a data-action="collapse" href="#"><i class="fa fa-chevron-up"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <form id="password_change"  class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 col-md-5 control-label">Current password<span class="asterisk">*</span></label>
+                        <div class="col-sm-8 col-md-7 controls">
+                            <input type="password" name="Old_Password" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 col-md-5 control-label">New password<span class="asterisk">*</span></label>
+                        <div class="col-sm-8 col-md-7 controls">
+                            <input type="password" name="New_Password" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 col-md-5 control-label">Re-type new password<span class="asterisk">*</span></label>
+                        <div class="col-sm-8 col-md-7 controls">
+                            <input type="password" name="Conf_Password" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-4 col-md-7 col-md-offset-5">
+                            <button type="button" id="btn_sub" class="btn btn-primary">Submit</button>
+                            <label class="green"></label>
+                            <label class="red"></label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm("TecaherProfile", "Teacher", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", @id = "validation-form" }))
+{
+    @Html.AntiForgeryToken();
+
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i>Edit Profile</h3>
+                        <input type="hidden" id="teacher_id" name="id" value="@ViewBag.Teach_ID" />
+                    </div>
+                    <div class="box-content">
+
+                        <div class="form-group voffset3">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Teacher's Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.TextBoxFor(m => m.Teacher_Name, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter teacher's Name", Value=ViewBag.Teacher_name })
+                                @Html.ValidationMessageFor(x => x.Teacher_Name)
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Designation<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.TextBoxFor(m => m.Designation, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter designation", Value=ViewBag.degination })
+                                @Html.ValidationMessageFor(x => x.Designation)
+                            </div>
+                        </div>
+                        <div class="form-group input-cont">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Gender<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.DropDownList("Gender", new List<SelectListItem> { new SelectListItem { Text = "Male", Value = "Male" }, new SelectListItem { Text = "Female", Value = "Female" } }, " Select ", new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter gender", Value = ViewBag.gender})
+                                @Html.ValidationMessageFor(x => x.Gender)
+                            </div>
+                        </div>
+                        <div class="form-group input-cont">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Date Of Birth <span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.TextBoxFor(m => m.DateOfBirth, new { @class = "date-picker form-control", autocomplete = "off", data_rule_required = "true", Value = ViewBag.dateofbirth, data_rule_date = "true", data_rule_birthday = "true", data_msg_required = "Please enter date of birth" })
+                                @Html.ValidationMessageFor(x => x.DateOfBirth)
+                            </div>
+                        </div>
+                        <div class="form-group input-cont">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Email Id <span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.TextBoxFor(m => m.Email_ID, new { @class = "form-control", type = "email", data_rule_required = "true", data_rule_email = "true", Value=ViewBag.email, data_msg_required = "Please enter email id" })
+                                @Html.ValidationMessageFor(x => x.Email_ID)
+                            </div>
+                        </div>
+
+                        <div class="form-group input-cont">
+                            <label for="textarea5" class="col-sm-3 col-lg-2 control-label">Mobile Number<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", maxlength = "10", data_rule_required = "true", data_rule_digits = "true", Value=ViewBag.mobile, data_msg_required = "Please enter mobile number" })
+                                @Html.ValidationMessageFor(x => x.Mobile)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textarea5" class="col-sm-3 col-lg-2 control-label">Address</label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <textarea name="address" class="form-control">@ViewBag.address</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">Profile Image<span class="asterisk"></span></label>
+                            <div class="col-sm-9 col-lg-10 controls">
+                                <div class="fileupload fileupload-new" data-provides="fileupload">
+                                    <div class="file-upload-cont">
+                                        <div class="fileupload-new img-thumbnail" style="width:160px; height: 190px; ">
+                                            @if (ViewBag.image != null)
+                                            {
+                                                <Span>@{
+                                                string img = Convert.ToString(@ViewBag.image);
+                                                string rimg = string.Empty;
+                                                if(img.Contains("/Images/Teacherprofile/"))
+                                                {
+                                                    rimg = img.Replace("/Images/Teacherprofile/","");
+                                                }
+                                                else
+                                                {
+                                                    rimg = @img;
+                                                }
+                                                }
+                                                    </Span>
+    <img src="/Images/Teacherprofile/@rimg" id="img_" width="150" height="180" alt="" />
+                                            }
+                                            else
+                                            {
+                                                <img src="~/Images/-text.png" id="img_" width="150" height="180" alt="" />
+                                            }
+
+                                        </div>
+                                        <div class="fileupload-preview fileupload-exists img-thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
+                                        <div>
+                                            <span class="btn btn-default btn-file">
+                                                <span class="fileupload-new">Select image</span>
+                                                <span class="fileupload-exists">Change</span>
+                                                <input class="file-input" type="file" accept=".png, .jpg, .jpeg" id="teacher_img" name="teacher_img" title="Upload Image" data-msg-required="Please select profile image" />
+                                            </span>
+                                            <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <button id="btnadd" type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Submit</button>
+                                <a href="@Url.Action("TeacherDashboard", "Teacher")" class="btn btn-inverse dropdown-toggle"><i class="fa fa-caret-left"></i> Back </a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}
+
+
+@section scripts
+{ 
+    <script>
+        $(document).ready(function () {
+            $('#Mobile').keyup(function (e) {
+                debugger;
+                if (/\D/g.test(this.value)) {
+                    // Filter non-digits from input value.
+                    this.value = this.value.replace(/\D/g, '');
+                }
+            });
+     function readURL1(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#img_').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+     $("#teacher_img").change(function () {
+                readURL1(this);
+     });
+
+     $("#btn_sub").click(function () {
+         $(".red").text("");
+         $(".green").text("");
+         $.ajax({
+             type: 'POST',
+             url: "/Teacher/ChangePassword",
+             dataType: "json",
+             data: $('#password_change').serialize(),
+             success: function (data) {
+                 if(data=="1") 
+                 {
+                     $(".red").text("New and confirm password not matching.");
+                 }
+                 else if(data=="2")
+                 {
+                     $(".red").text("Old password is incorrect.")
+                 }
+                 else if (data == "3")
+                 {
+                     $(".red").text("Something went wrong.")
+                 }
+                 else if(data=="0")
+                 {
+                     $(".green").text("Password changed successfully.")
+                     $('#password_change')[0].reset();
+                 }
+                 else if(data=="5")
+                 {
+                     $(".red").text(" Require fields cant be leave empty.")
+                 }
+                 else
+                 {
+                     location.href = "/Teacher/Logout";
+                 }
+             }
+         });
+
+        
+     });
+
+
+        })
+  </script>
+}

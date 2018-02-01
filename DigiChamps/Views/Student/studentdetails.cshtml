@@ -1,0 +1,445 @@
+﻿@model DigiChamps.Models.DigiChampsModel.View_All_Students
+@{
+    ViewBag.Title = "Profile | DIGI CHAMPS";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+<style>
+    #crop-image-area img {
+        width: 100%;
+        height: auto;
+    }
+</style>
+@section header{
+    <i class="fa fa-user page_header_icon"></i>
+    <span class="main-text">Profile</span>  
+<!-- /pageheader -->
+}
+
+<div class="row">
+    <div class="col-md-8 nopad-right">
+        <!-- Question Panel Starts -->
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Your Personal Details
+                </h3>
+            </div>
+            <div class="panel-body">
+                <form class="form" id="validation-form">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 nopad-right">
+                            <div class="form-group">
+                                <label class="control-label">Mobile Number</label>
+                                @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Email Id</label>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter Your Email", data_rule_required = "true", data_msg_required = "Please enter email id", data_rule_maxlength = "150", type = "email" })
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 nopad-right">
+                            <div class="form-group">
+                                <label class="control-label">Name</label>
+                                @Html.TextBoxFor(m => m.Customer_Name, new { @class = "form-control", placeholder = "Enter Your Name", data_rule_required = "true", data_msg_required = "Please enter name", data_rule_minlength = "2" })
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Select Board</label>
+                                @(Html.DropDownListFor(x => x.Board_Id, ViewBag.board as SelectList, "Please Select Board", new { @class = "form-control", @id = "ddlboard", data_rule_required = "true", data_msg_required = "Please select board" }))
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 nopad-right">
+                            <div class="form-group">
+                                <label class="control-label">Select Class</label>
+                                @(Html.DropDownListFor(x => x.Class_ID, new List<SelectListItem>(), "Please Select Class", new { @class = "form-control ", @id = "ddlclass", data_rule_required = "true", data_msg_required = "Please select class" }))
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">School Name</label>
+                                @Html.TextBoxFor(m => m.Organisation_Name, new { @class = "form-control", placeholder = "Enter Your School Name", data_rule_required = "true", data_msg_required = "Please enter school name", data_rule_minlength = "4" })
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Address</label>
+                                @Html.TextAreaFor(m => m.Address, new { @class = "form-control text-area", cols = "30", rows = "10" })
+                            </div>
+                        </div>
+                        <div class="btn-div">
+                            <button class="btn btn-green btn-icon-green btn-icon-block voffset3 btn-icon-blockleft">
+                                <i class="ion ion-checkmark"></i>
+                                <span>Save Changes</span>
+                            </button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <!-- Question Panel Ends -->
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Set Password
+                </h3>
+            </div>
+            <div class="panel-body">
+                <form class="form" id="validation-form1">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 nopad-right">
+                            <div class="form-group">
+                                <label class="control-label">Current Password</label>
+                                <input type="password" placeholder="Enter Your Current Password" class="form-control" name="Old_Password" id="Old_Password" data-rule-required="true" data-rule-minlength="6" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 nopad-right">
+                            <div class="form-group">
+                                <label class="control-label">New Password</label>
+                                <input type="password" placeholder="Enter Your New Password" class="form-control" name="New_Password" id="New_Password" data-rule-required="true" data-rule-minlength="6" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Confirm Password</label>
+                                <input type="password" placeholder="Re-Enter Your New Password" class="form-control" name="Conf_Password" id="Conf_Password" data-rule-required="true" data-rule-minlength="6" data-rule-equalto="#New_Password" />
+                            </div>
+                        </div>
+                        <div class="btn-div">
+                            <button class="btn btn-green btn-icon-green btn-icon-block voffset3 btn-icon-blockleft">
+                                <i class="ion ion-checkmark"></i>
+                                <span>Submit</span>
+                            </button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Alert -->
+        <div class="docs-alert">
+            <span class="warning message"></span>
+        </div>
+    </div>
+    <div class="col-md-4 profile-right">
+        <div class="piluku-panel no-pad panel">
+            <div class="ios-profile-widget">
+                    <div class="header_cover">
+                    <p>@Html.TextBoxFor(m => m.MyFile, new { id = "fu-my-simple-upload", type = "file", @class ="icon-popup-file"})</p>
+                    <div class="more">
+                        <a href="javascript:viod(0)" class="uploadFileImg">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </a>
+                        @Html.Hidden("UploadedImagePath", string.Empty, new { id = "hf-uploaded-image-path" })
+                        @Html.HiddenFor(m => m.CroppedImagePath, new { id = "hf-cropped-image-path" })
+                    </div>
+                    
+                    @if (ViewBag.image == null)
+                    {
+                        <img id="my-cropped-image" src="~/Student_assets/assets/img/one.png" alt="" />
+                    }
+                                        else
+                    {
+                        <img id="my-cropped-image" src="@ViewBag.image" alt="" />
+                    }
+                    <h3>@Html.DisplayFor(x => x.Customer_Name)</h3>
+                </div>
+                <!-- cover -->
+                <span class="error-messages"></span>
+
+            </div>
+
+
+
+            <!-- ios-profile -->
+        </div>
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Profile Completion Status
+                </h3>
+            </div>
+            <div class="ios-profile-widget">
+                <ul class="list-group">
+                    <li class="list-group-item border-top">
+                        <span class="badge"><i class="fa fa-check"></i></span>
+                        Password Set
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge bage-color"><i class="fa fa-times"></i></span>
+                        Syllabus Set
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge"><i class="fa fa-check"></i></span>
+                        School Details
+                    </li>
+                    <li class="list-group-item broder-bottom">
+                        <span class="badge"><i class="fa fa-check"></i></span>
+                        General Details
+                    </li>
+                </ul>
+                <div class="progress progress-bar-mini p-progress-bar">
+                    <div class="progress-bar progress-bar-success right progress-bar-striped active" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+                        70% Completed
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Profile Image Modal -->
+<div class="modal fade" id="defaultmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                <h4 class="modal-title" id="myModalLabel">Profile Image</h4>
+            </div>
+            <div class="modal-body">
+                <div id="crop-image-area" style="display:none;">
+                    <p><img id="uploaded-image" src="#" /></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" id="hl-crop-image" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <!--crop image-->
+    <script src="~/js/jquery.Jcrop.min.js"></script>
+    <script src="~/js/jquery.iframe-transport.js"></script>
+    <script src="~/js/jquery.fileupload-ui.js"></script>
+    <script src="~/js/jquery.fileupload.js"></script>
+    <script src='~/Student_assets/assets/js/tooltip-custom.js'></script>
+
+    <script>
+        $(".uploadFileImg").on('click', function () {
+            $("#fu-my-simple-upload").trigger('click');
+        });
+       // $('#validation-form1').validate();
+        
+
+        //Dropdownlist Casceding
+        $('#ddlboard').change(function () {
+            if ($('#ddlclass').closest('.form-group').find('.ajax-loader').length) {
+                // do nothing
+            } else {
+                $('#ddlclass').closest('.form-group').find('.controls').append("<div class='ajax-loader'><div class='loader'></div></div>");
+            }
+            $('#ddlclass').closest('.form-group').addClass('display-loader');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetAllClass",
+                data: { brdId: $('#ddlboard').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var sta = sta + '<option value="">Please Select Class</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    $('#ddlclass').html(sta);
+                    setTimeout(function () {
+                        $('#ddlclass').closest('.form-group').removeClass('display-loader');
+                    }, 800);
+                }
+            });
+        });
+
+        @if (@ViewBag.classid != null)
+        {<text>
+        var classid = '@ViewBag.classid';
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetAllClass",
+            data: { brdId: $("#ddlboard").val() },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var fst = fst + '<option value="">Please Select Class</option>';
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].Value == classid) {
+                        fst = fst + '<option selected="selected"  value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    } else {
+                        fst = fst + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                }
+                $('#ddlclass').html(fst);
+
+            }
+        });
+        </text>}
+
+        $('#validation-form1').submit(function (e) {
+            e.preventDefault();
+            if ($(this).valid()) {
+                $.ajax({
+                    type: 'POST',
+                    url: "/Student/ChangePassword",
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        if (data = "0") {
+                            $('#validation-form1').find("span.dlt_msg").html("current password Is Wrong.");
+                        }
+                        else if (data = "-1") {
+                            $('#validation-form1').find("span.dlt_msg").html("The new password & confirm password is not matching.");
+                        }
+                        else if (data = "1") {
+                            $('#validation-form1').find("span.dlt_msg").html("Password has been changed.");
+                            location.href = "/Student/StudentDashboard";
+                        }
+                        else if (data = "-2") {
+                            location.href = "/Student/logout";
+                        }
+                        else {
+                            $('#validation-form1').find("span.dlt_msg").html(data);
+                        }
+                    }
+                });
+            }
+        });
+        $('#validation-form').submit(function (e) {
+            e.preventDefault();
+            if ($(this).valid()) {
+                $.ajax({
+                    type: 'POST',
+                    url: "/Student/studentdetails",
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        if (data = "0") {
+                            $('#validation-form').find("span.dlt_msg").html("Please enter required details.");
+                        }
+                        else if (data = "-1") {
+                            $('#validation-form').find("span.dlt_msg").html("Invalid user details.");
+                        }
+                        else if (data = "1") {
+                            $('#validation-form').find("span.dlt_msg").html("Information saved successfully.");
+                            location.href = "/Student/StudentDashboard";
+                        }
+                        else if (data = "-2") {
+                            location.href = "/Student/logout";
+                        }
+                        else {
+                            $('#validation-form').find("span.dlt_msg").html(data);
+                        }
+                    }
+                });
+            }
+        });
+
+
+        /////////////////////////////////////
+        var jqXHRData;
+        $('#fu-my-simple-upload').fileupload({
+            url: '/File/UploadFileProfile',
+            dataType: 'json',
+            add: function (e, data) {
+                jqXHRData = data;
+                if (jqXHRData) {
+                    jqXHRData.submit();
+                }
+                $("#defaultmodal").modal("show");
+            },
+            done: function (event, data) {
+                if (data.result.isUploaded) {
+
+                    $("#hf-uploaded-image-path").val(data.result.filePath);
+
+                    destroyCrop();
+
+                    $("#uploaded-image").attr("src", data.result.filePath + "?t=" + new Date().getTime());
+
+                    initCrop();
+
+                    $("#crop-image-area").fadeIn("slow");
+                } else {
+
+                }
+            },
+            fail: function (event, data) {
+                if (data.files[0].error) {
+                    alert(data.files[0].error);
+                }
+            }
+        });
+
+        //************************************** JavaScript for ajax file upload END **************************************
+        //************************************** JavaScript for cropping of image *****************************************
+        var imageCropWidth = 0;
+        var imageCropHeight = 0;
+        var cropPointX = 0;
+        var cropPointY = 0;
+
+        $("#hl-crop-image").on("click", function (e) {
+            e.preventDefault();
+            cropImage();
+        });
+
+        function initCrop() {
+            $('#uploaded-image').Jcrop({
+                onChange: setCoordsAndImgSize,
+                aspectRatio: 1
+            });
+        }
+
+        function destroyCrop() {
+            var jcropApi = $('#uploaded-image').data('Jcrop');
+
+            if (jcropApi !== undefined) {
+                jcropApi.destroy();
+                $('#uploaded-image').attr('style', "").attr("src", "");
+            }
+        }
+
+        function setCoordsAndImgSize(e) {
+
+            imageCropWidth = e.w;
+            imageCropHeight = e.h;
+
+            cropPointX = e.x;
+            cropPointY = e.y;
+        }
+
+        function cropImage() {
+
+            if (imageCropWidth == 0 && imageCropHeight == 0) {
+                alert("Please select crop area.");
+                return;
+            }
+
+            $.ajax({
+                url: '/Image/CropImagestudent',
+                type: 'POST',
+                data: {
+                    imagePath: $("#hf-uploaded-image-path").val(),
+                    cropPointX: cropPointX,
+                    cropPointY: cropPointY,
+                    imageCropWidth: imageCropWidth,
+                    imageCropHeight: imageCropHeight
+                },
+                success: function (data) {
+
+                    $("#hf-cropped-image-path").val(data.photoPath);
+
+                    $("#my-cropped-image")
+                        .attr("src", data.photoPath + "?t=" + new Date().getTime())
+                        .show();
+
+                    $("#btn-my-submit").fadeIn("slow");
+                },
+                error: function (data) { }
+            });
+        }
+
+
+    </script>
+
+
+}

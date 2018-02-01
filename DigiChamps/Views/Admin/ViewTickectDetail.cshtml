@@ -1,0 +1,204 @@
+﻿@{
+    ViewBag.Title = "View Tickect";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("ViewTickectDetail", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="page-content-wrap">
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active">@ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+
+                        @if (ViewBag.teacher == null)
+                        {
+                            <h3><i class="fa fa-ticket"></i> View Ticket Details (No Teacher assigned)</h3>
+                        }
+                        else
+                        {
+                            if (ViewBag.check_answer == null)
+                            {
+                                if (ViewBag.status == "R")
+                                {
+                                    <h3><i class="fa fa-ticket"></i> View Ticket Details (Rejected)</h3>
+                                }
+                                else if (ViewBag.status == "C")
+                                {
+                                    <h3><i class="fa fa-ticket"></i> View Ticket Details (Closed)</h3>
+                                }
+                                else if (ViewBag.status == "D")
+                                {
+                                    if(ViewBag.teacher!=null)
+                                    {
+                                         <h3><i class="fa fa-ticket"></i> View Ticket Details (@ViewBag.teacher not answered yet)</h3>
+                                    }
+                                    else
+                                    {
+                                         <h3><i class="fa fa-ticket"></i> View Ticket Details (Teacher not answered yet)</h3>
+                                    }
+                                    
+                                }
+                                  else if (ViewBag.status == "O")
+                                {
+                                    if(ViewBag.teacher!=null)
+                                    {
+                                         <h3><i class="fa fa-ticket"></i> View Ticket Details (@ViewBag.teacher not answered yet)</h3>
+                                    }
+                                    else
+                                    {
+                                         <h3><i class="fa fa-ticket"></i> View Ticket Details (Teacher not answered yet)</h3>
+                                    }
+                                    
+                                }
+                            }
+                            else
+                            {
+                                if (ViewBag.status == "R")
+                                {
+                                    <h3><i class="fa fa-ticket"></i> View Ticket Details (Rejected)</h3>
+                                }
+                                else  if (ViewBag.status == "O")
+                                {
+                                    <h3><i class="fa fa-ticket"></i> View Ticket Details</h3>
+                                }
+                                else if(ViewBag.status == "C")
+                                {
+                                    <h3><i class="fa fa-ticket"></i> View Ticket Details (Closed)</h3>
+                                }
+
+                            }
+
+                        }
+
+                    </div>
+                    @if (ViewBag.viewticket != null)
+                    {
+                        foreach (var v in ViewBag.viewticket)
+                        {
+                            <div class="box-content">
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Student Name<span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                        @{
+                            DigiChamps.Models.DigiChampsEntities dg = new DigiChamps.Models.DigiChampsEntities();
+                            int i = Convert.ToInt32(v.Student_ID);
+                            int tickte_id = Convert.ToInt32(v.Ticket_ID);
+                            var s_nm = dg.tbl_DC_Registration.Where(x => x.Regd_ID == i).Select(x => x.Customer_Name).FirstOrDefault();
+                            var status = dg.tbl_DC_Ticket.Where(x => x.Ticket_ID == tickte_id).FirstOrDefault();
+                                        }
+                                        <input type="text" id="Student_Name" value="@s_nm" name="Student_Name" class="form-control" readonly />
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="ajax-loader">
+                                            <div class="loader"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Class<span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                        @{
+                            int j = Convert.ToInt32(v.Class_ID);
+                            var c_nm = dg.tbl_DC_Class.Where(x => x.Class_Id == j).Select(x => x.Class_Name).FirstOrDefault();
+                                        }
+                                        <input type="text" id="Class_Name" name="Class_Name" value="@c_nm" class="form-control" readonly />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Question Detail<span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                        <textarea class="form-control" rows="8" id="Question_Detail" name="Question_Detail" readonly>@v.Question</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Question Image<span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                        @if (v.Question_Image != null)
+                                        {
+                                            <img id="Qst_Img" height="150" width="350" src="~/Images/Qusetionimages/@v.Question_Image" />
+                                        }
+                                        else
+                                        {
+                                            <img id="Qst_Img" height="150" width="350" src="~/Images/-text.png" />
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="form-group last">
+                                    <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2 box-tooll">
+                                        <a class="btn btn-large btn-primary" title="Back To List" href="/Admin/Ticket"><i class="fa fa-undo"></i> <span>Back</span></a>
+                                        @*<a href="@Url.Action("Ticket", "Admin")" class="btn btn-inverse dropdown-toggle fa fa-caret-left"> Back </a>*@
+                                        @if (ViewBag.check_answer != null)
+                                        {
+                                            @*@Html.ActionLink(" View Thread", "AnswerTicket", "Admin", new { id = @v.Ticket_ID }, new { @class = "btn btn-sm btn-primary show-tooltip fa fa-eye", @title = "View Ticket Thread" })*@
+                                  <a class="btn btn-large btn-primary btn-success" title="View Ticket Thread" href="/Admin/AnswerTicket/@v.Ticket_ID"><i class="fa fa-check green-i"></i> <span>View Thread</span></a>
+
+                                            if (@status.Status == "R")
+                                            {
+                                                @*@Html.ActionLink("View rejection remark", "RejectTicket", "Admin", new { id = @v.Ticket_ID }, new { @class = "btn  btn-danger btn-group fa fa-times", @title = "Reject Ticket" })*@
+
+    <a class="btn btn-large btn-primary btn-success" title="View Rejection Details" href="/Admin/RejectTicket/@v.Ticket_ID"><i class="fa fa-check green-i"></i> <span>View Rejection Details</span></a>
+
+                                            }
+                                            else
+                                            {
+                                                if (@status.Status != "C")
+                                                {
+                                                    @*@Html.ActionLink(" Reject", "RejectTicket", "Admin", new { id = @v.Ticket_ID }, new { @class = "btn  btn-danger btn-group fa fa-times", @title = "Reject Ticket" })*@
+    <a class="btn btn-large btn-primary btn-danger" title="Reject Ticket" href="/Admin/RejectTicket/@v.Ticket_ID"><i class="fa fa-times red-i"></i> <span>Reject Ticket</span></a>
+
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (@status.Status == "R")
+                                            {
+                                                @*@Html.ActionLink("View rejection remark", "RejectTicket", "Admin", new { id = @v.Ticket_ID }, new { @class = "btn  btn-danger btn-group fa fa-times", @title = "Reject Ticket" })*@
+                                               <a class="btn btn-large btn-primary btn-success" title="View Rejection Details" href="/Admin/RejectTicket/@v.Ticket_ID"><i class="fa fa-check green-i"></i> <span>View Rejection Details</span></a>
+
+                                                @*<a class="btn btn-large btn-primary" title="" href=""><i class="fa fa-undo"></i> <span>Back</span></a>
+                                                <a class="btn btn-large btn-primary btn-success" title="" href=""><i class="fa fa-check green-i"></i> <span>Accept</span></a>
+                                                <a class="btn btn-large btn-primary btn-danger" title="" href=""><i class="fa fa-times red-i"></i> <span>Reject</span></a>*@
+                                            }
+                                            else
+                                            {
+                                                if (@status.Status != "C")
+                                                {
+                                                    @*@Html.ActionLink(" Reject", "RejectTicket", "Admin", new { id = @v.Ticket_ID }, new { @class = "btn  btn-danger btn-group fa fa-times", @title = "Reject Ticket" })*@
+                                            <a class="btn btn-large btn-primary btn-danger" title="Reject Ticket" href="/Admin/RejectTicket/@v.Ticket_ID"><i class="fa fa-times red-i"></i> <span>Reject Ticket</span></a>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+                    }
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+}
+
+
+

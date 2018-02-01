@@ -1,0 +1,292 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<!-- Mirrored from piluku.bootstrapguru.com/Build/signin2.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 30 Nov 2016 07:14:45 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Parent Login | Digichamps</title>
+    <!-- <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon"> -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="~/Student_assets/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Student_assets/assets/css/material.css">
+    <link rel="stylesheet" href="~/Student_assets/assets/css/material.css">
+    <link rel="stylesheet" type="text/css" href="~/Student_assets/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/Student_assets/assets/css/signin2.css">
+    <link rel="stylesheet" href="~/css/manual.css">
+
+    <!-- custom scrollbar stylesheet -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" /> <!--320-->
+
+    <style>
+        .alert {
+            display: none;
+            padding: 20px;
+            background-color: #f44336; /* Red */
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        /* The close button */
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            /* When moving the mouse over the close button */
+            .closebtn:hover {
+                color: black;
+            }
+    </style>
+</head>
+<body>
+    <div class="loader-ajax-container">
+        <div class="cssload-container">
+            <div class="cssload-loading"><i></i><i></i><i></i><i></i></div>
+        </div>
+    </div>
+    <form id="validation-form1">
+        <div class="flip-container">
+            <div class="flipper">
+                <div class="front">
+                    <!-- front content -->
+                    <div class="holder">
+                        <h1 class="heading">Login</h1>
+                        <input class="form-control" type="text" placeholder="Username" id="Username" name="Username" data-rule-required="true" data-msg-required="Please enter username">
+                        <input type="password" class="form-control" placeholder="Password" id="password" name="password" data-rule-required="true" data-msg-required="Please enter password">
+                        <div class="bottom_info">
+                            <a href="#" class="goto-forgot pull-left" data-toggle="modal" data-target="#forgot">forgot password?</a>
+                        </div>
+                        <div class="clearfix"></div>
+                        <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Modal1 -->
+    <div class="modal fade" id="forgot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
+        <div class="modal-dialog">
+            <form id="validation-form2">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"><i class="ion-android-settings"></i> Reset password</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Enter Mobile Number here">
+                            <span class="help-block"></span>
+                            <h6 class="note"><i class="ion-android-mail"></i> Otp will be sent to your mobile</h6>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Send</button>
+                        <button type="button" class="btn btn-red" data-dismiss="modal">Close</button>
+                        
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
+        <div class="modal-dialog">
+            <form id="validation-form3">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"><i class="ion-android-settings"></i> OTP Confirmation</h4>
+
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert">
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                            <span id="spn"></span>
+                        </div>
+                        <!-- panel -->
+                        <div class="panel panel-ntspl">
+                            <div class="panel-body no-padding">
+                                <div class="ntspl-login">
+                                    <div class="form-section">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa-hand-o-right"></i></span>
+                                            <input type="text" name="Mobile_OTP" class="form-control" placeholder="Confirm OTP" data-rule-required="true" data-msg-required="Enter OTP" data-rule-minlength="6" maxlength="6">
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                            <input type="password" maxlength="20" name="New_Password" class="form-control" id="New_Password" placeholder="New Password" data-rule-required="true" data-msg-required="Enter new password" data-rule-minlength="6">
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                            <input type="password" name="Confirm_Password" class="form-control" placeholder="Confirm Password" maxlength="20" data-rule-required="true" data-rule-minlength="6" data-msg-required="Enter confirm password" data-rule-equalto="#New_Password">
+                                        </div>
+                                    </div>
+                                    <p>
+                                        Did not receive OTP, <a href="/Parent/Resend_OTP">Resend OTP</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /panel -->
+                        <div class="modal-footer">
+
+                            <button type="submit" class="btn btn-primary">Send</button>
+                            <button type="button" class="btn btn-red" data-dismiss="modal">Close</button>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+        <!-- modal1-->
+
+        <script src="../Student_assets/assets/js/jquery-1.12.4.min.js"></script>
+        <script src="../Student_assets/assets/js/bootstrap.min.js"></script>
+        <script src="../Student_assets/assets/js/owl.carousel.min.js"></script>
+        <script src="../Student_assets/assets/js/jquery.magnific-popup.min.js"></script>
+        <script src="../Student_assets/assets/js/waypoints.min.js"></script>
+        <!--Validation scripts-->
+        <script type="text/javascript" src="../assets/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script type="text/javascript" src="../assets/jquery-validation/dist/additional-methods.min.js"></script>
+        @*//Show error msg*@
+        <script src='~/Student_assets/assets/js/noty/jquery.noty.js'></script>
+        <script src='~/Student_assets/assets/js/noty/layouts/top.js'></script>
+        <script src="~/Student_assets/assets/js/noty/layouts/default.js"></script>
+        <script src='~/Student_assets/assets/js/noty/notifications-custom.js'></script>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+</body>
+</html>   
+
+<script>
+
+    $('#validation-form1').submit(function (e) {
+        $.noty.closeAll();
+        e.preventDefault();
+        if ($(this).valid()) {
+            $(".loader-ajax-container").css("display", "block");
+            $.ajax({
+                type: 'POST',
+                url: "/Parent/Index",
+                data: $(this).serialize(),
+                success: function (data) {
+                    if (data == "1") {
+                        generate('top', 'success', "Successfully logged in.");
+                        location.href = "/Parent/ParentDashboard";
+                        $.noty.closeAll();
+                    }
+                    else if (data == "-1") {
+                        generate('top', 'warning', "Invalid username or password.");
+                        $.noty.closeAll();
+                    }
+                    else if (data == -3) {
+                        generate('top', 'warning', "Oops!! wrong password.");
+                        $.noty.closeAll();
+                    }
+                    else {
+                        $.noty.closeAll();
+                        generate('top', 'warning', data);
+                    }
+                    setTimeout(function () {
+                        $(".loader-ajax-container").css("display", "none");
+                    }, 1800);
+                }
+            });
+        }
+        else {
+            return false;
+        }
+    });
+    $('#validation-form2').submit(function (e) {
+        $.noty.closeAll();
+        e.preventDefault();
+        if ($(this).valid()) {
+            $(".loader-ajax-container").css("display", "block");
+            $.ajax({
+                type: 'POST',
+                url: "/Parent/ForgotPassword",
+                data: $(this).serialize(),
+                success: function (data) {
+                    if (data == "1") {
+                        $('#forgot').modal('hide');
+                        generate('top', 'success', "OTP successfully sent to your mobile number.");
+                        setTimeout(function () {
+                            $('#confirm').modal('show');
+                        }, 3000);
+                    }
+                    else if (data == "0") {
+                        $(".modal-body").find("span.help-block").html("Mobile number is not yet registered");
+                        //generate('top', 'warning', "Mobile number is not yet registered.");
+                    }
+                    else if (data == "-2") {
+                        $(".modal-body").find("span.help-block").html("You have already requested for Maximum no of OTP.");
+                        //generate('top', 'warning', "Mobile number is not yet registered.");
+                    }
+                    else if (data == "-1") {
+                        $(".modal-body").find("span.help-block").html("Something went wrong");
+                    }
+                    setTimeout(function () {
+                        $(".loader-ajax-container").css("display", "none");
+                    }, 2000);
+                }
+            });
+        }
+    });
+    $('#validation-form3').submit(function (e) {
+        $('.alert').hide();
+        $.noty.closeAll();
+        e.preventDefault();
+        if ($(this).valid()) {
+            $(".loader-ajax-container").css("display", "block");
+            $.ajax({
+                type: 'POST',
+                url: "/Parent/OTP_Confirmation",
+                data: $(this).serialize(),
+                success: function (data) {
+                    if (data == "1") {
+                        generate('top', 'success', "OTP confirmed successfully, Now you can login.");
+                        setTimeout(function () {
+                            $('#confirm').modal('hide');
+                        }, 3000);
+                    }
+                    else if (data == "0") {
+                        $('#spn').html("New password and confirm password does not match.");
+                        $('.alert').show();
+                    }
+                    else if (data == "-2") {
+                        $('#spn').html("OTP has been expired.");
+                        $('.alert').show();
+                    }
+                    else if (data == "-1") {
+                        $('#spn').html("Invalid User Details.");
+                        $('.alert').show();
+                    }
+                    else if (data == "-11") {
+                        $('#spn').html("Invalid OTP Details, Please try again.");
+                        $('.alert').show();
+                    }
+                    setTimeout(function () {
+                        $(".loader-ajax-container").css("display", "none");
+                    }, 2000);
+                }
+            });
+        }
+    });
+
+
+</script>

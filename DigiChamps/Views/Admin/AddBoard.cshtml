@@ -1,0 +1,70 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsBoardModel
+@{
+    ViewBag.Title = "Add Board Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using (Html.BeginForm("AddBoard", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    <div class="page-content-wrap">
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active"> @ViewBag.pagetitle @ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3>
+                            <i class="fa fa-file"></i>
+                            @if (ViewBag.pagetitle != null)
+                            {
+                                @ViewBag.pagetitle
+                            }
+                            Board
+                        </h3>
+                    </div>
+
+
+                    <div class="box-content">
+                        <div class="form-group voffset3">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Board Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                <input type="hidden" id="board_id" name="board_id" value="@ViewBag.Board_Id" />
+                                <input type="text" placeholder="Please Enter Board" id="Board_Name" name="Board_Name" class="form-control" data-rule-required="true" data-msg-required="Please enter board" value="@ViewBag.Board_Name" />
+                            </div>
+                        </div>
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("BoardMaster", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                                <button id="btnSearch" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i> <span>Submit</span></button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                </div>
+
+            </div>
+        </div>
+
+}
+@section scripts{
+    <script>
+   
+            
+                @*@if(Session["reload"] == null)
+                {
+                    <text>$('#validation-form').submit();</text>
+                }*@
+    </script>
+}

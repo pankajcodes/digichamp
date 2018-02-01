@@ -1,0 +1,219 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsQuestionMasterModel
+@{
+    ViewBag.Title = "Offline Exam | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+@section header{
+    <div class="col-md-8 pull-left">
+        <i class="menu-icons offline-test-icon page_header_icon"></i>
+        <span class="main-text">Offline Test</span>
+    </div>
+}
+@if (ViewBag.ofline == null)
+{ 
+<div class="row">
+    <div class="col-md-8 nopad-right">
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Pre-Requisite Test
+                </h3>
+            </div>
+            <div class="panel-body  prerequisite">
+<div class='bd-clr-1'>
+<table class="table table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <td scope="row">Total No of Tests</td>
+                            <td>@ViewBag.test1 nos</td>
+                        </tr>
+                    </tbody>
+                </table>
+</div>
+                
+                <div class="">
+                    @Html.ActionLink("Appear Test", "OfflineTest", "Student", new { @id = 1 }, new { @class = "btn btn-primary starttest", @title = "Appear" })
+                </div>
+            </div>
+        </div>
+        <!-- panel -->
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Practice Test
+                </h3>
+            </div>
+            <div class="panel-body  prerequisite">
+<div class='bd-clr-2'>
+                <table class="table table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Total No of Tests</th>
+                            <td>@ViewBag.test2 nos</td>
+                        </tr>
+                    </tbody>
+                </table>
+</div>
+                <div class="">
+                    @Html.ActionLink("Appear Test", "offlinetest", "student", new { @id = 3 }, new { @class = "btn btn-primary  starttest", @title = "Appear" })
+                </div>
+            </div>
+            <!-- sparkline-widget -->
+        </div>
+        <!-- panel -->
+        @if (ViewBag.retestassign != null)
+        {  
+            <div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Re-Test
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Total No of Tests</th>
+                                <td>@ViewBag.test3 nos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="">
+                        @Html.ActionLink("Appear Test", "offlinetest", "student", new { @id = 2 }, new { @class = "btn btn-primary voffset3 starttest", @title = "Appear" })
+                    </div>
+                </div>
+                <!-- sparkline-widget -->
+            </div>
+        }
+        <!-- panel -->
+    </div>
+    <div class="col-md-4">
+
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    How Test Works
+                </h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="video-panel">
+                    <div class="video-overlay">
+                        <i class="ion-social-youtube-outline"></i>
+
+                    </div>
+                    <img src="/images/how-test-works.jpg">
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Test Guidelines
+                </h3>
+            </div>
+            <div class="panel-body">
+                Take the Test to get the best of Analysis, so that you are aware of your Strengths and Weaknesses  of Every Subject , Chapter and Topic.
+
+                <div class="content-lists voffset3">
+                    <i class="list-icon ion-android-done-all"></i>
+                    Select the Option and click on save and next to go to the next question.
+                </div>
+                <div class="content-lists">
+                    <i class="list-icon ion-android-done-all"></i>
+                    Exam will be automatically closed after the Time is up.
+                </div>
+                <div class="content-lists">
+                    <i class="list-icon ion-android-done-all"></i>
+                    Do not resize (minimize) or reload the browser during the test.
+                </div>
+                <div class="content-lists">
+                    <i class="list-icon ion-android-done-all"></i>
+                    Click the “Finish ”'button to submit your exam.
+                </div>
+                <div class="content-lists">
+                    <i class="list-icon ion-android-done-all"></i>
+                    Give the Test honestly so that you get best of Analysis.
+                </div>
+                <div class="content-lists">
+                    <i class="list-icon ion-android-done-all"></i>
+                    All the Best .
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+}
+else { 
+<div class="row">
+        <div class="col-md-12 questions-cont text-center">
+            <div class="ful-hi-wi">
+                <h2>You have not subscribed any packages.</h2>
+                <img src="~/Student_assets/images/learn-package.png" />
+                <div class="foraddbtn">
+                    <a href="/student/packagepreview" title="Order Now">
+                        <button type="button" class="btn btn-primary addbtn">View Packages</button>
+                    </a>
+                </div>
+
+                <!--<a href="javascript:void(0)"></a>-->
+            </div>
+        </div>
+    </div>
+}
+<!-- responsive modal for online-test starts -->
+<div class="modal fade" id="responsivemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                <h4 class="modal-title" id="myModalLabel5">Get Started</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="responsive-bottom">
+                            <div class="test-confirm-modal">
+
+                                <img src="~/Student_assets/images/leaderboard2.png">
+                                <h3 class="text-success modal-content-header">Now its your time to lead the leaderboard.</h3>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pulvinar, ante faucibus facilisis convallis, sem nibh tempus nibh, non tristique est nunc ut erat. Curabitur eget lorem ornare, elementum enim a, ultricies odio.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Later</button>
+                <a href="" type="button" id="startexam" class="btn btn-primary">Start Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- responsive modal for online test ends -->
+<!-- responsive modal for selecting class ends -->
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".starttest").click(function () {
+                debugger;
+
+                var id = $(this).find(".Chapters").val();
+                var Examtime = $(this).find(".servTime").val();
+
+                var url = "/student/test/" + id + "";
+                $('#startexam').attr('href', url)
+
+            })
+        });
+    </script>
+}
+

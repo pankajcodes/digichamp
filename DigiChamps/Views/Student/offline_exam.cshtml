@@ -1,0 +1,194 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsQuestionMasterModel
+@{
+    ViewBag.Title = "offline exam";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+@section header{
+    <div class="col-md-8 pull-left">
+        <i class="ion-compose ti-image page_header_icon"></i>
+        <span class="main-text">Offline Test</span>
+    </div>
+}
+<div class="row">
+    <div class="col-md-8 nopad-right">
+        <div class="ntspl-panel no-pad panel">
+            <div class="sparkline-widget">
+                <div class="heading-info flatRed">
+                    <p class="pull-left">
+                        Pre-Requisite Test
+                        <br>
+                    </p>
+                </div>
+                <div class="info-bottom">
+                    <div class="col-md-12 left">
+                        <div class="col-md-8 left">
+                            Total No of Tests
+                            <p class="flatRedc">@ViewBag.test1 nos</p>
+                        </div>
+                        <div class="col-md-4 right">
+                            @Html.ActionLink("Appear Test", "OfflineTest", "Student", new { @id = 1 }, new { @class = "btn btn-primary btn-radius", @title = "Appear" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- sparkline-widget -->
+        </div>
+        <!-- panel -->
+        <div class="ntspl-panel no-pad panel">
+            <div class="sparkline-widget">
+                <div class="heading-info flatGreen">
+                    <p class="pull-left">
+                        Practice Test
+                        <br>
+                    </p>
+                </div>
+                    
+                <div class="info-bottom">
+                    <div class="col-md-12 left">
+                        <div class="col-md-8 left">
+                            Total No of Tests
+                            <p class="flatRedc">@ViewBag.test2 nos</p>
+                        </div>
+                        <div class="col-md-4 right">
+                            @Html.ActionLink("Appear Test", "OfflineTest", "Student", new { @id = 3 }, new { @class = "btn btn-primary btn-radius", @title = "Appear" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- sparkline-widget -->
+        </div>
+        <!-- panel -->
+        <div class="ntspl-panel no-pad panel">
+            <div class="sparkline-widget">
+                <div class="heading-info flatOrange">
+                    <p class="pull-left left">
+                        Re-Test
+                        <br>
+                    </p>
+                </div>
+                <div class="info-bottom">
+                    <div class="col-md-12 left">
+                        <div class="col-md-8 left">
+                            Total No of Tests
+                            <p class="flatRedc">@ViewBag.test3 nos</p>
+                        </div>
+                        <div class="col-md-4 right">
+                            @Html.ActionLink("Appear Test", "OfflineTest", "Student", new { @id = 2 }, new { @class = "btn btn-primary btn-radius", @title = "Appear" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- sparkline-widget -->
+        </div>
+        <!-- panel -->
+    </div>
+    <div class="col-md-4">
+
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    How Test Works
+                </h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="video-panel">
+                    <div class="video-overlay">
+                        <i class="ion-social-youtube-outline"></i>
+
+                    </div>
+                    <img src="/images/how-test-works.jpg">
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Test Guidelines
+
+                </h3>
+            </div>
+            <div class="panel-body">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+
+                <div class="content-lists voffset3">
+                    <i class="list-icon ion-android-done-all"></i>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                </div>
+                <div class="content-lists">
+                    <i class="list-icon ion-android-done-all"></i>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ajax Modal For  Online Test Starts-->
+<div class="modal fade" id="ajaxmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                <h4 class="modal-title" id="myModalLabel6">Ajax Modal</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Ajax Modal For  Online Test Ends -->
+<!-- responsive modal for online-test starts -->
+<div class="modal fade" id="responsivemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                <h4 class="modal-title" id="myModalLabel5">Get Started</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="responsive-bottom">
+                            <div class="test-confirm-modal">
+
+                                <img src="~/Student_assets/images/leaderboard2.png">
+                                <h3 class="text-success modal-content-header">Now its your time to lead the leaderboard.</h3>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pulvinar, ante faucibus facilisis convallis, sem nibh tempus nibh, non tristique est nunc ut erat. Curabitur eget lorem ornare, elementum enim a, ultricies odio.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Later</button>
+                <a href="" type="button" id="startexam" class="btn btn-primary">Start Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- responsive modal for online test ends -->
+<!-- responsive modal for selecting class ends -->
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".starttest").click(function () {
+                debugger;
+
+                var id = $(this).find(".Chapters").val();
+                var Examtime = $(this).find(".servTime").val();
+
+                var url = "/Student/OnlineTest/" + id + "?&Examtime=" + Examtime
+
+                $('#startexam').attr('href', url)
+
+            })
+        });
+    </script>
+}
+

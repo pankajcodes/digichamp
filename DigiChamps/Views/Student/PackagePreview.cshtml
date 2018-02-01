@@ -1,0 +1,470 @@
+﻿@{
+    ViewBag.Title = "Package Preview | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<!-- Page Header -->
+@section header{
+    <i class="menu-icons package-icon page_header_icon"></i>
+    <span class="main-text">Packages</span>
+}
+<!-- /pageheader -->
+<!-- Class select -->
+@section class_select{
+    <form class="navbar-left" role="search">
+        <div class="search">
+            <div class="ntspl-dropdown dropdown">
+
+                @if (ViewBag.cls != null)
+                {
+                    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">@ViewBag.cls<span class="drop-icon"><i class="ion ion-chevron-down"></i></span></a>
+                }
+                else
+                {
+                    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Select Class<span class="drop-icon"><i class="ion ion-chevron-down"></i></span></a>
+                }
+                <ul class="dropdown-menu dropdown-ntspl-menu animated fadeInUp wow language-drop neat_drop dropdown-right" data-wow-duration="1500ms" role="menu">
+                    @if (ViewBag.class_name != null)
+                    {
+                        foreach (var v in ViewBag.class_name)
+                        {
+                            <li>@Html.ActionLink((string)v.Class_Name, "packagepreview", new { @id = @v.Class_Id })</li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </form>
+}
+<!--  Class select -->
+
+<div class="row p-preview">
+    <div class="clearfix"></div>
+    <div class="col-md-12">
+        <!-- Package Panel Starts -->
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Buy Packages
+                    @if (ViewBag.Package_Preview != null)
+                    {
+                        if (ViewBag.Package_Preview.Count > 0)
+                        {
+                            <span class="panel-options div-show">
+                                <a href="javascript:void(0)" class="package-prev">
+                                    <i class="icon ion-chevron-left pkg-prev-btn"></i>
+                                </a>
+                                <a href="javascript:void(0)" class="package-next">
+                                    <i class="icon ion-chevron-right pkg-next-btn"></i>
+                                </a>
+                            </span>
+                        }
+                    }
+                </h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        @if (ViewBag.Package_Preview != null)
+                        {
+                            if (ViewBag.Package_Preview.Count > 0)
+                            {
+                                <div class="owl-carousel">
+                                    @foreach (var v in ViewBag.Package_Preview)
+                                    {
+                                        <div class="package-box">
+                                            <div class="package-top-box">
+                                                <div class="package-name">
+                                                    <h3>@v.Package_Name</h3>
+                                                </div>
+                                                <div class="package-price">
+@{
+    ViewBag.price = null;
+    DigiChamps.Models.DigiChampsEntities dc = new DigiChamps.Models.DigiChampsEntities();
+    int id1 = Convert.ToInt32(v.Package_ID);
+    var dt = dc.tbl_DC_Package_Period.Where(x => x.Package_ID == id1 && x.Is_Active == true && x.Is_Deleted == false).FirstOrDefault();
+    if (dt != null)
+    {
+        decimal price = Convert.ToDecimal(dt.Excluded_Price + v.Price);
+        ViewBag.price = price;
+    }
+                                        }
+                                                    @{
+    DateTime today = DigiChamps.Models.DigiChampsModel.datetoserver();
+    var pric = dc.tbl_DC_CouponCode.Where(x => x.Is_Default == true && x.Valid_From <= today && x.Valid_To >= today && x.Is_Active == true && x.Is_Delete == false).FirstOrDefault();
+    if (pric != null)
+    {
+        if (dt != null)
+        {
+            
+            <h6><span class="price"><s> Rs. @string.Format("{0:0.00}", ViewBag.price)</s></span></h6>
+        }
+        else
+        {
+            <h6><span class="price"><s>Rs. @string.Format("{0:0.00}", v.Price)</s></span></h6>
+        }
+    }
+    else
+    {
+        if (dt != null)
+        {
+                                                    <span class="price"> Rs. @string.Format("{0:0.00}", ViewBag.price)</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="price">Rs. @string.Format("{0:0.00}", v.Price)</span>
+                                                    }               
+                                                    } 
+                                                        }
+                                                    
+                                                    @{
+                                                        
+                                                        var price1 = dc.tbl_DC_CouponCode.Where(x => x.Is_Default == true && x.Valid_From <= today && x.Valid_To >= today && x.Is_Active == true && x.Is_Delete == false).FirstOrDefault();
+                                                        if (price1 != null)
+                                                        {
+                                                            if (dt != null)
+                                                            {
+                                                                if(price1.Discount_Price!=null)
+                                                                {
+                                                                decimal price = Convert.ToDecimal(v.Price);
+                                                                ViewBag.price = price;
+                                                                if(price > price1.Discount_Price)
+                                                                   {
+                                                                decimal price2 = Convert.ToDecimal(v.Price - Convert.ToDecimal(price1.Discount_Price));
+                                                                ViewBag.price2 = price2 + Convert.ToDecimal(dt.Excluded_Price);
+                                                                <h6><span class="price">Rs. @string.Format("{0:0.00}", ViewBag.price2)</span></h6>
+                                                                   }
+                                                                else
+                                                                   {
+                                                                <h6><span class="price">Rs. @string.Format("{0:0.00}", ViewBag.price)</span></h6>
+                                                                   } 
+                                                                }
+                                                                else
+                                                                {
+                                                                decimal price = Convert.ToDecimal(v.Price);
+                                                                ViewBag.price = price;
+                                                                if(price1.Discount_Percent !=null)
+                                                                   {
+                                                                decimal disprice = Convert.ToDecimal(((v.Price) * Convert.ToDecimal(price1.Discount_Percent)) / 100);
+                                                                decimal price2 = Convert.ToDecimal(v.Price - disprice);
+                                                                ViewBag.price2 = price2 + Convert.ToDecimal(dt.Excluded_Price);
+                                                                <h6><span class="price">Rs. @string.Format("{0:0.00}", ViewBag.price2)</span></h6>
+                                                                   }
+                                                                else
+                                                                   {
+                                                                <h6><span class="price">Rs. @string.Format("{0:0.00}", ViewBag.price)</span></h6>
+                                                                   }   
+                                                                }                                                  
+                                                            }
+                                                            else
+                                                            {
+                                                                if(price1.Discount_Price!=null)
+                                                                {
+                                                                decimal price = Convert.ToDecimal(v.Price);
+                                                                ViewBag.price = price;
+                                                                if(price > price1.Discount_Price)
+                                                                {
+                                                                decimal price3 = Convert.ToDecimal(v.Price - Convert.ToDecimal(price1.Discount_Price));
+                                                                ViewBag.price3 = price3;
+                                                                <h6><span class="price">Rs. @string.Format("{0:0.00}", ViewBag.price3)</span></h6>
+                                                                }
+                                                                else
+                                                                {
+                                                                <h6><span class="price">Rs. @string.Format("{0:0.00}", ViewBag.price)</span></h6>  
+                                                                }
+                                                                }
+                                                                else
+                                                                {
+                                                                decimal price = Convert.ToDecimal(v.Price);
+                                                                ViewBag.price = price;
+                                                                if (price1.Discount_Percent != null)
+                                                                {
+                                                                decimal disprice = Convert.ToDecimal((price * Convert.ToDecimal(price1.Discount_Percent)) / 100);
+                                                                decimal price3 = Convert.ToDecimal(v.Price - disprice);
+                                                                ViewBag.price3 = price3;
+                                                                <h6><span class="price">Rs. @string.Format("{0:0.00}", ViewBag.price3)</span></h6>
+                                                                }
+                                                                else
+                                                                {
+                                                                <h6><span class="price">Rs. @string.Format("{0:0.00}", ViewBag.price)</span></h6>  
+                                                                }   
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    
+                                                    <span class="validity"> Validity - @v.Subscripttion_Period Days</span>
+
+                                                </div>
+                                            </div>
+                                            <div class="package-bottom-box">
+                                                <ul class="list-group list-todo">
+                                                    @*<li class="list-group-item">
+                                                            <div class="ms-hover">
+                                                                Valid Upto January 2017
+                                                            </div>
+                                                        </li>*@
+                                                    @*<li class="list-group-item">
+                                                        <div class="ms-hover">                                                          
+                                                            @v.chapter Chapters
+                                                        </div>
+
+                                                    </li>*@
+@{
+                                        DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+
+                                        int id = Convert.ToInt32(v.Package_ID);
+                                        var a = DbContext.tbl_DC_Package.Where(x => x.Package_ID == id && x.Is_Active == true && x.Is_Deleted == false).ToList();
+                                        var b = DbContext.tbl_DC_Package_Dtl.Where(x => x.Package_ID == id && x.Is_Active == true && x.Is_Deleted == false).GroupBy(x => x.Subject_Id).ToList();
+                                        var c = DbContext.tbl_DC_Subject.Where(x => x.Is_Active == true && x.Is_Deleted == false).ToList();
+                                        var data2 = (from q in a
+                                                     join p in b
+                                                     on q.Package_ID equals p.FirstOrDefault().Package_ID
+                                                     join r in c
+                                                     on p.FirstOrDefault().Subject_Id equals r.Subject_Id
+                                                     select new DigiChamps.Models.PackagePreviewModel
+                                                     {
+                                                         Subject_Id = p.FirstOrDefault().Subject_Id,
+                                                         Subject = r.Subject
+                                                     }).ToList();
+
+                                        ViewBag.subject_name = data2;
+}
+@if (ViewBag.subject_name != null)
+                                {
+                                    foreach (var item in ViewBag.subject_name)
+                                    {
+                                                    <li class="list-group-item">
+                                                        <div class="ms-hover">
+                                                             @{
+                                        
+                                        int sub_id = Convert.ToInt32(item.Subject_Id);
+                                        int pkid = Convert.ToInt32(v.Package_ID);
+                                        var chp_subject = DbContext.tbl_DC_Package_Dtl.Where(x => x.Package_ID==pkid && x.Subject_Id == sub_id && x.Is_Active == true && x.Is_Deleted == false).ToList();
+                                        ViewBag.chapter = chp_subject.Count;
+                                        }
+                                                          @item.Subject (@ViewBag.chapter Chapters)                              
+                                                          @*@v.videos Videos & @v.pdfs Study Documents*@
+                                                        </div>
+                                                    </li>
+     }
+}
+                                                    <li class="list-group-item">
+                                                        @if (v.Is_Offline == true)
+                                                        {
+                                                            <div class="ms-hover">
+                                                                Package Type : Offline
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="ms-hover">
+                                                                Package Type : Online
+                                                            </div>
+                                                        }
+                                                    </li>
+                                                </ul>
+                                                <div class="buy-btn">
+                                                    @*<a href="#" class="btn btn-success btn-lg">View Details</a>*@
+                                                    @Html.ActionLink("View Details", "viewpackagedetail", "Student", new { id = v.Package_ID }, new { @class = "btn btn-success btn-lg", @title = "View Details" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="row">
+                                    <div class="questions-cont text-center">
+                                        <div class="ful-hi-wi">
+                                            <h2>There is no package available for this class.</h2>
+                                            <img src="~/Student_assets/images/learn-package.png" />
+                                            <div class="foraddbtn">
+                                            </div>
+
+                                            <!--<a href="javascript:void(0)"></a>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="row">
+                                <div class="questions-cont text-center">
+                                    <div class="ful-hi-wi">
+                                        <h2>There is no package available for this class.</h2>
+                                        <img src="~/Student_assets/images/learn-package.png" />
+                                        <div class="foraddbtn">
+
+                                        </div>
+
+
+                                        <!--<a href="javascript:void(0)"></a>-->
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+            <div class="row package-info">
+                <div class="col-md-12 text-center">
+                    <h3>Have a question? Feel free to contact us.</h3>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 col-md-push-1">
+                    <div class="info-logo-content">
+                        <ul class="list-inline list-unstyled">
+                            <li><i class="ion-email primary-info"></i></li>
+                            <li><p>Email</p>info@thedigichamps.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 col-md-push-1">
+                    <div class="info-logo-content">
+                        <ul class="list-inline list-unstyled">
+                            <li><i class="ion-android-call primary-info"></i></li>
+                            <li><p>Mobile</p>1800 212 4322 </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="clearfix"></div>
+
+    @*<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 nopad-right">
+        <div class="dashboard-stats">
+            <div class="left">
+                <h3 class="flatBluec">@ViewBag.Register_user</h3>
+                <h4>Registered User</h4>
+            </div>
+            <div class="right grey-bg">
+                <i class="ion ion-ios-people-outline"></i>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 nopad-right">
+        <div class="dashboard-stats">
+            <div class="left">
+                <h3 class="flatBluec">@ViewBag.package_sold</h3>
+                <h4>Packages Sold</h4>
+            </div>
+            <div class="right grey-bg">
+                <i class="ion ion-ios-photos-outline"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 nopad-right">
+        <div class="dashboard-stats">
+            <div class="left">
+                <h3 class="flatBluec">@ViewBag.exam_appear</h3>
+                <h4>Test Appeared</h4>
+            </div>
+            <div class="right grey-bg">
+                <i class="ion ion-compose"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="dashboard-stats">
+            <div class="left">
+                <h3 class="flatBluec">@ViewBag.doubt_cleared</h3>
+                <h4>Doubt Cleared</h4>
+            </div>
+            <div class="right grey-bg">
+                <i class="ion ion-ios-help-outline"></i>
+            </div>
+        </div>
+    </div>*@
+
+
+
+</div>
+
+<!-- row -->
+
+<!-- Ajax Modal For  Online Test Ends -->
+<!-- responsive modal for online-test starts -->
+<div class="modal fade" id="responsivemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                <h4 class="modal-title" id="myModalLabel5">Get Started</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="responsive-bottom">
+
+                            <div class="test-confirm-modal">
+
+                                <img src="images/leaderboard2.png">
+                                <h3 class="text-success modal-content-header">Now its your time to lead the leaderboard.</h3>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pulvinar, ante faucibus facilisis convallis, sem nibh tempus nibh, non tristique est nunc ut erat. Curabitur eget lorem ornare, elementum enim a, ultricies odio.
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Later</button>
+                <a href="online-test.php" type="button" class="btn btn-primary">Start Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- responsive modal for online test ends -->
+
+@section scripts
+{
+    <script>
+
+        $(function () {
+            var owl = $('.owl-carousel').owlCarousel({
+                loop: true,
+                margin: 17,
+                responsiveClass: true,
+                responsive: {
+                    0: {
+                        items: 1,
+                        nav: true
+                    },
+                    600: {
+                        items: 4,
+                        nav: false
+                    },
+                    1000: {
+                        items: 4,
+                        nav: false,
+                        loop: true
+                    }
+                }
+            });
+            $('.pkg-prev-btn').click(function () {
+                owl.trigger('prev.owl.carousel');
+            });
+            $('.pkg-next-btn').click(function () {
+                owl.trigger('next.owl.carousel');
+            });
+        });
+
+    </script>
+}

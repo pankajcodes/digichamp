@@ -1,0 +1,198 @@
+﻿@{
+    ViewBag.Title = "Teacher Ticket";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+    <div class="page-content-wrap">
+        <div class="page-title">
+            <div>
+                <h1>
+                    <i class="fa fa-file-o"></i> Teacher Ticket Details
+                    <div class="btn-toolbar pull-right">
+                        <div class="box-tool">
+                        </div>
+                    </div>
+                </h1>
+
+            </div>
+        </div>
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i>Reports</span>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active">@ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-list-ul"></i>Search Tickets By Date</h3>
+                    </div>
+                    <div class="box-content">
+                        <div class="page-content-wrap">
+                            <div class="row">
+                                <div class="">
+                                    @using (Html.BeginForm("Teacher_ticket_report", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+                                    {
+                                        <div class="form-group">
+                                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">From Date<span class="asterisk">*</span></label>
+                                            <div class="col-sm-9 col-lg-7 controls">
+                                                <input type="text" placeholder="@DateTime.Now.ToShortDateString()" autocomplete="off" data-rule-required="true" data-msg-required="Please select From date" name="f_Date" class="datepicker form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">To Date<span class="asterisk">*</span></label>
+                                            <div class="col-sm-9 col-lg-7 controls">
+                                                <input type="text" placeholder="@DateTime.Now.ToShortDateString()" autocomplete="off" data-rule-required="true" data-msg-required="Please select To date" name="t_Date" class="datepicker form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group last">
+                                            <input type="hidden" name="teach_id" value="@ViewBag.teacher_id" />
+                                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2 box-tooll">
+                                                <button id="btnadd" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> <span>Search</span></button>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-table"></i>Teacher Ticket Details</h3>
+                        <div class="box-tool box-tooll">
+                           <a href="#" class="btn btn-primary dropdown-toggle" onclick="$('#table1').tableExport({ type: 'excel', escape: 'false' });"><i class="fa fa-file-excel-o"></i> XLS</a>
+                            <a href="/Admin/TeacherTicket/@ViewBag.teacher_id" class="btn btn-primary dropdown-toggle"><i class="fa fa-refresh"></i><span>Refresh</span></a>
+                        </div>
+                    </div>
+                    <div class="box-content">
+                        @*<div class="btn-group">
+                            <select class="form-control chosen" id="ddlteacher" name="Teacher_name">
+                                @if (ViewBag.teachernames_tickets != null)
+                                {
+                                    <option value="0">Select TeacherName</option>
+                                    foreach (var v in ViewBag.teachernames_tickets)
+                                    {
+                                        <option value="@v.Teacher_ID">@v.Teacher_Name:@v.Subject</option>
+                                    }
+                                }
+                            </select>
+                        </div>*@
+                        <br /><br />
+                        <div class="clearfix"></div>
+                        <div class="table-responsive" style="border:0">
+                            <table class="table table-advance table-hover" id="table1">
+                                <thead>
+                                    <tr>
+                                        <th>Sl no</th>
+                                        <th>Ticket No</th>
+                                        <th>Student Name</th>
+                                        <th>Class</th>
+                                        <th>Subject</th>
+                                        <th>Assign TO</th>
+                                        <th>Creation Date</th>
+                                        <th>Status</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.Ticket != null)
+                                    {
+                                    int i=0;
+                                        foreach (var item in ViewBag.Ticket)
+                                        {
+                                            <tr>
+                                                <td>@(i+=1)</td>
+                                                <td>@item.Ticket_No</td>
+                                                <td>@item.Customer_Name</td>
+                                                <td>@item.Class_Name</td>
+                                                <td>@item.Subject</td>
+                                                @if (item.Teacher_Name != null)
+                                                {
+                                                    <td>@item.Teacher_Name</td>
+                                                }
+                                                else
+                                                {
+                                                    <td><span class="label label-info">No Teacher Assigned</span></td>
+                                                }
+                                                <td>@item.Inserted_Date</td>
+                                                @{
+                                                    string sta = Convert.ToString(@item.Status);
+                                                }
+                                                @if (sta == "O")
+                                                {
+                                                    <td title="Open"><span class="label label-success">Open</span></td>
+                                                }
+                                                @if (sta == "C")
+                                                {
+                                                    <td title="Click To Reopen"><span class="label label-yellow">Close</span></td>
+                                                }
+                                                @if (sta == "R")
+                                                {
+                                                    <td title="Rejected"><span class="label label-danger">Rejected</span></td>
+                                                }
+                                                @if (sta == "D")
+                                                {
+                                                    <td title="Overdue"><span class="label label-important">Overdue</span></td>
+                                                }
+                                               
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div id="modal_3" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel2"><i class="fa fa-exclamation-triangle"></i>Message</h3>
+            </div>
+            <div class="modal-body">
+                <h5></h5>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/js/plugins/tableexport/jspdf/libs/base64.js"></script>
+    <script src="~/js/plugins/tableexport/jspdf/libs/sprintf.js"></script>
+    <script src="~/js/plugins/tableexport/jspdf/jspdf.js"></script>
+    <script src="~/js/plugins/tableexport/html2canvas.js"></script>
+    <script src="~/js/plugins/tableexport/jquery.base64.js"></script>
+    <script src="~/js/plugins/tableexport/tableExport.js"></script>
+}

@@ -1,0 +1,282 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigiChampsDailySalesModel
+@{
+    ViewBag.Title = "Offline Booking";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("offlinebook", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    <div class="page-content-wrap">
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active"> @ViewBag.pagetitle @ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3>
+                            <i class="fa fa-file"></i>
+                               Manual Booking
+                        </h3>
+                    </div>
+                    <div class="box-content">
+                        <form action="#" class="form-horizontal form-bordered form-row-stripped">
+                            <div class="form-group voffset3">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Student Name<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <select id="ddlstudent" name="Student_name" data-rule-required="true" data-msg-required="Please select student" data-placeholder="Select Teacher" class="col-md-12 chosen form-control">
+                                        <option value="">Select Student</option>
+                                        @if (@ViewBag.totalstu != null)
+                                        {
+                                            foreach (var v in ViewBag.totalstu)
+                                            {
+                                                <option value="@v.Regd_ID">@v.Customer_Name</option>
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Package Name<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @(Html.DropDownListFor(x => x.Package_ID, new List<SelectListItem>(), "Please Select Package", new { @class = "form-control", @id = "ddlpkg", data_rule_required = "true", data_msg_required = "Please enter package" }))
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Price<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <input type="text" id="txtprice" name="txtprice" maxlength="20" class="form-control" data-rule-required="true" data-rule-digit="true" data-msg-required = "Please enter price"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Package Type<span class="asterisk"></span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <input type="text" id="txtpacktype" name="txtpacktype" class="form-control" data-rule-required="true" data-msg-required = "Please enter package type" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Sub. Limit<span class="asterisk"></span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <input type="text" id="txtlimit" name="txtlimit" class="form-control" data-rule-required="true" data-msg-required = "Please enter sub. limit" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Select chapter<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <div id="div1" hidden><input type="checkbox" id="select_all" name="select_all" />Select All</div>
+                                    <div id="dvCheckBoxListControl" class="table table-advance">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Payment Mode<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    <div class="col-lg-2">
+                                        Cash<input type="radio" name="payment" class="paychange" value="Cash" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        Cheque<input type="radio" name="payment" class="paychange1" value="Cheque" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="chart1" style="display:none">
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Cheque No<span class="asterisk">*</span></label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                        @Html.TextBoxFor(m => m.Cheque_No, new { @class = "form-control", placeholder = "Please enter cheque number" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Cheque Date</label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                        @Html.TextBoxFor(m => m.Cheque_Date, new { @class = "form-control datepicker", placeholder = "Please enter cheque Date" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Bank Name</label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                        @Html.TextBoxFor(m => m.Bank_Name, new { @class = "form-control", placeholder = "Please enter bank name" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Branch Name</label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                        @Html.TextBoxFor(m => m.Branch_Name, new { @class = "form-control", placeholder = "Please enter branch name" })
+                                    </div>
+                                </div>
+                             
+                                <div class="form-group">
+                                    <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Address</label>
+                                    <div class="col-sm-9 col-lg-7 controls">
+                                        @Html.TextBoxFor(m => m.Address_Details, new { @class = "form-control", placeholder = "Please enter address" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group last box-tooll">
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                    <a href="@Url.Action("ChapterMaster", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i><span>Back</span> </a>
+                                    <button id="btnSearch" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span>Submit</span> </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@section scripts
+{
+    <script>
+        $('#btnSearch').click(function (e) {
+            if ($(this).valid()) {
+                var checked = $(".checklistitem:checked").length;
+                var limit = $("#txtlimit").val();
+                if (checked != limit) {
+                    alert("Please choose no of chapter equal to chapter limit.");
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            else {
+                return false;
+            }
+        });
+        $('#ddlstudent').change(function () {
+            if ($('#ddlstudent').val() != null && $('#ddlstudent').val()!= "") {
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/packagename",
+                    data: { regdid: $('#ddlstudent').val() },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        var sta = "<select id='ddlpkg'>";
+                        sta = sta + '<option value="">Please Select Package</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            sta = sta + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                        }
+                        sta = sta + '</select>';
+                        $('#ddlpkg').html(sta);
+                        setTimeout(function () {
+                            $('#ddlclass').closest('.form-group').removeClass('display-loader');
+                        }, 800);
+                    }
+                });
+            }
+            return false;
+        });
+        $('.paychange').change(function () {
+            var id = $('.paychange').val();
+            var id1 = $()
+            if (id == 'Cash') {
+                $("#chart1").hide();
+            }
+            else {
+            }
+
+        });
+        $('.paychange1').change(function () {
+            var id = $('.paychange1').val();
+            var id1 = $()
+            if (id == 'Cheque') {
+                $("#chart1").show();
+            }
+            else {
+            }
+
+        });
+
+        $('#ddlpkg').change(function () {
+            $('#dvCheckBoxListControl').show();
+            $('#dvCheckBoxListControl').empty();
+            if ($('#ddlpkg').val() != null && $('#ddlpkg').val() != "") {
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/bindchapterdetails",
+                    data: { pkgid: $('#ddlpkg').val() },
+                    datatype: "json",
+                    traditional: true,
+                    success: function CreateCheckBoxList(checkboxlistItems) {
+                        var table = $('<table></table>');
+                        var counter = 0;
+                        $(checkboxlistItems).each(function () {
+                            table.append($('<tr></tr>').append($('<td></td>').append($('<input>').attr({
+                                type: 'checkbox', name: 'checklistitem', value: this.Value, class: 'checklistitem'
+                            })).append(
+                            $('<label>').attr({
+                                for: 'checklistitem'
+                            }).text(this.Text))));
+                        });
+
+                        $('#dvCheckBoxListControl').append(table);
+                        $("#chapter_limit").show();
+                        $("#div1").show();
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/bindpricedetails",
+                    data: { pkgid: $('#ddlpkg').val() },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        $('#txtprice').val(data);
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/bindsublimit",
+                    data: { pkgid: $('#ddlpkg').val() },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        $('#txtlimit').val(data);
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/packagetype",
+                    data: { pkgid: $('#ddlpkg').val() },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        if (data == null || data == false) {
+                            $('#txtpacktype').val("Online Package");
+                        }
+                        if (data == true) {
+                            $('#txtpacktype').val("Offline Package");
+                        }
+
+                    }
+                });
+            }
+        });
+
+        $("#select_all").click(function () {
+            if ($(this).is(':checked')) {
+                $('input:checkbox').prop('checked', true);
+            } else {
+                $('input:checkbox').prop('checked', false);
+            }
+        });
+    </script>
+}

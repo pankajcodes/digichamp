@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Logout";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<p>Logging out... Please wait.</p>
+@section scripts
+{
+    <script>
+        $(function () {
+            location.href = "/Student/Logout";
+        });
+    </script>
+    }

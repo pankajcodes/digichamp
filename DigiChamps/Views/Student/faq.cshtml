@@ -1,0 +1,171 @@
+﻿@{
+    Layout = "~/Views/Shared/_StudentIndex.cshtml";
+}
+
+    <section class="inner-banner background">
+        <div class="inner-banner-patter-screen">
+            <span class="shape-one"></span>
+            <span class="shape-two"></span>
+            <span class="shape-thre"></span>
+            <span class="shape-four"></span>
+            <div class="content-a">
+                <div class="content-b">
+                    <div class="caption_contain">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    @*<p>See if we have already answered it</p>*@
+                                    <h2>FAQ</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Banner Section End-->
+
+    <section class="content-area contact-us faq-sec">
+        <div class="container">
+            @*<h1>FAQ</h1>*@
+           
+            <div class="row">
+                <div class="col-xs-12">
+                        @if (ViewBag.faq != null)
+                        {
+                            int rowNo = 0;
+                            foreach (var item in ViewBag.faq)
+                            {
+                                <h2>@item.FAQ</h2>
+					            <p class="q-p">@item.FAQ_Answer</p>
+                               
+                             @*<tr>
+                                    <td>@(rowNo += 1)</td>
+                                    <td hidden="hidden">@item.FAQs_ID</td>
+                                    <td>@item.FAQ</td>
+                                    <td>@item.FAQ_Answer</td>
+
+
+                                    <td>
+
+                                        @Html.ActionLink(" ", "addfaq", "Admin", new { id = @item.FAQs_ID }, new { @class = "btn btn-sm btn-primary show-tooltip fa fa-edit", @title = "Edit" })
+
+
+                                        @Html.ActionLink(" ", "Deletefaq", "Admin", new { id = @item.FAQs_ID }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the faq?')", @data_original_title = "Delete", @title = "Delete" })
+
+                                    </td>
+                                </tr>*@
+                            
+                            
+                            }
+                        }
+
+
+                    @*<h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit?</h2>
+					<p class="q-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras laoreet lorem nec varius consequat. Nullam vestibulum purus libero, dictum tempus lectus congue et. Duis mollis, neque vitae hendrerit aliquam.</p>
+                
+				
+				<h2>Quisque a sollicitudin magna, quis lacinia lorem?</h2>
+					<p class="q-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras laoreet lorem nec varius consequat.</p>
+                
+				
+				<h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit?</h2>
+					<p class="q-p">orem ipsum dolor sit amet, consectetur adipiscing elit. Cras laoreet lorem nec varius consequat. Nullam vestibulum purus libero, dictum tempus lectus congue et. Duis mollis, neque vitae hendrerit aliquam, turpis felis porta libero, et faucibus lorem arcu non neque.</p>
+                
+				<h2>Quisque a sollicitudin magna, quis lacinia lorem?</h2>
+					<p class="q-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras laoreet lorem nec varius consequat.</p>
+					
+					<h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras</h2>
+					<p class="q-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras laoreet lorem nec varius consequat.</p>
+					
+					<h2>Quisque a sollicitudin magna, quis lacinia lorem?</h2>
+					<p class="q-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras laoreet lorem nec varius consequat.</p>*@
+				</div>
+            </div>
+        </div>
+    </section>
+
+
+
+@section scripts
+{
+<script>
+    if (jQuery().validate) {
+        var removeSuccessClass = function (e) {
+            $(e).closest('.form-group').removeClass('has-success');
+        }
+        var $validator = $('#contact-form').validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'help-block', // default input error message class
+            errorPlacement: function (error, element) {
+                if (element.parent('.input-group').length) {
+                    error.insertAfter(element.parent());
+                } else if (element.next('.chosen-container').length) {
+                    error.insertAfter(element.next('.chosen-container'));
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: "",
+
+            invalidHandler: function (event, validator) { //display error alert on form submit              
+                var el = $(validator.errorList[0].element);
+                if ($(el).hasClass('chosen')) {
+                    $(el).trigger('chosen:activate');
+                } else {
+                    $(el).focus();
+                }
+            },
+
+            highlight: function (element) { // hightlight error inputs
+                $(element).closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+            },
+
+            unhighlight: function (element) { // revert the change dony by hightlight
+                $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
+                setTimeout(function () { removeSuccessClass(element); }, 2000);
+            },
+
+            success: function (label) {
+                label.closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+            }
+        });
+    }
+    $('#contact-form').submit(function (e) {
+        $("span.success_alert_message").css('display', 'none');
+        $("span.error_alert_message").css('display', 'none');
+        e.preventDefault();
+        if ($(this).valid()) {
+            $(".loader-ajax-container").css("display", "block");
+            $.ajax({
+                type: 'POST',
+                url: "/Student/Contactus",
+                data: $(this).serialize(),
+                success: function (data) {
+                    if (data == "1") {
+                        $('#contact-form').find("span.error_alert_message").html("Captcha text not matching, Please try again.");
+                        $('#contact-form').find("span.error_alert_message").css('display', 'block');
+                    }
+                    else if (data == "2") {
+                        $('#contact-form').find("span.success_alert_message").html("Your message has been sent.");
+                        $('#contact-form').find("span.success_alert_message").css('display', 'block');
+                        $('#contact-form').get(0).reset();
+                        }
+                    else {
+                        $('#contact-form').find("span.error_alert_message").html("Something went wrong.");
+                        $('#contact-form').find("span.error_alert_message").css('display', 'block');
+                    }
+                    setTimeout(function () {
+                        $(".loader-ajax-container").css("display", "none");
+                    }, 2000);
+                }
+            });
+        }
+    });
+
+
+  
+</script>
+}

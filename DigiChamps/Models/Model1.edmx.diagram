@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3f3593bcb88f492a85894a0537251d38" Name="Diagram1" ZoomLevel="78">
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Aboutus" Width="1.5" PointX="1" PointY="13" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Attendance" Width="1.5" PointX="3" PointY="13" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Bank_Details" Width="1.5" PointX="16" PointY="2" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Banner" Width="1.5" PointX="11" PointY="17" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Batch" Width="1.5" PointX="16.25" PointY="11.25" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Batch_Assign" Width="1.5" PointX="6.25" PointY="14.125" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Board" Width="1.5" PointX="1" PointY="27.75" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Career" Width="1.5" PointX="13" PointY="17" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Cart" Width="1.5" PointX="11.5" PointY="55.125" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Cart_Dtl" Width="1.5" PointX="13.75" PointY="45.5" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Centre" Width="1.5" PointX="14" PointY="11.5" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Chapter" Width="1.5" PointX="11.5" PointY="33.75" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_City" Width="1.5" PointX="10.25" PointY="8.25" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Class" Width="1.5" PointX="3.25" PointY="27.5" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_CouponCode" Width="1.5" PointX="15" PointY="17" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_CouponType" Width="1.5" PointX="1" PointY="18" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Course_Teacher_Assign" Width="1.5" PointX="7.75" PointY="39" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Exam" Width="1.5" PointX="10.75" PointY="41.125" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Exam_Power" Width="1.5" PointX="10.75" PointY="25.5" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Exam_Result" Width="1.5" PointX="3" PointY="18" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Exam_Result_Dtl" Width="1.5" PointX="17" PointY="17" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Exam_Type" Width="1.5" PointX="18" PointY="2" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_FAQs" Width="1.5" PointX="18" PointY="5" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Feedback" Width="1.5" PointX="19" PointY="9" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Feedback_Chapter" Width="1.5" PointX="13.75" PointY="27.5" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Feedback_Teacher" Width="1.5" PointX="11.5" PointY="30" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_LoginStatus" Width="1.5" PointX="19" PointY="13" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_MailConfigBody" Width="1.5" PointX="13.25" PointY="2.5" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_MailType" Width="1.5" PointX="19" PointY="17" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Marketing_Blog" Width="1.5" PointX="20" PointY="2" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Menu_Permission" Width="1.5" PointX="3.25" PointY="4" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Menuitems" Width="1.5" PointX="1" PointY="9" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Module" Width="1.5" PointX="7.75" PointY="43.875" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Notification" Width="1.5" PointX="19" PointY="21" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Order" Width="1.5" PointX="9.25" PointY="68" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Order_Pkg" Width="1.5" PointX="11.5" PointY="71" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Order_Pkg_Sub" Width="1.5" PointX="13.75" PointY="39.125" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Order_Pkg_Sub_Mod" Width="1.5" PointX="16" PointY="42.5" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Order_Tax" Width="1.5" PointX="11.5" PointY="65.75" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_OTP" Width="1.5" PointX="21" PointY="7" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Our_Team" Width="1.5" PointX="21" PointY="11" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Package" Width="1.5" PointX="9.25" PointY="74.375" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Package_Dtl" Width="1.5" PointX="13" PointY="22" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Package_Period" Width="1.5" PointX="21" PointY="15" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_PackageSub_Dtl" Width="1.5" PointX="21" PointY="20" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Percentage" Width="1.5" PointX="22" PointY="2" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Power_Question" Width="1.5" PointX="8.5" PointY="51.5" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Pre_book" Width="1.5" PointX="8.5" PointY="22.125" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Prefix" Width="1.5" PointX="15.25" PointY="7.25" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_PrefixType" Width="1.5" PointX="13" PointY="7.25" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Question" Width="1.5" PointX="10.75" PointY="48" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Question_Answer" Width="1.5" PointX="15" PointY="23" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Question_Images" Width="1.5" PointX="23" PointY="6" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Registration" Width="1.5" PointX="6.25" PointY="19.125" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Registration_Dtl" Width="1.5" PointX="8.5" PointY="27.75" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Role" Width="1.5" PointX="1" PointY="4.25" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Role_Type" Width="1.5" PointX="1" PointY="0.5" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Sample_Image" Width="1.5" PointX="23" PointY="10" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Security_Question" Width="1.5" PointX="23" PointY="14" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Shift_Mst" Width="1.5" PointX="23" PointY="18" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Shift_Teacher_Assign" Width="1.5" PointX="23" PointY="22" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Sms_API" Width="1.5" PointX="9" PointY="12.25" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Sms_Template" Width="1.5" PointX="11.25" PointY="12.5" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Smtp_Details" Width="1.5" PointX="11" PointY="2.25" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_State" Width="1.5" PointX="8" PointY="8.25" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Student_Batch_Assign" Width="1.5" PointX="8.5" PointY="18.375" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Subject" Width="1.5" PointX="5.5" PointY="62.25" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Tablet_Image" Width="1.5" PointX="24" PointY="2" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Tablet_Pkg_Dtl" Width="1.5" PointX="17" PointY="25" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Tablet_Purchase" Width="1.5" PointX="7" PointY="75" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Tablet_Technical_Details" Width="1.5" PointX="19" PointY="25" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Tax_Master" Width="1.5" PointX="9.25" PointY="58.25" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Tax_Type_Master" Width="1.5" PointX="7" PointY="58.25" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Teacher" Width="1.5" PointX="5.5" PointY="38.5" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Test_Assign" Width="1.5" PointX="25" PointY="6" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Ticket" Width="1.5" PointX="6" PointY="2.375" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Ticket_Dtl" Width="1.5" PointX="6" PointY="8.5" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Ticket_Thread" Width="1.5" PointX="8.25" PointY="3" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Topic" Width="1.5" PointX="5.5" PointY="27.875" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Topic_Report" Width="1.5" PointX="7.75" PointY="33.125" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_USER_MASTER" Width="1.5" PointX="25" PointY="11" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_USER_SECURITY" Width="1.5" PointX="3.25" PointY="8.75" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Video_Backup" Width="1.5" PointX="25" PointY="18" />
+        <EntityTypeShape EntityType="DigiChampsModel.View_All_Student_Details" Width="1.5" PointX="25" PointY="21" />
+        <EntityTypeShape EntityType="DigiChampsModel.View_Course_Teacher_Assign" Width="1.5" PointX="21" PointY="26" />
+        <EntityTypeShape EntityType="DigiChampsModel.View_DC_All_Tickets_Details" Width="1.5" PointX="27" PointY="2" />
+        <EntityTypeShape EntityType="DigiChampsModel.View_DC_CourseAssign" Width="1.5" PointX="27" PointY="9" />
+        <EntityTypeShape EntityType="DigiChampsModel.View_DC_Exam_Setup" Width="1.5" PointX="27" PointY="12" />
+        <EntityTypeShape EntityType="DigiChampsModel.View_DC_Order_Details" Width="1.5" PointX="27" PointY="17" />
+        <EntityTypeShape EntityType="DigiChampsModel.View_DC_Package" Width="1.5" PointX="27" PointY="22" />
+        <EntityTypeShape EntityType="DigiChampsModel.View_DC_SMS_API" Width="1.5" PointX="23" PointY="28" />
+        <EntityTypeShape EntityType="DigiChampsModel.View_DC_Student_details" Width="1.5" PointX="27" PointY="26" />
+        <EntityTypeShape EntityType="DigiChampsModel.View_DC_Teacher_Shift" Width="1.5" PointX="16" PointY="29" />
+        <EntityTypeShape EntityType="DigiChampsModel.View_DC_Tickets_and_Teacher" Width="1.5" PointX="18" PointY="29" />
+        <EntityTypeShape EntityType="DigiChampsModel.Vw_Attendance_Report" Width="1.5" PointX="20" PointY="29" />
+        <EntityTypeShape EntityType="DigiChampsModel.VW_DC_Assign_Batch" Width="1.5" PointX="29" PointY="2" />
+        <EntityTypeShape EntityType="DigiChampsModel.VW_DC_Attendance_Batch_Details" Width="1.5" PointX="29" PointY="6" />
+        <EntityTypeShape EntityType="DigiChampsModel.VW_DC_Package_Learn" Width="1.5" PointX="29" PointY="9" />
+        <EntityTypeShape EntityType="DigiChampsModel.VW_DC_Package_Learn_Module" Width="1.5" PointX="29" PointY="18" />
+        <EntityTypeShape EntityType="DigiChampsModel.VW_DC_Role" Width="1.5" PointX="29" PointY="22" />
+        <EntityTypeShape EntityType="DigiChampsModel.VW_Offline_Student_Orders" Width="1.5" PointX="29" PointY="26" />
+        <EntityTypeShape EntityType="DigiChampsModel.VW_Prebook_Students" Width="1.5" PointX="25" PointY="30" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Batch_tbl_DC_Centre" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Student_Batch_Assign_tbl_DC_Batch_Assign" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Cart_Dtl_tbl_DC_Board" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Class_tbl_DC_Board" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Course_Teacher_Assign_tbl_DC_Board" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Exam_tbl_DC_Board" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Module_tbl_DC_Board" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Order_Pkg_Sub_tbl_DC_Board" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Question_tbl_DC_Board" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Registration_Dtl_tbl_DC_Board" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Topic_tbl_DC_Board" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Cart_Dtl_tbl_DC_Cart" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Cart_tbl_DC_Package" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Cart_tbl_DC_Registration" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Cart_Dtl_tbl_DC_Chapter" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Cart_Dtl_tbl_DC_Class" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Cart_Dtl_tbl_DC_Package" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Cart_Dtl_tbl_DC_Subject" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Exam_tbl_DC_Chapter" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Feedback_Chapter_tbl_DC_Chapter" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Module_tbl_DC_Chapter" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Order_Pkg_Sub_Mod_tbl_DC_Chapter" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Order_Pkg_Sub_tbl_DC_Chapter" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Question_tbl_DC_Chapter" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_City_tbl_DC_State" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Course_Teacher_Assign_tbl_DC_Class" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Exam_tbl_DC_Class" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Module_tbl_DC_Class" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Order_Pkg_Sub_tbl_DC_Class" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Question_tbl_DC_Class" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Registration_Dtl_tbl_DC_Class" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Subject_tbl_DC_Class" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Topic_tbl_DC_Class" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Course_Teacher_Assign_tbl_DC_Subject" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Course_Teacher_Assign_tbl_DC_Teacher" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Exam_tbl_DC_Subject" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Exam_Power_tbl_DC_Power_Question" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Feedback_Chapter_tbl_DC_Registration" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Feedback_Rating_tbl_DC_Registration" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Feedback_Rating_tbl_DC_Teacher" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_MailConfigBody_tbl_DC_Smtp_Details" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Menu_Permission_tbl_DC_Menuitems" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Menu_Permission_tbl_DC_Role" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Menu_Permission_tbl_DC_Role_Type" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Module_tbl_DC_Subject" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Order_Pkg_Sub_Mod_tbl_DC_Module" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Order_Pkg_tbl_DC_Order" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Order_Tax_tbl_DC_Order" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Order_tbl_DC_Registration" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Order_Pkg_Sub_tbl_DC_Order_Pkg" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Order_Pkg_tbl_DC_Package" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Order_Pkg_Sub_Mod_tbl_DC_Order_Pkg_Sub" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Order_Pkg_Sub_tbl_DC_Subject" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Tax_Order_tbl_DC_Tax_Master" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Tax_Order_tbl_DC_Tax_Type_Master" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Package_tbl_DC_Tablet_Purchase" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Question_tbl_DC_Power_Question" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Pre_book_tbl_DC_Pre_book" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Pre_book_tbl_DC_Pre_book1" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Prefix_tbl_DC_PrefixType" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Question_tbl_DC_Subject" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Registration_Dtl_tbl_DC_Registration" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Student_Batch_Assign_tbl_DC_Registration" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_USER_SECURITY_tbl_DC_Role" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Sms_Template_tbl_DC_Sms_API" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Tax_Master_tbl_DC_Tax_Type_Master" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Ticket_Thread_tbl_DC_Ticket" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Ticket_Thread_tbl_DC_Ticket_Dtl" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Topic_Report_tbl_DC_Topic" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_Info" Width="2" PointX="31.375" PointY="1.375" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_SchoolUser" Width="1.5" PointX="33.625" PointY="1" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__3C4FC133" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Class_Section" Width="1.5" PointX="36.375" PointY="11.25" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_Class" Width="1.5" PointX="34.125" PointY="7.625" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_Subject" Width="1.5" PointX="34.125" PointY="10.875" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_ToppersWay" Width="1.5" PointX="36.375" PointY="4.375" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Cl__Class__4A9DE08A" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__47C173DF" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_To__Class__5056B9E0" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__4D7A4D35" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_To__Schoo__514ADE19" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_AssingTeacher" Width="1.5" PointX="38.625" PointY="3" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_ExamSchedule" Width="1.5" PointX="39.375" PointY="7.625" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_ExamType" Width="1.5" PointX="34.125" PointY="15.375" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_Homework" Width="1.5" PointX="41.625" PointY="6.875" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Secti__02E239AD" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Secti__11305904" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Class__01EE1574" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__00F9F13B" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Subje__03D65DE6" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Class__0A835B75" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Class__103C34CB" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__ExamT__0C6BA3E7" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__098F373C" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Subje__0B777FAE" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__06B2CA91" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__0F481092" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Subje__12247D3D" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_MessageCreation" Width="1.5" PointX="36.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_StudyMaterial" Width="1.5" PointX="41.375" PointY="2.875" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Teach__3D0EDB42" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Class__2AF02B07" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Class__3C1AB709" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__29FC06CE" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__3B2692D0" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Subje__2BE44F40" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

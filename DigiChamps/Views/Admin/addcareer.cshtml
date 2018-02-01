@@ -1,0 +1,134 @@
+﻿@model DigiChamps.Models.DigiChampsModel.DigichampsCareer
+@{
+    ViewBag.Title = "career";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("addcareer", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    @*@Html.AntiForgeryToken();*@
+    <div class="page-content-wrap">
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active">@ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3>
+                            <i class="fa fa-file"></i>Add Career
+                        </h3>
+                    </div>
+                  
+                    <div class="box-content">
+                        <form action="#" class="form-horizontal form-bordered form-row-stripped">
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Career Name<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(x => x.career_Name, new { @id = "cname", @class = "form-control", @required = "required", data_msg_required = "Please enter career name" })
+                                    <input type="hidden" id="career_id" name="career_id" value="@ViewBag.Career_ID" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">No Of Vacancy<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(x => x.No_of_vacancy, new { @id = "no_of_vacancy", @class = "form-control", @required = "required", data_msg_required = "Please enter no of vacancy", @type = "number" })
+                                   
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Experience<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(x => x.Experience, new { @id = "experience", @class = "form-control", @required = "required", data_msg_required = "Please enter experience" })
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Location<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(x => x.Location, new { @id = "location", @class = "form-control", @required = "required", data_msg_required = "Please enter location" })
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Qualification<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(x => x.Qualification, new { @id = "qualification", @class = "form-control", @required = "required", data_msg_required = "Please enter qualification" })
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Opening Date<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                   @if (ViewBag.careerid != null)
+                                   { 
+                                    @Html.TextBoxFor(x => x.Opening_Date,new { @id = "opening_date", @class = "form-control  datepicker", @required = "required", data_msg_required = "Please enter opening date"})
+
+                                   }
+                                   else
+                                   { 
+                                       
+                                    @Html.TextBoxFor(x => x.Opening_Date, new { @id = "opening_date", @class = "form-control  datepicker", @required = "required", data_msg_required = "Please enter opening date" })
+
+                                   }
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Close Date<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(x => x.Close_Date, new { @id = "close_date", @class = "form-control  datepicker", @required = "required", data_msg_required = "Please enter close date" })
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Walk in Time<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(x => x.Walk_in_Time, new { @id = "walk_in_time", @class = "form-control", @required = "required", data_msg_required = "Please enter walk in time",@type="time" })
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Phone<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextBoxFor(x => x.Phone, new { @id = "phone", @class = "form-control", @required = "required", data_msg_required = "Please enter phone" })
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Job Description<span class="asterisk">*</span></label>
+                                <div class="col-sm-9 col-lg-7 controls">
+                                    @Html.TextAreaFor(x => x.Job_Description, new { @id = "job_description", @class = "form-control", @required = "required", data_msg_required = "Please enter job description" })
+
+                                </div>
+                            </div>
+                            
+
+                            <div class="form-group last box-tooll">
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                    <a href="@Url.Action("career", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i><span>Back</span>  </a>
+                                    <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span>Submit</span> </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}

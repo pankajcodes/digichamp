@@ -1,0 +1,361 @@
+﻿@model DigiChamps.Models.PackagePreviewModel
+@{
+    ViewBag.Title = "Package Detail | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+@section header{
+    <i class="menu-icons package-icon page_header_icon"></i>
+    <span class="main-text">Package Detail</span>
+}
+
+@if (ViewBag.Package_Previeww != null)
+{
+    foreach (var v in ViewBag.Package_Previeww)
+    {
+        <div class="row">
+
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12  nopad-right">
+                <!-- Question Panel Starts -->
+                <div class="panel panel-ntspl">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Package : @v.Package_Name
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-md-4 nopad-right">
+                                <img src="~/Images/@v.Thumbnail" class="img-responsive">
+                            </div>
+                            <div class="col-md-8 s-margin">
+
+                                <div role="tabpanel">
+                                    <!-- Nav tabs -->
+                                    <ul class="nav nav-tabs ntspl-tabs" role="tablist">
+                                        <li role="presentation" class="active"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Features</a></li>
+                                        <li role="presentation"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Description</a></li>
+                                        @if (v.Tablet_Id != null)
+                                        {
+                                        <li role="presentation"><a href="#tablets" aria-controls="tablets" role="tab" data-toggle="tab">Tablet</a></li>
+                                        }
+
+                                    </ul>
+
+                                    <!-- Tab panes -->
+                                    <div class="tab-content ntspl-tab-content">
+                                        <div role="tabpanel" class="tab-pane active" id="profile">
+
+                                            <table class="table table-bordered table-hover">
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">Validity</th>
+                                                        <td>@v.Subscripttion_Period Days</td>
+                                                    </tr>
+                                                    @*<tr>
+                                    <td>Subject</td>
+                                    <td>Maths, Science</td>
+                                </tr>*@
+                                                    <tr>
+                                                        <td> Chapter Subscription Limit</td>
+                                                        <td>@ViewBag.limit</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Total Chapter</td>
+                                                        <td>@ViewBag.chapters</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Total Videos</td>
+                                                        <td>
+                                                            @ViewBag.video
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane" id="home">
+                                            <p>
+                                                @v.Package_Desc
+                                            </p>
+                                        </div>
+                                        @if (v.Tablet_Id != null)
+                                        {
+                                            int tabid = v.Tablet_Id;
+
+                                            DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+
+                                            var tab = DbContext.tbl_DC_Tablet_Purchase.Where(x => x.Tablet_Id == tabid && x.Is_Active == true && x.Is_Deleted == false).FirstOrDefault();
+
+                                            IHtmlString str = new HtmlString(@tab.Tablet_Description);
+                                            
+                                        <div role="tabpanel" class="tab-pane" id="tablets">
+
+                                            <table class="table table-bordered table-hover">
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">Tablet</th>
+                                                        <td>@tab.Tablet_Name</td>
+                                                    </tr>
+                                                
+                   
+                                                    <tr>
+                                                        <td>Price</td>
+                                                        <td>@Convert.ToDecimal( @tab.Tablet_Price).ToString("N2")</td>
+                                                    </tr>
+                                                    @*<tr>
+                                                        <td>Description</td>
+                                                        <td> @Html.Raw(str)</td>
+                                                    </tr>*@
+                                                    
+                                                </tbody>
+                                            </table>
+
+                                           
+                                            <p>
+                                                <a href="~/student/ViewTablet/@tab.Tablet_Id" id="viewmore" class="btn btn-primary btn-icon-primary btn-icon-block btn-icon-blockleft voffset3">
+                                                    <i class="ion ion-link"></i>
+                                                    <span>View More</span>
+                                                </a>
+                                            </p>
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Question Panel Ends -->
+
+                <div class="panel panel-ntspl">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Subjects & Chapters
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div role="tabpanel">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs ntspl-tabs" role="tablist" id="my_tab">
+                                @if (ViewBag.subject_name != null)
+                                {
+                                    foreach (var item in ViewBag.subject_name)
+                                    {
+                                        <li><a href="#t@(item.Subject_Id)" aria-controls="t@(item.Subject_Id)" role="tab" data-toggle="tab">@item.Subject</a></li>
+                                    }
+                                }
+                            </ul>
+
+                            <!-- Tab panes -->
+                            @using (Html.BeginForm("viewchapterdetails", "student", FormMethod.Post, new { id = "chapter" }))
+                            {
+                                <div class="tab-content ntspl-tab-content">
+                                    <div id="resultTarget"></div>
+                                    <div style="color:red">@TempData["message"]</div>
+                                    @if (ViewBag.subject_name != null)
+                                    {
+                                        int tab = 0;
+                                        foreach (var item1 in ViewBag.subject_name)
+                                        {
+                                            if (tab == 0)
+                                            {
+                                                <text><div role="tabpanel" class="tab-pane active" id="t@(item1.Subject_Id)">
+                                                        <div class="row">
+                                                            @{
+                                                int pkgid = v.Package_ID;
+                                                int subid = item1.Subject_Id;
+                                                DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+
+                                                var a = DbContext.tbl_DC_Package.Where(x => x.Package_ID == pkgid && x.Is_Active == true && x.Is_Deleted == false).ToList();
+                                                var b = DbContext.tbl_DC_Package_Dtl.Where(x => x.Subject_Id == subid && x.Package_ID == pkgid && x.Is_Active == true && x.Is_Deleted == false).ToList();
+                                                var c = DbContext.tbl_DC_Chapter.Where(x => x.Is_Active == true && x.Is_Deleted == false).ToList();
+                                                var data2 = (from q in a
+                                                             join p in b
+                                                             on q.Package_ID equals p.Package_ID
+                                                             join r in c
+                                                             on p.Chapter_Id equals r.Chapter_Id
+                                                             select new DigiChamps.Models.PackagePreviewModel
+                                                             {
+                                                                 Chapter_Id = p.Chapter_Id,
+                                                                 Chapter = r.Chapter
+                                                             }).ToList();
+                                                ViewBag.chapter = data2;
+                                                            }
+                                                            @if (ViewBag.chapter != null)
+                                                            {
+                                                                foreach (var item2 in ViewBag.chapter)
+                                                                {
+                                                                    <div class="col-md-3">
+                                                                        <div class="check-box">
+                                                                            @*<input type="checkbox" id="aa" checked />*@
+                                                                            <input id="@item2.Chapter_Id" type="checkbox" name="chkpackage" value="@item2.Chapter_Id" />
+                                                                            <label for="@item2.Chapter_Id"><span></span><i>@item2.Chapter</i></label>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
+                                                            @*<input type="submit" id="btncart" class="btn btn-primary distace1" value="Buy Now" />*@
+                                                        </div>
+                                                    </div>
+                                                </text>
+                                                            tab = tab + 1;
+                                            }
+                                            else
+                                            {
+                                                <text><div role="tabpanel" class="tab-pane " id="t@(item1.Subject_Id)">
+                                                        <div class="row">
+                                                            @{
+                                                int pkgid = v.Package_ID;
+                                                int subid = item1.Subject_Id;
+                                                DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+
+                                                var a = DbContext.tbl_DC_Package.Where(x => x.Package_ID == pkgid && x.Is_Active == true && x.Is_Deleted == false).ToList();
+                                                var b = DbContext.tbl_DC_Package_Dtl.Where(x => x.Subject_Id == subid && x.Package_ID == pkgid && x.Is_Active == true && x.Is_Deleted == false).ToList();
+                                                var c = DbContext.tbl_DC_Chapter.Where(x => x.Is_Active == true && x.Is_Deleted == false).ToList();
+                                                var data2 = (from q in a
+                                                             join p in b
+                                                             on q.Package_ID equals p.Package_ID
+                                                             join r in c
+                                                             on p.Chapter_Id equals r.Chapter_Id
+                                                             select new DigiChamps.Models.PackagePreviewModel
+                                                             {
+                                                                 Chapter_Id = p.Chapter_Id,
+                                                                 Chapter = r.Chapter
+                                                             }).ToList();
+                                                ViewBag.chapter = data2;
+                                                            }
+                                                            @if (ViewBag.chapter != null)
+                                                            {
+                                                                foreach (var item2 in ViewBag.chapter)
+                                                                {
+                                                                    <div class="col-md-3">
+                                                                        <div class="check-box">
+                                                                            @*<input type="checkbox" id="aa" checked />*@
+                                                                            <input id="@item2.Chapter_Id" type="checkbox" name="chkpackage" value="@item2.Chapter_Id" />
+                                                                            <label for="@item2.Chapter_Id"><span></span><i>@item2.Chapter</i></label>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
+                                                            @*<input type="submit" id="btncart" class="btn btn-primary distace1" value="Buy Now" />*@
+                                                        </div>
+                                                    </div>
+                                                </text>
+                                            }
+
+
+                                        }
+                                    }
+                                    <button type="submit" id="chapter1" class="btn btn-primary btn-icon-primary btn-icon-block btn-icon-blockleft voffset3">
+                                        <i class="ion ion-link"></i>
+                                        <span>Buy Now</span>
+                                    </button>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+
+                <div class="panel panel-ntspl">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                           Package Preview
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="video-panel">
+                            <div class="video-overlay">
+                                <i class="ion-social-youtube-outline"></i>
+
+                            </div>
+                            <img src="/images/how-test-works.jpg">
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <div class="panel panel-ntspl">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Package Instructions
+
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        DIGICHAMPS brings you the best of your Curriculum in the most interesting videos so that you can Learn anything, anywhere.
+
+                        <div class="content-lists voffset3">
+                            <i class="list-icon ion-android-done-all"></i>
+                            Tab -based Learning, Personal Doubt Clearing, and Analytical Tests & Counseling. Modern Tech Classroom with a Teacher with Fully Air Conditioned and Wi-Fi Enabled Classrooms to have the best Environment.
+                        </div>
+                        <div class="content-lists">
+                            <i class="list-icon ion-android-done-all"></i>
+                            Clear your doubt 24x7 with our experts and also Interact with our teachers one-on-one at Learning Centres. Individualized test reports for Every Student, so the Student has an Idea about his/hers Weakness in a particular Topic and Individualized Counseling.
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+    </div> 
+    
+    }
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            var chapter = '@ViewBag.chapters';
+            var limit = '@ViewBag.limit';
+            debugger;
+            if (chapter == limit) {
+                $('input:checkbox').prop('checked', true);
+            }
+
+            $('#my_tab li:first').addClass('active');
+
+            $('#chapter').on('submit', function (e) {
+                $(".loader-ajax-container").css("display", "block");
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "/Student/ViewChapterDetails",
+                    data: $("#chapter").serialize(),
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        if (data == "error") {
+                            $.noty.closeAll();
+                            generate('top', 'error', "Selected chapter should not be more than chapter limit.");
+                        }
+                        else if (data == "error1") {
+                            $.noty.closeAll();
+                            generate('top', 'error', "No of selected chapter should equal with chapter limit.");
+                        }
+                        else if (data == "error2") {
+                            $.noty.closeAll();
+                            generate('top', 'error', "Please select chapter to buy.");
+                        }
+                        else if (data == "success") {
+                            $.noty.closeAll();
+                            generate('top', 'success', "Selected package added to your cart")
+                            location.href = "/student/addtocart";
+                        }
+                        setTimeout(function () { }, 5000);
+                        $(".loader-ajax-container").css("display", "none");
+                    }
+                });
+            });
+        });
+    </script>
+}

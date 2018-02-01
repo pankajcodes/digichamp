@@ -1,0 +1,130 @@
+﻿@{
+    ViewBag.Title = "Edit profile";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("EditProfile", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Edit Profile</h3>
+                            </div>
+                        
+                            <div class="panel-body">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <h5>Teacher's Name</h5>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-11">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input type="text" placeholder="Please Enter Your Name" class="form-control" disabled="disabled" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <h5>Mobile Number</h5>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-11">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input type="text" placeholder="Please Enter Mobile Number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <h5>Email-Id</h5>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-11">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input type="text" placeholder="Please Enter Email-Id" class="form-control" disabled="disabled"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <h5>Address</h5>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-11">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input type="text" placeholder="Please Enter Full Address" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <h5>Image</h5>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-11">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input type="file" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <div class="col-md-11">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <img src="~/Images/images.png" height="120" width="100" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-6">
+                                        <div class="pull-left">
+                                            <button id="btnSearch" type="submit" value="search" name="submit" class="btn btn-info">Submit</button>
+                                            @*<button type="reset" id="btn_clr" class="btn btn-default">Clear Form</button>*@
+                                            <a href="@Url.Action("AdminDashboard", "Admin")" class="btn btn-inverse dropdown-toggle"><i class="fa fa-caret-left"></i> Back </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END NEW RECORD -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

@@ -1,0 +1,542 @@
+﻿@model DigiChamps.Models.Digichampcartmodel1
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" /> <!--320-->
+    <title>Checkout | DIGICHAMPS | Learners Beyond Classrooms</title>
+    <link href="~/Student_assets/images/fav-icon.jpg" rel="shortcut icon" />
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link rel='stylesheet' href='~/Student_assets/assets/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/material.css'>
+    <link href="~/Student_assets/assets/css/video-js.min.css" rel="stylesheet" />
+    <link rel='stylesheet' href='~/Student_assets/assets/css/animated-masonry-gallery.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/rotated-gallery.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/sweet-alerts/sweetalert.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/jtree.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/range-slider/ion.rangeSlider.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/range-slider/ion.rangeSlider.skinFlat.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/owl.carousel.min.css'>
+    <link rel='stylesheet' href='~/Student_assets/assets/css/style.css'>
+    <script src='~/Student_assets/assets/js/jquery.js'></script>
+    <script src='~/Student_assets/assets/js/app.js'></script>
+    <script>
+        jQuery(window).load(function () {
+            $('.ntspl-preloader').addClass('hidden');
+        });
+    </script>
+</head>
+<body class="checkout-page">
+    <div class="ntspl-preloader text-center">
+        <!-- <div class="progress">
+            <div class="indeterminate"></div>
+        </div> -->
+        @*<div class="loader">Loading...</div>*@
+        <div class="loader-container">
+            <span>Loading</span>
+            <div id="circleG">
+                <div id="circleG_1" class="circleG"></div>
+                <div id="circleG_2" class="circleG"></div>
+                <div id="circleG_3" class="circleG"></div>
+            </div>
+            <div class="clearfix"></div>
+            <p>FUN + EDUCATION</p>
+        </div>	
+    </div>
+    <div class="wrapper ">
+        <!-- left-bar -->
+        <!-- left-bar ends -->
+        <div class="content full-page full-res" id="content">
+            <div class="overlay"></div>
+            <!-- /top-bar -->
+            <div class="top-bar">
+                <nav class="navbar navbar-default top-bar">
+                    <div class="full-logo">
+                        <a href="/Student/StudentDashboard"><img class="logo" src="~/Student_assets/images/Digichamps-small.jpg" alt="logo"></a>
+                    </div>
+                    <div class="menu-bar-mobile" id="open-left">
+                        <i class="ti-menu"></i>
+                    </div>
+                    <a href="#" class="menu-bar  pull-left"><i class="ti-menu"></i></a>
+
+                    <ul class="nav navbar-nav navbar-right top-elements">
+
+                        <li class="ntspl-dropdown dropdown">
+                            <!-- todo Change design here, its bit of odd or not upto usable -->
+
+                            <a href="#" class="dropdown-toggle avatar_width" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <span class="avatar-holder checkoutimg">
+                                    @{
+                                        string name = string.Empty;
+                                        string img = string.Empty;
+                                        DigiChamps.Models.DigiChampsEntities DbContext = new DigiChamps.Models.DigiChampsEntities();
+                                        if (Session["USER_CODE"] != null)
+                                        {
+                                            int sid = Convert.ToInt32(Convert.ToString(Session["USER_CODE"]).Substring(1));
+                                            var student = DbContext.tbl_DC_Registration.Where(x => x.Regd_ID == sid).FirstOrDefault();
+                                            name = Convert.ToString(student.Customer_Name);
+                                            img = Convert.ToString(student.Image);
+                                        }
+                                    }
+                                    @if (img == null && img == "")
+                                    {
+                                        <text><img src="/Student_assets/assets/images/avatar/one.png" alt="" /></text>
+                                    }
+                                    else
+                                    {
+                                        <text><img src="~/images/Profile/@img" alt=""></text>
+                                    }
+                                </span>
+                                <span class="avatar_info">
+                                    @if (name != "")
+                                    {
+                                        <text>@name</text>
+                                    }
+                                </span><span class="drop-icon"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-ntspl-menu  animated fadeInUp wow avatar_drop neat_drop dropdown-right" data-wow-duration="1500ms" role="menu">
+
+                                <li>
+                                    <a href="/student/addtocart"> <i class="ion-android-cart"></i>My Cart</a>
+                                </li>
+                                <li>
+                                    <a href="/student/editprofile"> <i class="ion-android-create"></i>Edit profile</a>
+                                </li>
+                                <li>
+                                    <a href="/student/logout" class="logout_button"><i class="ion-power"></i>Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </nav>
+
+            </div>                <!-- /top-bar ends -->
+            <!-- Page Header -->
+            <div class="page_header page_header_tab">
+                <div class="row">
+                    <div class="col-md-8 pull-left div-buttom-margin">
+                        <span class="main-text">Checkout</span>
+                    </div>
+                    <div class="col-md-2 pull-right test-clock">
+                        <div id="clockbox"></div>
+                        <div id="clockboxd"></div>
+                    </div>
+                    <div class="col-md-12">
+                        <h1 class="head-text">Checkout</h1>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <!-- /pageheader -->
+
+            <div class="main-content">
+
+                @if (Session["USER_CODE"] == null)
+                {
+                    Response.Redirect("/student/logout");
+                }
+                else
+                {
+                    if (ViewBag.cartitems != null)
+                    {
+
+                        <div class="row">
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 questions-cont nopad-right">
+                                <!-- Question Panel Starts -->
+                                <div class="panel panel-ntspl">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">
+                                            Order Details
+                                        </h3>
+                                    </div>
+                                    <input type="hidden" name="cop_id" value="" />
+                                    @if (ViewBag.cartitems != null)
+                                    {
+                                        int i = 0; int j = 0;
+                                        foreach (var item in ViewBag.cartitems)
+                                        {
+                                             if(i % 4 == 0)
+    {
+        j = 1;               
+        @*<div class='table-cont bd-clr-1'>*@
+
+           }
+
+         
+
+           if (i % 4 == 1)
+           {
+               j = 2;
+           }
+            @*<div class='table-cont bd-clr-2'>*@
+
+               
+                if(i % 4 == 2)
+                {
+                    j = 3;
+                }          
+                    @*<div class='table-cont bd-clr-3'>*@
+
+
+                        if (i % 4 == 3)
+                        {
+                            j = 4;
+                        }
+
+
+
+
+                        <diV class="panel-body">
+                            <div class="bd-clr-@j pnl-learn">
+                                <div class="panel panel-ntspl inner-panel">
+                                    <div class="panel-heading header-style">
+                                        <h3 class="panel-title">
+                                            @item.Package_Name
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body test-panel-body pannel-padding">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                                @*<tr>
+                                                        <th scope="row" class="td-width-one">Subjects</th>
+                                                        <td class="right-td td-width-two">Science and Mathematics</td>
+                                                    </tr>*@
+                                                <tr>
+                                                    <th scope="row" class="td-width-one">Package Name</th>
+                                                    <td class="right-td td-width-two">@item.Package_Name</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Duration</td>
+                                                    <td class="right-td">@item.Subscripttion_Period Days</td>
+                                                </tr>
+                                                <tr>
+                                                    @{
+                                            ViewBag.price = null;
+                                            DigiChamps.Models.DigiChampsEntities dc = new DigiChamps.Models.DigiChampsEntities();
+                                            int id1 = Convert.ToInt32(item.Package_ID);
+                                            var dt = dc.tbl_DC_Package_Period.Where(x => x.Package_ID == id1 && x.Is_Active == true && x.Is_Deleted == false).FirstOrDefault();
+                                            if (dt != null)
+                                            {
+                                                decimal price = Convert.ToDecimal(dt.Excluded_Price + item.Price);
+                                                ViewBag.price = price;
+                                            }
+                                                    }
+                                                    <td>Price</td>
+                                                    @if (ViewBag.price != null)
+                                                                    {
+                                                        <td class="price-color small-bolt">Rs. @string.Format("{0:0.00}", ViewBag.price)</td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                        <td class="price-color small-bolt">Rs. @string.Format("{0:0.00}", item.Price)</td>
+                                                                    }
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </diV>
+                                            i++;
+                            }
+                            }
+                        </div>
+                                <div class="panel panel-ntspl">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">
+                                            Profile Details
+                                        </h3>
+                                    </div>
+                                    <div class="form-div">
+                                       
+@using (Html.BeginForm("", "student", FormMethod.Get, new { @class = "form form-horizontal has-validation-callback" }))
+{
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Mobile Number</label>
+                                                <div class="col-sm-7">
+                                                    <input name="" type="text" class="form-control" value="@ViewBag.mobile" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Name</label>
+                                                <div class="col-sm-7">
+                                                    <input name="" type="text" class="form-control" value="@ViewBag.custmer_name" disabled>
+                                                </div>
+                                            </div>
+    
+                              
+}                                  
+                                    </div>
+                                </div>
+                                <!-- Question Panel Ends -->
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="panel panel-ntspl pannel-border">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">
+                                            Coupon Details
+                                        </h3>
+                                    </div>
+@using (Html.BeginForm("checkout", "student", FormMethod.Post, new { @class = "form form-horizontal has-validation-callback" }))
+{
+                                    <div class="panel-body pannel-padding  pannel-border">
+                                        @if (TempData["c_name"] != null)
+                                        {
+                                            <div class="grand-total1" id="applied_coupon">
+                                                @*<label class="col-sm-3 control-label">Applied Coupon</label>*@
+                                                <p>
+                                                    One coupon "@TempData["c_name"]" applied. <span>
+                                                        <button type="button" id="coup" class="btn btn-danger" onclick="return confirm('Do you want to cancel this coupon ?')">
+                                                            <span>X</span>
+                                                        </button>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        }
+										else
+                                        {
+                                            <div class="grand-total" id="applied_coupon">
+                                                @*<label class="col-sm-3 control-label">Applied Coupon</label>*@
+                                                <p>
+                                                    Do you want to apply any coupon? <span>
+                                                        <button type="button" id="coup" class="btn btn-danger" onclick="return confirm('Do you want to apply any coupon ?')">
+                                                            <span>X</span>
+                                                        </button>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        }
+                                        <div  hidden id="coupon_div">
+                                        <div class="grand-total1">
+                                            @*<label class="col-sm-3 control-label">Apply Coupon</label>*@
+                                            <p>
+                                               @*<input name="Coupon" id="Coupon" type="text" autocomplete="off" data-rule-required="true" data-msg-required="Please select coupon" class="form-control target" required>*@
+
+                                                @Html.TextBoxFor(m=>m.coupon, new {  @Class="form-control target" , @id="Coupon" ,  data_rule_required="true", data_msg_required="Please select coupon", required="required" ,autocomplete="off"})
+                                            </p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <button type="submit"  id="cop_btn" class="btn btn-green btn-width btn-width2" disabled>
+
+                                            <span>Apply Coupon</span>
+                                        </button>
+                                       </div>
+                                    </div>
+}
+                                </div>
+                            </div>                            
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="panel panel-ntspl pannel-border">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">
+                                            Cart Summary (@TempData["totalitem"])
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body pannel-padding">
+                                        <div class="cart-summery">
+                                            @*<div class="total-item">
+                            <p>Total Item - <span class="price-color">@TempData["totalitem"]</span></p>
+                        </div>*@
+                                            <div class="total-price">
+                                                <p>Total Price - <span id="tp" class="price-color">Rs. @TempData["price"]</span></p>
+                                            </div>
+                                            <div class="total-tax">
+                                                <p>Tax Amount (@string.Format("{0:0}", ViewBag.taxper)%) - <span id="ta" class="price-color">Rs. @TempData["Tax"]</span></p>
+                                            </div>
+                                            @if (TempData["discamt"]!=null)
+                                            { 
+                                            <div class="total-price" id="discamt">
+                                                <p>Discount Price - <span  id="cp"class="price-color">Rs. -@TempData["discamt11"]</span></p>
+                                            </div>
+                                            }
+                                            else
+                                            {
+                                                
+                                            
+                                            if (TempData["discamt1"] != null)
+                                            {
+                                                <div class="total-price" id="discamt">
+                                                    <p>Discount Percent - <span id="cp" class="price-color">@TempData["discamt11"] %</span></p>
+                                                </div>
+                                            }
+                                            }
+                                        </div>
+                                       
+                                        <div class="grand-total1">
+                                            <p>Total Payable - <span id="tb">Rs. @TempData["payblamt"]</span></p>
+                                        </div>
+                                        <div class="clearfix"></div>
+
+                                        @*@using (Html.BeginForm("ordernow", "student", FormMethod.Post))
+                                        {
+                                            <button type="submit" class="btn btn-green btn-width btn-width2">
+                                                <i class="ion ion-android-cart"></i>
+                                                <span>Order now</span>
+                                            </button>
+                                        }*@
+
+                                        <form method="post" name="customerData" action="https://thedigichamps.com/Student/OrderNow">
+
+
+
+
+                                                 <input type="hidden" name="tid" id="@Session["tnid"]" readonly />
+
+                                            <input type="hidden" name="merchant_id" id="merchant_id" value="138959" />
+
+                                            <input type="hidden" name="order_id" value="@Session["ordno"]" />
+
+                                            <input type="hidden" name="amount" value="@TempData["payblamt"]" />
+
+                                            <input type="hidden" name="currency" value="INR" />
+
+                                            <input type="hidden" name="redirect_url" value="https://thedigichamps.com/Student/OrderConfirmation" />
+
+                                            <input type="hidden" name="cancel_url" value="https://thedigichamps.com/Student/CancelPayment" />
+
+<input type="hidden" name="billing_name" value="@ViewBag.custmer_name" />
+       
+                                                        
+                                                            
+                                            <input type="hidden" name="billing_address" value="@ViewBag.address" />
+                                             
+                                            <input type="hidden" name="billing_country" value="India" />
+                                            <input type="hidden" name="billing_tel" value="@ViewBag.mobile" />
+                                            <input type="hidden" name="billing_email" value="@ViewBag.Email" />
+
+
+                                            <input type="submit" value="Order now" class="btn btn-green btn-width btn-width2 ion ion-android-cart" />
+                                               
+
+                                           
+
+                                        </form>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <!-- row -->
+                }
+                <div class="row">
+                    <div class="col-md-12 text-center footer">
+                        <p class="designed-by">©2017 Digichamps. All Rights Reserved. |  Designed By <a href="https://www.ntsplhosting.com/">NTSPL</a></p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script src='~/Student_assets/assets/js/jquery-ui-1.10.3.custom.min.js'></script>
+    <script src='~/Student_assets/assets/js/bootstrap.min.js'></script>
+    <script src='~/Student_assets/assets/js/jquery.nicescroll.min.js'></script>
+    <script src='~/Student_assets/assets/js/wow.min.js'></script>
+    <script src='~/Student_assets/assets/js/jquery.loadmask.min.js'></script>
+    <script src='~/Student_assets/assets/js/jquery.accordion.js'></script>
+    <script src='~/Student_assets/assets/js/materialize.js'></script>
+    <script src='~/Student_assets/assets/js/build/d3.min.js'></script>
+    @*<script src='~/Student_assets/assets/js/nvd3/nv.d3.js'></script>*@
+    <script src='~/Student_assets/assets/js/sparkline.js'></script>
+    <script src='~/Student_assets/assets/js/bic_calendar.js'></script>
+    <script src='~/Student_assets/assets/js/widgets.js'></script>
+    <script src='~/Student_assets/assets/js/core.js'></script>
+    <script src="~/Student_assets/assets/js/jquery.countTo.js"></script>
+    <script src='~/Student_assets/assets/js/range-slider/ion.rangeSlider.js'></script>
+    <script src='~/Student_assets/assets/js/range-slider/custom.js'></script>
+    <script src='~/Student_assets/assets/js/tooltip-custom.js'></script>
+    <script src='~/Student_assets/assets/js/owl.carousel.min.js'></script>
+
+
+    @*//Show error msg*@
+    <script src='~/Student_assets/assets/js/noty/jquery.noty.js'></script>
+    <script src='~/Student_assets/assets/js/noty/layouts/top.js'></script>
+    <script src="~/Student_assets/assets/js/noty/layouts/default.js"></script>
+    <script src='~/Student_assets/assets/js/noty/notifications-custom.js'></script>
+
+    <!--Validation scripts-->
+    <script type="text/javascript" src="~/assets/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/assets/jquery-validation/dist/additional-methods.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".target").change(function () {
+                var txt = $("#Coupon").val();
+                //alert("Handler for .change() called.");
+                $.ajax({
+                    type: "POST",
+                    url: "/student/checkcoupon?id=" + txt + "",
+                    data: {},
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data)
+                    {
+                        debugger
+                        if (data != null && data != "")
+                        {
+                            $("#cop_btn").attr("disabled", false);
+                        }
+                        else {
+                            alert("Invalid Coupon");
+                            $("#cop_btn").attr("disabled", true);                       
+                        }
+                    }
+                });
+            });
+            $("#coup").click(function () {
+                debugger;
+                $("#coupon_div").show();
+                $("#applied_coupon").hide();
+                $("#discamt").hide();
+                var total_price = $("#tp").html();
+                var total_tax = $("#ta").html();
+                var total_payble = $("#tb").html();
+                
+                $.ajax({
+                    type: "POST",
+                    url: "/student/Deletedefaultcop",
+                    data: {},
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        debugger;
+                        if (data[3] != "")
+                        {
+                            $("#tp").html("Rs."+ data[0]);
+                            $("#ta").html("Rs." + data[1]);
+                            $("#tb").html("Rs." + data[2]);
+                            //alert(Session["value"]);
+                        }
+                       
+                       
+                    }
+                });
+            });
+            $('#cart').on('submit', function (e) {
+                $(".loader-ajax-container").css("display", "block");
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "/student/clearcart",
+                    data: {},
+
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        $(".loader-ajax-container").css("display", "none");
+                    }
+                });
+            });
+            return false;
+        });
+
+       
+    </script>
+</body>
+</html>

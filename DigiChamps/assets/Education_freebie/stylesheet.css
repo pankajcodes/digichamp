@@ -1,0 +1,414 @@
+﻿/* font-face */
+@font-face {
+    font-family: 'shock_icon_education_freebie';
+    src: url('./fonts/Shock_icon_education_freebie.eot');
+    src: url('./fonts/Shock_icon_education_freebie.eot?#iefix') format('embedded-opentype'),
+         url('./fonts/Shock_icon_education_freebie.woff') format('woff'),
+         url('./fonts/Shock_icon_education_freebie.ttf') format('truetype'),
+         url('./fonts/Shock_icon_education_freebie.svg#shock_icon_education_freebie') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/* global styles */
+[class*="shock-edu-"] {
+  display: inline;
+  width: auto;
+  height: auto;
+  line-height: inherit;
+  vertical-align: baseline;
+  background-image: none;
+  background-position: 0 0;
+  background-repeat: repeat;
+}
+
+[class*="shock-edu-"]:before {
+  font-family: 'shock_icon_education_freebie', Fallback, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: inherit;
+}
+
+/* icons */
+.shock-edu-achievement:before {
+  content: "\f010";
+}
+
+.shock-edu-admission:before {
+  content: "\f011";
+}
+
+.shock-edu-agronomy:before {
+  content: "\f012";
+}
+
+.shock-edu-announcement:before {
+  content: "\f013";
+}
+
+.shock-edu-architecture:before {
+  content: "\f014";
+}
+
+.shock-edu-art-palette:before {
+  content: "\f015";
+}
+
+.shock-edu-art-sculpture:before {
+  content: "\f016";
+}
+
+.shock-edu-attendance:before {
+  content: "\f017";
+}
+
+.shock-edu-attendance-list:before {
+  content: "\f018";
+}
+
+.shock-edu-backpack:before {
+  content: "\f019";
+}
+
+.shock-edu-ball-baseball:before {
+  content: "\f01a";
+}
+
+.shock-edu-ball-basketball:before {
+  content: "\f01b";
+}
+
+.shock-edu-ball-beach:before {
+  content: "\f01c";
+}
+
+.shock-edu-ball-billiard:before {
+  content: "\f01d";
+}
+
+.shock-edu-ball-bowling:before {
+  content: "\f01e";
+}
+
+.shock-edu-ball-football:before {
+  content: "\f01f";
+}
+
+.shock-edu-ball-football2:before {
+  content: "\f020";
+}
+
+.shock-edu-ball-tennnis:before {
+  content: "\f021";
+}
+
+.shock-edu-ball-volleyball:before {
+  content: "\f022";
+}
+
+.shock-edu-biology:before {
+  content: "\f023";
+}
+
+.shock-edu-blackboard:before {
+  content: "\f024";
+}
+
+.shock-edu-blueprint:before {
+  content: "\f025";
+}
+
+.shock-edu-book:before {
+  content: "\f026";
+}
+
+.shock-edu-brush:before {
+  content: "\f027";
+}
+
+.shock-edu-certificate:before {
+  content: "\f028";
+}
+
+.shock-edu-erlenmeyer:before {
+  content: "\f029";
+}
+
+.shock-edu-test-tube:before {
+  content: "\f02a";
+}
+
+.shock-edu-classmates:before {
+  content: "\f02b";
+}
+
+.shock-edu-classroom:before {
+  content: "\f02c";
+}
+
+.shock-edu-college:before {
+  content: "\f02d";
+}
+
+.shock-edu-computing:before {
+  content: "\f02e";
+}
+
+.shock-edu-copy:before {
+  content: "\f02f";
+}
+
+.shock-edu-crayon:before {
+  content: "\f030";
+}
+
+.shock-edu-cupcake:before {
+  content: "\f031";
+}
+
+.shock-edu-curriculum:before {
+  content: "\f032";
+}
+
+.shock-edu-daycare:before {
+  content: "\f033";
+}
+
+.shock-edu-desk:before {
+  content: "\f034";
+}
+
+.shock-edu-diploma:before {
+  content: "\f035";
+}
+
+.shock-edu-ecology:before {
+  content: "\f036";
+}
+
+.shock-edu-economics:before {
+  content: "\f037";
+}
+
+.shock-edu-economy:before {
+  content: "\f038";
+}
+
+.shock-edu-e-learning:before {
+  content: "\f039";
+}
+
+.shock-edu-electric-engineering:before {
+  content: "\f03a";
+}
+
+.shock-edu-engineering:before {
+  content: "\f03b";
+}
+
+.shock-edu-essay:before {
+  content: "\f03c";
+}
+
+.shock-edu-etiquette:before {
+  content: "\f03d";
+}
+
+.shock-edu-exam:before {
+  content: "\f03e";
+}
+
+.shock-edu-exam-fail:before {
+  content: "\f03f";
+}
+
+.shock-edu-exam-pass:before {
+  content: "\f040";
+}
+.shock-edu-foreign-language:before {
+  content: "\f041";
+}
+.shock-edu-forum:before {
+  content: "\f042";
+}
+.shock-edu-geography:before {
+  content: "\f043";
+}
+.shock-edu-geometry:before {
+  content: "\f044";
+}
+.shock-edu-grades-report:before {
+  content: "\f045";
+}
+.shock-edu-graduate:before {
+  content: "\f046";
+}
+.shock-edu-graduation:before {
+  content: "\f047";
+}
+.shock-edu-hamburger:before {
+  content: "\f048";
+}
+.shock-edu-hand-attendance:before {
+  content: "\f049";
+}
+.shock-edu-history:before {
+  content: "\f04a";
+}
+.shock-edu-homework:before {
+  content: "\f04b";
+}
+.shock-edu-infirmary:before {
+  content: "\f04c";
+}
+.shock-edu-ink:before {
+  content: "\f04d";
+}
+.shock-edu-interview:before {
+  content: "\f04e";
+}
+.shock-edu-interview2:before {
+  content: "\f04f";
+}
+.shock-edu-justice:before {
+  content: "\f050";
+}
+.shock-edu-kindergarden:before {
+  content: "\f051";
+}
+.shock-edu-language:before {
+  content: "\f052";
+}
+.shock-edu-laws:before {
+  content: "\f053";
+}
+.shock-edu-library:before {
+  content: "\f054";
+}
+.shock-edu-locker:before {
+  content: "\f055";
+}
+.shock-edu-locker-open:before {
+  content: "\f056";
+}
+.shock-edu-lunch-box:before {
+  content: "\f057";
+}
+.shock-edu-marker:before {
+  content: "\f058";
+}
+.shock-edu-math:before {
+  content: "\f059";
+}
+.shock-edu-music:before {
+  content: "\f05a";
+}
+.shock-edu-music-drum:before {
+  content: "\f05b";
+}
+.shock-edu-music-drum2:before {
+  content: "\f05c";
+}
+.shock-edu-music-flute:before {
+  content: "\f05d";
+}
+.shock-edu-music-guitar:before {
+  content: "\f05e";
+}
+.shock-edu-music-saxophone:before {
+  content: "\f05f";
+}
+.shock-edu-papers:before {
+  content: "\f060";
+}
+.shock-edu-personal-record:before {
+  content: "\f061";
+}
+.shock-edu-photography:before {
+  content: "\f062";
+}
+.shock-edu-physical-education:before {
+  content: "\f063";
+}
+.shock-edu-physics-atom:before {
+  content: "\f064";
+}
+.shock-edu-physics-magnet:before {
+  content: "\f065";
+}
+.shock-edu-physics-pendulum:before {
+  content: "\f066";
+}
+.shock-edu-poetry:before {
+  content: "\f067";
+}
+.shock-edu-project:before {
+  content: "\f068";
+}
+.shock-edu-schedule:before {
+  content: "\f069";
+}
+.shock-edu-school:before {
+  content: "\f06a";
+}
+.shock-edu-school-bell:before {
+  content: "\f06b";
+}
+.shock-edu-school-bus:before {
+  content: "\f06c";
+}
+.shock-edu-social-studies:before {
+  content: "\f06d";
+}
+.shock-edu-student:before {
+  content: "\f06e";
+}
+.shock-edu-student-boy:before {
+  content: "\f06f";
+}
+.shock-edu-student-girl:before {
+  content: "\f070";
+}
+.shock-edu-student-little-boy:before {
+  content: "\f071";
+}
+.shock-edu-student-little-girl:before {
+  content: "\f072";
+}
+.shock-edu-student-female:before {
+  content: "\f073";
+}
+.shock-edu-study:before {
+  content: "\f074";
+}
+.shock-edu-signature:before {
+  content: "\f075";
+}
+.shock-edu-teacher:before {
+  content: "\f076";
+}
+.shock-edu-teachers-day:before {
+  content: "\f077";
+}
+.shock-edu-trophy:before {
+  content: "\f078";
+}
+.shock-edu-tuition:before {
+  content: "\f079";
+}
+.shock-edu-tutorial:before {
+  content: "\f07a";
+}
+.shock-edu-university:before {
+  content: "\f07b";
+}
+.shock-edu-veterinary:before {
+  content: "\f07c";
+}
+.shock-edu-whistle:before {
+  content: "\f07d";
+}
+.shock-edu-white-board:before {
+  content: "\f07e";
+}

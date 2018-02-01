@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "Role Type";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="page-content-wrap">
+    <div class="page-title">
+        <div>
+            <h1>
+                <i class="fa fa-user-circle"></i> Role Type
+            </h1>
+
+        </div>
+    </div>
+    <div id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="~/Admin/AdminDashboard">Home</a>
+                <span class="divider"><i class="fa fa-angle-right"></i></span>
+            </li>
+                <li class="active">Role</li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-title">
+                    <h3><i class="fa fa-user-circle"></i>Role Type</h3>
+                    <div class="box-tool box-tooll">
+                        <a class="btn btn-primary" href="/Admin/AssignRole"><i class="fa fa-plus"></i><span> Assign Role</span></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="table-responsive">
+                        <table class="table table-advance" id="table1">
+
+                            <thead>
+                                <tr>
+                                    <th>Sl No.</th>
+                                    <th hidden="hidden">Id</th>
+                                    <th>User Type</th>
+                                    <th>Menu Type</th>  
+                                    @*<th>Role Type</th>*@                            
+                                    <th style="width: 20%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.details != null)
+                                {
+                                    int rowNo = 0;
+                                    foreach (var item in ViewBag.details)
+                                    {
+                                        <tr>
+                                            <td>@(rowNo += 1)</td>
+                                            <td hidden="hidden"></td>
+                                            <td>@item.ROLE_TYPE</td>
+                                            <td>@item.Menu_Parameter2</td>
+                                            @*<td>@item.Role_Type_Name</td>*@
+                                            <td>
+
+                                                @Html.ActionLink(" ", "DeletePermission", "Admin", new { id = @item.Permission_ID }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the role type?')", @data_original_title = "Delete", @title = "Delete" })
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

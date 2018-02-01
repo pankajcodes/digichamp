@@ -1,0 +1,634 @@
+﻿@{
+    ViewBag.Title = "Marketing Blog";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link href="~/assets/bootstrap-wysihtml5/bootstrap-wysihtml5.css" rel="stylesheet" />
+@using (Html.BeginForm("marketing_blog", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", id = "validation-form" }))
+{
+    @Html.AntiForgeryToken();
+    <div class="page-content-wrap">
+        <div id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="~/Admin/AdminDashboard">Home</a>
+                    <span class="divider"><i class="fa fa-angle-right"></i></span>
+                </li>
+                @if (ViewBag.Breadcrumb != null)
+                {
+                    <li class="active"> @ViewBag.pagetitle @ViewBag.Breadcrumb</li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i>OUR TEAM</h3>
+                        <input type="hidden" id="hid" name="hid" value="@ViewBag.id" />
+                    </div>
+                    <div class="box-content">
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Name<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.id != null)
+                                {
+                                    <input type="text" id="name" name="name" class="form-control" data-rule-required="true" data-msg-required="Please enter name" value="@ViewBag.name">
+                                }
+                                else
+                                {
+                                    <input type="text" id="name" name="name" class="form-control" data-rule-required="true" data-msg-required="Please enter name">
+                                }
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Designation<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.id != null)
+                                {
+                                    <input type="text" id="desig" name="desig" class="form-control" data-rule-required="true" data-msg-required="Please enter designation" value="@ViewBag.designation">
+                                }
+                                else
+                                {
+                                    <input type="text" id="desig" name="desig" class="form-control" data-rule-required="true" data-msg-required="Please enter designation">
+                                }
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Profile Image<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls file-new">
+                                <input type="file" accept=".png, .jpg, .jpeg" name="fileupload1" id="fileupload1" style="display:none" />
+                                <div class="bootstrap-filestyle input-group">
+                                    <input type="hidden" name="hidans_img1" id="hidans_img1" />
+                                    <input readonly="readonly" type="text" id="_txt" class="form-control ">
+                                    <span class="group-span-filestyle input-group-btn" tabindex="0">
+                                        <label for="filestyle-1" class="btn btn-file-upload btn-orange">
+                                            <span class="buttonText uploadFileImg1"><i class="ion-ios-folder-outline"></i> Choose file</span>
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div class="col-sm-3 col-lg-2 controls"></div>
+                            <div class="col-sm-9 col-lg-7 col-md-7 col-xs-12 controls">
+                                @if (ViewBag.id != null)
+                                {
+                                    <img src="~/Images/Blog/@ViewBag.image" id="img11" class="img-responsive" />
+                                      <canvas id="canvas1" class="upload-image-div" hidden></canvas>
+    <img src="@ViewBag.image" id="PrevImagesqs1" class="img-responsive" />
+                                }
+                                else
+                                {
+                                    <img src="~/Images/Blog/No_image_available.png" id="PrevImagesqs1" class="img-responsive"/>
+
+                                    <canvas id="canvas1" class="upload-image-div" hidden></canvas>
+                                }
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Description<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls">
+                                @if (ViewBag.id != null)
+                                {
+                                    <textarea class="form-control wysihtml5" name="description" placeholder="Description" rows="5" data-rule-required="true" data-msg-required="Please enter  description">@ViewBag.description</textarea>
+                                }
+                                else
+                                {
+                                    <textarea class="form-control wysihtml5" name="description" placeholder="Description" rows="5" data-rule-required="true" data-msg-required="Please enter  description"></textarea>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3 col-lg-2 control-label">Blog Image<span class="asterisk">*</span></label>
+                            <div class="col-sm-9 col-lg-7 controls file-new">
+                                <input type="file" accept=".png, .jpg, .jpeg" name="fileupload" id="fileupload" style="display:none" />
+                                <div class="bootstrap-filestyle input-group">
+                                    <input type="hidden" name="hidans_img" id="hidans_img" />
+                                    <input readonly="readonly" type="text" id="_txt" class="form-control ">
+                                    <span class="group-span-filestyle input-group-btn" tabindex="0">
+                                        <label for="filestyle-1" class="btn btn-file-upload btn-orange">
+                                            <span class="buttonText uploadFileImg"><i class="ion-ios-folder-outline"></i> Choose file</span>
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div class="col-sm-3 col-lg-2 controls"></div>
+                            <div class="col-sm-9 col-lg-7 col-md-7 col-xs-12 controls">
+                                @if (ViewBag.id != null)
+                                    {
+                                        <img src="~/Images/Blog/@ViewBag.blogimage" id="img12" class="img-responsive" width="284" height="318" />
+                                       <canvas id="canvas"  class="upload-image-div" hidden ></canvas>
+    <img src="@ViewBag.blogimage" id="PrevImagesqs19" class="img-responsive" width="284" height="318" />
+
+                                    }
+                                else
+                                {
+                                    <img src="~/Images/Blog/No_image_available.png" id="PrevImagesqs19" class="img-responsive" width="284" height="318" />
+                                    <canvas id="canvas"  class="upload-image-div" hidden ></canvas>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("viewblogdetails", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i><span> Back</span> </a>
+                                <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span> Submit</span></button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="modal fade" id="defaultmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                <h4 class="modal-title" id="myModalLabel">Blog Image</h4>
+            </div>
+            <div class="modal-body">
+                <div class="demo-wrap upload-demo">
+                    <div class="ask_dbt">
+                        <div class="grid">
+                            <div hidden>
+                                <div class="actions">
+                                    <input type="file" id="upload" style="visibility: hidden;" value="Choose a file" accept="image/*" />
+                                    @*<button class="upload-result" type="button">Result</button>*@
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="upload-msg">
+                                    Upload a file to start cropping
+                                </div>
+                                <div class="upload-demo-wrap" style="width:100%;height:100%">
+                                    <div id="upload-demo">
+                                        <img src="" id="img">
+                                    </div>
+                                    <input type="hidden" name="imgX1" id="imgX1" />
+                                    <input type="hidden" name="imgY1" id="imgY1" />
+                                    <input type="hidden" name="imgWidth" id="imgWidth" />
+                                    <input type="hidden" name="imgHeight" id="imgHeight" />
+                                    <input type="hidden" name="imgCropped" id="imgCropped" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                @* <input type="text" name="id" value="10">
+                    <p>Scroll mouse to zoom-in and zoom-out.</p>*@
+                <input type="button" id="btnCrop" class="btn btn-primary upload-result11" value="Crop" style="display: none" />
+
+                @*<button type="button" data-dismiss="modal" id="btnCrop" class="btn btn-primary upload-result">Crop Image </button>*@
+                <button type="button" data-dismiss="modal" id="hl-crop-image" class="btn btn-primary upload-result">No Crop</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="defaultmodal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="ti-close"></span></button>
+                <h4 class="modal-title" id="myModalLabel">Blog Image</h4>
+            </div>
+            <div class="modal-body">
+                <div class="demo-wrap upload-demo1">
+                    <div class="ask_dbt">
+                        <div class="grid">
+                            <div hidden>
+                                <div class="actions">
+                                    <input type="file" id="upload1" style="visibility: hidden;" value="Choose a file" accept="image/*" />
+                                    @*<button class="upload-result" type="button">Result</button>*@
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="upload-msg1">
+                                    Upload a file to start cropping
+                                </div>
+                                <div class="upload-demo-wrap" style="width:100%;height:100%">
+                                    <div id="upload-demo1">
+                                        <img src="" id="img1">
+                                    </div>
+                                    <input type="hidden" name="imgX1" id="imgX1" />
+                                    <input type="hidden" name="imgY1" id="imgY1" />
+                                    <input type="hidden" name="imgWidth" id="imgWidth" />
+                                    <input type="hidden" name="imgHeight" id="imgHeight" />
+                                    <input type="hidden" name="imgCropped" id="imgCropped" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                @* <input type="text" name="id" value="10">
+                    <p>Scroll mouse to zoom-in and zoom-out.</p>*@
+                <input type="button" id="btnCrop1" class="btn btn-primary upload-result11" value="Crop" style="display: none" />
+
+                @*<button type="button" data-dismiss="modal" id="btnCrop" class="btn btn-primary upload-result">Crop Image </button>*@
+                <button type="button" data-dismiss="modal" id="hl-crop-image1" class="btn btn-primary upload-result1">No Crop</button>
+            </div>
+        </div>
+    </div>                                      
+</div>
+@section scripts
+{
+<script src="~/Student_assets/assets/js/tooltip-custom.js"></script>
+@*<script src="~/js/croppie.min.js"></script>
+    <script src="~/js/exif.js"></script>*@
+<script src="~/Student_assets/crop/scripts/jquery.imgareaselect.js"></script>
+<script src="~/Student_assets/crop/scripts/jquery.imgareaselect.min.js"></script>
+<script src="~/Student_assets/crop/scripts/jquery.imgareaselect.pack.js"></script>
+<link href="~/Student_assets/crop/imgareaselect-deprecated.css" rel="stylesheet" />
+<link href="~/Student_assets/crop/imgareaselect-default.css" rel="stylesheet" />
+<link href="~/Student_assets/crop/imgareaselect-animated.css" rel="stylesheet" />
+<script src="~/assets/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
+<script src="~/assets/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+
+    <script>
+
+        //var _URL = window.URL || window.webkitURL;
+        //$("#fileupload").change(function (e) {
+        //    debugger;
+        //    var file, img;
+        //    debugger;
+        //    if ((file = this.files[0])) {
+        //        var param = $(this);
+        //        img = new Image();
+        //        img.onload = function () {
+        //            var realWidth = this.width;
+        //            var realHeight = this.height;
+        //            if (realWidth > 1300 && realHeight >= 450) {
+        //                alert("Please select image of mentioned dimension.");
+        //                $("#fileupload").val("");
+        //                $('#img_').attr('src', "/Images/Blog/No_image_available.png");
+        //            }
+        //        }
+        //        img.onerror = function () {
+        //            alert("not a valid file: " + file.type);
+        //        };
+        //        img.src = _URL.createObjectURL(file);
+        //        $('#img_').attr('src', img.src);
+        //    };
+        //});
+        //$("#fileupload1").change(function (e) {
+        //    debugger;
+        //    var file, img;
+        //    debugger;
+        //    if ((file = this.files[0])) {
+        //        var param = $(this);
+        //        img = new Image();
+        //        img.onload = function () {
+        //            var realWidth = this.width;
+        //            var realHeight = this.height;
+        //            if (realWidth > 1300 && realHeight >= 450) {
+        //                alert("Please select image of mentioned dimension.");
+        //                $("#fileupload1").val("");
+        //                $('#img1_').attr('src', "/Images/Blog/No_image_available.png");
+        //            }
+        //        }
+        //        img.onerror = function () {
+        //            alert("not a valid file: " + file.type);
+        //        };
+        //        img.src = _URL.createObjectURL(file);
+        //        $('#img1_').attr('src', img.src);
+        //    };
+        //});
+        //************************************** JavaScript for cropping of image for blog *****************************************
+        $("#hl-crop-image").click(function () {
+            $('#defaultmodal').modal('hide');
+            $('.imgareaselect-outer').hide();
+            $('.imgareaselect-border4').hide();
+            $('.imgareaselect-border3').hide();
+            $('.imgareaselect-border2').hide();
+            $('.imgareaselect-border1').hide();
+            $('.imgareaselect-handle').hide();
+        })
+
+
+        $(".uploadFileImg").on('click', function () {
+            debugger;
+            $("#fileupload").trigger('click');
+            setTimeout(function () {
+                $('#defaultmodal').modal('show');
+            }, 1200);
+        });
+        $('#fileupload').on('change', function () {
+
+            readFile1(this);
+
+        });
+
+
+        function output(node) {
+            var existing = $('#result .croppie-result');
+            if (existing.length > 0) {
+                existing[0].parentNode.replaceChild(node, existing[0]);
+            }
+            else {
+                $('#result')[0].appendChild(node);
+            }
+        }
+
+        var $uploadCrop;
+        var widths;
+        var heights;
+        var actualh = 219;
+        var actualw = 386;
+        function readFile1(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                debugger;
+                reader.onload = function (e) {
+                    debugger;
+                    $('.upload-demo').addClass('ready');
+                   // $('#img').attr('src', e.target.result);
+                    $('#img').attr('src', e.target.result);
+                    $('#PrevImagesqs19').attr('src', e.target.result);
+
+
+                    function getImageSize1(img, callback) {
+                        var $img = $(img);
+
+                        var wait = setInterval(function () {
+                            var w = $img[0].naturalWidth,
+                                h = $img[0].naturalHeight;
+                            if (w && h) {
+                                clearInterval(wait);
+                                callback.apply(this, [w, h]);
+                            }
+                        }, 0);
+
+
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+            else {
+                alert("Please select image less than 2 Mb.");
+            }
+        }
+
+        $("#img").imgAreaSelect({
+            aspectRatio: '219:386', handles: true, onSelectEnd: function (img, selection) {
+                $('#imgX1').val(selection.x1);
+                $('#imgY1').val(selection.y1);
+                $('#imgWidth').val(selection.width);
+                $('#imgHeight').val(selection.height);
+                $('#btnCrop').show();
+            }
+        });
+
+
+        $('#defaultmodal').modal({ backdrop: 'static', keyboard: false, show: false })
+
+        $('.close').click(function () {
+
+            $('#defaultmodal').modal('hide');
+            $('.imgareaselect-outer').hide();
+            $('.imgareaselect-border4').hide();
+            $('.imgareaselect-border3').hide();
+            $('.imgareaselect-border2').hide();
+            $('.imgareaselect-border1').hide();
+            $('.imgareaselect-handle').hide();
+            $('.imgareaselect-selection').parent().removeAttr("style");
+            $('#PrevImagesqs19').attr('src', "~/Images/Blog/No_image_available.png");
+
+
+        });
+
+        $('#btnCrop').click(function () {
+            debugger;
+            $("#canvas").show();
+            var x1 = $('#imgX1').val();
+            var y1 = $('#imgY1').val();
+            var width = $('#imgWidth').val();
+            var height = $('#imgHeight').val();
+            var canvas = $("#canvas")[0];
+            var context = canvas.getContext('2d');
+            var img = new Image();
+            img.onload = function () {
+                canvas.height = height;
+                canvas.width = width;
+                var s = img;
+                context.drawImage(img, x1, y1, width, height, 0, 0, width, height);
+                $('#hidans_img').val(canvas.toDataURL());
+              
+            };
+            img.src = $('#img').attr("src");
+            //$('#hidans_img').val($('#imgCropped').val());
+            $('#defaultmodal').modal('hide');
+            $('.imgareaselect-outer').hide();
+            $('.imgareaselect-border4').hide();
+            $('.imgareaselect-border3').hide();
+            $('.imgareaselect-border2').hide();
+            $('.imgareaselect-border1').hide();
+            $('.imgareaselect-handle').hide();
+            $("#PrevImagesqs19").hide();
+            $("#img12").hide();
+
+            $(".imgareaselect-selection").hide();
+            $('.imgareaselect-selection').parent().removeAttr("style");
+            //$('#img').attr("src","");
+            //$('#PrevImagesqs19').attr('src', $('#img').attr("src"));
+        });
+
+
+        $('.upload-result').on('click', function (ev) {
+            debugger;
+            $("#img12").hide();
+            var resp = $('#PrevImagesqs19').attr('src')
+            $('#hidans_img').val(resp);
+            $("#canvas").hide();
+            $("#PrevImagesqs19").show();
+        });
+
+       
+
+
+        //************************************** JavaScript for ajax file upload END **************************************})
+    
+        //************************************** JavaScript for cropping of image for profile *****************************************
+
+
+        $("#hl-crop-image1").click(function () {
+            $('#defaultmodal1').modal('hide');
+            $('.imgareaselect-outer').hide();
+            $('.imgareaselect-border4').hide();
+            $('.imgareaselect-border3').hide();
+            $('.imgareaselect-border2').hide();
+            $('.imgareaselect-border1').hide();
+            $('.imgareaselect-handle').hide();
+        })
+
+
+        $(".uploadFileImg1").on('click', function () {
+            debugger;
+            $("#fileupload1").trigger('click');
+            setTimeout(function () {
+                $('#defaultmodal1').modal('show');
+            }, 1200);
+        });
+        $('#fileupload1').on('change', function () {
+
+            readFile(this);
+
+        });
+
+
+        function output(node) {
+            var existing = $('#result .croppie-result');
+            if (existing.length > 0) {
+                existing[0].parentNode.replaceChild(node, existing[0]);
+            }
+            else {
+                $('#result')[0].appendChild(node);
+            }
+        }
+
+        var $uploadCrop;
+        var widths;
+        var heights;
+        var actualh = 52;
+        var actualw = 58;
+        function readFile(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                debugger;
+                reader.onload = function (e) {
+                    $('.upload-demo1').addClass('ready');
+
+                    $('#img1').attr('src', e.target.result);
+                    $('#PrevImagesqs1').attr('src', e.target.result);
+
+
+                    function getImageSize1(img, callback) {
+                        var $img = $(img);
+
+                        var wait = setInterval(function () {
+                            var w = $img[0].naturalWidth,
+                                h = $img[0].naturalHeight;
+                            if (w && h) {
+                                clearInterval(wait);
+                                callback.apply(this, [w, h]);
+                            }
+                        }, 0);
+
+
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+            else {
+                alert("Please select image less than 2 Mb.");
+            }
+        }
+
+        $("#img1").imgAreaSelect({
+            aspectRatio: '52:58', handles: true, onSelectEnd: function (img, selection) {
+                $('#imgX1').val(selection.x1);
+                $('#imgY1').val(selection.y1);
+                $('#imgWidth').val(selection.width);
+                $('#imgHeight').val(selection.height);
+                $('#btnCrop1').show();
+            }
+        });
+
+
+        $('#defaultmodal1').modal({ backdrop: 'static', keyboard: false, show: false })
+
+        $('.close').click(function () {
+
+            $('#defaultmodal1').modal('hide');
+            $('.imgareaselect-outer').hide();
+            $('.imgareaselect-border4').hide();
+            $('.imgareaselect-border3').hide();
+            $('.imgareaselect-border2').hide();
+            $('.imgareaselect-border1').hide();
+            $('.imgareaselect-handle').hide();
+            $('.imgareaselect-selection').parent().removeAttr("style");
+            $('#PrevImagesqs1').attr('src', "~/Images/Blog/No_image_available.png");
+
+
+        });
+
+        $('#btnCrop1').click(function () {
+            debugger;
+            $("#canvas1").show();
+            var x1 = $('#imgX1').val();
+            var y1 = $('#imgY1').val();
+            var width = $('#imgWidth').val();
+            var height = $('#imgHeight').val();
+            var canvas = $("#canvas1")[0];
+            var context = canvas.getContext('2d');
+            var img = new Image();
+            img.onload = function () {
+                canvas.height = height;
+                canvas.width = width;
+                var s = img;
+                context.drawImage(img, x1, y1, width, height, 0, 0, width, height);
+                $('#hidans_img1').val(canvas.toDataURL());
+                // $('[id*=btnUpload]').show();
+            };
+            img.src = $('#img1').attr("src");
+            //$('#hidans_img').val($('#imgCropped').val());
+            $('#defaultmodal1').modal('hide');
+            $('.imgareaselect-outer').hide();
+            $('.imgareaselect-border4').hide();
+            $('.imgareaselect-border3').hide();
+            $('.imgareaselect-border2').hide();
+            $('.imgareaselect-border1').hide();
+            $('.imgareaselect-handle').hide();
+            $("#PrevImagesqs1").hide();
+            $("#img11").hide();
+            
+            $(".imgareaselect-selection").hide();
+            $('.imgareaselect-selection').parent().removeAttr("style");
+            //$('#img').attr("src","");
+            //$('#PrevImagesqs19').attr('src', $('#img').attr("src"));
+        });
+
+
+        $('.upload-result1').on('click', function (ev) {
+            debugger;
+            $("#img11").hide();
+            var resp = $('#PrevImagesqs1').attr('src')
+            $('#hidans_img1').val(resp);
+            $("#canvas1").hide();
+            $("#PrevImagesqs1").show();
+        });
+
+
+        //************************************** JavaScript for ajax file upload END **************************************})
+        
+        </script>
+            <script src="~/js/DC_Imagecrop.js"></script>
+}

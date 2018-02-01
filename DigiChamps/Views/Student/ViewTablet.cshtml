@@ -1,0 +1,149 @@
+﻿@{
+    ViewBag.Title = "View Tablet Details | DIGICHAMPS | Learners Beyond Classrooms";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-ntspl">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Product Features
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                        <div class="tab-container">
+                            <div class="customNavigation">
+                                <a href="javascript:void(0)" class="prev-slide-tab"></a>
+                                <a href="javascript:void(0)" class="next-slide-tab"></a>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="owl-carousel" id="tab-slider">
+                                @if (ViewBag.tab_image != null)
+                                {
+                                foreach (var v1 in ViewBag.tab_image)
+                                {
+                                <div class="owl-item">
+                                    <div class="tab-single">
+                                        <div class="department-icon">
+                                            <img src="~/Images/Tablet/@v1.Tablet_Image" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                                }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 tab-responsive">
+                        <div class="main-blog-container">
+                            @if (ViewBag.tab_dtl != null)
+                            {
+                            <div class="details-container">
+
+                                @{IHtmlString str = new HtmlString(ViewBag.tab_dtl.Tablet_Description);
+                                }
+                                <div class="blog-profile">
+                                    @*<img src="~/Images/Blog/@v.Image" />*@
+                                    <div class="blog-profile-name-deg">
+                                        <h3 class="tbt-name">@ViewBag.tab_dtl.Tablet_Name</h3>
+                                        <p class="price-text">Price : @ViewBag.tab_dtl.Tablet_Price</p>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <p class="blog-message">
+                                    @Html.Raw(str)
+                                </p>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        @if (ViewBag.tab_desc != null)
+            {
+                int i = 0;
+            <div class="panel panel-ntspl">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Product description
+                    </h3>
+                </div>
+                <div class="panel-body prd-detail-cont">
+                    @foreach (var item in ViewBag.tab_desc)
+                                {
+                                if (i == 0)
+                            {
+                            <!--<p class="crer-acdn-p">acd1</p> -->
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><h5>@item.Technical_Name</h5></div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-8"><p>: @item.Technical_Desc</p></div>
+                        </div>
+                            }
+                            else
+                            {
+                        <div class="row for-pdng">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><h5>@item.Technical_Name</h5></div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-8"><p>: @item.Technical_Desc</p></div>
+                        </div>
+                                    }
+                                    i = i + 1;
+                                }
+                </div>
+            </div>
+        }
+        else
+        {
+            <p>
+                Currently no description
+            </p>
+
+        }
+    </div>
+</div>
+
+
+
+@section scripts
+{
+    <script>
+
+        $(function () {
+            var tablet = $('#tab-slider').owlCarousel({
+                loop: true,
+                margin: 0,
+                responsiveClass: true,
+                responsive: {
+                    0: {
+                        items: 1,
+                        nav: true
+                    },
+                    600: {
+                        items: 1,
+                        nav: false
+                    },
+                    1000: {
+                        items: 1,
+                        nav: false,
+                        loop: true
+                    }
+                }
+            });
+            $('.prev-slide-tab').click(function () {
+                tablet.trigger('prev.owl.carousel');
+            });
+            $('.next-slide-tab').click(function () {
+                tablet.trigger('next.owl.carousel');
+            });
+        });
+
+    </script>
+}
