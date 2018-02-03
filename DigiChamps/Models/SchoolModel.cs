@@ -164,15 +164,19 @@ namespace DigiChamps.Models
         {
             public Guid Id { get; set; }
             public Guid ClassId { get; set; }
+            public int Class_Id { get; set; }
             public Guid SubjectId { get; set; }
             public string Topic { get; set; }
             public string Material { get; set; }
             public string Image { get; set; }
             public string SubjectName { get; set; }
-
-            public string ClassName { get; set; }
+            public string MaterialText { get; set; }
             public string MaterialType { get; set; }
+            public string ClassName { get; set; }
+            //public string MaterialType { get; set; }
             public bool IsActive { get; set; }
+            public string FileName { get; set; }
+            public string FilePath { get; set; }
 
 
 

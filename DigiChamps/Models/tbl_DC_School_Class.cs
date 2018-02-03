@@ -30,6 +30,7 @@ namespace DigiChamps.Models
         public string ClassName { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<bool> IsActive { get; set; }
+        public Nullable<int> Class_id { get; set; }
     
         public virtual ICollection<tbl_DC_Class_Section> tbl_DC_Class_Section { get; set; }
         public virtual tbl_DC_School_Info tbl_DC_School_Info { get; set; }

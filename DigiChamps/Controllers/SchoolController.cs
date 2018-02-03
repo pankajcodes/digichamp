@@ -86,7 +86,7 @@ namespace DigiChamps.Controllers
             }
             else
             {
-                
+
 
                 DbContext.Sp_DC_SchoolInfo(objSchoolInformation.SchoolId, objSchoolInformation.SchoolName, objSchoolInformation.Information, objSchoolInformation.Logo, objSchoolInformation.DocumentaryVideo, objSchoolInformation.ThumbnailPath, DateTime.Now, DateTime.Now, objSchoolInformation.IsActive);
                 TempData["Message"] = "School Updated Successfully.";
@@ -778,7 +778,7 @@ namespace DigiChamps.Controllers
         #endregion
 
         #region StudyMaterial
-        public ActionResult GetStudyMterial()
+        public ActionResult GetStudyMaterialList()
         {
             SchoolAPIController obj = new SchoolAPIController();
             List<SchoolModel.StudyMaterialModel> objOutput = new List<SchoolModel.StudyMaterialModel>();
@@ -798,113 +798,162 @@ namespace DigiChamps.Controllers
 
 
 
-        /// <summary>
-        /// Create study material
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public ActionResult CreateOrEditStudyMaterial(string Id = "")
+        
+        public ActionResult AddStudyMaterial(Guid? StudyMaterialId)//CreateOrEditStudyMaterial
         {
             SchoolModel.StudyMaterialModel objStudyMaterialModel = new SchoolModel.StudyMaterialModel();
-            if (string.IsNullOrEmpty(Id))
+            Guid schoolId = new Guid(Session["id"].ToString());
+            if (StudyMaterialId != null && StudyMaterialId != Guid.Empty)
             {
-
+                var StudyMaterialDetail = DbContext.tbl_DC_School_StudyMaterial.Where(x => x.StudyMaterialId == StudyMaterialId).FirstOrDefault();
+                if (StudyMaterialDetail != null)
+                {
+                    //objStudyMaterialModel.SchoolId = schoolId;
+                    objStudyMaterialModel.Id = (Guid)StudyMaterialDetail.StudyMaterialId;                    
+                    objStudyMaterialModel.Class_Id = (int)StudyMaterialDetail.Class_Id;
+                    objStudyMaterialModel.SubjectId = (Guid)StudyMaterialDetail.SubjectId;
+                    objStudyMaterialModel.Topic = StudyMaterialDetail.Topic;
+                    objStudyMaterialModel.FilePath = StudyMaterialDetail.FilePath;
+                    objStudyMaterialModel.MaterialText = StudyMaterialDetail.StudyMaterialTxt;
+                    objStudyMaterialModel.MaterialType = string.IsNullOrEmpty(StudyMaterialDetail.StudyMaterialTxt) ? "file" : "text";
+                    objStudyMaterialModel.IsActive = true;
+                }
             }
-            ViewBag.Class_Id = new SelectList(DbContext.tbl_DC_School_Class.Where(x => x.IsActive == true), "ClassId", "ClassName");
-            ViewBag.Subject_Id = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true), "SubjectId", "SubjectName");
+            ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+            ViewBag.Subject_Id = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
 
             return View(objStudyMaterialModel);
         }
 
 
         [HttpPost]
-        public ActionResult CreateOrEditStudyMaterial(SchoolModel.StudyMaterialModel objStudyMaterialModel)
+        public ActionResult AddStudyMaterial(SchoolModel.StudyMaterialModel objStudyMaterialModel)
         {
 
             try
             {
-                HttpFileCollectionBase files = Request.Files;
+                Guid schoolId = new Guid(Session["id"].ToString());
                 objStudyMaterialModel.IsActive = true;
-                if (objStudyMaterialModel.Id == Guid.Empty || objStudyMaterialModel.Id == null)
+                //Edit Case
+                if (objStudyMaterialModel.Id != Guid.Empty && objStudyMaterialModel.Id != null)
                 {
-                    objStudyMaterialModel.Id = Guid.NewGuid();
-                }
-                string fname = null;
-
-                for (int i = 0; i < files.Count; i++)
-                {
-                    HttpPostedFileBase file = files[i];
-
-                    if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                    var StudyMaterialDetail = DbContext.tbl_DC_School_StudyMaterial.Where(x => x.StudyMaterialId == objStudyMaterialModel.Id).FirstOrDefault();
+                    if (StudyMaterialDetail != null)
                     {
-                        string[] testfiles = file.FileName.Split(new char[] { '\\' });
-                        fname = testfiles[testfiles.Length - 1];
+                        StudyMaterialDetail.Class_Id = objStudyMaterialModel.Class_Id;
+                        StudyMaterialDetail.SubjectId = objStudyMaterialModel.SubjectId;
+                        StudyMaterialDetail.Topic = objStudyMaterialModel.Topic;
+                        if (!string.IsNullOrEmpty(objStudyMaterialModel.MaterialType) && objStudyMaterialModel.MaterialType == "text")
+                        {
+                            StudyMaterialDetail.StudyMaterialTxt = objStudyMaterialModel.MaterialText;
+                        }
+                        else
+                        {
+                            #region UploadFile
+                            FileHelper fileHelper = new FileHelper();
+                            string browserType = Request.Browser.Browser.ToUpper();
+                            UploadFileDetailModel uploadFileDetailModel = fileHelper.UploadDoc(Request.Files, "School", schoolId.ToString(), "StudyMaterial", browserType);
+                            objStudyMaterialModel.FileName = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
+                            objStudyMaterialModel.FilePath = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
+
+                            StudyMaterialDetail.FilePath = objStudyMaterialModel.Image;
+                            string p = objStudyMaterialModel.Image;
+                            string e = Path.GetExtension(p);
+                            StudyMaterialDetail.FileType = e;
+                            #endregion
+                        }
+                        DbContext.SaveChanges();
+                        TempData["Message"] = "Assign Teacher Updated Successfully.";
+                    }
+
+
+                }
+                else
+                {
+                    //Add Case
+                    //Check if Topic already exist for same class.
+                    if (DbContext.tbl_DC_School_StudyMaterial.Any(x => x.SchoolId == schoolId && x.Class_Id == objStudyMaterialModel.Class_Id && x.SubjectId == objStudyMaterialModel.SubjectId && x.Topic == objStudyMaterialModel.Topic))
+                    {
+                        TempData["Message"] = "Teacher Aready assign to same class and section.";
+                        return View(objStudyMaterialModel);
+                    }
+
+                    tbl_DC_School_StudyMaterial objstudy = new tbl_DC_School_StudyMaterial();
+                    objstudy.StudyMaterialId = Guid.NewGuid();
+                    objstudy.SchoolId = schoolId;
+                    objstudy.Class_Id = objStudyMaterialModel.Class_Id;
+                    objstudy.SubjectId = objStudyMaterialModel.SubjectId;
+                    objstudy.Topic = objStudyMaterialModel.Topic;
+                    objstudy.IsActive = true;
+                    if (!string.IsNullOrEmpty(objStudyMaterialModel.MaterialType) && objStudyMaterialModel.MaterialType == "text")
+                    {
+                        objstudy.StudyMaterialTxt = objStudyMaterialModel.MaterialText;
                     }
                     else
                     {
-                        fname = file.FileName;
+                        #region UploadFile
+                        FileHelper fileHelper = new FileHelper();
+                        string browserType = Request.Browser.Browser.ToUpper();
+                        UploadFileDetailModel uploadFileDetailModel = fileHelper.UploadDoc(Request.Files, "School", schoolId.ToString(), "StudyMaterial", browserType);
+                        objStudyMaterialModel.FileName = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
+                        objStudyMaterialModel.FilePath = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
+
+                        objstudy.FilePath = objStudyMaterialModel.Image;
+                        string p = objStudyMaterialModel.Image;
+                        string e = Path.GetExtension(p);
+                        objstudy.FileType = e;
+                        #endregion
                     }
+                    objstudy.CreatedDate = DateTime.Now;
+                    DbContext.tbl_DC_School_StudyMaterial.Add(objstudy);
+                    DbContext.SaveChanges();
 
-
-
-
-                    string path = System.Web.HttpContext.Current.Server.MapPath("~/Upload/") + "School\\StudyMaterial";
-                    string subPath = "~/Upload/School/StudyMaterial/";
-                    bool exists = System.IO.Directory.Exists(path);
-
-                    if (!exists)
-                        System.IO.Directory.CreateDirectory(path);
-                    // objimage.Add(Path.Combine("/Upload/" + "Product/" + productId + "/" + fname));
-
-                    file.SaveAs(Path.Combine(path, fname));
-                    objStudyMaterialModel.Image = subPath + fname;
-
-                    //Stream strm = file.InputStream;
                 }
 
+                #region UploadFileOld
                 //HttpFileCollectionBase files = Request.Files;
-                //HttpPostedFileBase file = files;
+                //string fname = null;
 
-                //string paths = System.Web.HttpContext.Current.Server.MapPath("~/Upload/") + "School\\StudyMaterial\\";
-                //string subPaths = "~/Upload/School/StudyMaterial/";
-                //bool s = System.IO.Directory.Exists(paths);
+                //for (int i = 0; i < files.Count; i++)
+                //{
+                //    HttpPostedFileBase file = files[i];
 
-                //if (!s)
-                //    System.IO.Directory.CreateDirectory(paths);
-                //// objimage.Add(Path.Combine("/Upload/" + "Product/" + productId + "/" + fname));
+                //    if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                //    {
+                //        string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                //        fname = testfiles[testfiles.Length - 1];
+                //    }
+                //    else
+                //    {
+                //        fname = file.FileName;
+                //    }
 
-                //file.SaveAs(Path.Combine(paths, objStudyMaterialModel.File));
-                //objStudyMaterialModel.File = subPaths + objStudyMaterialModel.File;
-                tbl_DC_School_StudyMaterial objstudy = new tbl_DC_School_StudyMaterial();
-                objstudy.SchoolId = new Guid(Session["id"].ToString());
-                objstudy.StudyMaterialId = Guid.NewGuid();
-                objstudy.IsActive = true;
-                objstudy.Topic = objStudyMaterialModel.Topic;
-                objstudy.SubjectId = objStudyMaterialModel.SubjectId;
-                objstudy.FilePath = objStudyMaterialModel.Image;
-                string p = objStudyMaterialModel.Image;
-                string e = Path.GetExtension(p);
-                objstudy.FileType = e;
-                objstudy.ClassId = objStudyMaterialModel.ClassId;
-                objstudy.CreatedDate = DateTime.Now;
-                DbContext.tbl_DC_School_StudyMaterial.Add(objstudy);
-                DbContext.SaveChanges();
-                //objStudyMaterialModel.SchoolId = new Guid(Session["id"].ToString());
 
-                //CreateThumbnail(strm, fname);
-                // objSchoolInformation.ThumbnailPath;
+
+
+                //    string path = System.Web.HttpContext.Current.Server.MapPath("~/Upload/") + "School\\StudyMaterial";
+                //    string subPath = "~/Upload/School/StudyMaterial/";
+                //    bool exists = System.IO.Directory.Exists(path);
+
+                //    if (!exists)
+                //        System.IO.Directory.CreateDirectory(path);
+                //    // objimage.Add(Path.Combine("/Upload/" + "Product/" + productId + "/" + fname));
+
+                //    file.SaveAs(Path.Combine(path, fname));
+                //    objStudyMaterialModel.Image = subPath + fname;
+
+                //    //Stream strm = file.InputStream;
+                //}
+                #endregion
+
+
             }
             catch (Exception ex)
             {
 
             }
 
-            return new JsonResult()
-            {
-                Data = true,
-                JsonRequestBehavior = JsonRequestBehavior.AllowGet
-            };
-
+            return RedirectToAction("GetStudyMaterialList", "School");
         }
 
 
@@ -1023,7 +1072,7 @@ namespace DigiChamps.Controllers
                     assignTeacher = new DigiChamps.Models.SchoolModel.AssignTeacher();
                     assignTeacher.AssignmentId = item.Id;
                     assignTeacher.TeacherName = item.tbl_DC_SchoolUser.UserFirstname + " " + item.tbl_DC_SchoolUser.UserLastname;
-                    assignTeacher.ClassName =item.Class_Id!=null &&  DbContext.tbl_DC_Class.Where(x => x.Class_Id == item.Class_Id).Any()? DbContext.tbl_DC_Class.Where(x => x.Class_Id == item.Class_Id).FirstOrDefault().Class_Name:string.Empty;
+                    assignTeacher.ClassName = item.Class_Id != null && DbContext.tbl_DC_Class.Where(x => x.Class_Id == item.Class_Id).Any() ? DbContext.tbl_DC_Class.Where(x => x.Class_Id == item.Class_Id).FirstOrDefault().Class_Name : string.Empty;
                     assignTeacher.SectionName = item.tbl_DC_Class_Section.SectionName;
                     assignTeacher.SubjectName = item.tbl_DC_School_Subject.SubjectName;
                     objAssignTeacherList.Add(assignTeacher);
@@ -1050,7 +1099,7 @@ namespace DigiChamps.Controllers
                     assignTeacher.TeacherId = (Guid)assignTeacherDetails.TeacherId;
                 }
             }
-            ViewBag.TeacherList = new SelectList(DbContext.tbl_DC_SchoolUser.Where(x => x.IsActive == true && x.SchoolId == schoolId && x.UserRole=="Teacher"), "UserId", "UserFirstname");
+            ViewBag.TeacherList = new SelectList(DbContext.tbl_DC_SchoolUser.Where(x => x.IsActive == true && x.SchoolId == schoolId && x.UserRole == "Teacher"), "UserId", "UserFirstname");
             ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
             ViewBag.SectionList = new SelectList(DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true), "SectionId", "SectionName");
             ViewBag.SubjectList = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
@@ -1060,8 +1109,8 @@ namespace DigiChamps.Controllers
         [HttpPost]
         public ActionResult GetsectionList(string ClassId)
         {
-            int _classId=Convert.ToInt16(ClassId);
-           //Here I'll bind the list of cities corresponding to selected state's state id  
+            int _classId = Convert.ToInt16(ClassId);
+            //Here I'll bind the list of cities corresponding to selected state's state id  
             List<tbl_DC_Class_Section> lstsection = new List<tbl_DC_Class_Section>();
             int stateiD = Convert.ToInt32(ClassId);
 
@@ -1074,8 +1123,8 @@ namespace DigiChamps.Controllers
           }
           , JsonRequestBehavior.AllowGet
           );
-            
-        }  
+
+        }
 
         [HttpPost]
         public ActionResult AssignedTeacher(DigiChamps.Models.SchoolModel.AssignTeacher assignTeacherModel)
@@ -1110,7 +1159,7 @@ namespace DigiChamps.Controllers
                     tbl_DC_School_AssingTeacher assignTeacher = new tbl_DC_School_AssingTeacher();
                     assignTeacher.Id = Guid.NewGuid();
                     //assignTeacher.ClassId = assignTeacherModel.ClassId;
-                    
+
                     assignTeacher.SchoolId = schoolId;
                     assignTeacher.Class_Id = assignTeacherModel.Class_Id;
                     assignTeacher.SubjectId = assignTeacherModel.SubjectId;

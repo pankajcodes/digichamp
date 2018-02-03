@@ -4921,7 +4921,7 @@
     <Content Include="Views\School\CreateOrEditHomeWork.cshtml" />
     <Content Include="Views\School\CreateOrEditCreateExam.cshtml" />
     <Content Include="Views\School\CreateOrEditMessageCreation.cshtml" />
-    <Content Include="Views\School\CreateOrEditStudyMaterial.cshtml" />
+    <Content Include="Views\School\AddStudyMaterial.cshtml" />
     <Content Include="Views\School\CreateOrEditToppersWay.cshtml" />
     <Content Include="Views\School\AddSchool.cshtml" />
     <Content Include="Views\School\CreateOrEditClass.cshtml" />
@@ -4936,7 +4936,7 @@
     <Content Include="Views\School\GetSubjectList.cshtml" />
     <Content Include="Views\School\GetExamType.cshtml" />
     <Content Include="Views\School\GetExam.cshtml" />
-    <Content Include="Views\School\GetStudyMterial.cshtml" />
+    <Content Include="Views\School\GetStudyMaterialList.cshtml" />
     <Content Include="Views\School\GetToppersWay.cshtml" />
     <Content Include="Views\School\GetMessageList.cshtml" />
     <Content Include="Views\School\GetClassList.cshtml" />

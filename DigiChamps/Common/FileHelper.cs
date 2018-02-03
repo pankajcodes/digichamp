@@ -29,7 +29,7 @@ namespace DigiChamps.Common
                 {
                     fname = file.FileName;
                 }
-
+                
                 if (!string.IsNullOrEmpty(fname) && file.ContentLength>0 &&( file.ContentType.ToLower() != "image/jpg" && file.ContentType.ToLower() != "image/jpeg" && file.ContentType.ToLower() != "image/pjpeg" && file.ContentType.ToLower() != "image/gif" && file.ContentType.ToLower() != "image/x-png" && file.ContentType.ToLower() != "image/png"))
                 {
                     uploadFileDetailModel.VideoName=DateTime.Now.ToString("yyyyMMddHHmmssfff") + "_"+fname;
