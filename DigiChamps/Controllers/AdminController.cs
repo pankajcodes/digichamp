@@ -68,7 +68,8 @@ namespace DigiChamps.Controllers
         {
             try
             {
-                string pass_word = "test123";//DigiChampsModel.Encrypt_Password.HashPassword(password);
+                //string pass_word = "test123";
+                string pass_word = DigiChampsModel.Encrypt_Password.HashPassword(password);
                 var obj = DbContext.tbl_DC_USER_SECURITY.Where(x => x.USER_NAME == User_name && x.PASSWORD == pass_word && x.IS_ACCEPTED == true).FirstOrDefault();
 
                 //var obj1 = DbContext.tbl_DC_USER_SECURITY.Where(x => x.USER_NAME == User_name && x.PASSWORD == password).FirstOrDefault();

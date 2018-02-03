@@ -24,6 +24,7 @@ namespace DigiChamps.Models
         public string TimeSlot { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<bool> IsActive { get; set; }
+        public Nullable<int> Class_Id { get; set; }
     
         public virtual tbl_DC_School_Class tbl_DC_School_Class { get; set; }
         public virtual tbl_DC_School_ExamType tbl_DC_School_ExamType { get; set; }

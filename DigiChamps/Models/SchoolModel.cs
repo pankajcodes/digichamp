@@ -61,10 +61,12 @@ namespace DigiChamps.Models
             public Guid SubjectId { get; set; }
             public Guid SectionId { get; set; }
             public DateTime StartDate { get; set; }
+            public int Class_Id { get; set; }
             public string TimeSlot { get; set; }
             public float TotalMarks { get; set; }
             public bool IsActive { get; set; }
-
+            [Required(ErrorMessage="Please Select Exam Date")]
+            public DateTime DateofExam { get; set; }
             public string SubjectName { get; set; }
 
 
@@ -190,6 +192,7 @@ namespace DigiChamps.Models
             public Guid AssignmentId { get; set; }
             public Guid SchoolId { get; set; }
             public Guid ClassId { get; set; }
+            public int Class_Id { get; set; }
             public Guid SectionId { get; set; }
             public Guid SubjectId { get; set; }
             public Guid TeacherId { get; set; }
@@ -199,8 +202,10 @@ namespace DigiChamps.Models
             public string ClassName { get; set; }
             public string SubjectName { get; set; }
             public string TeacherName { get; set; }
+            public string SectionName { get; set; }
             public string EmailAddress { get; set; }
             public string ImageUrl { get; set; }
+            public bool IsActive { get; set; }
             //public Guid SchoolId { get; set; }
 
         }

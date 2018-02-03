@@ -948,6 +948,7 @@
           <Property Name="Parent_Mobile" Type="varchar" MaxLength="20" />
           <Property Name="P_Relation" Type="varchar" MaxLength="30" />
           <Property Name="Device_id" Type="varchar(max)" />
+          <Property Name="SchoolId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="tbl_DC_Registration_Dtl">
           <Key>
@@ -1443,6 +1444,8 @@
           <Property Name="SectionName" Type="nvarchar(max)" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="IsActive" Type="bit" />
+          <Property Name="Class_Id" Type="int" />
+          <Property Name="School_Id" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="tbl_DC_School_AssingTeacher">
           <Key>
@@ -1456,6 +1459,7 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="IsActive" Type="bit" />
           <Property Name="TeacherId" Type="uniqueidentifier" />
+          <Property Name="Class_Id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="tbl_DC_School_Class">
           <Key>
@@ -1472,6 +1476,7 @@
             <PropertyRef Name="ExamScheduleId" />
           </Key>
           <Property Name="ExamScheduleId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Class_Id" Type="int" />
           <Property Name="SchoolId" Type="uniqueidentifier" />
           <Property Name="ClassId" Type="uniqueidentifier" />
           <Property Name="SubjectId" Type="uniqueidentifier" />
@@ -1721,6 +1726,7 @@ warning 6002: The table/view 'test_digichamps.dbo.View_DC_Order_Details' does no
           <Property Name="Total" Type="money" />
           <Property Name="Amt_In_Words" Type="varchar(max)" />
           <Property Name="Payment_Mode" Type="varchar" MaxLength="20" />
+          <Property Name="Inserted_Date" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'test_digichamps.dbo.View_DC_Package' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2290,6 +2296,18 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
               <PropertyRef Name="SchoolId" />
             </Principal>
             <Dependent Role="tbl_DC_ToppersWay">
+              <PropertyRef Name="SchoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SchoolId">
+          <End Role="tbl_DC_School_Info" Type="Self.tbl_DC_School_Info" Multiplicity="0..1" />
+          <End Role="tbl_DC_Registration" Type="Self.tbl_DC_Registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_School_Info">
+              <PropertyRef Name="SchoolId" />
+            </Principal>
+            <Dependent Role="tbl_DC_Registration">
               <PropertyRef Name="SchoolId" />
             </Dependent>
           </ReferentialConstraint>
@@ -3603,7 +3621,8 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
     [View_DC_Order_Details].[Disc_Amt] AS [Disc_Amt], 
     [View_DC_Order_Details].[Total] AS [Total], 
     [View_DC_Order_Details].[Amt_In_Words] AS [Amt_In_Words], 
-    [View_DC_Order_Details].[Payment_Mode] AS [Payment_Mode]
+    [View_DC_Order_Details].[Payment_Mode] AS [Payment_Mode], 
+    [View_DC_Order_Details].[Inserted_Date] AS [Inserted_Date]
     FROM [dbo].[View_DC_Order_Details] AS [View_DC_Order_Details]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="View_DC_Package" EntityType="Self.View_DC_Package" store:Type="Views" store:Schema="dbo">
@@ -3930,6 +3949,10 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <AssociationSet Name="FK__tbl_DC_To__Schoo__514ADE19" Association="Self.FK__tbl_DC_To__Schoo__514ADE19">
             <End Role="tbl_DC_School_Info" EntitySet="tbl_DC_School_Info" />
             <End Role="tbl_DC_ToppersWay" EntitySet="tbl_DC_ToppersWay" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SchoolId" Association="Self.FK_SchoolId">
+            <End Role="tbl_DC_School_Info" EntitySet="tbl_DC_School_Info" />
+            <End Role="tbl_DC_Registration" EntitySet="tbl_DC_Registration" />
           </AssociationSet>
           <AssociationSet Name="FK_tbl_DC_Batch_tbl_DC_Centre" Association="Self.FK_tbl_DC_Batch_tbl_DC_Centre">
             <End Role="tbl_DC_Centre" EntitySet="tbl_DC_Centre" />
@@ -4962,6 +4985,10 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <AssociationSet Name="FK__tbl_DC_Sc__Subje__2BE44F40" Association="DigiChampsModel.FK__tbl_DC_Sc__Subje__2BE44F40">
             <End Role="tbl_DC_School_Subject" EntitySet="tbl_DC_School_Subject" />
             <End Role="tbl_DC_School_StudyMaterial" EntitySet="tbl_DC_School_StudyMaterial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SchoolId" Association="DigiChampsModel.FK_SchoolId">
+            <End Role="tbl_DC_School_Info" EntitySet="tbl_DC_School_Info" />
+            <End Role="tbl_DC_Registration" EntitySet="tbl_DC_Registration" />
           </AssociationSet>
         </EntityContainer>
         <ComplexType Name="Order_report_Result">
@@ -6505,6 +6532,8 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <NavigationProperty Name="tbl_DC_Registration_Dtl" Relationship="DigiChampsModel.FK_tbl_DC_Registration_Dtl_tbl_DC_Registration" FromRole="tbl_DC_Registration" ToRole="tbl_DC_Registration_Dtl" />
           <NavigationProperty Name="tbl_DC_Student_Batch_Assign" Relationship="DigiChampsModel.FK_tbl_DC_Student_Batch_Assign_tbl_DC_Registration" FromRole="tbl_DC_Registration" ToRole="tbl_DC_Student_Batch_Assign" />
           <NavigationProperty Name="tbl_DC_Ticket_Assign" Relationship="DigiChampsModel.FK_tbl_DC_Ticket_Assign_tbl_DC_Registration" FromRole="tbl_DC_Registration" ToRole="tbl_DC_Ticket_Assign" />
+          <Property Name="SchoolId" Type="Guid" />
+          <NavigationProperty Name="tbl_DC_School_Info" Relationship="DigiChampsModel.FK_SchoolId" FromRole="tbl_DC_Registration" ToRole="tbl_DC_School_Info" />
         </EntityType>
         <EntityType Name="tbl_DC_Registration_Dtl">
           <Key>
@@ -7128,6 +7157,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <Property Name="Total" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Amt_In_Words" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Payment_Mode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Inserted_Date" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="View_DC_Package">
           <Key>
@@ -8262,6 +8292,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <NavigationProperty Name="tbl_DC_School_Homework" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__0F481092" FromRole="tbl_DC_School_Info" ToRole="tbl_DC_School_Homework" />
           <NavigationProperty Name="tbl_DC_School_StudyMaterial" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__29FC06CE" FromRole="tbl_DC_School_Info" ToRole="tbl_DC_School_StudyMaterial" />
           <NavigationProperty Name="tbl_DC_School_MessageCreation" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__3B2692D0" FromRole="tbl_DC_School_Info" ToRole="tbl_DC_School_MessageCreation" />
+          <NavigationProperty Name="tbl_DC_Registration" Relationship="DigiChampsModel.FK_SchoolId" FromRole="tbl_DC_School_Info" ToRole="tbl_DC_Registration" />
         </EntityType>
         <EntityType Name="tbl_DC_SchoolUser">
           <Key>
@@ -8307,6 +8338,8 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <NavigationProperty Name="tbl_DC_School_Class" Relationship="DigiChampsModel.FK__tbl_DC_Cl__Class__4A9DE08A" FromRole="tbl_DC_Class_Section" ToRole="tbl_DC_School_Class" />
           <NavigationProperty Name="tbl_DC_School_AssingTeacher" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Secti__02E239AD" FromRole="tbl_DC_Class_Section" ToRole="tbl_DC_School_AssingTeacher" />
           <NavigationProperty Name="tbl_DC_School_Homework" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Secti__11305904" FromRole="tbl_DC_Class_Section" ToRole="tbl_DC_School_Homework" />
+          <Property Name="Class_Id" Type="Int32" />
+          <Property Name="School_Id" Type="Guid" />
         </EntityType>
         <EntityType Name="tbl_DC_School_Class">
           <Key>
@@ -8432,6 +8465,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <NavigationProperty Name="tbl_DC_School_Subject" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Subje__03D65DE6" FromRole="tbl_DC_School_AssingTeacher" ToRole="tbl_DC_School_Subject" />
           <Property Name="TeacherId" Type="Guid" />
           <NavigationProperty Name="tbl_DC_SchoolUser" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Teach__3D0EDB42" FromRole="tbl_DC_School_AssingTeacher" ToRole="tbl_DC_SchoolUser" />
+          <Property Name="Class_Id" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="tbl_DC_School_ExamSchedule">
           <Key>
@@ -8451,6 +8485,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <NavigationProperty Name="tbl_DC_School_ExamType" Relationship="DigiChampsModel.FK__tbl_DC_Sc__ExamT__0C6BA3E7" FromRole="tbl_DC_School_ExamSchedule" ToRole="tbl_DC_School_ExamType" />
           <NavigationProperty Name="tbl_DC_School_Info" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__098F373C" FromRole="tbl_DC_School_ExamSchedule" ToRole="tbl_DC_School_Info" />
           <NavigationProperty Name="tbl_DC_School_Subject" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Subje__0B777FAE" FromRole="tbl_DC_School_ExamSchedule" ToRole="tbl_DC_School_Subject" />
+          <Property Name="Class_Id" Type="Int32" />
         </EntityType>
         <EntityType Name="tbl_DC_School_ExamType">
           <Key>
@@ -8740,6 +8775,18 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
             </Principal>
             <Dependent Role="tbl_DC_School_StudyMaterial">
               <PropertyRef Name="SubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SchoolId">
+          <End Type="DigiChampsModel.tbl_DC_School_Info" Role="tbl_DC_School_Info" Multiplicity="0..1" />
+          <End Type="DigiChampsModel.tbl_DC_Registration" Role="tbl_DC_Registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_School_Info">
+              <PropertyRef Name="SchoolId" />
+            </Principal>
+            <Dependent Role="tbl_DC_Registration">
+              <PropertyRef Name="SchoolId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10415,6 +10462,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <EntitySetMapping Name="tbl_DC_Registration">
             <EntityTypeMapping TypeName="DigiChampsModel.tbl_DC_Registration">
               <MappingFragment StoreEntitySet="tbl_DC_Registration">
+                <ScalarProperty Name="SchoolId" ColumnName="SchoolId" />
                 <ScalarProperty Name="Device_id" ColumnName="Device_id" />
                 <ScalarProperty Name="P_Relation" ColumnName="P_Relation" />
                 <ScalarProperty Name="Parent_Mobile" ColumnName="Parent_Mobile" />
@@ -11044,6 +11092,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <EntitySetMapping Name="View_DC_Order_Details">
             <EntityTypeMapping TypeName="DigiChampsModel.View_DC_Order_Details">
               <MappingFragment StoreEntitySet="View_DC_Order_Details">
+                <ScalarProperty Name="Inserted_Date" ColumnName="Inserted_Date" />
                 <ScalarProperty Name="Payment_Mode" ColumnName="Payment_Mode" />
                 <ScalarProperty Name="Amt_In_Words" ColumnName="Amt_In_Words" />
                 <ScalarProperty Name="Total" ColumnName="Total" />
@@ -11352,6 +11401,8 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <EntitySetMapping Name="tbl_DC_Class_Section">
             <EntityTypeMapping TypeName="DigiChampsModel.tbl_DC_Class_Section">
               <MappingFragment StoreEntitySet="tbl_DC_Class_Section">
+                <ScalarProperty Name="School_Id" ColumnName="School_Id" />
+                <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="SectionName" ColumnName="SectionName" />
@@ -11398,6 +11449,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <EntitySetMapping Name="tbl_DC_School_AssingTeacher">
             <EntityTypeMapping TypeName="DigiChampsModel.tbl_DC_School_AssingTeacher">
               <MappingFragment StoreEntitySet="tbl_DC_School_AssingTeacher">
+                <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
                 <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -11412,6 +11464,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <EntitySetMapping Name="tbl_DC_School_ExamSchedule">
             <EntityTypeMapping TypeName="DigiChampsModel.tbl_DC_School_ExamSchedule">
               <MappingFragment StoreEntitySet="tbl_DC_School_ExamSchedule">
+                <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="TimeSlot" ColumnName="TimeSlot" />

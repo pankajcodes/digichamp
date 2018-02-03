@@ -22,6 +22,7 @@ namespace DigiChamps.Models
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<System.Guid> TeacherId { get; set; }
+        public int Class_Id { get; set; }
     
         public virtual tbl_DC_Class_Section tbl_DC_Class_Section { get; set; }
         public virtual tbl_DC_School_Class tbl_DC_School_Class { get; set; }

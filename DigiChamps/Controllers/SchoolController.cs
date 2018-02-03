@@ -8,12 +8,14 @@ using System.IO;
 using DigiChamps.DigiChampsEnum;
 using System.Net.Mail;
 using DigiChamps.Common;
+using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace DigiChamps.Controllers
 {
     public class SchoolController : Controller
     {
-        
+
         DigiChampsEntities DbContext = new DigiChampsEntities();
 
         public ActionResult Index()
@@ -57,10 +59,16 @@ namespace DigiChamps.Controllers
         [HttpPost]
         public ActionResult AddSchool(SchoolModel.SchoolInformation objSchoolInformation)
         {
-
             //Add School 
             if (objSchoolInformation.SchoolId == Guid.Empty || objSchoolInformation.SchoolId == null)
             {
+                //Check duplicate value for school
+                if (DbContext.tbl_DC_School_Info.Any(x => x.SchoolName == objSchoolInformation.SchoolName))
+                {
+                    TempData["Message"] = "School Name Already Exists.";
+                    return View();
+                }
+
                 objSchoolInformation.SchoolId = Guid.NewGuid();
                 objSchoolInformation.IsActive = true;
                 #region UploadFile
@@ -72,11 +80,14 @@ namespace DigiChamps.Controllers
                 //objSchoolInformation.Logo = uploadFileDetailModel.ImageName;
                 #endregion
 
+
                 DbContext.Sp_DC_SchoolInfo(objSchoolInformation.SchoolId, objSchoolInformation.SchoolName, objSchoolInformation.Information, objSchoolInformation.Logo, objSchoolInformation.DocumentaryVideo, objSchoolInformation.ThumbnailPath, DateTime.Now, DateTime.Now, objSchoolInformation.IsActive);
                 TempData["Message"] = "School Added Successfully.";
             }
             else
             {
+                
+
                 DbContext.Sp_DC_SchoolInfo(objSchoolInformation.SchoolId, objSchoolInformation.SchoolName, objSchoolInformation.Information, objSchoolInformation.Logo, objSchoolInformation.DocumentaryVideo, objSchoolInformation.ThumbnailPath, DateTime.Now, DateTime.Now, objSchoolInformation.IsActive);
                 TempData["Message"] = "School Updated Successfully.";
             }
@@ -448,7 +459,7 @@ namespace DigiChamps.Controllers
                 {
                     //Check subject name already exist
                     if (DbContext.tbl_DC_School_Subject.Where(x => x.SubjectName.ToLower() == objCreateSubject.SubjectName.ToLower() && x.SchoolId == schoolId).Any())
-                    {                        
+                    {
                         TempData["Message"] = "Subject Aready Exist.";
                         return View(objCreateSubject);
                     }
@@ -467,9 +478,9 @@ namespace DigiChamps.Controllers
                     var id = DbContext.SaveChanges();
                     if (id != null)
                     {
-                        status = true;                        
+                        status = true;
                     }
-                    TempData["Message"] = "Subject Added Successfully.";                 
+                    TempData["Message"] = "Subject Added Successfully.";
                 }
             }
             catch (Exception ex)
@@ -530,21 +541,21 @@ namespace DigiChamps.Controllers
                     }
                 }
                 else
-                {                    
+                {
                     tbl_DC_School_ExamType objExmam = new tbl_DC_School_ExamType();
 
                     //check exam type already exist
                     if (DbContext.tbl_DC_School_ExamType.Any(x => x.ExamTypeName.ToLower() == objExamType.ExamTypenname.ToLower() && x.SchoolId == schoolId))
                     {
                         TempData["Message"] = "Exam Type Aready Exist.";
-                        return View(objExamType);                    
+                        return View(objExamType);
                     }
                     //Else add record.
-                    objExmam.ExamTypeName = objExamType.ExamTypenname;
-                    objExmam.IsActive = true;
                     objExmam.ExamTypeId = Guid.NewGuid();
                     objExmam.SchoolId = new Guid(Session["id"].ToString());
-
+                    objExmam.ExamTypeName = objExamType.ExamTypenname;
+                    objExmam.IsActive = true;
+                    objExmam.CreatedDate = DateTime.Now;
                     DbContext.tbl_DC_School_ExamType.Add(objExmam);
                     DbContext.SaveChanges();
                     TempData["Message"] = "Exam Type Added Successfully.";
@@ -581,13 +592,13 @@ namespace DigiChamps.Controllers
             return RedirectToAction("GetExamType", "School");
         }
 
-        
+
 
 
         #endregion
 
         #region Exam
-        
+
         public ActionResult GetExam()
         {
             SchoolAPIController obj = new SchoolAPIController();
@@ -599,27 +610,31 @@ namespace DigiChamps.Controllers
 
             return View(objOutput);
         }
-                
+
         public ActionResult CreateOrEditCreateExam(Guid? Id)
         {
             SchoolModel.CreateExamModel objCreateExamModel = new SchoolModel.CreateExamModel();
+            objCreateExamModel.StartDate = DateTime.Today;
+            Guid schoolId = new Guid(Session["id"].ToString());
+            DbContext = new DigiChampsEntities();
             if (Id != null && Id != Guid.Empty)
             {
-                var exam = DbContext.tbl_DC_School_ExamSchedule.Where(x => x.ExamScheduleId == Id).FirstOrDefault();
+                var exam = DbContext.tbl_DC_School_ExamSchedule.Where(x => x.ExamScheduleId == Id && x.SchoolId == schoolId && x.IsActive == true).FirstOrDefault();
                 {
                     objCreateExamModel.Id = exam.ExamScheduleId;
-                    objCreateExamModel.ClassId = (Guid)exam.ClassId;
-                    if (exam.DateOfExam != null) ;
-                    objCreateExamModel.StartDate = (DateTime)exam.DateOfExam;
+                    //objCreateExamModel.ClassId = (Guid)exam.ClassId;
+                    objCreateExamModel.Class_Id = (int)exam.Class_Id;
+                    objCreateExamModel.DateofExam = (DateTime)exam.DateOfExam;
                     objCreateExamModel.SubjectId = (Guid)exam.SubjectId;
                     objCreateExamModel.ExamType = (Guid)exam.ExamTypeId;
 
 
                 }
             }
-            ViewBag.Class_Id = new SelectList(DbContext.tbl_DC_School_Class.Where(x => x.IsActive == true), "ClassId", "ClassName");
-            ViewBag.ExamType_Id = new SelectList(DbContext.tbl_DC_School_ExamType.Where(x => x.IsActive == true), "ExamTypeId", "ExamTypeName");
-            ViewBag.Subject_Id = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true), "SubjectId", "SubjectName");
+            //ViewBag.Class_Id = new SelectList(DbContext.tbl_DC_School_Class.Where(x => x.SchoolId==schoolId && x.IsActive == true), "ClassId", "ClassName");
+            ViewBag.Class_Id = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+            ViewBag.ExamType_Id = new SelectList(DbContext.tbl_DC_School_ExamType.Where(x => x.IsActive == true && x.SchoolId == schoolId), "ExamTypeId", "ExamTypeName");
+            ViewBag.Subject_Id = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
 
             return View(objCreateExamModel);
         }
@@ -634,7 +649,7 @@ namespace DigiChamps.Controllers
                     var exam = DbContext.tbl_DC_School_ExamSchedule.Where(x => x.ExamScheduleId == objCreateExamModel.Id).FirstOrDefault();
                     {
                         exam.ExamScheduleId = objCreateExamModel.Id;
-                        exam.ClassId = objCreateExamModel.ClassId;
+                        // exam.Class_Id = objCreateExamModel.Class_Id;
                         exam.DateOfExam = objCreateExamModel.StartDate;
                         exam.SubjectId = objCreateExamModel.SubjectId;
                         exam.ExamTypeId = objCreateExamModel.ExamType;
@@ -646,24 +661,27 @@ namespace DigiChamps.Controllers
                 else
                 {
                     tbl_DC_School_ExamSchedule objexam = new tbl_DC_School_ExamSchedule();
-                    //school objam= new objam();
-
                     //check exam already exist
-                    //if (DbContext.tbl_DC_School_ExamSchedule.Any(x => x.ToLower() == objExamType.ExamTypenname.ToLower() && x.SchoolId == schoolId))
-                    //{
-                    //    TempData["Message"] = "Exam Type Aready Exist.";
-                    //    return View(objExamType);
-                    //}
+                    if (DbContext.tbl_DC_School_ExamSchedule.Any(x => x.Class_Id == objCreateExamModel.Class_Id && x.SchoolId == schoolId && x.SubjectId == objCreateExamModel.SubjectId && x.ExamTypeId == objCreateExamModel.ExamType && x.DateOfExam == objCreateExamModel.DateofExam))
+                    {
+                        TempData["Message"] = "Exam Type Aready Exist.";
+                        return View(objexam);
+                    }
 
-                    objexam.ClassId = objCreateExamModel.ClassId;
+                    //objexam.ClassId = objCreateExamModel.ClassId;                    
                     //  objexam.se = objCreateExamModel.SectionId;
-                    objexam.ExamScheduleId = objCreateExamModel.Id;
-                    objexam.IsActive = true;
-                    objexam.DateOfExam = DateTime.Now;
-                    objexam.TimeSlot = "";
-                    objexam.TotalMarks = objCreateExamModel.TotalMarks.ToString(); ;
+                    objexam.ExamScheduleId = Guid.NewGuid();
+                    objexam.Class_Id = objCreateExamModel.Class_Id;
+                    objexam.SchoolId = schoolId;
                     objexam.SubjectId = objCreateExamModel.SubjectId;
-                    objexam.SchoolId = new Guid(Session["id"].ToString());
+                    objexam.ExamTypeId = objCreateExamModel.ExamType;
+                    objexam.DateOfExam = DateTime.Now;
+                    objexam.IsActive = true;
+                    objexam.TimeSlot = objCreateExamModel.TimeSlot;
+                    objexam.CreatedDate = DateTime.Now;
+                    objexam.TotalMarks = objCreateExamModel.TotalMarks.ToString(); ;
+
+
                     objexam.ExamTypeId = objexam.ExamTypeId;
                     objexam.CreatedDate = DateTime.Now;
                     DbContext.tbl_DC_School_ExamSchedule.Add(objexam);
@@ -991,6 +1009,135 @@ namespace DigiChamps.Controllers
         #endregion
 
 
+        #region AssignTeacher
+        public ActionResult GetAllAssignedTeacherList()
+        {
+            List<DigiChamps.Models.SchoolModel.AssignTeacher> objAssignTeacherList = new List<SchoolModel.AssignTeacher>();
+            DigiChamps.Models.SchoolModel.AssignTeacher assignTeacher = new DigiChamps.Models.SchoolModel.AssignTeacher();
+            Guid schoolId = new Guid(Session["id"].ToString());
+            var assignedTeacherList = DbContext.tbl_DC_School_AssingTeacher.Where(x => x.SchoolId == schoolId).ToList();
+            if (assignedTeacherList.Any())
+            {
+                foreach (var item in assignedTeacherList)
+                {
+                    assignTeacher = new DigiChamps.Models.SchoolModel.AssignTeacher();
+                    assignTeacher.AssignmentId = item.Id;
+                    assignTeacher.TeacherName = item.tbl_DC_SchoolUser.UserFirstname + " " + item.tbl_DC_SchoolUser.UserLastname;
+                    assignTeacher.ClassName =item.Class_Id!=null &&  DbContext.tbl_DC_Class.Where(x => x.Class_Id == item.Class_Id).Any()? DbContext.tbl_DC_Class.Where(x => x.Class_Id == item.Class_Id).FirstOrDefault().Class_Name:string.Empty;
+                    assignTeacher.SectionName = item.tbl_DC_Class_Section.SectionName;
+                    assignTeacher.SubjectName = item.tbl_DC_School_Subject.SubjectName;
+                    objAssignTeacherList.Add(assignTeacher);
+                }
+            }
+
+            return View(objAssignTeacherList);
+        }
+        public ActionResult AssignedTeacher(Guid? AssignTeacherId)
+        {
+            DigiChamps.Models.SchoolModel.AssignTeacher assignTeacher = new DigiChamps.Models.SchoolModel.AssignTeacher();
+            Guid schoolId = new Guid(Session["id"].ToString());
+
+            if (AssignTeacherId != null && AssignTeacherId != Guid.Empty)
+            {
+                var assignTeacherDetails = DbContext.tbl_DC_School_AssingTeacher.Where(x => x.Id == AssignTeacherId).FirstOrDefault();
+                if (assignTeacherDetails != null)
+                {
+                    assignTeacher.AssignmentId = assignTeacherDetails.Id;
+                    assignTeacher.Class_Id = assignTeacherDetails.Class_Id;
+                    assignTeacher.SectionId = (Guid)assignTeacherDetails.SectionId;
+                    assignTeacher.SubjectId = (Guid)assignTeacherDetails.SubjectId;
+                    assignTeacher.AssignmentId = assignTeacherDetails.Id;
+                    assignTeacher.TeacherId = (Guid)assignTeacherDetails.TeacherId;
+                }
+            }
+            ViewBag.TeacherList = new SelectList(DbContext.tbl_DC_SchoolUser.Where(x => x.IsActive == true && x.SchoolId == schoolId && x.UserRole=="Teacher"), "UserId", "UserFirstname");
+            ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+            ViewBag.SectionList = new SelectList(DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true), "SectionId", "SectionName");
+            ViewBag.SubjectList = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
+            return View(assignTeacher);
+        }
+
+        [HttpPost]
+        public ActionResult GetsectionList(string ClassId)
+        {
+            int _classId=Convert.ToInt16(ClassId);
+           //Here I'll bind the list of cities corresponding to selected state's state id  
+            List<tbl_DC_Class_Section> lstsection = new List<tbl_DC_Class_Section>();
+            int stateiD = Convert.ToInt32(ClassId);
+
+            lstsection = (DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true && x.Class_Id == _classId)).ToList<tbl_DC_Class_Section>();
+
+            return this.Json(
+          new
+          {
+              Result = (from obj in lstsection select new { SectionId = obj.SectionId, SectionName = obj.SectionName })
+          }
+          , JsonRequestBehavior.AllowGet
+          );
+            
+        }  
+
+        [HttpPost]
+        public ActionResult AssignedTeacher(DigiChamps.Models.SchoolModel.AssignTeacher assignTeacherModel)
+        {
+            try
+            {
+                Guid schoolId = new Guid(Session["id"].ToString());
+                if (assignTeacherModel.AssignmentId != null && assignTeacherModel.AssignmentId != Guid.Empty)
+                {
+                    var AssignTeacherDetail = DbContext.tbl_DC_School_AssingTeacher.Where(x => x.Id == assignTeacherModel.AssignmentId).FirstOrDefault();
+                    if (AssignTeacherDetail != null)
+                    {
+                        //AssignTeacherDetail.ClassId = assignTeacherModel.ClassId;
+                        AssignTeacherDetail.Class_Id = assignTeacherModel.Class_Id;
+                        AssignTeacherDetail.SectionId = assignTeacherModel.SectionId;
+                        AssignTeacherDetail.SubjectId = assignTeacherModel.SubjectId;
+                        AssignTeacherDetail.TeacherId = assignTeacherModel.TeacherId;
+                        DbContext.SaveChanges();
+                        TempData["Message"] = "Assign Teacher Updated Successfully.";
+                    }
+                }
+                else
+                {
+
+                    //Check duplicate
+                    if (DbContext.tbl_DC_School_AssingTeacher.Any(x => x.SchoolId == schoolId && x.SectionId == assignTeacherModel.SectionId && x.SubjectId == assignTeacherModel.SubjectId))
+                    {
+                        TempData["Message"] = "Teacher Aready assign to same class and section.";
+                        return View(assignTeacherModel);
+                    }
+
+                    tbl_DC_School_AssingTeacher assignTeacher = new tbl_DC_School_AssingTeacher();
+                    assignTeacher.Id = Guid.NewGuid();
+                    //assignTeacher.ClassId = assignTeacherModel.ClassId;
+                    
+                    assignTeacher.SchoolId = schoolId;
+                    assignTeacher.Class_Id = assignTeacherModel.Class_Id;
+                    assignTeacher.SubjectId = assignTeacherModel.SubjectId;
+                    assignTeacher.SectionId = assignTeacherModel.SectionId;
+                    assignTeacher.TeacherId = assignTeacherModel.TeacherId;
+                    assignTeacher.CreatedDate = DateTime.Now;
+                    assignTeacher.IsActive = true;
+
+                    DbContext.tbl_DC_School_AssingTeacher.Add(assignTeacher);
+                    var id = DbContext.SaveChanges();
+                    TempData["Message"] = "Exam Added Successfully.";
+                }
+                return RedirectToAction("GetAllAssignedTeacherList", "School");
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return View();
+        }
+        public ActionResult DeleteAssignTeacher(Guid? AssignTeacherId)
+        {
+            return View();
+        }
+        #endregion
+
         /// <summary>
         /// Create Message Creation
         /// </summary>
@@ -1040,10 +1187,10 @@ namespace DigiChamps.Controllers
             }
             return RedirectToAction("GetMessageList", "School");
         }
-       
-       
 
-       
+
+
+
         public ActionResult CreateOrEditClass(Guid? Id)
         {
             SchoolModel.CreateClass objCreateClass = new SchoolModel.CreateClass();
@@ -1324,10 +1471,10 @@ namespace DigiChamps.Controllers
                 return RedirectToAction("GetSchoolPrincipleList", "School");
         }
 
-        
-        
 
-        
+
+
+
 
         public ActionResult GetClassList()
         {
@@ -1352,9 +1499,9 @@ namespace DigiChamps.Controllers
             return View(objOutput);
         }
 
-        
 
-      
+
+
 
 
         public ActionResult DeleteHomeWork(Guid id)
@@ -1382,7 +1529,7 @@ namespace DigiChamps.Controllers
 
 
 
-        
+
 
         public ActionResult DeleteSubject(Guid id)
         {

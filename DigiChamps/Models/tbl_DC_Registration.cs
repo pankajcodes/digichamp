@@ -51,6 +51,7 @@ namespace DigiChamps.Models
         public string Parent_Mobile { get; set; }
         public string P_Relation { get; set; }
         public string Device_id { get; set; }
+        public Nullable<System.Guid> SchoolId { get; set; }
     
         public virtual ICollection<tbl_DC_Cart> tbl_DC_Cart { get; set; }
         public virtual ICollection<tbl_DC_Feedback_Chapter> tbl_DC_Feedback_Chapter { get; set; }
@@ -60,5 +61,6 @@ namespace DigiChamps.Models
         public virtual ICollection<tbl_DC_Registration_Dtl> tbl_DC_Registration_Dtl { get; set; }
         public virtual ICollection<tbl_DC_Student_Batch_Assign> tbl_DC_Student_Batch_Assign { get; set; }
         public virtual ICollection<tbl_DC_Ticket_Assign> tbl_DC_Ticket_Assign { get; set; }
+        public virtual tbl_DC_School_Info tbl_DC_School_Info { get; set; }
     }
 }

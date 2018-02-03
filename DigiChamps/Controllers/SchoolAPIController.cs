@@ -866,18 +866,18 @@ namespace DigiChamps.Controllers
                 if ((input.SchoolId != Guid.Empty))
                 {
                     var date = DateTime.Now;
-                    var examlist = DbContext.tbl_DC_School_ExamSchedule.Where(x => x.SchoolId == input.SchoolId && x.IsActive == true).ToList();
+                    var examlist = DbContext.tbl_DC_School_ExamSchedule.Where(x => x.SchoolId == input.SchoolId && x.IsActive == true).OrderByDescending(x=>x.CreatedDate).ToList();
                     if (examlist != null && examlist.Count() > 0)
                     {
                         foreach (var item in examlist)
                         {
                             SchoolModel.CreateExamModel objOutput = new SchoolModel.CreateExamModel();
-                            var schoolDetail = DbContext.tbl_DC_School_Subject.Where(x => x.SubjectId == item.SubjectId && x.IsActive == true).SingleOrDefault();
+                            var schoolDetail = DbContext.tbl_DC_School_Subject.Where(x => x.SubjectId == item.SubjectId && x.SchoolId == input.SchoolId && x.IsActive == true).FirstOrDefault();
                             if (schoolDetail != null)
                             {
                                 objOutput.SubjectName = schoolDetail.SubjectName;
                             }
-                            var examType = DbContext.tbl_DC_School_ExamType.Where(x => x.ExamTypeId == item.ExamTypeId && x.IsActive == true).SingleOrDefault();
+                            var examType = DbContext.tbl_DC_School_ExamType.Where(x => x.ExamTypeId == item.ExamTypeId && x.SchoolId == input.SchoolId && x.IsActive == true).FirstOrDefault();
                             if (examType != null)
                             {
                                 objOutput.ExamTypeName = examType.ExamTypeName;
@@ -925,7 +925,7 @@ namespace DigiChamps.Controllers
                 if ((input.SchoolId != Guid.Empty))
                 {
                     var date = DateTime.Now;
-                    var schoollist = DbContext.tbl_DC_School_Subject.Where(x => x.SchoolId == input.SchoolId && x.IsActive == true).ToList();
+                    var schoollist = DbContext.tbl_DC_School_Subject.Where(x => x.SchoolId == input.SchoolId && x.IsActive == true).OrderByDescending(x=>x.CreatedDate).ToList();
                     if (schoollist != null && schoollist.Count() > 0)
                     {
                         foreach (var item in schoollist)
@@ -965,7 +965,7 @@ namespace DigiChamps.Controllers
                 if ((input.SchoolId != Guid.Empty))
                 {
                     var date = DateTime.Now;
-                    var examTypelist = DbContext.tbl_DC_School_ExamType.Where(x => x.SchoolId == input.SchoolId && x.IsActive == true).ToList();
+                    var examTypelist = DbContext.tbl_DC_School_ExamType.Where(x => x.SchoolId == input.SchoolId && x.IsActive == true).OrderByDescending(x=>x.CreatedDate).ToList();
                     if (examTypelist != null && examTypelist.Count() > 0)
                     {
                         foreach (var item in examTypelist)

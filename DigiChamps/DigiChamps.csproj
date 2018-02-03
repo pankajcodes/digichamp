@@ -4509,6 +4509,8 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
+    <Content Include="Views\School\GetAllAssignedTeacherList.cshtml" />
+    <Content Include="Views\School\AssignedTeacher.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4922,7 +4924,6 @@
     <Content Include="Views\School\CreateOrEditStudyMaterial.cshtml" />
     <Content Include="Views\School\CreateOrEditToppersWay.cshtml" />
     <Content Include="Views\School\AddSchool.cshtml" />
-    <Content Include="Views\School\CreateOrEditSubject.cshtml" />
     <Content Include="Views\School\CreateOrEditClass.cshtml" />
     <Content Include="Views\School\GetSchoolList.cshtml" />
     <Content Include="Views\Shared\_SchoolLayout.cshtml" />

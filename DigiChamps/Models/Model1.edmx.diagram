@@ -213,6 +213,7 @@
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__29FC06CE" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__3B2692D0" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Subje__2BE44F40" />
+        <AssociationConnector Association="DigiChampsModel.FK_SchoolId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

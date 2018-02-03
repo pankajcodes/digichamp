@@ -29,5 +29,6 @@ namespace DigiChamps.Models
         public Nullable<decimal> Total { get; set; }
         public string Amt_In_Words { get; set; }
         public string Payment_Mode { get; set; }
+        public Nullable<System.DateTime> Inserted_Date { get; set; }
     }
 }

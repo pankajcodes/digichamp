@@ -26,6 +26,7 @@ namespace DigiChamps.Models
             this.tbl_DC_School_Homework = new HashSet<tbl_DC_School_Homework>();
             this.tbl_DC_School_StudyMaterial = new HashSet<tbl_DC_School_StudyMaterial>();
             this.tbl_DC_School_MessageCreation = new HashSet<tbl_DC_School_MessageCreation>();
+            this.tbl_DC_Registration = new HashSet<tbl_DC_Registration>();
         }
     
         public System.Guid SchoolId { get; set; }
@@ -48,5 +49,6 @@ namespace DigiChamps.Models
         public virtual ICollection<tbl_DC_School_Homework> tbl_DC_School_Homework { get; set; }
         public virtual ICollection<tbl_DC_School_StudyMaterial> tbl_DC_School_StudyMaterial { get; set; }
         public virtual ICollection<tbl_DC_School_MessageCreation> tbl_DC_School_MessageCreation { get; set; }
+        public virtual ICollection<tbl_DC_Registration> tbl_DC_Registration { get; set; }
     }
 }
