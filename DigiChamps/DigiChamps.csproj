@@ -4516,6 +4516,7 @@
     <Content Include="Views\School\AssignedTeacher.cshtml" />
     <Content Include="Views\School\AddPeriod.cshtml" />
     <Content Include="Views\School\AddSubject.cshtml" />
+    <Content Include="Views\School\GetPeriodList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
