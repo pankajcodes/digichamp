@@ -33,8 +33,8 @@ namespace DigiChamps.Common
                 if (!string.IsNullOrEmpty(fname) && file.ContentLength>0 &&( file.ContentType.ToLower() != "image/jpg" && file.ContentType.ToLower() != "image/jpeg" && file.ContentType.ToLower() != "image/pjpeg" && file.ContentType.ToLower() != "image/gif" && file.ContentType.ToLower() != "image/x-png" && file.ContentType.ToLower() != "image/png"))
                 {
                     uploadFileDetailModel.VideoName=DateTime.Now.ToString("yyyyMMddHHmmssfff") + "_"+fname;
-                    uploadFileDetailModel.VideoPath = "/Upload/" + moduleName + "/" + uniquePath.ToString() + "/Video";
-                    string path = System.Web.HttpContext.Current.Server.MapPath("~/Upload/") + moduleName + "/" + uniquePath.ToString() + "/Video";
+                    uploadFileDetailModel.VideoPath = "/Upload/" + moduleName + "/" + uniquePath.ToString() + "/" + folderName;
+                    string path = System.Web.HttpContext.Current.Server.MapPath("~/Upload/") + moduleName + "/" + uniquePath.ToString() + "/" + folderName;
                     //string subPath = "~/Upload/" + uploadRoot;
 
                     bool exists = System.IO.Directory.Exists(path);

@@ -4920,9 +4920,9 @@
     <Content Include="Views\School\AddSchoolPrincipal.cshtml" />
     <Content Include="Views\School\CreateOrEditHomeWork.cshtml" />
     <Content Include="Views\School\CreateOrEditCreateExam.cshtml" />
-    <Content Include="Views\School\CreateOrEditMessageCreation.cshtml" />
+    <Content Include="Views\School\AddSchoolMessage.cshtml" />
     <Content Include="Views\School\AddStudyMaterial.cshtml" />
-    <Content Include="Views\School\CreateOrEditToppersWay.cshtml" />
+    <Content Include="Views\School\AddTopperWay.cshtml" />
     <Content Include="Views\School\AddSchool.cshtml" />
     <Content Include="Views\School\CreateOrEditClass.cshtml" />
     <Content Include="Views\School\GetSchoolList.cshtml" />

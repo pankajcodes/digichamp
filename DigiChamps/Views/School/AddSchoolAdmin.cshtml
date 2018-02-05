@@ -99,6 +99,9 @@
                                 <label for="textfield5" class="col-sm-3  control-label">Upload Picture<span class="asterisk"></span></label>
                                 <div class="col-sm-9  controls">
                                     <input type="file" value="Chofileose a " accept="image/*" id="AdminImage" />
+                                    @if(!string.IsNullOrEmpty(Model.Image)){
+                                    <img src="@Model.Image" style="width:50px;height:50px;">
+                                    }
                                 </div>
                             </div>
 

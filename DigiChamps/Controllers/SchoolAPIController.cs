@@ -405,8 +405,8 @@ namespace DigiChamps.Controllers
                         foreach (var item in schoolNoticeList)
                         {
                             SchoolModel.MessageCreation objMessageCreation = new SchoolModel.MessageCreation();
-                            objMessageCreation.Message = item.MassageDisplay;
-                            objMessageCreation.Image = item.ImagePath;
+                            objMessageCreation.MassageText = item.MassageText;
+                            objMessageCreation.FilePath = item.FilePath;
 
                             //objMessageCreation.DisplayDate = (DateTime)item.MassageDisplayDate;
                             objList.Add(objMessageCreation);
@@ -553,23 +553,29 @@ namespace DigiChamps.Controllers
                 if ((input.SchoolId != Guid.Empty))
                 {
                     var date = DateTime.Now;
-                    var messageList = DbContext.tbl_DC_School_MessageCreation.Where(x => x.SchoolId == input.SchoolId && x.IsActive == true).ToList();
+                    var messageList = DbContext.tbl_DC_School_MessageCreation.Where(x => x.SchoolId == input.SchoolId && x.IsActive == true).OrderByDescending(x=>x.CreatedDate).ToList();
                     if (messageList != null && messageList.Count() > 0)
                     {
                         foreach (var item in messageList)
                         {
                             SchoolModel.MessageCreation objOutput = new SchoolModel.MessageCreation();
 
-                            var classDetail = DbContext.tbl_DC_School_Class.Where(x => x.ClassId == item.ClassId && x.IsActive == true).SingleOrDefault();
+                            var classDetail = DbContext.tbl_DC_Class.Where(x => x.Class_Id == item.Class_Id && x.Is_Active == true).SingleOrDefault();
                             if (classDetail != null)
                             {
 
-                                objOutput.ClassName = classDetail.ClassName;
+                                objOutput.ClassName = classDetail.Class_Name;
+                            }
+                            var sectionDetail = DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true && x.SectionId==item.SectionId).FirstOrDefault();
+                            if (sectionDetail != null)
+                            {
+
+                                objOutput.SectionName = sectionDetail.SectionName;
                             }
 
-                            objOutput.Message = item.MassageDisplay;
+                            objOutput.MassageText = item.MassageText;
                             objOutput.MessageId = item.MessageId;
-                            objOutput.MessageDisplayDate = (DateTime)item.MassageDisplayDate;
+                            //objOutput.MassageDisplayDate = (DateTime?)item.MassageDisplayDate;
 
                             //var SectionDetail = DbContext.tbl_DC_Class_Section.Where(x => x.SectionId == item.Sec && x.IsActive == true).SingleOrDefault();
                             //if (examType != null)
@@ -753,11 +759,11 @@ namespace DigiChamps.Controllers
                                 objOutput.SubjectName = schoolDetail.SubjectName;
                             }
 
-                            var classDetail = DbContext.tbl_DC_School_Class.Where(x => x.ClassId == item.ClassId && x.IsActive == true).SingleOrDefault();
+                            var classDetail = DbContext.tbl_DC_Class.Where(x => x.Class_Id == item.Class_Id && x.Is_Active == true).FirstOrDefault();
                             if (classDetail != null)
                             {
 
-                                objOutput.ClassName = classDetail.ClassName;
+                                objOutput.ClassName = classDetail.Class_Name;
                             }
                             objOutput.Id = item.StudyMaterialId;
                             objOutput.Material = item.Topic;
@@ -802,7 +808,7 @@ namespace DigiChamps.Controllers
                 if ((input.SchoolId != Guid.Empty))
                 {
                     var date = DateTime.Now;
-                    var Topperswaylist = DbContext.tbl_DC_ToppersWay.Where(x => x.SchoolId == input.SchoolId && x.IsActive == true).ToList();
+                    var Topperswaylist = DbContext.tbl_DC_ToppersWay.Where(x => x.SchoolId == input.SchoolId && x.IsActive == true).OrderByDescending(x=>x.CreatedDate).ToList();
                     if (Topperswaylist != null && Topperswaylist.Count() > 0)
                     {
                         foreach (var item in Topperswaylist)
@@ -815,11 +821,11 @@ namespace DigiChamps.Controllers
                             //    objOutput.SubjectName = schoolDetail.SubjectName;
                             //}
 
-                            var classDetail = DbContext.tbl_DC_School_Class.Where(x => x.ClassId == item.ClassId && x.IsActive == true).SingleOrDefault();
+                            var classDetail = DbContext.tbl_DC_Class.Where(x => x.Class_Id == item.Class_Id && x.Is_Active == true).SingleOrDefault();
                             if (classDetail != null)
                             {
 
-                                objOutput.ClassName = classDetail.ClassName;
+                                objOutput.ClassName = classDetail.Class_Name;
                             }
                             objOutput.Id = item.ToppersId;
                             objOutput.path = item.FileURL;

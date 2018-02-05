@@ -205,15 +205,15 @@
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__06B2CA91" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__0F481092" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Subje__12247D3D" />
-        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_MessageCreation" Width="1.5" PointX="36.375" PointY="0.75" />
         <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_StudyMaterial" Width="1.5" PointX="41.375" PointY="2.875" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Teach__3D0EDB42" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Class__2AF02B07" />
-        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Class__3C1AB709" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__29FC06CE" />
-        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__3B2692D0" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Subje__2BE44F40" />
         <AssociationConnector Association="DigiChampsModel.FK_SchoolId" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_MessageCreation" Width="1.5" PointX="36.375" PointY="0.75" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Class__3C1AB709" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__3B2692D0" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

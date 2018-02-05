@@ -10,6 +10,23 @@
     }
     Layout = "~/Views/Shared/_AdminLayout.cshtml";    
 }
+@{
+    string message = TempData.ContainsKey("Message") ? TempData["Message"].ToString() : string.Empty;
+    string styleDisplayValue = "none";
+    string MessageType = TempData.ContainsKey("MessageType") ? TempData["MessageType"].ToString() : "danger";
+    string mode = "";
+
+    if (!string.IsNullOrEmpty(message))
+    {
+        //MessageType = ViewBag.MessageType.ToString();
+        styleDisplayValue = "block";
+    }
+    else
+    {
+        styleDisplayValue = "none";
+    }
+}
+
 <style>
     .input-validation-error {
         border-color: #b94a48;
@@ -35,6 +52,13 @@
 
                     </h3>
                 </div>
+                @if (!string.IsNullOrEmpty(@message))
+                {
+                    <div class="alert alert-dismissable alert-@MessageType" style="display:@styleDisplayValue">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                        @message
+                    </div>
+                }
 
                 @using (Html.BeginForm("AddSchool", "School", FormMethod.Post, new {@enctype = "multipart/form-data" , @id = "validation - form", @class = "form-horizontal" }))
                 {

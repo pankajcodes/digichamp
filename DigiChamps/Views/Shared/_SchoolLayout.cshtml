@@ -108,9 +108,9 @@
 
         <div id="sidebar" class="navbar-collapse collapse">
             <!-- BEGIN Navlist -->
-            <ul class="nav nav-list">
+            <ul id=bs-navbar class="nav nav-list">
 
-                <li class="active">
+                <li>
                     <a href="@Url.Action("SchoolDashBoard", "School")">
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
@@ -235,7 +235,7 @@
                     </a>
                     <!-- BEGIN Submenu -->
                     <!-- END Submenu -->
-                </li>
+                </li>                
             </ul>
 
             <div id="sidebar-collapse" class="visible-lg">
@@ -280,6 +280,29 @@
         $('.datepicker').datepicker().on('changeDate', function (e) {
             $(this).datepicker('hide');
         });
+        $(document).ready(function () {
+            setTimeout(function () {
+                setActive();
+            }, 350);
+        });
+        function setActive() {
+
+            aObj = document.getElementById('bs-navbar').getElementsByTagName('a');
+
+            for (i = 0; i < aObj.length; i++) {
+                // if (document.location.href.indexOf(aObj[i].href) >= 0) {
+                if (document.location.href === aObj[i].href) {
+                    if ($(aObj[i]).parent().parent().hasClass('nav')) {
+                        $(aObj[i]).parent('ul li').addClass('active');
+
+                    }
+                    else {
+                        $(aObj[i]).parent().parent().parent('li').addClass('active');
+                        $(aObj[i]).addClass('active');
+                    }
+                }
+            }
+        }
     </script>
     @RenderSection("scripts", required: false)
 </body>

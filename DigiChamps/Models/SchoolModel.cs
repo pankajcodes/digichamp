@@ -63,6 +63,8 @@ namespace DigiChamps.Models
             public DateTime StartDate { get; set; }
             public int Class_Id { get; set; }
             public string TimeSlot { get; set; }
+            public string StartTimeSlot { get; set; }
+            public string EndTimeSlot { get; set; }
             public float TotalMarks { get; set; }
             public bool IsActive { get; set; }
             [Required(ErrorMessage="Please Select Exam Date")]
@@ -88,25 +90,49 @@ namespace DigiChamps.Models
 
         public class MessageCreation
         {
-            public int ClassId { get; set; }
-            //public string Id { get; set; }
-            //public int SectionId { get; set; }
+
+            public System.Guid MessageId { get; set; }
+            public Nullable<System.Guid> SchoolId { get; set; }
+            public Nullable<System.Guid> ClassId { get; set; }
+            public Nullable<System.DateTime> MassageDisplayDate { get; set; }
+            public string MassageDisplay { get; set; }
+            public string ImagePath { get; set; }
+            public Nullable<System.DateTime> CreatedDate { get; set; }
+            public Nullable<bool> IsActive { get; set; }
+            public Nullable<int> Class_Id { get; set; }
+            public Nullable<System.Guid> SectionId { get; set; }
+            public string MassageText { get; set; }
+            public string FilePath { get; set; }
+            public string FileName { get; set; }
+            public Nullable<bool> IsDeleted { get; set; }
+
+            //public Guid MessageId { get; set; }
+            //public Guid SchoolId { get; set; }
+            //public int ClassId { get; set; }
+            //public Guid SectionId { get; set; }
+            //public DateTime? MassageDisplayDate { get; set; }
             //public string Message { get; set; }
+            //public string FileName { get; set; }
+            //public string FilePath { get; set; }
+            ////public string Id { get; set; }
+            ////public int SectionId { get; set; }
+            ////public string Message { get; set; }
+            ////public string Image { get; set; }
+            ////public bool IsActive { get; set; }
+            
+
+
+            
+            //public string Id { get; set; }
+            
+            
             //public string Image { get; set; }
-            //public bool IsActive { get; set; }
-            public DateTime MessageDisplayDate { get; set; }
-
-
-            public Guid MessageId { get; set; }
-            public string Id { get; set; }
-            public int SectionId { get; set; }
-            public string Message { get; set; }
-            public string Image { get; set; }
 
             public string ClassName { get; set; }
-
             public string SectionName { get; set; }
-            public bool IsActive { get; set; }
+
+            //public string SectionName { get; set; }
+            //public bool IsActive { get; set; }
             // public DateTime DisplayDate { get; set; }
         }
 
@@ -115,7 +141,9 @@ namespace DigiChamps.Models
         {
             public Guid School { get; set; }
             public Guid ClassId { get; set; }
+            public int Class_Id { get; set; }
             public Guid Id { get; set; }
+            public Guid SectionId { get; set; }
             public string path { get; set; }
             public string Type { get; set; }
             public bool IsActive { get; set; }

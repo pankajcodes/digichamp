@@ -23,14 +23,14 @@ namespace DigiChamps
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-           // GlobalFilters.Filters.Add(new DigiChamps.Controllers.StudentController.EnforceLowercaseUrlAttribute());
-           // SqlDependency.Start(con);
+            // GlobalFilters.Filters.Add(new DigiChamps.Controllers.StudentController.EnforceLowercaseUrlAttribute());
+            // SqlDependency.Start(con);
         }
 
         protected void Session_Start(object sender, EventArgs e)
         {
             NotificationComponent NC = new NotificationComponent();
-            var currentTime =  DigiChampsModel.datetoserver();
+            var currentTime = DigiChampsModel.datetoserver();
             HttpContext.Current.Session["LastUpdated"] = currentTime;
             NC.RegisterNotification(currentTime);
             NC.TicketNotification(currentTime);
@@ -39,6 +39,25 @@ namespace DigiChamps
         {
             //here we will stop Sql Dependency
             SqlDependency.Stop(con);
+        }
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            var application = (HttpApplication)sender;
+
+            var context = application.Context;
+            //var context = new HttpContextWrapper(HttpContext.Current);
+            var ex = context.Server.GetLastError().GetBaseException();
+            if (ex != null)
+            {
+                string hostUrl = context.Request.Url.Scheme + "://" + context.Request.Url.Authority;
+                string errorurl = hostUrl + "/Admin/Login";
+
+
+
+                context.Response.Redirect(errorurl);
+                return;
+
+            }
         }
     }
 }

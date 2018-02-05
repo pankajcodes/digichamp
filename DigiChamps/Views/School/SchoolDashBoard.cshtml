@@ -4,70 +4,57 @@
 }
 
 
-@*<div class="row">
-        <div class="col-md-5">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="tile tile-dark-blue">
-                        <div class="img">
-                            <i class="fa fa-inr"></i>
-                        </div>
-                        <div class="content">
-                            <p class="big">+@ViewBag.TeacherCount</p>
-                            <p class="title">Total Sales</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    </div>*@
 <div class="box">
     <div class="box-title">
         <h3><i class="fa fa-dashboard"></i> School Dashboard - @ViewBag.SchoolName            @*<p>@ViewBag.Description</p>*@        </h3>
         <div class="box-tool">           
         </div>
     </div>
-    <div class="box-content">
+    <div class="box-content">        
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="tile tile-dark-blue">
                             <div class="img">
                                 <i class="fa fa-user"></i>
                             </div>
                             <div class="content">
-                                <p class="big">+@ViewBag.TeacherCount</p>
-                                <p class="title">Total Teacher</p>
+                                <p class="big">@ViewBag.PrincipleCount</p>
+                                <p class="title">Total Principal</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="tile tile-orange">
                             <div class="img">
                                 <i class="fa fa-user"></i>
                             </div>
                             <div class="content">
-                                <p class="big">@ViewBag.TeacherCount</p>
-                                <p class="title">Total Students</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="tile tile-orange">
-                            <div class="img">
-                                <i class="fa fa-user"></i>
-                            </div>
-                            <div class="content">
-                                <p class="big">@ViewBag.TeacherCount</p>
-                                <p class="title">Total Admin Profile</p>
+                                <p class="big">@ViewBag.SchoolAdmin</p>
+                                <p class="title">Total Admin</p>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>            
+            </div>
+            <div class="col-md-6">
+                <div class="row">                    
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="tile">
+                                    <p class="title">Admin Users and Teachers</p>
+                                    <p>Admin Registered : @ViewBag.SchoolAdmin <br> Teachers Registered : @ViewBag.TeacherCount</p>
+                                    <div class="img img-bottom">
+                                        <i class="fa fa-users"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

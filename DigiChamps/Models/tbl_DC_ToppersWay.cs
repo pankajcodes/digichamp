@@ -21,6 +21,8 @@ namespace DigiChamps.Models
         public string FileType { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<bool> IsActive { get; set; }
+        public Nullable<int> Class_Id { get; set; }
+        public Nullable<System.Guid> SectionId { get; set; }
     
         public virtual tbl_DC_School_Class tbl_DC_School_Class { get; set; }
         public virtual tbl_DC_School_Info tbl_DC_School_Info { get; set; }

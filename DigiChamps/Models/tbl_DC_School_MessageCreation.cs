@@ -17,11 +17,15 @@ namespace DigiChamps.Models
         public System.Guid MessageId { get; set; }
         public Nullable<System.Guid> SchoolId { get; set; }
         public Nullable<System.Guid> ClassId { get; set; }
+        public Nullable<int> Class_Id { get; set; }
+        public Nullable<System.Guid> SectionId { get; set; }
         public Nullable<System.DateTime> MassageDisplayDate { get; set; }
-        public string MassageDisplay { get; set; }
-        public string ImagePath { get; set; }
+        public string MassageText { get; set; }
+        public string FilePath { get; set; }
+        public string FileName { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<bool> IsActive { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
     
         public virtual tbl_DC_School_Class tbl_DC_School_Class { get; set; }
         public virtual tbl_DC_School_Info tbl_DC_School_Info { get; set; }

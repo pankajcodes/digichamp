@@ -140,8 +140,8 @@ namespace DigiChamps.Models
         public virtual DbSet<tbl_DC_School_ExamSchedule> tbl_DC_School_ExamSchedule { get; set; }
         public virtual DbSet<tbl_DC_School_ExamType> tbl_DC_School_ExamType { get; set; }
         public virtual DbSet<tbl_DC_School_Homework> tbl_DC_School_Homework { get; set; }
-        public virtual DbSet<tbl_DC_School_MessageCreation> tbl_DC_School_MessageCreation { get; set; }
         public virtual DbSet<tbl_DC_School_StudyMaterial> tbl_DC_School_StudyMaterial { get; set; }
+        public virtual DbSet<tbl_DC_School_MessageCreation> tbl_DC_School_MessageCreation { get; set; }
     
         public virtual int login_fin_status(Nullable<int> sessionid)
         {
