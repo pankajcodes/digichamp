@@ -1,0 +1,91 @@
+﻿@model IEnumerable<DigiChamps.Models.SchoolModel.AssignTeacher>
+
+@{
+    ViewBag.Title = "AssignedTeacherList";
+    Layout = "~/Views/Shared/_SchoolLayout.cshtml";
+}
+@{
+    string message = TempData.ContainsKey("Message") ? TempData["Message"].ToString() : string.Empty;
+    string styleDisplayValue = "none";
+    string MessageType = TempData.ContainsKey("MessageType") ? TempData["MessageType"].ToString() : "success";
+    string mode = "";
+
+    if (!string.IsNullOrEmpty(message))
+    {
+        //MessageType = ViewBag.MessageType.ToString();
+        styleDisplayValue = "block";
+    }
+    else
+    {
+        styleDisplayValue = "none";
+    }
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-title">
+                <h3><i class="fa fa-file"></i> Assign Teacher List </h3>
+                <div class="box-tool box-tooll">
+                    <a class="btn btn-primary" href="@Url.Action("AssignedTeacher","School")"><i class="fa fa-plus"></i><span> Assign Teacher</span></a>
+                </div>
+            </div>
+            @if (!string.IsNullOrEmpty(@message))
+            {
+                <div class="alert alert-dismissable alert-@MessageType" style="display:@styleDisplayValue">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                    @message
+                </div>
+            }
+            <div class="box-content">
+                <div class="table-responsive">
+                    <table class="table table-advance" id="table1">
+
+                        <thead>
+                            <tr>
+                                <th>S No.</th>
+                                <th>Teacher Name </th>
+                                <th>Class</th>
+                                <th>Section</th>
+                                <th>Subject</th>
+
+                                <th style="display:none;">UserId</th>
+
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                int rowNo = 0;
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@(rowNo += 1)</td>
+                                        <td>@item.TeacherName</td>
+                                        <td>@item.ClassName</td>
+                                        <td>@item.SectionName</td>
+                                        <td>@item.SubjectName</td>
+
+                                        <td style="display:none;">@item.AssignmentId</td>
+
+                                        <td>
+                                            @Html.ActionLink(" ", "AssignedTeacher", "School", new { AssignTeacherId = @item.AssignmentId }, new { @class = "btn btn-sm btn-primary fa fa-pencil", @title = "View" })
+                                            @Html.ActionLink(" ", "DeleteAssignTeacher", "School", new { id = @item.AssignmentId }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete?')", @data_original_title = "Delete", @title = "Delete" })
+
+
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+

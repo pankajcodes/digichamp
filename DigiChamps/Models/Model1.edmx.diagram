@@ -214,6 +214,7 @@
         <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_MessageCreation" Width="1.5" PointX="36.375" PointY="0.75" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Class__3C1AB709" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__3B2692D0" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Period" Width="1.5" PointX="27.375" PointY="30.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

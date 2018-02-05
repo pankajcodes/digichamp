@@ -17,7 +17,52 @@ namespace DigiChamps.Models
     }
 
     public class SchoolModel
-    {      
+    {
+        public class CreateClass
+        {
+            public Guid SchoolId { get; set; }
+            public Guid Id { get; set; }
+            public string ClassName { get; set; }
+            public string SectionName { get; set; }
+            public bool IsActive { get; set; }
+
+            public int Class_Id { get; set; }
+
+
+            public List<SelectListItem> Section { get; set; }
+            public List<SelectListItem> Class { get; set; }
+
+            public List<tbl_DC_Class_Section> SectionList { get; set; }
+
+        }
+        public class CreateSection
+        {
+            public System.Guid SectionId { get; set; }
+            public Nullable<System.Guid> ClassId { get; set; }
+            public string SectionName { get; set; }
+            public Nullable<System.DateTime> CreatedDate { get; set; }
+            public Nullable<bool> IsActive { get; set; }
+            public Nullable<int> Class_Id { get; set; }
+            public Nullable<System.Guid> School_Id { get; set; }
+            public List<SelectListItem> Class { get; set; }
+            public string ClassName { get; set; }
+        }
+
+        public class CreatePeriod
+        {
+            public System.Guid Id { get; set; }
+            public string FromTime { get; set; }
+            public string ToTime { get; set; }
+            public Nullable<System.Guid> SchoolId { get; set; }
+            public Nullable<bool> IsActive { get; set; }
+            public Nullable<int> CreatedBy { get; set; }
+            public Nullable<System.DateTime> Create_Date { get; set; }
+            public Nullable<System.DateTime> Modified_Date { get; set; }
+            public Nullable<int> ModifiedBy { get; set; }
+            public string Title { get; set; }
+            public List<SelectListItem> FromTimelist { get; set; }
+            public List<SelectListItem> ToTimelist { get; set; }
+        }
 
         public class SchoolAdminOrPrincipleModel
         {
@@ -176,16 +221,16 @@ namespace DigiChamps.Models
             public Guid SubjectId { get; set; }
 
         }
-        public class CreateClass
-        {
-            public Guid SchoolId { get; set; }
-            public Guid Id { get; set; }
-            public string ClassName { get; set; }
-            public string SectionName { get; set; }
-            public bool IsActive { get; set; }
-            public List<SelectListItem> Section { get; set; }
-            public List<SelectListItem> Class { get; set; }
-        }
+        //public class CreateClass
+        //{
+        //    public Guid SchoolId { get; set; }
+        //    public Guid Id { get; set; }
+        //    public string ClassName { get; set; }
+        //    public string SectionName { get; set; }
+        //    public bool IsActive { get; set; }
+        //    public List<SelectListItem> Section { get; set; }
+        //    public List<SelectListItem> Class { get; set; }
+        //}
 
 
         public class StudyMaterialModel

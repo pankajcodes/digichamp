@@ -1165,11 +1165,12 @@ namespace DigiChamps.Controllers
         public ActionResult GetsectionList(string ClassId)
         {
             int _classId = Convert.ToInt16(ClassId);
+            Guid schoolId = new Guid(Session["id"].ToString());
             //Here I'll bind the list of cities corresponding to selected state's state id  
             List<tbl_DC_Class_Section> lstsection = new List<tbl_DC_Class_Section>();
             int stateiD = Convert.ToInt32(ClassId);
 
-            lstsection = (DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true && x.Class_Id == _classId)).ToList<tbl_DC_Class_Section>();
+            lstsection = (DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true && x.Class_Id == _classId && x.School_Id == schoolId)).ToList<tbl_DC_Class_Section>();
 
             return this.Json(
           new
@@ -1403,23 +1404,19 @@ namespace DigiChamps.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
 
+        #region amit changes
+        #region classDetail
 
-        [HttpGet]
-        public JsonResult IsEmailExist(string eMail)
+        public ActionResult GetClassList()
         {
+            SchoolAPIController obj = new SchoolAPIController();
+            List<SchoolModel.CreateSection> objOutput = new List<SchoolModel.CreateSection>();
+            objOutput = obj.GetsectionList(new Guid(Session["id"].ToString()));
+            //  objOutput.HomeWork = objOutput;
 
-            // bool isExist = DbContext.tbl_DC_SchoolUser.Where(u => u.UserEmailAddress.ToLowerInvariant().Equals(eMail.ToLower()))).FirstOrDefault() != null;
-            bool isExist = DbContext.tbl_DC_SchoolUser.Where(x => x.UserEmailAddress.Equals(eMail) && x.IsActive == true).FirstOrDefault() != null; ; ;
-
-            return Json(!isExist, JsonRequestBehavior.AllowGet);
+            return View(objOutput);
         }
-
-
-
-
-
-
-        public ActionResult CreateOrEditClass(Guid? Id)
+        public ActionResult CreateOrEditClass(int classid = 0)
         {
             SchoolModel.CreateClass objCreateClass = new SchoolModel.CreateClass();
 
@@ -1429,44 +1426,46 @@ namespace DigiChamps.Controllers
             List<SelectListItem> objCIFFOB = new List<SelectListItem>();
             foreach (var item in SectionList)
             {
-
-
-                objCIFFOB.Add(new SelectListItem { Text = item.ToString(), Value = item.ToString() });
-
+                objCIFFOB.Add(new SelectListItem { Text = item.ToString(), Value = item.ToString(), Selected = true });
 
             }
 
-            //var ClassList = Enum.GetValues(typeof(EnumValue.SchoolClass))
-            //                        .Cast<EnumValue.SchoolClass>()
-            //                        .ToList();
+
             List<SelectListItem> objclassList = new List<SelectListItem>();
-            //foreach (var classItem in ClassList)
-            //{
 
-            //    string name = Enum.GetName(typeof(EnumValue.SchoolClass), classItem);
-            //    objclassList.Add(new SelectListItem { Text = name, Value = name });
+            var model = (from pd in DbContext.tbl_DC_Class
+                         join od in DbContext.tbl_DC_Board on pd.Board_Id equals od.Board_Id
+                         where pd.Is_Active == true
+                         orderby od.Board_Id
+                         select new
+                         {
+                             pd.Class_Name,
+                             od.Board_Name,
+                             pd.Class_Id
+
+                         }).ToList();
+
+            var newclassList = model;
 
 
-            //}
-            for (int schoolClass = 1; schoolClass <= 12; schoolClass++)
+            foreach (var item in newclassList)
             {
-
-                // string name = Enum.GetName(typeof(EnumValue.SchoolClass), classItem);
-                objclassList.Add(new SelectListItem { Text = schoolClass.ToString(), Value = schoolClass.ToString() });
-
-
+                objclassList.Add(new SelectListItem
+                {
+                    Text = item.Class_Name.ToString() + "(" + item.Board_Name + ")",
+                    Value = item.Class_Id.ToString(),
+                });
             }
 
             objCreateClass.Section = objCIFFOB;
             objCreateClass.Class = objclassList;
+            objCreateClass.Class_Id = classid;
             //  ViewBag.Accounts=
-            if (Id != Guid.Empty && Id != null)
+            if (classid > 0)
             {
-                var schoolClass = DbContext.tbl_DC_School_Class.Where(x => x.ClassId == Id).SingleOrDefault();
 
-                objCreateClass.Id = schoolClass.ClassId;
-                objCreateClass.ClassName = schoolClass.ClassName;
-                var sectionName = DbContext.tbl_DC_Class_Section.Where(x => x.ClassId == Id).ToList();
+                var sectionName = DbContext.tbl_DC_Class_Section.Where(x => x.Class_Id == classid).ToList();
+                objCreateClass.SectionList = sectionName;
 
                 foreach (var section in sectionName)
                 {
@@ -1477,100 +1476,84 @@ namespace DigiChamps.Controllers
             }
             return View(objCreateClass);
         }
+        [HttpPost]
+        public ActionResult CreateOrEditClass(SchoolModel.CreateClass input)
+        {
+            return null;
+
+        }
         public ActionResult AddClass(SchoolModel.CreateClass input)
         {
             var status = false;
             if (input.Id != null && input.Id != Guid.Empty)
             {
-                var classDetail = DbContext.tbl_DC_School_Class.Where(x => x.ClassId == input.Id).SingleOrDefault();
-                classDetail.ClassName = input.ClassName;
+
+
                 var sections = input.SectionName.Split(',');
-                DbContext.SaveChanges();
-                if (classDetail != null)
+
+                if (sections != null && sections.Length > 0)
                 {
-                    if (sections != null && sections.Length > 0)
+                    for (int sec = 0; sec < sections.Length; sec++)
                     {
-                        for (int sec = 0; sec < sections.Length; sec++)
+                        var sectionName = sections[sec].ToString();
+                        var classSection = DbContext.tbl_DC_Class_Section.Where(x => x.Class_Id == Convert.ToInt32(input.ClassName) && x.SectionName == sectionName).SingleOrDefault();
+                        if (classSection == null)
                         {
-                            var sectionName = sections[sec].ToString();
-                            var classSection = DbContext.tbl_DC_Class_Section.Where(x => x.ClassId == classDetail.ClassId && x.SectionName == sectionName).SingleOrDefault();
-                            if (classSection == null)
+                            tbl_DC_Class_Section objtbl_DC_Class_Section = new tbl_DC_Class_Section();
+                            var sectionId = Guid.NewGuid();
+                            objtbl_DC_Class_Section.ClassId = input.Id;
+                            objtbl_DC_Class_Section.CreatedDate = DateTime.Now;
+                            objtbl_DC_Class_Section.IsActive = true;
+                            objtbl_DC_Class_Section.SectionId = sectionId;
+                            objtbl_DC_Class_Section.SectionName = Convert.ToString(sections[sec]);
+                            objtbl_DC_Class_Section.Class_Id = Convert.ToInt32(input.ClassName);
+                            objtbl_DC_Class_Section.School_Id = new Guid(Session["id"].ToString());
+                            DbContext.tbl_DC_Class_Section.Add(objtbl_DC_Class_Section);
+                            var id = DbContext.SaveChanges();
+                        }
+                        else
+                        {
+                            if (classSection.IsActive == false)
                             {
-                                tbl_DC_Class_Section objtbl_DC_Class_Section = new tbl_DC_Class_Section();
-                                var sectionId = Guid.NewGuid();
-                                objtbl_DC_Class_Section.ClassId = input.Id;
-                                objtbl_DC_Class_Section.CreatedDate = DateTime.Now;
-                                objtbl_DC_Class_Section.IsActive = true;
-                                objtbl_DC_Class_Section.SectionId = sectionId;
-                                objtbl_DC_Class_Section.SectionName = Convert.ToString(sections[sec]);
-                                DbContext.tbl_DC_Class_Section.Add(objtbl_DC_Class_Section);
-                                var id = DbContext.SaveChanges();
-                            }
-                            else
-                            {
-                                if (classSection.IsActive == false)
-                                {
-                                    classSection.IsActive = true;
-                                    DbContext.SaveChanges();
-                                }
+                                classSection.IsActive = true;
+                                DbContext.SaveChanges();
+
                             }
                         }
+                    }
+                    status = true;
 
-                        var classSectionDlt = DbContext.tbl_DC_Class_Section.Where(x => x.ClassId == classDetail.ClassId && x.IsActive == true).ToList();
-                        if (classSectionDlt != null && classSectionDlt.Count > 0)
+                    var classSectionDlt = DbContext.tbl_DC_Class_Section.Where(x => x.Class_Id == input.Class_Id && x.IsActive == true).ToList();
+                    if (classSectionDlt != null && classSectionDlt.Count > 0)
+                    {
+                        foreach (var item in classSectionDlt)
                         {
-                            foreach (var item in classSectionDlt)
+                            if (!input.SectionName.Contains(item.SectionName))
                             {
-                                if (!input.SectionName.Contains(item.SectionName))
-                                {
-                                    item.IsActive = false;
-                                    DbContext.SaveChanges();
-                                }
+                                item.IsActive = false;
+                                DbContext.SaveChanges();
                             }
                         }
-
                     }
 
-                    //var class
-                    //foreach(var item in classSection)
-                    //{
-                    //     var classSectiondlt = DbContext.tbl_DC_Class_Section.Where(x => x.SectionId == item.SectionId).SingleOrDefault();
-                    //     //DbContext.tbl_DC_Class_Section.Remove(classSectiondlt);
-                    //     //DbContext.SaveChanges();
-
-                    //   if(classSectiondlt!=null)
-                    //   {
-
-                    //   }
-
-                    //}
-
-
                 }
+
+
+                TempData["Message"] = "Class update Successfully.";
+
             }
             else
             {
 
-                input.Id = Guid.NewGuid();
-                tbl_DC_School_Class objtbl_DC_School_Class = new tbl_DC_School_Class();
-                objtbl_DC_School_Class.ClassId = input.Id;
-                objtbl_DC_School_Class.ClassName = input.ClassName;
-                objtbl_DC_School_Class.CreatedDate = DateTime.Now;
-                objtbl_DC_School_Class.IsActive = true;
-                objtbl_DC_School_Class.SchoolId = new Guid("CE83C8BA-FAD3-4ED7-AD98-36BB7D08D497");
-                DbContext.tbl_DC_School_Class.Add(objtbl_DC_School_Class);
-
-                var classId = DbContext.SaveChanges();
-                if (classId != null)
-                {
 
 
-                    InsertSection(input);
-
-                }
+                status = InsertSection(input);
 
 
+                TempData["Message"] = "Class added Successfully.";
             }
+            // return RedirectToAction("GetClassList", "School");
+
             return new JsonResult()
             {
                 Data = status,
@@ -1596,6 +1579,8 @@ namespace DigiChamps.Controllers
                     objtbl_DC_Class_Section.IsActive = true;
                     objtbl_DC_Class_Section.SectionId = sectionId;
                     objtbl_DC_Class_Section.SectionName = Convert.ToString(sections[sec]);
+                    objtbl_DC_Class_Section.Class_Id = Convert.ToInt32(input.ClassName);
+                    objtbl_DC_Class_Section.School_Id = new Guid(Session["id"].ToString());
                     DbContext.tbl_DC_Class_Section.Add(objtbl_DC_Class_Section);
                     var id = DbContext.SaveChanges();
                     if (id != null)
@@ -1610,39 +1595,408 @@ namespace DigiChamps.Controllers
             }
             return status;
         }
+
+        public ActionResult DeleteClass(int class_id)
+        {
+
+            try
+            {
+                // get data for same id 
+                var result = DbContext.tbl_DC_Class_Section.Where(x => x.Class_Id == class_id && x.IsActive == true).ToList();
+                //                  //Set status false for delete
+
+                foreach (var item in result)
+                {
+                    item.IsActive = false;
+                    DbContext.SaveChanges();
+                }
+
+                //data = result.UserRole;
+
+            }
+
+            catch (Exception ex)
+            {
+
+            }
+
+            return RedirectToAction("GetClassList", "School");
+        }
+
         /// <summary>
         /// ///Insert class
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpPost]
+        //[HttpPost]
 
-        public ActionResult CreateOrEditClass(SchoolModel.CreateClass objCreateClass)
+        //public ActionResult CreateOrEditClass(SchoolModel.CreateClass objCreateClass)
+        //{
+        //    try
+        //    {
+        //        tbl_DC_School_Class objClass = new tbl_DC_School_Class();
+        //        if (objCreateClass.Id == Guid.Empty || objCreateClass.Id == null)
+        //        {
+        //            objCreateClass.Id = Guid.NewGuid();
+
+        //        }
+
+        //        objClass.ClassId = objCreateClass.Id;
+        //        objClass.ClassName = objCreateClass.ClassName;
+        //        objClass.IsActive = true;
+        //        objClass.CreatedDate = DateTime.Now;
+        //        objClass.SchoolId = new Guid(Session["id"].ToString());
+        //        DbContext.tbl_DC_School_Class.Add(objClass);
+
+        //    }
+
+        //    catch
+        //    {
+
+        //    }
+        //    return RedirectToAction("GetClassList", "School");
+        //}
+
+
+
+        #endregion classDetail
+
+        #region periodDetails
+        public ActionResult GetPeriodList()
+        {
+            SchoolAPIController obj = new SchoolAPIController();
+            List<SchoolModel.CreatePeriod> objOutput = new List<SchoolModel.CreatePeriod>();
+
+            Guid SchoolId = new Guid(Session["id"].ToString());
+
+            objOutput = obj.GetPeriodList(SchoolId);
+            //  objOutput.HomeWork = objOutput;
+
+            return View(objOutput);
+        }
+        public ActionResult AddPeriod(Guid? Id)
+        {
+            SchoolModel.CreatePeriod objPeriodInformation = new SchoolModel.CreatePeriod();
+
+            if (Id != null)
+            {
+                SchoolAPIController schoolApi = new SchoolAPIController();
+                return View(schoolApi.GetPeriodById(Id));
+            }
+
+            return View(objPeriodInformation);
+        }
+        [HttpPost]
+        public ActionResult AddPeriod(SchoolModel.CreatePeriod objmodel)
         {
             try
             {
-                tbl_DC_School_Class objClass = new tbl_DC_School_Class();
-                if (objCreateClass.Id == Guid.Empty || objCreateClass.Id == null)
+                if (objmodel.Id != null && objmodel.Id != Guid.Empty)
                 {
-                    objCreateClass.Id = Guid.NewGuid();
+                    var Period = DbContext.tbl_DC_Period.Where(x => x.Id == objmodel.Id).SingleOrDefault();
+                    {
+                        Period.Title = objmodel.Title;
+                        Period.FromTime = objmodel.FromTime;
+                        Period.ToTime = objmodel.ToTime;
+                        Period.IsActive = true;
+                        Period.Modified_Date = DateTime.Now;
+                        DbContext.SaveChanges();
+                        TempData["Message"] = "Period Update Successfully.";
+                    }
+                }
+                else
+                {
+                    tbl_DC_Period objPeriod = new tbl_DC_Period();
+                    //school objam= new objam();
 
+                    objPeriod.Id = Guid.NewGuid();
+                    //  objPeriod.se = objmodel.SectionId;
+                    objPeriod.Title = objmodel.Title;
+                    objPeriod.IsActive = true;
+                    objPeriod.Create_Date = DateTime.Now;
+                    objPeriod.FromTime = objmodel.FromTime;
+                    objPeriod.ToTime = objmodel.ToTime;
+                    objPeriod.SchoolId = new Guid(Session["id"].ToString());
+
+
+                    DbContext.tbl_DC_Period.Add(objPeriod);
+                    var id = DbContext.SaveChanges();
+                    TempData["Message"] = "Period Added Successfully.";
                 }
 
-                objClass.ClassId = objCreateClass.Id;
-                objClass.ClassName = objCreateClass.ClassName;
-                objClass.IsActive = true;
-                objClass.CreatedDate = DateTime.Now;
-                objClass.SchoolId = new Guid(Session["id"].ToString());
-                DbContext.tbl_DC_School_Class.Add(objClass);
+
 
             }
-
-            catch
+            catch (Exception ex)
             {
 
             }
-            return RedirectToAction("GetClassList", "School");
+            return RedirectToAction("GetPeriodList", "School");
         }
+
+        public ActionResult DeletePeriod(Guid id)
+        {
+
+            try
+            {
+                // get data for same id 
+                var result = DbContext.tbl_DC_Period.Where(x => x.Id == id && x.IsActive == true).FirstOrDefault();
+                //                  //Set status false for delete
+                result.IsActive = false;
+                DbContext.SaveChanges();
+                //data = result.UserRole;
+
+            }
+
+            catch (Exception ex)
+            {
+
+            }
+
+            return RedirectToAction("GetPeriodList", "School");
+        }
+        #endregion periodDetails
+
+        #endregion amit changes
+        [HttpGet]
+        public JsonResult IsEmailExist(string eMail)
+        {
+
+            // bool isExist = DbContext.tbl_DC_SchoolUser.Where(u => u.UserEmailAddress.ToLowerInvariant().Equals(eMail.ToLower()))).FirstOrDefault() != null;
+            bool isExist = DbContext.tbl_DC_SchoolUser.Where(x => x.UserEmailAddress.Equals(eMail) && x.IsActive == true).FirstOrDefault() != null; ; ;
+
+            return Json(!isExist, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
+
+
+        //public ActionResult CreateOrEditClass(Guid? Id)
+        //{
+        //    SchoolModel.CreateClass objCreateClass = new SchoolModel.CreateClass();
+
+        //    var SectionList = Enum.GetValues(typeof(EnumValue.Section))
+        //                              .Cast<EnumValue.Section>()
+        //                              .ToList();
+        //    List<SelectListItem> objCIFFOB = new List<SelectListItem>();
+        //    foreach (var item in SectionList)
+        //    {
+
+
+        //        objCIFFOB.Add(new SelectListItem { Text = item.ToString(), Value = item.ToString() });
+
+
+        //    }
+
+        //    //var ClassList = Enum.GetValues(typeof(EnumValue.SchoolClass))
+        //    //                        .Cast<EnumValue.SchoolClass>()
+        //    //                        .ToList();
+        //    List<SelectListItem> objclassList = new List<SelectListItem>();
+        //    //foreach (var classItem in ClassList)
+        //    //{
+
+        //    //    string name = Enum.GetName(typeof(EnumValue.SchoolClass), classItem);
+        //    //    objclassList.Add(new SelectListItem { Text = name, Value = name });
+
+
+        //    //}
+        //    for (int schoolClass = 1; schoolClass <= 12; schoolClass++)
+        //    {
+
+        //        // string name = Enum.GetName(typeof(EnumValue.SchoolClass), classItem);
+        //        objclassList.Add(new SelectListItem { Text = schoolClass.ToString(), Value = schoolClass.ToString() });
+
+
+        //    }
+
+        //    objCreateClass.Section = objCIFFOB;
+        //    objCreateClass.Class = objclassList;
+        //    //  ViewBag.Accounts=
+        //    if (Id != Guid.Empty && Id != null)
+        //    {
+        //        var schoolClass = DbContext.tbl_DC_School_Class.Where(x => x.ClassId == Id).SingleOrDefault();
+
+        //        objCreateClass.Id = schoolClass.ClassId;
+        //        objCreateClass.ClassName = schoolClass.ClassName;
+        //        var sectionName = DbContext.tbl_DC_Class_Section.Where(x => x.ClassId == Id).ToList();
+
+        //        foreach (var section in sectionName)
+        //        {
+        //            objCreateClass.SectionName += section.SectionName + ",";
+        //        }
+        //        objCreateClass.SectionName = objCreateClass.SectionName.TrimEnd(',');
+
+        //    }
+        //    return View(objCreateClass);
+        //}
+        //public ActionResult AddClass(SchoolModel.CreateClass input)
+        //{
+        //    var status = false;
+        //    if (input.Id != null && input.Id != Guid.Empty)
+        //    {
+        //        var classDetail = DbContext.tbl_DC_School_Class.Where(x => x.ClassId == input.Id).SingleOrDefault();
+        //        classDetail.ClassName = input.ClassName;
+        //        var sections = input.SectionName.Split(',');
+        //        DbContext.SaveChanges();
+        //        if (classDetail != null)
+        //        {
+        //            if (sections != null && sections.Length > 0)
+        //            {
+        //                for (int sec = 0; sec < sections.Length; sec++)
+        //                {
+        //                    var sectionName = sections[sec].ToString();
+        //                    var classSection = DbContext.tbl_DC_Class_Section.Where(x => x.ClassId == classDetail.ClassId && x.SectionName == sectionName).SingleOrDefault();
+        //                    if (classSection == null)
+        //                    {
+        //                        tbl_DC_Class_Section objtbl_DC_Class_Section = new tbl_DC_Class_Section();
+        //                        var sectionId = Guid.NewGuid();
+        //                        objtbl_DC_Class_Section.ClassId = input.Id;
+        //                        objtbl_DC_Class_Section.CreatedDate = DateTime.Now;
+        //                        objtbl_DC_Class_Section.IsActive = true;
+        //                        objtbl_DC_Class_Section.SectionId = sectionId;
+        //                        objtbl_DC_Class_Section.SectionName = Convert.ToString(sections[sec]);
+        //                        DbContext.tbl_DC_Class_Section.Add(objtbl_DC_Class_Section);
+        //                        var id = DbContext.SaveChanges();
+        //                    }
+        //                    else
+        //                    {
+        //                        if (classSection.IsActive == false)
+        //                        {
+        //                            classSection.IsActive = true;
+        //                            DbContext.SaveChanges();
+        //                        }
+        //                    }
+        //                }
+
+        //                var classSectionDlt = DbContext.tbl_DC_Class_Section.Where(x => x.ClassId == classDetail.ClassId && x.IsActive == true).ToList();
+        //                if (classSectionDlt != null && classSectionDlt.Count > 0)
+        //                {
+        //                    foreach (var item in classSectionDlt)
+        //                    {
+        //                        if (!input.SectionName.Contains(item.SectionName))
+        //                        {
+        //                            item.IsActive = false;
+        //                            DbContext.SaveChanges();
+        //                        }
+        //                    }
+        //                }
+
+        //            }
+
+        //            //var class
+        //            //foreach(var item in classSection)
+        //            //{
+        //            //     var classSectiondlt = DbContext.tbl_DC_Class_Section.Where(x => x.SectionId == item.SectionId).SingleOrDefault();
+        //            //     //DbContext.tbl_DC_Class_Section.Remove(classSectiondlt);
+        //            //     //DbContext.SaveChanges();
+
+        //            //   if(classSectiondlt!=null)
+        //            //   {
+
+        //            //   }
+
+        //            //}
+
+
+        //        }
+        //    }
+        //    else
+        //    {
+
+        //        input.Id = Guid.NewGuid();
+        //        tbl_DC_School_Class objtbl_DC_School_Class = new tbl_DC_School_Class();
+        //        objtbl_DC_School_Class.ClassId = input.Id;
+        //        objtbl_DC_School_Class.ClassName = input.ClassName;
+        //        objtbl_DC_School_Class.CreatedDate = DateTime.Now;
+        //        objtbl_DC_School_Class.IsActive = true;
+        //        objtbl_DC_School_Class.SchoolId = new Guid("CE83C8BA-FAD3-4ED7-AD98-36BB7D08D497");
+        //        DbContext.tbl_DC_School_Class.Add(objtbl_DC_School_Class);
+
+        //        var classId = DbContext.SaveChanges();
+        //        if (classId != null)
+        //        {
+
+
+        //            InsertSection(input);
+
+        //        }
+
+
+        //    }
+        //    return new JsonResult()
+        //    {
+        //        Data = status,
+        //        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //    };
+
+        //    //return View();
+        //}
+
+
+        //public bool InsertSection(SchoolModel.CreateClass input)
+        //{
+        //    var status = false;
+        //    var sections = input.SectionName.Split(',');
+        //    if (sections != null && sections.Length > 0)
+        //    {
+        //        for (int sec = 0; sec < sections.Length; sec++)
+        //        {
+        //            tbl_DC_Class_Section objtbl_DC_Class_Section = new tbl_DC_Class_Section();
+        //            var sectionId = Guid.NewGuid();
+        //            objtbl_DC_Class_Section.ClassId = input.Id;
+        //            objtbl_DC_Class_Section.CreatedDate = DateTime.Now;
+        //            objtbl_DC_Class_Section.IsActive = true;
+        //            objtbl_DC_Class_Section.SectionId = sectionId;
+        //            objtbl_DC_Class_Section.SectionName = Convert.ToString(sections[sec]);
+        //            DbContext.tbl_DC_Class_Section.Add(objtbl_DC_Class_Section);
+        //            var id = DbContext.SaveChanges();
+        //            if (id != null)
+        //            {
+        //                status = true;
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+
+        //    }
+        //    return status;
+        //}
+        ///// <summary>
+        ///// ///Insert class
+        ///// </summary>
+        ///// <param name="Id"></param>
+        ///// <returns></returns>
+        //[HttpPost]
+
+        //public ActionResult CreateOrEditClass(SchoolModel.CreateClass objCreateClass)
+        //{
+        //    try
+        //    {
+        //        tbl_DC_School_Class objClass = new tbl_DC_School_Class();
+        //        if (objCreateClass.Id == Guid.Empty || objCreateClass.Id == null)
+        //        {
+        //            objCreateClass.Id = Guid.NewGuid();
+
+        //        }
+
+        //        objClass.ClassId = objCreateClass.Id;
+        //        objClass.ClassName = objCreateClass.ClassName;
+        //        objClass.IsActive = true;
+        //        objClass.CreatedDate = DateTime.Now;
+        //        objClass.SchoolId = new Guid(Session["id"].ToString());
+        //        DbContext.tbl_DC_School_Class.Add(objClass);
+
+        //    }
+
+        //    catch
+        //    {
+
+        //    }
+        //    return RedirectToAction("GetClassList", "School");
+        //}
 
 
 
@@ -1681,17 +2035,17 @@ namespace DigiChamps.Controllers
 
 
 
-        public ActionResult GetClassList()
-        {
-            SchoolAPIController obj = new SchoolAPIController();
-            List<SchoolModel.CreateClass> objOutput = new List<SchoolModel.CreateClass>();
-            SchoolModel.InputModel objInput = new SchoolModel.InputModel();
-            objInput.SchoolId = new Guid(Session["id"].ToString());
-            objOutput = obj.GetClassList(objInput);
-            //  objOutput.HomeWork = objOutput;
+        //public ActionResult GetClassList()
+        //{
+        //    SchoolAPIController obj = new SchoolAPIController();
+        //    List<SchoolModel.CreateClass> objOutput = new List<SchoolModel.CreateClass>();
+        //    SchoolModel.InputModel objInput = new SchoolModel.InputModel();
+        //    objInput.SchoolId = new Guid(Session["id"].ToString());
+        //    objOutput = obj.GetClassList(objInput);
+        //    //  objOutput.HomeWork = objOutput;
 
-            return View(objOutput);
-        }
+        //    return View(objOutput);
+        //}
 
 
 

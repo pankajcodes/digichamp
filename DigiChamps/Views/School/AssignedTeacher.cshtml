@@ -1,0 +1,160 @@
+﻿@model DigiChamps.Models.SchoolModel.AssignTeacher
+
+@{
+    ViewBag.Title = "AssignedTeacher";
+    Layout = "~/Views/Shared/_SchoolLayout.cshtml";
+}
+@{
+    string message = TempData.ContainsKey("Message") ? TempData["Message"].ToString() : string.Empty;
+    string styleDisplayValue = "none";
+    string MessageType = TempData.ContainsKey("MessageType") ? TempData["MessageType"].ToString() : "danger";
+    string mode = "";
+
+    if (!string.IsNullOrEmpty(message))
+    {
+        //MessageType = ViewBag.MessageType.ToString();
+        styleDisplayValue = "block";
+    }
+    else
+    {
+        styleDisplayValue = "none";
+    }
+}
+<h2>AssignedTeacher</h2>
+
+@using (Html.BeginForm("AssignedTeacher", "School", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    <form class="form-horizontal" id="validation-form">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> Assign Teacher</h3>
+                        @Html.HiddenFor(x=>x.AssignmentId)
+                    </div>
+                    @if (!string.IsNullOrEmpty(@message))
+                    {
+                        <div class="alert alert-dismissable alert-@MessageType" style="display:@styleDisplayValue">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                            @message
+                        </div>
+                    }
+                    <div class="box-content">
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3  control-label">Select Teacher<span class="asterisk">*</span></label>
+                            <div class="col-sm-9  controls">
+
+                                @(Html.DropDownListFor(x => x.TeacherId, ViewBag.TeacherList as SelectList, "Please Select Teacher", new { @class = "form-control", @id = "ddlTeacher", data_rule_required = "true", data_msg_required = "Please select Teacher" }))
+                                @Html.HiddenFor(x => x.TeacherId)
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3  control-label">Select Class<span class="asterisk">*</span></label>
+                            <div class="col-sm-9  controls">
+
+                                @(Html.DropDownListFor(x => x.Class_Id, ViewBag.ClassList as SelectList, "Please Select Class", new { @onchange = "getSectionList()", @class = "form-control", @id = "ddlClass", data_rule_required = "true", data_msg_required = "Please Select Class" }))
+                                @Html.HiddenFor(x => x.Class_Id)
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3  control-label">Select Section<span class="asterisk">*</span></label>
+                            <div class="col-sm-9  controls">
+
+                                @*@(Html.DropDownListFor(x => x.SectionId, ViewBag.SectionList as SelectList, "Please Select Section", new { @class = "form-control", @id = "ddlSection", data_rule_required = "true", data_msg_required = "Please Select Section" }))
+                                    @Html.HiddenFor(x => x.SectionId)*@
+                                <select id="sectionDropDown" class="form-control" data_rule_required="true" , data_msg_required="Please Select Class">
+                                    <option>---Select Section---</option>
+                                </select>
+                                @Html.HiddenFor(x=>x.SectionId)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3  control-label">Select Subject<span class="asterisk">*</span></label>
+                            <div class="col-sm-9  controls">
+
+                                @if (ViewBag.SubjectList != null)
+                                {
+                                    @(Html.DropDownListFor(x => x.SubjectId, ViewBag.SubjectList as SelectList, "Please Select Subject", new { @class = "form-control", @id = "ddlSubject", data_rule_required = "true", data_msg_required = "Please select subject" }))
+                                    @Html.HiddenFor(x => x.SubjectId)
+                                }
+                                else
+                                {
+                                    @(Html.DropDownListFor(x => x.SubjectId, ViewBag.SubjectList as SelectList, "Please Select Subject", new { @class = "form-control", @id = "ddlSubject", data_rule_required = "true", data_msg_required = "Please select subject" }))
+                                    @Html.ValidationMessageFor(x => x.SubjectId)
+                                }
+
+
+                            </div>
+                        </div>
+
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("GetAllAssignedTeacherList", "School", new { id = new Guid(Session["id"].ToString()) })" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                                <button id="btnAddTeacher" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span> Submit</span></button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+}
+
+
+<script>
+    function getSectionList() {
+        debugger;
+        var ClassId = $("#ddlClass").val();
+        $.ajax({
+            url: '/School/GetsectionList',
+            type: 'POST',
+            datatype: 'application/json',
+            contentType: 'application/json',
+            data: JSON.stringify({ ClassId: +ClassId }),
+            success: function (result) {
+                debugger;
+                $("#sectionDropDown").html("");
+                $("#sectionDropDown").append
+                ($('<option></option>').val(null).html("---Select Section---"));
+                $.each(result.Result, function (i, section)
+                { $("#sectionDropDown").append($('<option></option>').val(section.SectionId).html(section.SectionName)) });
+                if ($("#SectionId").val()) {                    
+                    $("#sectionDropDown").val($("#SectionId").val());
+                }
+
+            },
+            error: function () { alert("Whooaaa! Something went wrong..") },
+        });
+    }
+</script>
+@section scripts {
+<script>
+    var isChanged = false;
+    $(document).ready(function () {
+        //jQuery(document).ajaxStart(function () {
+        //    ajaxindicatorstart('loading data.. please wait..');
+        //}).ajaxStop(function () {
+        //    ajaxindicatorstop();
+        //});
+
+        $("#btnAddTeacher").click(function () {
+            $("#SectionId").val($("#sectionDropDown").val());
+        });
+
+        if ($("#SectionId").val())
+        {
+            getSectionList();
+            $("#sectionDropDown").val($("#SectionId").val());
+        }
+    });
+    </script>
+    }

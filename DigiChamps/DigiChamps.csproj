@@ -524,6 +524,9 @@
     <Compile Include="Models\tbl_DC_Percentage.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_DC_Period.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_DC_Power_Question.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

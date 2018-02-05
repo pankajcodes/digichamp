@@ -1,0 +1,125 @@
+﻿@model DigiChamps.Models.SchoolModel.CreatePeriod
+@{
+    if (Model.Id != Guid.Empty)
+    {
+        ViewBag.Title = "Edit Period";
+    }
+    else
+    {
+        ViewBag.Title = "Add period";
+    }
+    Layout = "~/Views/Shared/_SchoolLayout.cshtml";
+}
+<style>
+    .input-validation-error {
+        border-color: #b94a48;
+    }
+
+    .field-validation-error {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        color: #C62626;
+    }
+</style>
+
+<div class="page-content-wrap">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-title">
+                    <h3>
+                        <i class="fa fa-file"></i>
+                        Add School
+
+                    </h3>
+                </div>
+                @using (Html.BeginForm("AddPeriod", "School", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "validation - form", @class = "form-horizontal" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @*@Html.ValidationSummary(true)*@
+                    <div>
+                        @*<input type="hidden" value="@Model.SchoolId" id="hdnschoolId" />*@
+                        @Html.HiddenFor(m => m.Id)
+                        <div class="box-content">
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3  control-label">Title<span class="asterisk">*</span></label>
+                                <div class="col-sm-9  controls">
+                                    @Html.TextBoxFor(x => x.Title, new { @id = "txTitle", @class = "form-control", @required = "required", data_msg_required = "Please enter Title", @type = "text" })
+                                    @Html.ValidationMessageFor(x => x.Title)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3  control-label">From Time<span class="asterisk">*</span></label>
+                                <div class="col-sm-9  controls">
+                                    @Html.TextBoxFor(x => x.FromTime, new { @id = "timepicker_start", @class = "form-control hasTimepicker", @required = "required", data_msg_required = "Please select From time", @type = "text" })
+                                    @Html.ValidationMessageFor(x => x.FromTime)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="textfield5" class="col-sm-3  control-label">To Time<span class="asterisk">*</span></label>
+                                <div class="col-sm-9  controls">
+                                    @Html.TextBoxFor(x => x.ToTime, new { @id = "timepicker_end", @class = "form-control", @required = "required", data_msg_required = "Please select to time", @type = "text" })
+                                    @Html.ValidationMessageFor(x => x.FromTime)
+                                </div>
+                            </div>
+
+  
+                            <div class="form-group last box-tooll">
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                    <a href="@Url.Action("GetPeriodList", "School")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                                    <button id="btnAddSchool" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i> <span>Submit</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="http://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.css">
+@section scripts {
+<script src="~/Student_assets/crop/scripts/jquery.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="http://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.js"></script>
+<script>
+   
+    $('#validation-form').submit(function (e) {
+
+        var status = true;
+
+        if ($("#txSchoolName").val() == "") {
+            status = false;
+        }
+        if (status) {
+            $(".loader-ajax-container").css("display", "block");
+        }
+        else {
+            return false;
+        }
+
+    });
+
+    $(document).ready(function () {
+        
+        
+        var input = $('#timepicker_start');
+        input.clockpicker({
+            autoclose: true
+        });
+
+
+    });
+
+
+</script>
+
+}

@@ -1447,6 +1447,21 @@
           <Property Name="Class_Id" Type="int" />
           <Property Name="School_Id" Type="uniqueidentifier" />
         </EntityType>
+        <EntityType Name="tbl_DC_Period">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="FromTime" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ToTime" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="SchoolId" Type="uniqueidentifier" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="Create_Date" Type="datetime" />
+          <Property Name="Modified_Date" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
         <EntityType Name="tbl_DC_School_AssingTeacher">
           <Key>
             <PropertyRef Name="Id" />
@@ -3484,6 +3499,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <EntitySet Name="tbl_DC_USER_SECURITY" EntityType="Self.tbl_DC_USER_SECURITY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_DC_Video_Backup" EntityType="Self.tbl_DC_Video_Backup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_DC_Class_Section" EntityType="Self.tbl_DC_Class_Section" Schema="testuid" store:Type="Tables" />
+          <EntitySet Name="tbl_DC_Period" EntityType="Self.tbl_DC_Period" Schema="testuid" store:Type="Tables" />
           <EntitySet Name="tbl_DC_School_AssingTeacher" EntityType="Self.tbl_DC_School_AssingTeacher" Schema="testuid" store:Type="Tables" />
           <EntitySet Name="tbl_DC_School_Class" EntityType="Self.tbl_DC_School_Class" Schema="testuid" store:Type="Tables" />
           <EntitySet Name="tbl_DC_School_ExamSchedule" EntityType="Self.tbl_DC_School_ExamSchedule" Schema="testuid" store:Type="Tables" />
@@ -4967,6 +4983,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
             <End Role="tbl_DC_School_Info" EntitySet="tbl_DC_School_Info" />
             <End Role="tbl_DC_School_MessageCreation" EntitySet="tbl_DC_School_MessageCreation" />
           </AssociationSet>
+          <EntitySet Name="tbl_DC_Period" EntityType="DigiChampsModel.tbl_DC_Period" />
         </EntityContainer>
         <ComplexType Name="Order_report_Result">
           <Property Type="Int32" Name="Order_ID" Nullable="false" />
@@ -8776,6 +8793,21 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tbl_DC_Period">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FromTime" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ToTime" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SchoolId" Type="Guid" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="Create_Date" Type="DateTime" Precision="3" />
+          <Property Name="Modified_Date" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -11526,6 +11558,22 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
                 <ScalarProperty Name="ClassId" ColumnName="ClassId" />
                 <ScalarProperty Name="SchoolId" ColumnName="SchoolId" />
                 <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_DC_Period">
+            <EntityTypeMapping TypeName="DigiChampsModel.tbl_DC_Period">
+              <MappingFragment StoreEntitySet="tbl_DC_Period">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="Modified_Date" ColumnName="Modified_Date" />
+                <ScalarProperty Name="Create_Date" ColumnName="Create_Date" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="SchoolId" ColumnName="SchoolId" />
+                <ScalarProperty Name="ToTime" ColumnName="ToTime" />
+                <ScalarProperty Name="FromTime" ColumnName="FromTime" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -605,57 +605,57 @@ namespace DigiChamps.Controllers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public List<SchoolModel.CreateClass> GetClassList(SchoolModel.InputModel input)
-        {
+        //public List<SchoolModel.CreateClass> GetClassList(SchoolModel.InputModel input)
+        //{
 
 
-            List<SchoolModel.CreateClass> objList = new List<SchoolModel.CreateClass>();
-            try
-            {
-                if ((input.SchoolId != Guid.Empty))
-                {
-                    var date = DateTime.Now;
-                    var classList = DbContext.tbl_DC_School_Class.Where(x => x.SchoolId == input.SchoolId && x.IsActive == true).ToList();
-                    if (classList != null && classList.Count() > 0)
-                    {
-                        foreach (var item in classList)
-                        {
-                            //item.
-                            SchoolModel.CreateClass objOutput = new SchoolModel.CreateClass();
-                            var classDetail = DbContext.tbl_DC_School_Class.Where(x => x.ClassId == item.ClassId && x.IsActive == true).SingleOrDefault();
-                            if (classDetail != null)
-                            {
+        //    List<SchoolModel.CreateClass> objList = new List<SchoolModel.CreateClass>();
+        //    try
+        //    {
+        //        if ((input.SchoolId != Guid.Empty))
+        //        {
+        //            var date = DateTime.Now;
+        //            var classList = DbContext.tbl_DC_School_Class.Where(x => x.SchoolId == input.SchoolId && x.IsActive == true).ToList();
+        //            if (classList != null && classList.Count() > 0)
+        //            {
+        //                foreach (var item in classList)
+        //                {
+        //                    //item.
+        //                    SchoolModel.CreateClass objOutput = new SchoolModel.CreateClass();
+        //                    var classDetail = DbContext.tbl_DC_School_Class.Where(x => x.ClassId == item.ClassId && x.IsActive == true).SingleOrDefault();
+        //                    if (classDetail != null)
+        //                    {
 
-                                objOutput.ClassName = classDetail.ClassName;
-                            }
-                            //var SectionDetail = DbContext.tbl_DC_Class_Section.Where(x => x.SectionId == item.Sec && x.IsActive == true).SingleOrDefault();
-                            //if (SectionDetail != null)
-                            //{
-                            //    objOutput.SectionName = SectionDetail.SectionName;
-                            //}
-                            // objOutput.SectionName = item.;
-                            objOutput.Id = item.ClassId;
-                            // objOutput.MessageDisplayDate = (DateTime)item.MassageDisplayDate;
-                            //
-
-
+        //                        objOutput.ClassName = classDetail.ClassName;
+        //                    }
+        //                    //var SectionDetail = DbContext.tbl_DC_Class_Section.Where(x => x.SectionId == item.Sec && x.IsActive == true).SingleOrDefault();
+        //                    //if (SectionDetail != null)
+        //                    //{
+        //                    //    objOutput.SectionName = SectionDetail.SectionName;
+        //                    //}
+        //                    // objOutput.SectionName = item.;
+        //                    objOutput.Id = item.ClassId;
+        //                    // objOutput.MessageDisplayDate = (DateTime)item.MassageDisplayDate;
+        //                    //
 
 
 
-                            objList.Add(objOutput);
-                        }
-
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
 
 
-            }
-            return objList;
-        }
+        //                    objList.Add(objOutput);
+        //                }
+
+        //            }
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+
+        //    }
+        //    return objList;
+        //}
 
 
 
@@ -995,6 +995,214 @@ namespace DigiChamps.Controllers
             return objList;
 
         }
+        #region amit
+        public List<SchoolModel.CreateClass> GetClassList(SchoolModel.InputModel objclassmodel)
+        {
+
+
+            List<SchoolModel.CreateClass> objList = new List<SchoolModel.CreateClass>();
+            try
+            {
+                if ((objclassmodel.SchoolId != Guid.Empty))
+                {
+                    var date = DateTime.Now;
+                    var classList = DbContext.tbl_DC_School_Class.Where(x => x.SchoolId == objclassmodel.SchoolId && x.IsActive == true).ToList();
+                    if (classList != null && classList.Count() > 0)
+                    {
+                        foreach (var item in classList)
+                        {
+                            //item.
+                            SchoolModel.CreateClass objOutput = new SchoolModel.CreateClass();
+                            var classDetail = DbContext.tbl_DC_School_Class.Where(x => x.ClassId == item.ClassId && x.IsActive == true).SingleOrDefault();
+                            if (classDetail != null)
+                            {
+
+                                objOutput.ClassName = classDetail.ClassName;
+                            }
+                            //var SectionDetail = DbContext.tbl_DC_Class_Section.Where(x => x.SectionId == item.Sec && x.IsActive == true).SingleOrDefault();
+                            //if (SectionDetail != null)
+                            //{
+                            //    objOutput.SectionName = SectionDetail.SectionName;
+                            //}
+                            // objOutput.SectionName = item.;
+                            objOutput.Id = item.ClassId;
+                            // objOutput.MessageDisplayDate = (DateTime)item.MassageDisplayDate;
+                            //
+
+
+
+
+
+                            objList.Add(objOutput);
+                        }
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return objList;
+        }
+
+        public List<SchoolModel.CreatePeriod> GetPeriodList(Guid prmSchoolId)
+        {
+
+
+            List<SchoolModel.CreatePeriod> objList = new List<SchoolModel.CreatePeriod>();
+            try
+            {
+                if ((prmSchoolId != Guid.Empty))
+                {
+                    var date = DateTime.Now;
+                    var model = (from p in DbContext.tbl_DC_Period.Where(x => x.SchoolId == prmSchoolId && x.IsActive == true).OrderByDescending(y => y.Create_Date).ToList() // .Includes("Addresses") here?
+                                 select new SchoolModel.CreatePeriod()
+                                 {
+                                     Id = p.Id,
+                                     FromTime = p.FromTime,
+                                     ToTime = p.ToTime,
+                                     Title = p.Title
+
+                                     //Class_Id = 1,
+                                     //SectionName = string.Join(",", g.Select(kvp => kvp.SectionName))
+
+                                 });
+
+                    return model.ToList();
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return objList;
+        }
+        public SchoolModel.CreatePeriod GetPeriodById(Guid? prmPeriodId)
+        {
+            SchoolModel.CreatePeriod objSchoolInformation = new SchoolModel.CreatePeriod();
+            if (prmPeriodId != null)
+            {
+                var schoolInfoDetail = DbContext.tbl_DC_Period.Where(x => x.Id == prmPeriodId && x.IsActive == true).FirstOrDefault();
+                if (schoolInfoDetail != null)
+                {
+                    objSchoolInformation.Id = schoolInfoDetail.Id;
+                    objSchoolInformation.Title = schoolInfoDetail.Title;
+                    objSchoolInformation.FromTime = schoolInfoDetail.FromTime;
+                    objSchoolInformation.IsActive = (bool)schoolInfoDetail.IsActive;
+                    objSchoolInformation.ToTime = schoolInfoDetail.ToTime;
+
+                }
+            }
+
+            return objSchoolInformation;
+        }
+
+        public List<SchoolModel.CreateClass> GetClassList_new(Guid prmSchoolId)
+        {
+
+
+            List<SchoolModel.CreateClass> objList = new List<SchoolModel.CreateClass>();
+            try
+            {
+                if ((prmSchoolId != Guid.Empty))
+                {
+                    var date = DateTime.Now;
+                    // var sectionmodel = (from p in DbContext.tbl_DC_Class_Section.Where(x => x.School_Id == prmSchoolId && x.IsActive == true).OrderByDescending(y => y.CreatedDate).ToList() // .Includes("Addresses") here?
+
+                    var model =
+(from i in DbContext.tbl_DC_Class_Section
+ where i.School_Id == prmSchoolId
+ group i by i.Class_Id into g
+ //select new { g.Key, count = g.Count(), Items = string.Join(",", g.Select(kvp => kvp.SectionName)) });
+
+
+ //                    var model = (from p in DbContext.tbl_DC_School_Class.Where(x => x.SchoolId == prmSchoolId && x.IsActive == true).OrderByDescending(y => y.CreatedDate).ToList() // .Includes("Addresses") here?
+ select new SchoolModel.CreateClass()
+ {
+     Id = g.Select(kvp => kvp.SectionId).FirstOrDefault(),
+     Class_Id = 1,
+     SectionName = string.Join(",", g.Select(kvp => kvp.SectionName))
+
+ });
+
+                    return model.ToList();
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return objList;
+        }
+
+        public List<SchoolModel.CreateSection> GetsectionList(Guid prmSchoolId)
+        {
+
+
+            List<SchoolModel.CreateSection> objList = new List<SchoolModel.CreateSection>();
+            try
+            {
+                if ((prmSchoolId != Guid.Empty))
+                {
+                    var date = DateTime.Now;
+                    //string aababa;
+                    //var model = (from i in DbContext.tbl_DC_Class_Section
+                    //             where i.School_Id == prmSchoolId
+                    //             group i by i.Class_Id into g
+                    //             select new SchoolModel.CreateSection()
+                    //             {
+                    //                 Class_Id = g.Key,
+                    //                 SectionName = string.Join(",", g.Select(kvp => kvp.SectionName)),
+
+                    //             });
+
+
+                    var mc = (from p in DbContext.tbl_DC_Class_Section
+                              join cl in DbContext.tbl_DC_Class on p.Class_Id equals cl.Class_Id
+                              where p.School_Id == prmSchoolId && p.IsActive == true
+                              select new SchoolModel.CreateSection()
+                              {
+                                  ClassName = cl.Class_Name,
+                                  Class_Id = p.Class_Id,
+                                  SectionName = p.SectionName,
+
+                              }).ToList();
+
+                    var result = (from i in mc
+                                  group i by new { i.Class_Id, i.ClassName } into g
+                                  select new SchoolModel.CreateSection()
+                                  {
+                                      Class_Id = g.Select(kvp => kvp.Class_Id).FirstOrDefault(),
+                                      ClassName = g.Select(kvp => kvp.ClassName).FirstOrDefault(),
+                                      SectionName = string.Join(",", g.Select(kvp => kvp.SectionName)),
+
+                                  });
+
+
+
+                    return result.ToList();
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return objList;
+        }
+        #endregion
         /// <summary>
         /// Function to get Exam list
         /// AM

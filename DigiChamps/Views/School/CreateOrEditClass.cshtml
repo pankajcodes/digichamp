@@ -1,16 +1,46 @@
-﻿@{
+﻿@model DigiChamps.Models.SchoolModel.CreateClass
+@{
     ViewBag.Title = "CreateOrEditClass";
 }
 
-<h2>CreateOrEditClass</h2>
-@model DigiChamps.Models.SchoolModel.CreateClass
+
+@if (@Model.Id == null)
+{
+    <h2>
+        Create Class
+    </h2>
+}
+else
+{
+    <h2>
+        Update Class
+    </h2>
+}
+
+
 
 @{
     ViewBag.Title = "School Admin Profile";
     Layout = "~/Views/Shared/_SchoolLayout.cshtml";
 }
-<script src="../Student_assets/crop/scripts/jquery.min.js"></script>
-
+@{
+    string message = TempData.ContainsKey("Message") ? TempData["Message"].ToString() : string.Empty;
+    string styleDisplayValue = "none";
+    string MessageType = "success";
+    string mode = "";
+    if (!string.IsNullOrEmpty(message))
+    {
+        //MessageType = ViewBag.MessageType.ToString();
+        styleDisplayValue = "block";
+    }
+    else
+    {
+        styleDisplayValue = "none";
+    }
+}
+<script src="~/Student_assets/crop/scripts/jquery.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 <form class="form-horizontal" id="validation-form">
     <div class="row">
@@ -29,7 +59,7 @@
                         <div class="col-sm-9  controls">
                             @Html.DropDownListFor(m => m.ClassName, Model.Class, new { @class = "form", @Id = "ddlClassName" })
                             @*<input type="text" name="FirstName" id="FirstName" value="@Model.ClassName" class="form-control" data-rule-required="true" data-msg-required="Please enter user name" />*@
-                            <span id="errorClass" class="error"></span>
+                            @*<span id="errorClass" class="error"></span>*@
                         </div>
                     </div>
 
@@ -39,13 +69,13 @@
                             <div style="height:200px;overflow:scroll;width:200px;" id="chkSection">
                                 @foreach (var item in Model.Section)
                                 {
-                                    <input type="checkbox" id="@item.Text" name="chxBxGroupName" value="@item.Text" />
+                                    <input type="checkbox" id="@item.Text" name="chxBxGroupName" value="@item.Text"  />
                                     <label for="@item.Text">@item.Value</label>
                                     <br /><br />
                                 }
                             </div>
                             @*@Html.ListBoxFor(m => m.SectionName, Model.Section, new { @class = "listbox" })*@
-                            <span id="errorSection" class="error"></span>
+                            @*<span id="errorSection" class="error"></span>*@
 
                         </div>
                     </div>
@@ -61,7 +91,7 @@
 
                     <div class="form-group last box-tooll">
                         <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
-                            <a href="@Url.Action("Registration", "Admin")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                            <a href="@Url.Action("GetClassList", "School")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
                             <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span> Submit</span></button>
                         </div>
                     </div>
@@ -109,6 +139,7 @@
             fileData.append('SectionName', selected.join());
             fileData.append('EmailAddress', $("#EmailAddress").val());
             fileData.append('Id', $("#hdnClassId").val());
+
             // fileData.append('LastName', $("#ConfirmPassword").val())
 
             // fileData.append('SchoolName', $("#txSchoolName").val())
@@ -124,11 +155,12 @@
                 url: "/School/AddClass",
                 contentType: false, // Not to set any content header
                 processData: false,
-                data: fileData,
+                data: fileData ,
                 success: function (data) {
-                    console.log(data.Data);
-                    if (data.Data)
-                        window.location.reload();
+                    window.location = '@Url.Action("GetClassList", "School")';
+
+                    console.log(data);
+
                 }
             });
         }
@@ -138,7 +170,17 @@
     });
 
     $(document).ready(function () {
-        
+
+
+        @*if (@Model.SectionList != null) {
+           @foreach (var item in Model.SectionList)
+           {
+
+                $("#" +  item).attr("checked", true);
+           }
+
+        }*@
+
         var sectionName = $("#hdnsectionName").val();
         var section = sectionName.split(",")
         if (section != null) {

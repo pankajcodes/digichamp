@@ -2,8 +2,23 @@
     ViewBag.Title = "GetClassList";
     Layout = "~/Views/Shared/_SchoolLayout.cshtml";
 }
+@{
+    string message = TempData.ContainsKey("Message") ? TempData["Message"].ToString() : string.Empty;
+    string styleDisplayValue = "none";
+    string MessageType = "success";
+    string mode = "";
+    if (!string.IsNullOrEmpty(message))
+    {
+        //MessageType = ViewBag.MessageType.ToString();
+        styleDisplayValue = "block";
+    }
+    else
+    {
+        styleDisplayValue = "none";
+    }
+}
 
-@model IEnumerable<DigiChamps.Models.SchoolModel.CreateClass>
+@model IEnumerable<DigiChamps.Models.SchoolModel.CreateSection>
 
 
     <form class="form-horizontal" id="validation-form">
@@ -15,9 +30,9 @@
             <div class="col-md-12">
                 <div class="box">
                     <div class="box-title">
-                        <h3><i class="fa fa-file"></i> Class List</h3>
+                        <h3><i class="fa fa-file"></i> Section List</h3>
                         <div class="box-tool box-tooll">
-                            <a class="btn btn-primary" href="/School/CreateOrEditClass/"><i class="fa fa-plus"></i><span> Add Class</span></a>
+                            <a class="btn btn-primary" href="/School/CreateOrEditClass/"><i class="fa fa-plus"></i><span> Add Section</span></a>
                         </div>
                     </div>
                     <div class="box-content">
@@ -27,6 +42,7 @@
                                 <thead>
                                     <tr>
                                         <th>S No.</th>
+                                       
                                         <th> ClassName </th>
                                         <th>SectionName</th>
                                       
@@ -44,15 +60,17 @@
                                         {
                                             <tr>
                                                 <td>@(rowNo += 1)</td>
+                                                
+                                                <td style="display:none;">@item.Class_Id</td>
                                                 <td>@item.ClassName</td>
                                                 <td>@item.SectionName</td>
                                                
                                                 @*<td style="display:none;">@item.sc</td>*@
-                                                <td style="display:none;">@item.Id</td>
+                                                <td style="display:none;">@item.SectionId</td>
 
                                                 <td>
-                                                    @Html.ActionLink(" ", "CreateOrEditCreateExam", "School", new { id = @item.Id }, new { @class = "btn btn-sm btn-primary fa fa-pencil", @title = "View" })
-                                                    @Html.ActionLink(" ", "DeleteExamType", "School", new { id = @item.Id }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the role type?')", @data_original_title = "Delete", @title = "Delete" })
+                                                    @Html.ActionLink(" ", "CreateOrEditClass", "School", new { classid = @item.Class_Id }, new { @class = "btn btn-sm btn-primary fa fa-pencil", @title = "View" })
+                                                    @Html.ActionLink(" ", "DeleteClass", "School", new { id = @item.Class_Id }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the role type?')", @data_original_title = "Delete", @title = "Delete" })
 
 
                                                 </td>

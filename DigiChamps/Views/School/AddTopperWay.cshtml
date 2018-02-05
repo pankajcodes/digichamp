@@ -1,0 +1,192 @@
+﻿@model DigiChamps.Models.SchoolModel.ToppersWayModel
+
+@{
+    ViewBag.Title = "Create Or Edit Topper's Way";
+    Layout = "~/Views/Shared/_SchoolLayout.cshtml";
+}
+<script src="~/Student_assets/crop/scripts/jquery.min.js"></script>
+
+
+
+
+
+@*<script src="~/Student_assets/crop/scripts/jquery.min.js"></script>*@
+@*<script src="../Student_assets/crop/scripts/jquery.min.js"></script>*@
+@{
+    string message = TempData.ContainsKey("Message") ? TempData["Message"].ToString() : string.Empty;
+    string styleDisplayValue = "none";
+    string MessageType = TempData.ContainsKey("MessageType") ? TempData["MessageType"].ToString() : "danger";
+    string mode = "";
+
+    if (!string.IsNullOrEmpty(message))
+    {
+        //MessageType = ViewBag.MessageType.ToString();
+        styleDisplayValue = "block";
+    }
+    else
+    {
+        styleDisplayValue = "none";
+    }
+}
+
+@using (Html.BeginForm("AddTopperWay", "School", FormMethod.Post, new { @enctype = "multipart/form-data", @class = "form-horizontal", id = "validation-form" }))
+{
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-title">
+                    <h3><i class="fa fa-file"></i> Topper's Way</h3>
+
+                </div>
+                @if (!string.IsNullOrEmpty(@message))
+                {
+                    <div class="alert alert-dismissable alert-@MessageType" style="display:@styleDisplayValue">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                        @message
+                    </div>
+                }
+                <div class="box-content">
+                    <div class="form-group">
+                        <label for="textfield5" class="col-sm-3  control-label">Select Class<span class="asterisk">*</span></label>
+                        <div class="col-sm-9  controls">
+                            @if (ViewBag.Class_Id != null)
+                            {
+                                @(Html.DropDownListFor(x => x.Class_Id, ViewBag.ClassList as SelectList, "Please Select Class", new { @onchange = "getSectionList()", @class = "form-control", @id = "ddlClass", data_rule_required = "true", data_msg_required = "Please enter class" }))
+                                @Html.HiddenFor(x => x.Class_Id)
+                            }
+                            else
+                            {
+                                @(Html.DropDownListFor(x => x.Class_Id, ViewBag.ClassList as SelectList, "Please Select Class", new { @onchange = "getSectionList()", @class = "form-control", @id = "ddlClass", data_rule_required = "true", data_msg_required = "Please enter class" }))
+                                @Html.ValidationMessageFor(x => x.Class_Id)
+                            }
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="textfield5" class="col-sm-3  control-label">Select Section<span class="asterisk">*</span></label>
+                        <div class="col-sm-9  controls">
+                            <select id="sectionDropDown" class="form-control" data_rule_required="true" , data_msg_required="Please Select Class">
+                                <option>---Select Section---</option>
+                            </select>
+                            @Html.HiddenFor(x => x.SectionId)
+
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                        <label for="textfield5" class="col-sm-3  control-label">Upload File<span class="asterisk"></span></label>
+                        <div class="col-sm-9  controls">
+
+                            <input type="file" value="Choose a file" accept="/*" id="path" name="path" />
+                        </div>
+                    </div>
+
+
+                    <div class="form-group last box-tooll">
+                        <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                            <a href="@Url.Action("GetToppersWay", "School")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                            <button id="btnAddTopper" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span> Submit</span></button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@section scripts {
+
+    <script>
+        function getSectionList() {
+            debugger;
+            var ClassId = $("#ddlClass").val();
+            $.ajax({
+                url: '/School/GetsectionList',
+                type: 'POST',
+                datatype: 'application/json',
+                contentType: 'application/json',
+                data: JSON.stringify({ ClassId: +ClassId }),
+                success: function (result) {
+                    debugger;
+                    $("#sectionDropDown").html("");
+                    $("#sectionDropDown").append
+                    ($('<option></option>').val(null).html("---Select Section---"));
+                    $.each(result.Result, function (i, section)
+                    { $("#sectionDropDown").append($('<option></option>').val(section.SectionId).html(section.SectionName)) });
+                    if ($("#SectionId").val()) {
+                        $("#sectionDropDown").val($("#SectionId").val());
+                    }
+
+                },
+                error: function () { alert("Whooaaa! Something went wrong..") },
+            });
+        }
+    </script>
+    <script>
+        var isChanged = false;
+        $(document).ready(function () {
+            //jQuery(document).ajaxStart(function () {
+            //    ajaxindicatorstart('loading data.. please wait..');
+            //}).ajaxStop(function () {
+            //    ajaxindicatorstop();
+            //});
+
+            $("#btnAddTopper").click(function () {
+                $("#SectionId").val($("#sectionDropDown").val());
+            });
+
+            if ($("#SectionId").val()) {
+                getSectionList();
+                $("#sectionDropDown").val($("#SectionId").val());
+            }
+
+
+            $('#validation-form').submit(function (e) {
+                //alert("in");
+                //console.log($(this).serialize());
+                debugger;
+                //showloader();
+                var fileData = new FormData();
+
+                fileData.append('ClassId', $('#ddlClass :selected').val())
+
+                // fileData.append('SchoolName', $("#txSchoolName").val())
+                if ($("#path").val() != '') {
+                    var fileUpload = $("#path").get(0);
+                    var files = fileUpload.files;
+                    fileData.append('path', files[0])
+                }
+
+
+
+
+
+                //var status = Validation();
+
+                $(".loader-ajax-container").css("display", "block");
+                //$.ajax({
+                //    type: 'POST',
+                //    url: "/School/AddTopperWay",
+                //    contentType: false, // Not to set any content header
+                //    processData: false,
+                //    data: fileData,
+                //    success: function (data) {
+                //        $(".loader-ajax-container").css("display", "none");
+                //        console.log(data);
+                //        if (data)
+                //            window.location.href = '/School/GetToppersWay/';
+                //    }
+
+                //});
+
+            });
+        });
+    </script>
+}

@@ -1,0 +1,195 @@
+﻿@model DigiChamps.Models.SchoolModel.StudyMaterialModel
+@{
+    ViewBag.Title = "AddStudyMaterial";
+    Layout = "~/Views/Shared/_SchoolLayout.cshtml";
+}
+@{
+    string message = TempData.ContainsKey("Message") ? TempData["Message"].ToString() : string.Empty;
+    string styleDisplayValue = "none";
+    string MessageType = TempData.ContainsKey("MessageType") ? TempData["MessageType"].ToString() : "danger";
+    string mode = "";
+
+    if (!string.IsNullOrEmpty(message))
+    {
+        //MessageType = ViewBag.MessageType.ToString();
+        styleDisplayValue = "block";
+    }
+    else
+    {
+        styleDisplayValue = "none";
+    }
+}
+
+@using (Html.BeginForm("AddStudyMaterial", "School", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
+{
+    <form class="form-horizontal" id="validation-form">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-title">
+                        <h3><i class="fa fa-file"></i> Study Material</h3>
+
+                    </div>
+                    @if (!string.IsNullOrEmpty(@message))
+                    {
+                        <div class="alert alert-dismissable alert-@MessageType" style="display:@styleDisplayValue">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                            @message
+                        </div>
+                    }
+                    <div class="box-content">
+
+                        @Html.HiddenFor(x => x.Id, new { @class="StudyMaterialId"})
+
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3  control-label">Select Class<span class="asterisk">*</span></label>
+                            <div class="col-sm-9  controls">
+
+                                @if (ViewBag.Class_Id != null)
+                                {
+                                    @(Html.DropDownListFor(x => x.Class_Id, ViewBag.ClassList as SelectList, "Please Select Class", new { @class = "form-control", @id = "ddlClass", data_rule_required = "true", data_msg_required = "Please select class" }))
+                                    @Html.HiddenFor(x => x.Class_Id)
+                                }
+                                else
+                                {
+                                    @(Html.DropDownListFor(x => x.Class_Id, ViewBag.ClassList as SelectList, "Please Select Class", new { @class = "form-control", @id = "ddlClass", data_rule_required = "true", data_msg_required = "Please select class" }))
+                                    @Html.ValidationMessageFor(x => x.Class_Id)
+                                }
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3  control-label">Select Subject<span class="asterisk">*</span></label>
+                            <div class="col-sm-9  controls">
+                                @if (ViewBag.Subject_Id != null)
+                                {
+                                    @(Html.DropDownListFor(x => x.SubjectId, ViewBag.Subject_Id as SelectList, "Please Select Subject", new { @class = "form-control", @id = "ddlSubject", data_rule_required = "true", data_msg_required = "Please select subject" }))
+                                    @Html.HiddenFor(x => x.SubjectId)
+                                }
+                                else
+                                {
+                                    @(Html.DropDownListFor(x => x.SubjectId, ViewBag.Subject_Id as SelectList, "Please Select Subject", new { @class = "form-control", @id = "ddlSubject", data_rule_required = "true", data_msg_required = "Please select subject" }))
+                                    @Html.ValidationMessageFor(x => x.SubjectId)
+                                }
+
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3  control-label">Topic<span class="asterisk">*</span></label>
+                            <div class="col-sm-9  controls">
+
+                                <input type="text" name="Topic" id="Topic" value="@Model.Topic" class="form-control" data-rule-required="true" data-msg-required="Please enter topic">
+
+                            </div>
+                        </div>
+
+                        <div class="form-group input-cont" style="display:none;">
+                            <label for="textfield5" class="col-sm-3  control-label">Material<span class="asterisk">*</span></label>
+                            <div class="col-sm-9  controls">
+
+                                <input type="text" name="Material" id="Material" value="@Model.Material" class="form-control" data-rule-required="true" data-msg-required="Please enter study material">
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textfield5" class="col-sm-3  control-label">select Material Type<span class="asterisk"></span></label>
+                            <div class="col-sm-9  controls">
+
+                                <label><input id="rbtUploadMaterial" type="radio" name="toggler" value="1" />Upload Material</label>
+                                <label><input id="rbtWriteTxt" type="radio" name="toggler" value="2" />Write Text</label>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group toHide" id="blk-1" style="display:none">
+                            <label for="textfield5" class="col-sm-3  control-label">Upload File<span class="asterisk">*</span></label>
+                            <div class="col-sm-9  controls">
+                                <input type="file" value="Choose a file" name="File" accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" id="studymaterial" data-rule-required="true" data-msg-required="Please enter file" />
+                            </div>
+                        </div>
+                        <div class="form-group toHide" id="blk-2" style="display:none">
+                            <label for="textfield5" class="col-sm-3  control-label">Write Material<span class="asterisk">*</span></label>
+                            <div class="col-sm-9  controls">
+                                @Html.TextAreaFor(x => x.MaterialText, new { @class = "form-control" })
+                                @Html.HiddenFor(x => x.MaterialType)
+                            </div>
+                        </div>
+
+                        <div class="form-group last box-tooll">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
+                                <a href="@Url.Action("GetstudyMaterialList", "School")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
+                                <button id="btnadd" type="submit" class="btn btn-primary btn-success"><i class="fa fa-check green-i"></i><span> Submit</span></button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+}
+
+@section scripts {
+<script src="~/Student_assets/crop/scripts/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("[name=toggler]").click(function () {
+                $('.toHide').hide();
+                $("#blk-" + $(this).val()).show('slow');
+                if ($(this).val() == "1") {
+                    $("#MaterialType").val("file");
+                }
+                else {
+                    $("#MaterialType").val("text");
+                }
+            });
+
+            //Bind Material Type
+            if ($(".StudyMaterialId").val() != "00000000-0000-0000-0000-000000000000" && $("#MaterialType").val() == "text") {
+                $('.toHide').hide();
+                $("#blk-2").show('slow');
+            }
+            else {
+                $('.toHide').hide();
+                $("#blk-1").show('slow');
+            }
+        });
+        $('#validation-form').submit(function (e) {
+
+            //var fileData = new FormData();
+
+            //fileData.append('ClassId', $('#ddlClass :selected').val())
+            //fileData.append('SubjectId', $('#ddlSubject :selected').val())
+            //fileData.append('Topic', $("#Topic").val())
+            //fileData.append('MaterialText', $("#MaterialText").val())
+            //fileData.append('MaterialType', $("#MaterialType").val())
+
+            //if ($("#studymaterial").val() != '') {
+            //    var fileUpload = $("#studymaterial").get(0);
+            //    var files = fileUpload.files;
+            //    fileData.append('File', files[0])
+            //}
+
+
+            $(".loader-ajax-container").css("display", "block");
+            //$.ajax({
+            //    type: 'POST',
+            //    url: "/School/AddStudyMaterial",
+            //    contentType: false, // Not to set any content header
+            //    processData: false,
+            //    data: fileData,
+            //    success: function (data) {
+            //        console.log(data);
+            //        if (data)
+            //            $(".loader-ajax-container").css("display", "none");
+            //        window.location.href = '/School/GetStudyMaterial/';
+            //    }
+            //});
+
+        });
+    </script>
+}
