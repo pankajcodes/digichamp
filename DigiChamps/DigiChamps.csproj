@@ -4514,6 +4514,8 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\School\GetAllAssignedTeacherList.cshtml" />
     <Content Include="Views\School\AssignedTeacher.cshtml" />
+    <Content Include="Views\School\AddPeriod.cshtml" />
+    <Content Include="Views\School\AddSubject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
