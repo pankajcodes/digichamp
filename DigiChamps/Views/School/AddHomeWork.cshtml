@@ -95,7 +95,7 @@
                         <label for="textfield5" class="col-sm-3  control-label">Due Date<span class="asterisk">*</span></label>
                         <div class="col-sm-9  controls">
                             @*<input type="text" name="EmailAddress" id="EmailAddress" value="@Model.StartDate" class="form-control" data-rule-required="true" data-msg-required="Please enter user name">*@
-                            @Html.TextBoxFor(x => x.DateOfHomework, new { placeholder = "", @class = "form-control", @readonly = "readonly"})
+                            @Html.TextBoxFor(x => x.DateOfHomework, new { placeholder = "", @class = "form-control", @readonly = "readonly", @data_rule_required = "true", @data_msg_required = "Please select subject" })
                             @Html.ValidationMessageFor(x => x.DateOfHomework)
 
                             @*@Html.DropDownListFor(x => x.Gender, new List<SelectListItem> { new SelectListItem { Text = "Male", Value = "Male" }, new SelectListItem { Text = "Female", Value = "Female" } }, " Select ", new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please select gender" })

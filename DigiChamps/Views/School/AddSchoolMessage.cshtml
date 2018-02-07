@@ -30,7 +30,7 @@
 @using (Html.BeginForm("AddSchoolMessage", "School", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form", enctype = "multipart/form-data" }))
 {
 
-    <form class="form-horizontal" id="validation-form">
+    
         <div class="row">
             <div class="col-md-12">
                 <div class="box">
@@ -94,10 +94,11 @@
                             <div class="col-sm-9  controls">
 
                                 <input type="file" value="Choose a file" name="File" accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" id="studymaterial" />
-                                @if(!string.IsNullOrEmpty(Model.FileName))
+                                @if (!string.IsNullOrEmpty(Model.FileName))
                                 {
-                                <a href="#">@Model.FileName</a>
+                                    <a href="#" id="uploadedFile">@Model.FileName</a>
                                 }
+                                <span id="fileUploadValidation" class="help-block has-error errorMsg"></span>
                                 @Html.HiddenFor(x=>x.FileName)
                                 @Html.HiddenFor(x => x.FilePath)
                             </div>
@@ -119,7 +120,7 @@
             </div>
         </div>
 
-    </form>
+    
 
 }
 
@@ -169,6 +170,18 @@
                 $("#sectionDropDownValidation").html("Please Select Section.");
                 return false;
             }
+            var imgVal = $('#studymaterial').val();
+            if (imgVal == '') {
+                if (!$("#uploadedFile").val() && $("#MessageId").val() != "00000000-0000-0000-0000-000000000000") {
+
+                }
+                else {
+                    $("#fileUploadValidation").show();
+                    $("#fileUploadValidation").html("Please Select file.");
+                    return false;
+                }
+
+            }
         });
 
         if ($("#SectionId").val())
@@ -176,6 +189,13 @@
             getSectionList();
             $("#sectionDropDown").val($("#SectionId").val());
         }
+        $('#validation-form').submit(function (e) {
+           
+
+            if ($("#validation-form").valid()) {
+                $(".loader-ajax-container").css("display", "block");
+            }
+        });
     });
     </script>
 }

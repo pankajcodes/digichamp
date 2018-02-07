@@ -7,7 +7,7 @@
 @{
     string message = TempData.ContainsKey("Message") ? TempData["Message"].ToString() : string.Empty;
     string styleDisplayValue = "none";
-    string MessageType = TempData.ContainsKey("MessageType") ? TempData["MessageType"].ToString() : "danger";
+    string MessageType = TempData.ContainsKey("MessageType") ? TempData["MessageType"].ToString() : "success";
     string mode = "";
 
     if (!string.IsNullOrEmpty(message))

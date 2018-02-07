@@ -467,6 +467,12 @@ namespace DigiChamps.Controllers
                 if (objCreateSubject.SubjectId != null && objCreateSubject.SubjectId != Guid.Empty)
                 {
                     var subject = DbContext.tbl_DC_School_Subject.Where(x => x.SubjectId == objCreateSubject.SubjectId && x.SchoolId == schoolId).FirstOrDefault();
+                    //Check subject name already exist
+                    if (DbContext.tbl_DC_School_Subject.Where(x => x.SubjectName.ToLower() == objCreateSubject.SubjectName.ToLower() && x.SchoolId == schoolId && x.IsActive == true).Any())
+                    {
+                        TempData["Message"] = "Subject Aready Exist.";
+                        return View(objCreateSubject);
+                    }
                     if (subject != null)
                     {
                         subject.SubjectId = objCreateSubject.SubjectId;
@@ -797,7 +803,8 @@ namespace DigiChamps.Controllers
                 objHomeWorkModel.DateOfHomework = HomeworkDetail.DateOfHomework;
                 objHomeWorkModel.PeriodID = HomeworkDetail.PeriodID;
             }
-            ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+            //ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+            ViewBag.ClassList = GetClassListDropDown();
             ViewBag.SectionList = new SelectList(DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true), "SectionId", "SectionName");
             ViewBag.SubjectList = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
             ViewBag.PeriodList = new SelectList(DbContext.tbl_DC_Period.Where(x => x.IsActive == true && x.SchoolId == schoolId), "Id", "Title");
@@ -821,7 +828,7 @@ namespace DigiChamps.Controllers
                         HomeWorkDetail.DateOfHomework = objHomeWorkModel.DateOfHomework;
                         HomeWorkDetail.PeriodID = objHomeWorkModel.PeriodID;
                         HomeWorkDetail.HomeworkDetail = objHomeWorkModel.HomeworkDetail;
-                        
+
                         DbContext.SaveChanges();
                         TempData["Message"] = "Home Work Updated Successfully.";
                     }
@@ -830,10 +837,11 @@ namespace DigiChamps.Controllers
                 {
 
                     //Check duplicate
-                    if (DbContext.tbl_DC_School_Homework.Any(x => x.SchoolId == schoolId && x.SectionId == objHomeWorkModel.SectionId && x.SubjectId == objHomeWorkModel.SubjectId  && x.Class_Id == objHomeWorkModel.Class_Id  && x.PeriodID == objHomeWorkModel.PeriodID))
+                    if (DbContext.tbl_DC_School_Homework.Any(x => x.SchoolId == schoolId && x.SectionId == objHomeWorkModel.SectionId && x.SubjectId == objHomeWorkModel.SubjectId && x.Class_Id == objHomeWorkModel.Class_Id && x.PeriodID == objHomeWorkModel.PeriodID))
                     {
                         TempData["Message"] = "Home Work Aready Exist.";
-                        ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+                        //ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+                        ViewBag.ClassList = GetClassListDropDown();
                         ViewBag.SectionList = new SelectList(DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true), "SectionId", "SectionName");
                         ViewBag.SubjectList = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
                         return View(objHomeWorkModel);
@@ -931,7 +939,8 @@ namespace DigiChamps.Controllers
                     objStudyMaterialModel.IsActive = true;
                 }
             }
-            ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+            //ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+            ViewBag.ClassList = GetClassListDropDown();
             ViewBag.Subject_Id = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
 
             return View(objStudyMaterialModel);
@@ -987,7 +996,8 @@ namespace DigiChamps.Controllers
                     if (DbContext.tbl_DC_School_StudyMaterial.Any(x => x.SchoolId == schoolId && x.Class_Id == objStudyMaterialModel.Class_Id && x.SubjectId == objStudyMaterialModel.SubjectId && x.Topic == objStudyMaterialModel.Topic))
                     {
                         TempData["Message"] = "Teacher Aready assign to same class and section.";
-                        ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+                        //ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+                        ViewBag.ClassList = GetClassListDropDown();
                         ViewBag.Subject_Id = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
                         return View(objStudyMaterialModel);
                     }
@@ -1118,7 +1128,8 @@ namespace DigiChamps.Controllers
                 }
             }
             //ViewBag.Class_Id = new SelectList(DbContext.tbl_DC_School_Class.Where(x => x.IsActive == true), "ClassId", "ClassName");
-            ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+            //ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+            ViewBag.ClassList = GetClassListDropDown();
 
             return View(objToppersWayModel);
         }
@@ -1177,7 +1188,8 @@ namespace DigiChamps.Controllers
                     if (DbContext.tbl_DC_ToppersWay.Any(x => x.SchoolId == schoolId && x.Class_Id == objToppersWayModel.Class_Id && x.SectionId == objToppersWayModel.SectionId && x.IsActive == true))
                     {
                         TempData["Message"] = "Toppers Way Aready Added.";
-                        ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+                        //ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+                        ViewBag.ClassList = GetClassListDropDown();
                         return View(objToppersWayModel);
                     }
 
@@ -1249,7 +1261,7 @@ namespace DigiChamps.Controllers
             List<DigiChamps.Models.SchoolModel.AssignTeacher> objAssignTeacherList = new List<SchoolModel.AssignTeacher>();
             DigiChamps.Models.SchoolModel.AssignTeacher assignTeacher = new DigiChamps.Models.SchoolModel.AssignTeacher();
             Guid schoolId = new Guid(Session["id"].ToString());
-            var assignedTeacherList = DbContext.tbl_DC_School_AssingTeacher.Where(x => x.SchoolId == schoolId).ToList();
+            var assignedTeacherList = DbContext.tbl_DC_School_AssingTeacher.Where(x => x.SchoolId == schoolId && x.IsActive==true).OrderByDescending(x=>x.CreatedDate).ToList();
             if (assignedTeacherList.Any())
             {
                 foreach (var item in assignedTeacherList)
@@ -1284,8 +1296,8 @@ namespace DigiChamps.Controllers
                     assignTeacher.TeacherId = (Guid)assignTeacherDetails.TeacherId;
                 }
             }
-            ViewBag.TeacherList = new SelectList(DbContext.tbl_DC_SchoolUser.Where(x => x.IsActive == true && x.SchoolId == schoolId && x.UserRole == "Teacher"), "UserId", "UserFirstname");
-            ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+            ViewBag.TeacherList = new SelectList(DbContext.tbl_DC_SchoolUser.Where(x => x.IsActive == true && x.SchoolId == schoolId && x.UserRole == "Teacher"), "UserId", "UserFirstname");            
+            ViewBag.ClassList = new SelectList(GetClassListDropDown(), "Value", "Text");
             ViewBag.SectionList = new SelectList(DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true), "SectionId", "SectionName");
             ViewBag.SubjectList = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
             return View(assignTeacher);
@@ -1465,10 +1477,11 @@ namespace DigiChamps.Controllers
                 else
                 {
                     //Check duplicate
-                    if (DbContext.tbl_DC_School_MessageCreation.Any(x => x.SchoolId == schoolId && x.SectionId == objMessageCreation.SectionId && x.Class_Id == objMessageCreation.Class_Id ))
+                    if (DbContext.tbl_DC_School_MessageCreation.Any(x => x.SchoolId == schoolId && x.SectionId == objMessageCreation.SectionId && x.Class_Id == objMessageCreation.Class_Id))
                     {
                         TempData["Message"] = "Message Aready Exist.";
-                        ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+                        //ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+                        ViewBag.ClassList = GetClassListDropDown();
                         ViewBag.SectionList = new SelectList(DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true), "SectionId", "SectionName");
                         return View(objMessageCreation);
                     }
@@ -1596,7 +1609,8 @@ namespace DigiChamps.Controllers
                     timeTableModel.Day = timeTableDetail.Day;
                 }
             }
-            ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+            //ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+            ViewBag.ClassList = GetClassListDropDown();
             ViewBag.SectionList = new SelectList(DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true), "SectionId", "SectionName");
             ViewBag.SubjectList = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
             ViewBag.PeriodList = new SelectList(DbContext.tbl_DC_Period.Where(x => x.IsActive == true && x.SchoolId == schoolId), "Id", "Title");
@@ -1659,6 +1673,28 @@ namespace DigiChamps.Controllers
             }
 
             return View();
+        }
+
+        public ActionResult DeleteTimeTable(Guid TimeTableId)
+        {
+
+            try
+            {
+                // get data for same id 
+                var result = DbContext.tbl_DC_Shool_TimeTable.Where(x => x.TimeTableId == TimeTableId && x.IsActive == true).FirstOrDefault();
+                //                  //Set status false for delete
+                result.IsActive = false;
+                DbContext.SaveChanges();
+                //data = result.UserRole;
+
+            }
+
+            catch (Exception ex)
+            {
+
+            }
+
+            return RedirectToAction("GetTimeTableList", "School");
         }
         #endregion
 
@@ -2034,6 +2070,24 @@ namespace DigiChamps.Controllers
         #endregion periodDetails
 
         #endregion amit changes
+
+        #region CommonFunction
+        public List<SelectListItem> GetClassListDropDown()
+        {
+            List<SelectListItem> classSelectList = new List<SelectListItem>();            
+            
+            var classList = DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false).ToList();
+            if (classList.Any())
+            {
+                foreach (var item in classList)
+                {
+                    classSelectList.Add(new SelectListItem { Text = item.Class_Name + " (" + item.tbl_DC_Board.Board_Name + ")", Value = item.Class_Id.ToString() });
+                    
+                }
+            }
+            return classSelectList;
+        }
+        #endregion
         [HttpGet]
         public JsonResult IsEmailExist(string eMail)
         {
@@ -2329,7 +2383,7 @@ namespace DigiChamps.Controllers
 
 
 
-      
+
 
 
 

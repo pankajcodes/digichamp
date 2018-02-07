@@ -61,7 +61,9 @@
                             <div class="col-sm-9  controls">
 
                                 @(Html.DropDownListFor(x => x.Class_Id, ViewBag.ClassList as SelectList, "Please Select Class", new { @onchange = "getSectionList()", @class = "form-control", @id = "ddlClass", data_rule_required = "true", data_msg_required = "Please Select Class" }))
+                                @*@Html.DropDownListFor(x => x.Class_Id, (IEnumerable<SelectListItem>)ViewBag.ClassList, "Please Select Class", new { @onchange = "getSectionList()", @class = "form-control", @id = "ddlClass", data_rule_required = "true", data_msg_required = "Please Select Class" })*@
                                 @Html.HiddenFor(x => x.Class_Id)
+                                @Html.ValidationMessageFor(x => x.Class_Id)
 
                             </div>
                         </div>
