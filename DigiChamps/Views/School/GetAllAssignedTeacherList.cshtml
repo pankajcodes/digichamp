@@ -70,7 +70,7 @@
 
                                         <td>
                                             @Html.ActionLink(" ", "AssignedTeacher", "School", new { AssignTeacherId = @item.AssignmentId }, new { @class = "btn btn-sm btn-primary fa fa-pencil", @title = "View" })
-                                            @Html.ActionLink(" ", "DeleteAssignTeacher", "School", new { id = @item.AssignmentId }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete?')", @data_original_title = "Delete", @title = "Delete" })
+                                            @Html.ActionLink(" ", "DeleteAssignTeacher", "School", new { AssignTeacherId = @item.AssignmentId }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete?')", @data_original_title = "Delete", @title = "Delete" })
 
 
                                         </td>
