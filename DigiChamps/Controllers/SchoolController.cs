@@ -84,7 +84,7 @@ namespace DigiChamps.Controllers
             if (objSchoolInformation.SchoolId == Guid.Empty || objSchoolInformation.SchoolId == null)
             {
                 //Check duplicate value for school
-                if (DbContext.tbl_DC_School_Info.Any(x => x.SchoolName == objSchoolInformation.SchoolName))
+                if (DbContext.tbl_DC_School_Info.Any(x => x.SchoolName == objSchoolInformation.SchoolName.Trim()))
                 {
                     TempData["Message"] = "School Name Already Exists.";
                     return View(objSchoolInformation);
@@ -97,19 +97,19 @@ namespace DigiChamps.Controllers
                 string browserType = Request.Browser.Browser.ToUpper();
                 UploadFileDetailModel uploadFileDetailModel = fileHelper.UploadDoc(Request.Files, "School", objSchoolInformation.SchoolId.ToString(), "Image", browserType);
                 objSchoolInformation.Logo = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
-                objSchoolInformation.DocumentaryVideo = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
+                objSchoolInformation.DocumentaryVideo = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.VideoPath + "/" + uploadFileDetailModel.VideoName : string.Empty;
                 //objSchoolInformation.Logo = uploadFileDetailModel.ImageName;
                 #endregion
 
 
-                DbContext.Sp_DC_SchoolInfo(objSchoolInformation.SchoolId, objSchoolInformation.SchoolName, objSchoolInformation.Information, objSchoolInformation.Logo, objSchoolInformation.DocumentaryVideo, objSchoolInformation.ThumbnailPath, DateTime.Now, DateTime.Now, objSchoolInformation.IsActive);
+                DbContext.Sp_DC_SchoolInfo(objSchoolInformation.SchoolId, objSchoolInformation.SchoolName.Trim(), (!string.IsNullOrEmpty(objSchoolInformation.Information) ? objSchoolInformation.Information.Trim() : objSchoolInformation.Information), objSchoolInformation.Logo, objSchoolInformation.DocumentaryVideo, objSchoolInformation.ThumbnailPath, DateTime.Now, DateTime.Now, objSchoolInformation.IsActive);
                 TempData["Message"] = "School Added Successfully.";
             }
             else
             {
 
 
-                DbContext.Sp_DC_SchoolInfo(objSchoolInformation.SchoolId, objSchoolInformation.SchoolName, objSchoolInformation.Information, objSchoolInformation.Logo, objSchoolInformation.DocumentaryVideo, objSchoolInformation.ThumbnailPath, DateTime.Now, DateTime.Now, objSchoolInformation.IsActive);
+                DbContext.Sp_DC_SchoolInfo(objSchoolInformation.SchoolId, objSchoolInformation.SchoolName.Trim(), (!string.IsNullOrEmpty(objSchoolInformation.Information) ? objSchoolInformation.Information.Trim() : objSchoolInformation.Information), objSchoolInformation.Logo, objSchoolInformation.DocumentaryVideo, objSchoolInformation.ThumbnailPath, DateTime.Now, DateTime.Now, objSchoolInformation.IsActive);
                 TempData["Message"] = "School Updated Successfully.";
             }
             return RedirectToAction("GetSchoolList", "School");
@@ -1070,7 +1070,24 @@ namespace DigiChamps.Controllers
             return RedirectToAction("GetStudyMaterialList", "School");
         }
 
-
+        public ActionResult DeleteStudyMaterial(Guid StudyMaterialId)
+        {
+            try
+            {
+                // get data for same id 
+                var result = DbContext.tbl_DC_School_StudyMaterial.Where(x => x.StudyMaterialId == StudyMaterialId).FirstOrDefault();
+                if (result != null)
+                {
+                    // Set status false for delete
+                    result.IsActive = false;
+                    DbContext.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return RedirectToAction("GetStudyMaterialList", "School");
+        }
         #endregion
 
         #region TopperWay
@@ -1697,11 +1714,23 @@ namespace DigiChamps.Controllers
 
             foreach (var item in newclassList)
             {
-                objclassList.Add(new SelectListItem
+                if (classid > 0 && item.Class_Id == classid)
                 {
-                    Text = item.Class_Name.ToString() + "(" + item.Board_Name + ")",
-                    Value = item.Class_Id.ToString(),
-                });
+                    objclassList.Add(new SelectListItem
+                    {
+                        Text = item.Class_Name.ToString() + "(" + item.Board_Name + ")",
+                        Value = item.Class_Id.ToString(),
+                        Selected = true
+                    });
+                }
+                if (item.Class_Id != classid)
+                {
+                    objclassList.Add(new SelectListItem
+                    {
+                        Text = item.Class_Name.ToString() + "(" + item.Board_Name + ")",
+                        Value = item.Class_Id.ToString(),
+                    });
+                }
             }
 
             objCreateClass.Section = objCIFFOB;
@@ -1710,8 +1739,8 @@ namespace DigiChamps.Controllers
             //  ViewBag.Accounts=
             if (classid > 0)
             {
-
-                var sectionName = DbContext.tbl_DC_Class_Section.Where(x => x.Class_Id == classid).ToList();
+                Guid? school_id = new Guid(Session["id"].ToString());
+                var sectionName = DbContext.tbl_DC_Class_Section.Where(x => x.Class_Id == classid && x.School_Id == school_id).ToList();
                 objCreateClass.SectionList = sectionName;
 
                 foreach (var section in sectionName)

@@ -35,7 +35,7 @@
 
                     </h3>
                 </div>
-                @using (Html.BeginForm("AddPeriod", "School", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "validation - form", @class = "form-horizontal" }))
+                @using (Html.BeginForm("AddPeriod", "School", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "validation-form", @class = "form-horizontal" }))
                 {
                     @Html.AntiForgeryToken()
                     @*@Html.ValidationSummary(true)*@
@@ -91,35 +91,57 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script src="http://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.js"></script>
 <script>
-   
-    $('#validation-form').submit(function (e) {
+   $(document).ready(function () {
+       var input = $('#timepicker_start');
+       input.clockpicker({
+           autoclose: true
+       });
 
-        var status = true;
+       var input = $('#timepicker_end');
+       input.clockpicker({
+           autoclose: true
+       });
 
-        if ($("#txSchoolName").val() == "") {
-            status = false;
-        }
-        if (status) {
-            $(".loader-ajax-container").css("display", "block");
-        }
-        else {
-            return false;
-        }
+        $('#validation-form').submit(function (e) {
 
-    });
+            var status = true;
 
-    $(document).ready(function () {
-        
-        
-        var input = $('#timepicker_start');
-        input.clockpicker({
-            autoclose: true
+            if ($("#txSchoolName").val() == "") {
+                status = false;
+            }
+            if ($('#timepicker_start') != null && $('#timepicker_start').val() != "" && $('#timepicker_end') != null && $('#timepicker_end').val() != "") {
+                var fromTime = $('#timepicker_start').val(); // format hh:mm
+                var toTime = $('#timepicker_end').val();
+                var ft = fromTime.split(":");
+                var tt = toTime.split(":");
+                var OK = false;
+                if (tt[0] > ft[0]) { OK = true }
+                if ((tt[0] == ft[0]) && (tt[1] > ft[1])) { OK = true }
+                if (OK) {
+                    //alert("The second time is after the first time");
+                    //var hr = tt[0] - ft[0];
+                    //var mn = tt[1] - ft[1];
+                    //if (mn < 0) { mn = mn + 60; hr = hr - 1 }
+                    //if (mn < 10) { mn = "0" + mn }
+                    //alert("Difference is " + hr + ":" + mn);
+                }
+                else {
+                    status = false;
+                    alert("FROM Time should NOT greater than TO Time")
+                }
+            }
+                      
+            if (status) {
+                $(".loader-ajax-container").css("display", "block");
+            }
+            else {
+                return false;
+            }
+
         });
 
-        var input = $('#timepicker_end');
-        input.clockpicker({
-            autoclose: true
-        });
+       
+       
     });
 
 

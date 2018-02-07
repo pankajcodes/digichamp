@@ -3,7 +3,6 @@
     ViewBag.Title = "CreateOrEditClass";
 }
 
-
 @if (@Model.Id == null)
 {
     <h2>
@@ -13,11 +12,9 @@
 else
 {
     <h2>
-        Update Class
+        Create Class
     </h2>
 }
-
-
 
 @{
     ViewBag.Title = "School Admin Profile";
@@ -41,17 +38,14 @@ else
 <script src="~/Student_assets/crop/scripts/jquery.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
 <form class="form-horizontal" id="validation-form">
     <div class="row">
         <div class="col-md-12">
             <div class="box">
                 <div class="box-title">
                     <h3><i class="fa fa-file"></i> Create Class</h3>
-
                 </div>
                 <div class="box-content">
-
                     <input type="hidden" id="hdnsectionName" value="@Model.SectionName">
                     <input type="hidden" id="hdnClassId" value="@Model.Id">
                     <div class="form-group">
@@ -62,32 +56,25 @@ else
                             @*<span id="errorClass" class="error"></span>*@
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label for="textfield5" class="col-sm-3  control-label">Add Section<span class="asterisk">*</span></label>
                         <div class="col-sm-9  controls">
                             <div style="height:200px;overflow:scroll;width:200px;" id="chkSection">
                                 @foreach (var item in Model.Section)
                                 {
-                                    <input type="checkbox" id="@item.Text" name="chxBxGroupName" value="@item.Text"  />
-                                    <label for="@item.Text">@item.Value</label>
-                                    <br /><br />
+                                <input type="checkbox" id="@item.Text" name="chxBxGroupName" value="@item.Text" />
+                                <label for="@item.Text">@item.Value</label>
+                                <br /><br />
                                 }
                             </div>
                             @*@Html.ListBoxFor(m => m.SectionName, Model.Section, new { @class = "listbox" })*@
-                            @*<span id="errorSection" class="error"></span>*@
-
+                            <span id="errorSection" class="error" style="color:red;"></span>
                         </div>
                     </div>
 
 
 
-
-
-
-
                     @*Crop image in modal*@
-
 
                     <div class="form-group last box-tooll">
                         <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
@@ -96,83 +83,83 @@ else
                         </div>
                     </div>
 
-
                 </div>
             </div>
         </div>
     </div>
-
 </form>
-
-<script>
-    $('#validation-form').submit(function (e) {
-
-
-        //console.log($(this).serialize());
-        var selected = [];
-        $('#chkSection input:checked').each(function () {
-            selected.push($(this).attr('value'));
-        });
-        var join = selected.join()
-        var status = true;
-        var classId = $("#ddlClassName").val();
-        var sectionId = $("#ddlSectionName").val();
-        //   var teacherId = $("#ddlTeacherName").val();
-        if (classId == null || classId == "") {
-            $("#errorClass").html("Please enter required field.");
-            status = false;
-        }
-        if (join == null || join == "") {
-            $("#errorSection").html("Please enter section.");
-            status = false;
-        }
-        //if (teacherId == null || teacherId == "") {
-        //    $("#errorTeacher").html("Please enter required field.");
-        //    status = false;
-        //}
-
-        if (status) {
-            //showloader();
-            var fileData = new FormData();
-
-            fileData.append('ClassName', $("#ddlClassName").val());
-            fileData.append('SectionName', selected.join());
-            fileData.append('EmailAddress', $("#EmailAddress").val());
-            fileData.append('Id', $("#hdnClassId").val());
-
-            // fileData.append('LastName', $("#ConfirmPassword").val())
-
-            // fileData.append('SchoolName', $("#txSchoolName").val())
-
-            var a = fileData;
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#validation-form').submit(function (e) {
 
 
-            //var status = Validation();
+                //console.log($(this).serialize());
+                var selected = [];
+                $('#chkSection input:checked').each(function () {
+                    selected.push($(this).attr('value'));
+                });
+                var join = selected.join()
+                var status = true;
+                var classId = $("#ddlClassName").val();
+                var sectionId = $("#ddlSectionName").val();
+                //   var teacherId = $("#ddlTeacherName").val();
+                if (classId == null || classId == "") {
+                    $("#errorClass").html("Please enter required field.");
+                    status = false;
+                }
+                if (join == null || join == "") {
+                    $("#errorSection").html("Please enter section.");
+                    status = false;
+                }
+                //if (teacherId == null || teacherId == "") {
+                //    $("#errorTeacher").html("Please enter required field.");
+                //    status = false;
+                //}
 
-            $(".loader-ajax-container").css("display", "block");
-            $.ajax({
-                type: 'POST',
-                url: "/School/AddClass",
-                contentType: false, // Not to set any content header
-                processData: false,
-                data: fileData ,
-                success: function (data) {
-                    window.location = '@Url.Action("GetClassList", "School")';
+                if (status) {
+                    //showloader();
+                    var fileData = new FormData();
 
-                    console.log(data);
+                    fileData.append('ClassName', $("#ddlClassName").val());
+                    fileData.append('SectionName', selected.join());
+                    fileData.append('EmailAddress', $("#EmailAddress").val());
+                    fileData.append('Id', $("#hdnClassId").val());
 
+                    // fileData.append('LastName', $("#ConfirmPassword").val())
+
+                    // fileData.append('SchoolName', $("#txSchoolName").val())
+
+                    var a = fileData;
+
+
+                    //var status = Validation();
+
+                    $(".loader-ajax-container").css("display", "block");
+                    $.ajax({
+                        type: 'POST',
+                        url: "/School/AddClass",
+                        contentType: false, // Not to set any content header
+                        processData: false,
+                        data: fileData,
+                        success: function (data) {
+                            window.location = '@Url.Action("GetClassList", "School")';
+
+                            console.log(data);
+
+                        }
+                    });
+                }
+                else {
+                    return false;
                 }
             });
-        }
-        else {
-            return false;
-        }
-    });
-
-    $(document).ready(function () {
+        });
+        $(document).ready(function () {
 
 
-        @*if (@Model.SectionList != null) {
+            @*if (@Model.SectionList != null) {
            @foreach (var item in Model.SectionList)
            {
 
@@ -181,16 +168,17 @@ else
 
         }*@
 
-        var sectionName = $("#hdnsectionName").val();
-        var section = sectionName.split(",")
-        if (section != null) {
-            for (var item = 0; item < section.length; item++) {
-                //document.getElementById(item[0]).checked = true;
-                $("#" + section[item]).attr("checked", true);
+            var sectionName = $("#hdnsectionName").val();
+            var section = sectionName.split(",")
+            if (section != null) {
+                for (var item = 0; item < section.length; item++) {
+                    //document.getElementById(item[0]).checked = true;
+                    $("#" + section[item]).attr("checked", true);
+                }
             }
-        }
 
 
 
-    });
-</script>
+        });
+    </script>
+}

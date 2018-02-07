@@ -1,6 +1,6 @@
 ﻿@model DigiChamps.Models.SchoolModel.SchoolInformation
-@{    
-    if (Model.SchoolId !=  Guid.Empty)
+@{
+    if (Model.SchoolId != Guid.Empty)
     {
         ViewBag.Title = "Edit School";
     }
@@ -8,7 +8,7 @@
     {
         ViewBag.Title = "Add School";
     }
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";    
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @{
     string message = TempData.ContainsKey("Message") ? TempData["Message"].ToString() : string.Empty;
@@ -26,7 +26,6 @@
         styleDisplayValue = "none";
     }
 }
-
 <style>
     .input-validation-error {
         border-color: #b94a48;
@@ -39,12 +38,10 @@
         color: #C62626;
     }
 </style>
-
 <div class="page-content-wrap">
-
     <div class="row">
         <div class="col-md-12">
-            <div class="box">                
+            <div class="box">
                 <div class="box-title">
                     <h3>
                         <i class="fa fa-file"></i>
@@ -59,8 +56,7 @@
                         @message
                     </div>
                 }
-
-                @using (Html.BeginForm("AddSchool", "School", FormMethod.Post, new {@enctype = "multipart/form-data" , @id = "validation - form", @class = "form-horizontal" }))
+                @using (Html.BeginForm("AddSchool", "School", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "validation-form", @class = "form-horizontal" }))
                 {
                     @Html.AntiForgeryToken()
                     @*@Html.ValidationSummary(true)*@
@@ -75,37 +71,43 @@
                                     @Html.ValidationMessageFor(x => x.SchoolName)
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label for="textfield5" class="col-sm-3  control-label">School Information<span class="asterisk"></span></label>
                                 <div class="col-sm-9  controls">
                                     @Html.TextAreaFor(x => x.Information, new { @id = "txSchoolInformation", @class = "form-control", @type = "text" })
-
                                 </div>
                             </div>
-
 
                             <div class="form-group">
                                 <label for="textfield5" class="col-sm-3  control-label">School Logo<span class="asterisk"></span></label>
                                 <div class="col-sm-9  controls">
-
                                     @Html.TextBoxFor(x => x.ImageFileUpload, new { type = "file", accept = "image/*" })
                                     @*<input type="file" value="Chofileose a " accept="image/*" id="ImageUpload" />*@
                                     @if (System.IO.File.Exists(Server.MapPath(Model.Logo)))
-                                    { 
-                                    <img src="@Model.Logo" style="width:50px;height:50px;" />
+                                    {
+                                        <img src="@Model.Logo" style="width:50px;height:50px;" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Images/digi1.jpg" style="width:50px;height:50px;" />
                                     }
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label for="textfield5" class="col-sm-3  control-label">Documentary Video<span class="asterisk"></span></label>
                                 <div class="col-sm-9  controls">
                                     @Html.TextBoxFor(x => x.VideoFileUpload, new { type = "file", accept = "video/*" })
                                     @*<input type="file" value="Choose a file" accept="video/*" id="documentaryvideo" />*@
+                                    @if (Model.DocumentaryVideo!=null && Model.DocumentaryVideo!="" && System.IO.File.Exists(Server.MapPath(Model.DocumentaryVideo)))
+                                    {
+                                        @Html.ActionLink(Path.GetFileName(Model.DocumentaryVideo), Server.MapPath(Model.DocumentaryVideo));
+                                    }
+                                    else{
+                                    <div>No Documentary Video found.</div>
+                                    }           
+                                    <p>@Server.MapPath(Model.DocumentaryVideo)</p>                        
                                 </div>
                             </div>
-
                             <div class="form-group last box-tooll">
                                 <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-2">
                                     <a href="@Url.Action("GetSchoolList", "School")" class="btn btn-primary"><i class="fa fa-undo"></i> <span>Back</span> </a>
@@ -115,60 +117,60 @@
                         </div>
                     </div>
                 }
+                
             </div>
-
         </div>
-
     </div>
 </div>
-
 <script src="~/Student_assets/crop/scripts/jquery.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
+@section scripts
+{
 <script>
-    $('#validation-form').submit(function (e) {
-    //$("#btnAddSchool").click(function () {
-        debugger;
-        //var fileData = new FormData();
-        var status = true;
-        //fileData.append('SchoolName', $("#txSchoolName").val())
-        //fileData.append('Information', $("#txSchoolInformation").val())
+    $(document).ready(function () {
+        $('#validation-form').submit(function (e) {
+            //$("#btnAddSchool").click(function () {
+            //var fileData = new FormData();
+            var status = true;
+            //fileData.append('SchoolName', $("#txSchoolName").val())
+            //fileData.append('Information', $("#txSchoolInformation").val())
 
-        //if ($("#ImageUpload").val() != '') {
-        //    var fileUpload = $("#ImageUpload").get(0);
-        //    var files = fileUpload.files;
-        //    fileData.append('Logo', files[0])
-        //}
+            //if ($("#ImageUpload").val() != '') {
+            //    var fileUpload = $("#ImageUpload").get(0);
+            //    var files = fileUpload.files;
+            //    fileData.append('Logo', files[0])
+            //}
 
-        //if ($("#documentaryvideo").val() != '') {
-        //    var fileUpload = $("#documentaryvideo").get(0);
-        //    var files = fileUpload.files;
-        //    fileData.append('DocumentaryVideo', files[0])
-        //}
-        if ($("#txSchoolName").val() == "") {
-            status = false;
-        }
+            //if ($("#documentaryvideo").val() != '') {
+            //    var fileUpload = $("#documentaryvideo").get(0);
+            //    var files = fileUpload.files;
+            //    fileData.append('DocumentaryVideo', files[0])
+            //}
+            if ($("#txSchoolName").val() == "") {
+                status = false;
+            }
 
-        if (status) {
-
-            $(".loader-ajax-container").css("display", "block");
-            //$.ajax({
-            //    type: 'POST',
-            //    url: "/Admin/AddSchool",
-            //    contentType: false, // Not to set any content header
-            //    processData: false,
-            //    data: fileData,
-            //    success: function (data) {
-            //        console.log(data);
-            //        if (data)
-            //            window.location.href = '/School/GetSchoolList/';
-            //    }
-            //});
-        }
-        else {
-            return false;
-        }
-
+            if (status) {
+                $("#btnAddSchool").attr("disabled", "disabled");
+                $(".loader-ajax-container").css("display", "block");
+                //$.ajax({
+                //    type: 'POST',
+                //    url: "/Admin/AddSchool",
+                //    contentType: false, // Not to set any content header
+                //    processData: false,
+                //    data: fileData,
+                //    success: function (data) {
+                //        console.log(data);
+                //        if (data)
+                //            window.location.href = '/School/GetSchoolList/';
+                //    }
+                //});
+            }
+            else {
+                return false;
+            }
+        });
     });
 </script>
+}

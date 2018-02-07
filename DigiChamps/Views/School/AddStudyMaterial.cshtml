@@ -96,7 +96,7 @@
                             <label for="textfield5" class="col-sm-3  control-label">select Material Type<span class="asterisk"></span></label>
                             <div class="col-sm-9  controls">
 
-                                <label><input id="rbtUploadMaterial" type="radio" name="toggler" value="1" />Upload Material</label>
+                                <label><input id="rbtUploadMaterial" type="radio" name="toggler" value="1" checked />Upload Material</label>
                                 <label><input id="rbtWriteTxt" type="radio" name="toggler" value="2" />Write Text</label>
 
                             </div>
@@ -105,13 +105,14 @@
                         <div class="form-group toHide" id="blk-1" style="display:none">
                             <label for="textfield5" class="col-sm-3  control-label">Upload File<span class="asterisk">*</span></label>
                             <div class="col-sm-9  controls">
-                                <input type="file" value="Choose a file" name="File" accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" id="studymaterial" data-rule-required="true" data-msg-required="Please enter file" />
+                                <input type="file" value="Choose a file" name="File" id="studymaterial" data-rule-required="true" data-msg-required="Please enter file" />
+                                @*accept=".xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf,image/*"*@
                             </div>
                         </div>
                         <div class="form-group toHide" id="blk-2" style="display:none">
                             <label for="textfield5" class="col-sm-3  control-label">Write Material<span class="asterisk">*</span></label>
                             <div class="col-sm-9  controls">
-                                @Html.TextAreaFor(x => x.MaterialText, new { @class = "form-control" })
+                                @Html.TextAreaFor(x => x.MaterialText, new { @id = "txtMaterialText", @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter study material" })
                                 @Html.HiddenFor(x => x.MaterialType)
                             </div>
                         </div>
@@ -147,15 +148,22 @@
                     $("#MaterialType").val("text");
                 }
             });
-
+            if ($("#MaterialType").val() == "") {
+                $("#MaterialType").val("text");
+            }
+            //alert($("#MaterialType").val());
             //Bind Material Type
             if ($(".StudyMaterialId").val() != "00000000-0000-0000-0000-000000000000" && $("#MaterialType").val() == "text") {
                 $('.toHide').hide();
                 $("#blk-2").show('slow');
+                $("#txtMaterialText").attr("data-rule-required", true);
+                $("#studymaterial").attr("data-rule-required", false);
             }
             else {
                 $('.toHide').hide();
                 $("#blk-1").show('slow');
+                $("#txtMaterialText").attr("data-rule-required", false);
+                $("#studymaterial").attr("data-rule-required", true);
             }
         });
         $('#validation-form').submit(function (e) {
@@ -175,7 +183,7 @@
             //}
 
 
-            $(".loader-ajax-container").css("display", "block");
+            //$(".loader-ajax-container").css("display", "block");
             //$.ajax({
             //    type: 'POST',
             //    url: "/School/AddStudyMaterial",
