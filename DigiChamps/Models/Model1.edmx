@@ -68,6 +68,7 @@
           <Property Name="Modified_By" Type="nvarchar" MaxLength="50" />
           <Property Name="Is_Active" Type="bit" />
           <Property Name="Is_Deleted" Type="bit" />
+          <Property Name="Banner_Description" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="tbl_DC_Batch">
           <Key>
@@ -1519,10 +1520,12 @@
           </Key>
           <Property Name="HomeworkId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="SchoolId" Type="uniqueidentifier" />
+          <Property Name="Class_Id" Type="int" />
           <Property Name="ClassId" Type="uniqueidentifier" />
           <Property Name="SectionId" Type="uniqueidentifier" />
           <Property Name="SubjectId" Type="uniqueidentifier" />
           <Property Name="HomeworkDetail" Type="nvarchar(max)" />
+          <Property Name="PeriodID" Type="uniqueidentifier" />
           <Property Name="TimeSlot" Type="nvarchar(max)" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="IsActive" Type="bit" />
@@ -1602,6 +1605,22 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="tbl_DC_Shool_TimeTable">
+          <Key>
+            <PropertyRef Name="TimeTableId" />
+          </Key>
+          <Property Name="TimeTableId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SchoolId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Class_Id" Type="int" Nullable="false" />
+          <Property Name="SectionId" Type="uniqueidentifier" />
+          <Property Name="SubjectId" Type="uniqueidentifier" />
+          <Property Name="PeriodId" Type="uniqueidentifier" />
+          <Property Name="Day" Type="varchar" MaxLength="500" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
         </EntityType>
         <EntityType Name="tbl_DC_ToppersWay">
           <Key>
@@ -2432,6 +2451,18 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tbl_DC_Class">
+          <End Role="tbl_DC_Class" Type="Self.tbl_DC_Class" Multiplicity="1" />
+          <End Role="tbl_DC_Shool_TimeTable" Type="Self.tbl_DC_Shool_TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_Class">
+              <PropertyRef Name="Class_Id" />
+            </Principal>
+            <Dependent Role="tbl_DC_Shool_TimeTable">
+              <PropertyRef Name="Class_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tbl_DC_Class_tbl_DC_Board">
           <End Role="tbl_DC_Board" Type="Self.tbl_DC_Board" Multiplicity="1" />
           <End Role="tbl_DC_Class" Type="Self.tbl_DC_Class" Multiplicity="*" />
@@ -2984,6 +3015,54 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tbl_DC_Sc_School">
+          <End Role="tbl_DC_School_Info" Type="Self.tbl_DC_School_Info" Multiplicity="1" />
+          <End Role="tbl_DC_Shool_TimeTable" Type="Self.tbl_DC_Shool_TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_School_Info">
+              <PropertyRef Name="SchoolId" />
+            </Principal>
+            <Dependent Role="tbl_DC_Shool_TimeTable">
+              <PropertyRef Name="SchoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_DC_Section">
+          <End Role="tbl_DC_Class_Section" Type="Self.tbl_DC_Class_Section" Multiplicity="0..1" />
+          <End Role="tbl_DC_Shool_TimeTable" Type="Self.tbl_DC_Shool_TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_Class_Section">
+              <PropertyRef Name="SectionId" />
+            </Principal>
+            <Dependent Role="tbl_DC_Shool_TimeTable">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_DC_Shool_Period">
+          <End Role="tbl_DC_Period" Type="Self.tbl_DC_Period" Multiplicity="0..1" />
+          <End Role="tbl_DC_Shool_TimeTable" Type="Self.tbl_DC_Shool_TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_Period">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tbl_DC_Shool_TimeTable">
+              <PropertyRef Name="PeriodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_DC_Shool_TimeTable_tbl_DC_Shool_TimeTable">
+          <End Role="tbl_DC_Shool_TimeTable" Type="Self.tbl_DC_Shool_TimeTable" Multiplicity="1" />
+          <End Role="tbl_DC_Shool_TimeTable1" Type="Self.tbl_DC_Shool_TimeTable" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_Shool_TimeTable">
+              <PropertyRef Name="TimeTableId" />
+            </Principal>
+            <Dependent Role="tbl_DC_Shool_TimeTable1">
+              <PropertyRef Name="TimeTableId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tbl_DC_Sms_Template_tbl_DC_Sms_API">
           <End Role="tbl_DC_Sms_API" Type="Self.tbl_DC_Sms_API" Multiplicity="0..1" />
           <End Role="tbl_DC_Sms_Template" Type="Self.tbl_DC_Sms_Template" Multiplicity="*" />
@@ -3017,6 +3096,18 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
             </Principal>
             <Dependent Role="tbl_DC_Student_Batch_Assign">
               <PropertyRef Name="Regd_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_DC_Subject">
+          <End Role="tbl_DC_School_Subject" Type="Self.tbl_DC_School_Subject" Multiplicity="0..1" />
+          <End Role="tbl_DC_Shool_TimeTable" Type="Self.tbl_DC_Shool_TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_School_Subject">
+              <PropertyRef Name="SubjectId" />
+            </Principal>
+            <Dependent Role="tbl_DC_Shool_TimeTable">
+              <PropertyRef Name="SubjectId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3510,6 +3601,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <EntitySet Name="tbl_DC_School_StudyMaterial" EntityType="Self.tbl_DC_School_StudyMaterial" Schema="testuid" store:Type="Tables" />
           <EntitySet Name="tbl_DC_School_Subject" EntityType="Self.tbl_DC_School_Subject" Schema="testuid" store:Type="Tables" />
           <EntitySet Name="tbl_DC_SchoolUser" EntityType="Self.tbl_DC_SchoolUser" Schema="testuid" store:Type="Tables" />
+          <EntitySet Name="tbl_DC_Shool_TimeTable" EntityType="Self.tbl_DC_Shool_TimeTable" Schema="testuid" store:Type="Tables" />
           <EntitySet Name="tbl_DC_ToppersWay" EntityType="Self.tbl_DC_ToppersWay" Schema="testuid" store:Type="Tables" />
           <EntitySet Name="View_All_Student_Details" EntityType="Self.View_All_Student_Details" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3987,6 +4079,10 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
             <End Role="tbl_DC_State" EntitySet="tbl_DC_State" />
             <End Role="tbl_DC_City" EntitySet="tbl_DC_City" />
           </AssociationSet>
+          <AssociationSet Name="FK_tbl_DC_Class" Association="Self.FK_tbl_DC_Class">
+            <End Role="tbl_DC_Class" EntitySet="tbl_DC_Class" />
+            <End Role="tbl_DC_Shool_TimeTable" EntitySet="tbl_DC_Shool_TimeTable" />
+          </AssociationSet>
           <AssociationSet Name="FK_tbl_DC_Class_tbl_DC_Board" Association="Self.FK_tbl_DC_Class_tbl_DC_Board">
             <End Role="tbl_DC_Board" EntitySet="tbl_DC_Board" />
             <End Role="tbl_DC_Class" EntitySet="tbl_DC_Class" />
@@ -4171,6 +4267,22 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
             <End Role="tbl_DC_Registration" EntitySet="tbl_DC_Registration" />
             <End Role="tbl_DC_Registration_Dtl" EntitySet="tbl_DC_Registration_Dtl" />
           </AssociationSet>
+          <AssociationSet Name="FK_tbl_DC_Sc_School" Association="Self.FK_tbl_DC_Sc_School">
+            <End Role="tbl_DC_School_Info" EntitySet="tbl_DC_School_Info" />
+            <End Role="tbl_DC_Shool_TimeTable" EntitySet="tbl_DC_Shool_TimeTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_DC_Section" Association="Self.FK_tbl_DC_Section">
+            <End Role="tbl_DC_Class_Section" EntitySet="tbl_DC_Class_Section" />
+            <End Role="tbl_DC_Shool_TimeTable" EntitySet="tbl_DC_Shool_TimeTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_DC_Shool_Period" Association="Self.FK_tbl_DC_Shool_Period">
+            <End Role="tbl_DC_Period" EntitySet="tbl_DC_Period" />
+            <End Role="tbl_DC_Shool_TimeTable" EntitySet="tbl_DC_Shool_TimeTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_DC_Shool_TimeTable_tbl_DC_Shool_TimeTable" Association="Self.FK_tbl_DC_Shool_TimeTable_tbl_DC_Shool_TimeTable">
+            <End Role="tbl_DC_Shool_TimeTable" EntitySet="tbl_DC_Shool_TimeTable" />
+            <End Role="tbl_DC_Shool_TimeTable1" EntitySet="tbl_DC_Shool_TimeTable" />
+          </AssociationSet>
           <AssociationSet Name="FK_tbl_DC_Sms_Template_tbl_DC_Sms_API" Association="Self.FK_tbl_DC_Sms_Template_tbl_DC_Sms_API">
             <End Role="tbl_DC_Sms_API" EntitySet="tbl_DC_Sms_API" />
             <End Role="tbl_DC_Sms_Template" EntitySet="tbl_DC_Sms_Template" />
@@ -4182,6 +4294,10 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <AssociationSet Name="FK_tbl_DC_Student_Batch_Assign_tbl_DC_Registration" Association="Self.FK_tbl_DC_Student_Batch_Assign_tbl_DC_Registration">
             <End Role="tbl_DC_Registration" EntitySet="tbl_DC_Registration" />
             <End Role="tbl_DC_Student_Batch_Assign" EntitySet="tbl_DC_Student_Batch_Assign" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_DC_Subject" Association="Self.FK_tbl_DC_Subject">
+            <End Role="tbl_DC_School_Subject" EntitySet="tbl_DC_School_Subject" />
+            <End Role="tbl_DC_Shool_TimeTable" EntitySet="tbl_DC_Shool_TimeTable" />
           </AssociationSet>
           <AssociationSet Name="FK_tbl_DC_Subject_tbl_DC_Class" Association="Self.FK_tbl_DC_Subject_tbl_DC_Class">
             <End Role="tbl_DC_Class" EntitySet="tbl_DC_Class" />
@@ -4900,14 +5016,9 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <EntitySet Name="tbl_DC_School_AssingTeacher" EntityType="DigiChampsModel.tbl_DC_School_AssingTeacher" />
           <EntitySet Name="tbl_DC_School_ExamSchedule" EntityType="DigiChampsModel.tbl_DC_School_ExamSchedule" />
           <EntitySet Name="tbl_DC_School_ExamType" EntityType="DigiChampsModel.tbl_DC_School_ExamType" />
-          <EntitySet Name="tbl_DC_School_Homework" EntityType="DigiChampsModel.tbl_DC_School_Homework" />
           <AssociationSet Name="FK__tbl_DC_Sc__Secti__02E239AD" Association="DigiChampsModel.FK__tbl_DC_Sc__Secti__02E239AD">
             <End Role="tbl_DC_Class_Section" EntitySet="tbl_DC_Class_Section" />
             <End Role="tbl_DC_School_AssingTeacher" EntitySet="tbl_DC_School_AssingTeacher" />
-          </AssociationSet>
-          <AssociationSet Name="FK__tbl_DC_Sc__Secti__11305904" Association="DigiChampsModel.FK__tbl_DC_Sc__Secti__11305904">
-            <End Role="tbl_DC_Class_Section" EntitySet="tbl_DC_Class_Section" />
-            <End Role="tbl_DC_School_Homework" EntitySet="tbl_DC_School_Homework" />
           </AssociationSet>
           <AssociationSet Name="FK__tbl_DC_Sc__Class__01EE1574" Association="DigiChampsModel.FK__tbl_DC_Sc__Class__01EE1574">
             <End Role="tbl_DC_School_Class" EntitySet="tbl_DC_School_Class" />
@@ -4925,10 +5036,6 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
             <End Role="tbl_DC_School_Class" EntitySet="tbl_DC_School_Class" />
             <End Role="tbl_DC_School_ExamSchedule" EntitySet="tbl_DC_School_ExamSchedule" />
           </AssociationSet>
-          <AssociationSet Name="FK__tbl_DC_Sc__Class__103C34CB" Association="DigiChampsModel.FK__tbl_DC_Sc__Class__103C34CB">
-            <End Role="tbl_DC_School_Class" EntitySet="tbl_DC_School_Class" />
-            <End Role="tbl_DC_School_Homework" EntitySet="tbl_DC_School_Homework" />
-          </AssociationSet>
           <AssociationSet Name="FK__tbl_DC_Sc__ExamT__0C6BA3E7" Association="DigiChampsModel.FK__tbl_DC_Sc__ExamT__0C6BA3E7">
             <End Role="tbl_DC_School_ExamType" EntitySet="tbl_DC_School_ExamType" />
             <End Role="tbl_DC_School_ExamSchedule" EntitySet="tbl_DC_School_ExamSchedule" />
@@ -4944,14 +5051,6 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <AssociationSet Name="FK__tbl_DC_Sc__Schoo__06B2CA91" Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__06B2CA91">
             <End Role="tbl_DC_School_Info" EntitySet="tbl_DC_School_Info" />
             <End Role="tbl_DC_School_ExamType" EntitySet="tbl_DC_School_ExamType" />
-          </AssociationSet>
-          <AssociationSet Name="FK__tbl_DC_Sc__Schoo__0F481092" Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__0F481092">
-            <End Role="tbl_DC_School_Info" EntitySet="tbl_DC_School_Info" />
-            <End Role="tbl_DC_School_Homework" EntitySet="tbl_DC_School_Homework" />
-          </AssociationSet>
-          <AssociationSet Name="FK__tbl_DC_Sc__Subje__12247D3D" Association="DigiChampsModel.FK__tbl_DC_Sc__Subje__12247D3D">
-            <End Role="tbl_DC_School_Subject" EntitySet="tbl_DC_School_Subject" />
-            <End Role="tbl_DC_School_Homework" EntitySet="tbl_DC_School_Homework" />
           </AssociationSet>
           <EntitySet Name="tbl_DC_School_StudyMaterial" EntityType="DigiChampsModel.tbl_DC_School_StudyMaterial" />
           <AssociationSet Name="FK__tbl_DC_Sc__Teach__3D0EDB42" Association="DigiChampsModel.FK__tbl_DC_Sc__Teach__3D0EDB42">
@@ -4984,6 +5083,48 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
             <End Role="tbl_DC_School_MessageCreation" EntitySet="tbl_DC_School_MessageCreation" />
           </AssociationSet>
           <EntitySet Name="tbl_DC_Period" EntityType="DigiChampsModel.tbl_DC_Period" />
+          <EntitySet Name="tbl_DC_Shool_TimeTable" EntityType="DigiChampsModel.tbl_DC_Shool_TimeTable" />
+          <AssociationSet Name="FK_tbl_DC_Class" Association="DigiChampsModel.FK_tbl_DC_Class">
+            <End Role="tbl_DC_Class" EntitySet="tbl_DC_Class" />
+            <End Role="tbl_DC_Shool_TimeTable" EntitySet="tbl_DC_Shool_TimeTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_DC_Section" Association="DigiChampsModel.FK_tbl_DC_Section">
+            <End Role="tbl_DC_Class_Section" EntitySet="tbl_DC_Class_Section" />
+            <End Role="tbl_DC_Shool_TimeTable" EntitySet="tbl_DC_Shool_TimeTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_DC_Shool_Period" Association="DigiChampsModel.FK_tbl_DC_Shool_Period">
+            <End Role="tbl_DC_Period" EntitySet="tbl_DC_Period" />
+            <End Role="tbl_DC_Shool_TimeTable" EntitySet="tbl_DC_Shool_TimeTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_DC_Sc_School" Association="DigiChampsModel.FK_tbl_DC_Sc_School">
+            <End Role="tbl_DC_School_Info" EntitySet="tbl_DC_School_Info" />
+            <End Role="tbl_DC_Shool_TimeTable" EntitySet="tbl_DC_Shool_TimeTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_DC_Subject" Association="DigiChampsModel.FK_tbl_DC_Subject">
+            <End Role="tbl_DC_School_Subject" EntitySet="tbl_DC_School_Subject" />
+            <End Role="tbl_DC_Shool_TimeTable" EntitySet="tbl_DC_Shool_TimeTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_DC_Shool_TimeTable_tbl_DC_Shool_TimeTable" Association="DigiChampsModel.FK_tbl_DC_Shool_TimeTable_tbl_DC_Shool_TimeTable">
+            <End Role="tbl_DC_Shool_TimeTable" EntitySet="tbl_DC_Shool_TimeTable" />
+            <End Role="tbl_DC_Shool_TimeTable1" EntitySet="tbl_DC_Shool_TimeTable" />
+          </AssociationSet>
+          <EntitySet Name="tbl_DC_School_Homework" EntityType="DigiChampsModel.tbl_DC_School_Homework" />
+          <AssociationSet Name="FK__tbl_DC_Sc__Secti__11305904" Association="DigiChampsModel.FK__tbl_DC_Sc__Secti__11305904">
+            <End Role="tbl_DC_Class_Section" EntitySet="tbl_DC_Class_Section" />
+            <End Role="tbl_DC_School_Homework" EntitySet="tbl_DC_School_Homework" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_DC_Sc__Class__103C34CB" Association="DigiChampsModel.FK__tbl_DC_Sc__Class__103C34CB">
+            <End Role="tbl_DC_School_Class" EntitySet="tbl_DC_School_Class" />
+            <End Role="tbl_DC_School_Homework" EntitySet="tbl_DC_School_Homework" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_DC_Sc__Schoo__0F481092" Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__0F481092">
+            <End Role="tbl_DC_School_Info" EntitySet="tbl_DC_School_Info" />
+            <End Role="tbl_DC_School_Homework" EntitySet="tbl_DC_School_Homework" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_DC_Sc__Subje__12247D3D" Association="DigiChampsModel.FK__tbl_DC_Sc__Subje__12247D3D">
+            <End Role="tbl_DC_School_Subject" EntitySet="tbl_DC_School_Subject" />
+            <End Role="tbl_DC_School_Homework" EntitySet="tbl_DC_School_Homework" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="Order_report_Result">
           <Property Type="Int32" Name="Order_ID" Nullable="false" />
@@ -5542,6 +5683,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <Property Name="Modified_By" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Is_Active" Type="Boolean" />
           <Property Name="Is_Deleted" Type="Boolean" />
+          <Property Name="Banner_Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="tbl_DC_Batch">
           <Key>
@@ -5761,6 +5903,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <NavigationProperty Name="tbl_DC_Registration_Dtl" Relationship="DigiChampsModel.FK_tbl_DC_Registration_Dtl_tbl_DC_Class" FromRole="tbl_DC_Class" ToRole="tbl_DC_Registration_Dtl" />
           <NavigationProperty Name="tbl_DC_Subject" Relationship="DigiChampsModel.FK_tbl_DC_Subject_tbl_DC_Class" FromRole="tbl_DC_Class" ToRole="tbl_DC_Subject" />
           <NavigationProperty Name="tbl_DC_Topic" Relationship="DigiChampsModel.FK_tbl_DC_Topic_tbl_DC_Class" FromRole="tbl_DC_Class" ToRole="tbl_DC_Topic" />
+          <NavigationProperty Name="tbl_DC_Shool_TimeTable" Relationship="DigiChampsModel.FK_tbl_DC_Class" FromRole="tbl_DC_Class" ToRole="tbl_DC_Shool_TimeTable" />
         </EntityType>
         <EntityType Name="tbl_DC_CouponCode">
           <Key>
@@ -8283,10 +8426,11 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <NavigationProperty Name="tbl_DC_School_AssingTeacher" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__00F9F13B" FromRole="tbl_DC_School_Info" ToRole="tbl_DC_School_AssingTeacher" />
           <NavigationProperty Name="tbl_DC_School_ExamSchedule" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__098F373C" FromRole="tbl_DC_School_Info" ToRole="tbl_DC_School_ExamSchedule" />
           <NavigationProperty Name="tbl_DC_School_ExamType" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__06B2CA91" FromRole="tbl_DC_School_Info" ToRole="tbl_DC_School_ExamType" />
-          <NavigationProperty Name="tbl_DC_School_Homework" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__0F481092" FromRole="tbl_DC_School_Info" ToRole="tbl_DC_School_Homework" />
           <NavigationProperty Name="tbl_DC_School_StudyMaterial" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__29FC06CE" FromRole="tbl_DC_School_Info" ToRole="tbl_DC_School_StudyMaterial" />
           <NavigationProperty Name="tbl_DC_Registration" Relationship="DigiChampsModel.FK_SchoolId" FromRole="tbl_DC_School_Info" ToRole="tbl_DC_Registration" />
           <NavigationProperty Name="tbl_DC_School_MessageCreation" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__3B2692D0" FromRole="tbl_DC_School_Info" ToRole="tbl_DC_School_MessageCreation" />
+          <NavigationProperty Name="tbl_DC_Shool_TimeTable" Relationship="DigiChampsModel.FK_tbl_DC_Sc_School" FromRole="tbl_DC_School_Info" ToRole="tbl_DC_Shool_TimeTable" />
+          <NavigationProperty Name="tbl_DC_School_Homework" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__0F481092" FromRole="tbl_DC_School_Info" ToRole="tbl_DC_School_Homework" />
         </EntityType>
         <EntityType Name="tbl_DC_SchoolUser">
           <Key>
@@ -8331,9 +8475,10 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <Property Name="IsActive" Type="Boolean" />
           <NavigationProperty Name="tbl_DC_School_Class" Relationship="DigiChampsModel.FK__tbl_DC_Cl__Class__4A9DE08A" FromRole="tbl_DC_Class_Section" ToRole="tbl_DC_School_Class" />
           <NavigationProperty Name="tbl_DC_School_AssingTeacher" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Secti__02E239AD" FromRole="tbl_DC_Class_Section" ToRole="tbl_DC_School_AssingTeacher" />
-          <NavigationProperty Name="tbl_DC_School_Homework" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Secti__11305904" FromRole="tbl_DC_Class_Section" ToRole="tbl_DC_School_Homework" />
           <Property Name="Class_Id" Type="Int32" />
           <Property Name="School_Id" Type="Guid" />
+          <NavigationProperty Name="tbl_DC_Shool_TimeTable" Relationship="DigiChampsModel.FK_tbl_DC_Section" FromRole="tbl_DC_Class_Section" ToRole="tbl_DC_Shool_TimeTable" />
+          <NavigationProperty Name="tbl_DC_School_Homework" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Secti__11305904" FromRole="tbl_DC_Class_Section" ToRole="tbl_DC_School_Homework" />
         </EntityType>
         <EntityType Name="tbl_DC_School_Class">
           <Key>
@@ -8349,10 +8494,10 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <NavigationProperty Name="tbl_DC_ToppersWay" Relationship="DigiChampsModel.FK__tbl_DC_To__Class__5056B9E0" FromRole="tbl_DC_School_Class" ToRole="tbl_DC_ToppersWay" />
           <NavigationProperty Name="tbl_DC_School_AssingTeacher" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Class__01EE1574" FromRole="tbl_DC_School_Class" ToRole="tbl_DC_School_AssingTeacher" />
           <NavigationProperty Name="tbl_DC_School_ExamSchedule" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Class__0A835B75" FromRole="tbl_DC_School_Class" ToRole="tbl_DC_School_ExamSchedule" />
-          <NavigationProperty Name="tbl_DC_School_Homework" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Class__103C34CB" FromRole="tbl_DC_School_Class" ToRole="tbl_DC_School_Homework" />
           <NavigationProperty Name="tbl_DC_School_StudyMaterial" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Class__2AF02B07" FromRole="tbl_DC_School_Class" ToRole="tbl_DC_School_StudyMaterial" />
           <Property Name="Class_id" Type="Int32" />
           <NavigationProperty Name="tbl_DC_School_MessageCreation" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Class__3C1AB709" FromRole="tbl_DC_School_Class" ToRole="tbl_DC_School_MessageCreation" />
+          <NavigationProperty Name="tbl_DC_School_Homework" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Class__103C34CB" FromRole="tbl_DC_School_Class" ToRole="tbl_DC_School_Homework" />
         </EntityType>
         <EntityType Name="tbl_DC_School_Subject">
           <Key>
@@ -8366,8 +8511,9 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <NavigationProperty Name="tbl_DC_School_Info" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__4D7A4D35" FromRole="tbl_DC_School_Subject" ToRole="tbl_DC_School_Info" />
           <NavigationProperty Name="tbl_DC_School_AssingTeacher" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Subje__03D65DE6" FromRole="tbl_DC_School_Subject" ToRole="tbl_DC_School_AssingTeacher" />
           <NavigationProperty Name="tbl_DC_School_ExamSchedule" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Subje__0B777FAE" FromRole="tbl_DC_School_Subject" ToRole="tbl_DC_School_ExamSchedule" />
-          <NavigationProperty Name="tbl_DC_School_Homework" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Subje__12247D3D" FromRole="tbl_DC_School_Subject" ToRole="tbl_DC_School_Homework" />
           <NavigationProperty Name="tbl_DC_School_StudyMaterial" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Subje__2BE44F40" FromRole="tbl_DC_School_Subject" ToRole="tbl_DC_School_StudyMaterial" />
+          <NavigationProperty Name="tbl_DC_Shool_TimeTable" Relationship="DigiChampsModel.FK_tbl_DC_Subject" FromRole="tbl_DC_School_Subject" ToRole="tbl_DC_Shool_TimeTable" />
+          <NavigationProperty Name="tbl_DC_School_Homework" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Subje__12247D3D" FromRole="tbl_DC_School_Subject" ToRole="tbl_DC_School_Homework" />
         </EntityType>
         <EntityType Name="tbl_DC_ToppersWay">
           <Key>
@@ -8496,25 +8642,6 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <NavigationProperty Name="tbl_DC_School_ExamSchedule" Relationship="DigiChampsModel.FK__tbl_DC_Sc__ExamT__0C6BA3E7" FromRole="tbl_DC_School_ExamType" ToRole="tbl_DC_School_ExamSchedule" />
           <NavigationProperty Name="tbl_DC_School_Info" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__06B2CA91" FromRole="tbl_DC_School_ExamType" ToRole="tbl_DC_School_Info" />
         </EntityType>
-        <EntityType Name="tbl_DC_School_Homework">
-          <Key>
-            <PropertyRef Name="HomeworkId" />
-          </Key>
-          <Property Name="HomeworkId" Type="Guid" Nullable="false" />
-          <Property Name="SchoolId" Type="Guid" />
-          <Property Name="ClassId" Type="Guid" />
-          <Property Name="SectionId" Type="Guid" />
-          <Property Name="SubjectId" Type="Guid" />
-          <Property Name="HomeworkDetail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TimeSlot" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" />
-          <NavigationProperty Name="tbl_DC_Class_Section" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Secti__11305904" FromRole="tbl_DC_School_Homework" ToRole="tbl_DC_Class_Section" />
-          <NavigationProperty Name="tbl_DC_School_Class" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Class__103C34CB" FromRole="tbl_DC_School_Homework" ToRole="tbl_DC_School_Class" />
-          <NavigationProperty Name="tbl_DC_School_Info" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__0F481092" FromRole="tbl_DC_School_Homework" ToRole="tbl_DC_School_Info" />
-          <NavigationProperty Name="tbl_DC_School_Subject" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Subje__12247D3D" FromRole="tbl_DC_School_Homework" ToRole="tbl_DC_School_Subject" />
-          <Property Name="DateOfHomework" Type="DateTime" Precision="3" />
-        </EntityType>
         <Association Name="FK__tbl_DC_Sc__Secti__02E239AD">
           <End Type="DigiChampsModel.tbl_DC_Class_Section" Role="tbl_DC_Class_Section" Multiplicity="0..1" />
           <End Type="DigiChampsModel.tbl_DC_School_AssingTeacher" Role="tbl_DC_School_AssingTeacher" Multiplicity="*" />
@@ -8523,18 +8650,6 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
               <PropertyRef Name="SectionId" />
             </Principal>
             <Dependent Role="tbl_DC_School_AssingTeacher">
-              <PropertyRef Name="SectionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__tbl_DC_Sc__Secti__11305904">
-          <End Type="DigiChampsModel.tbl_DC_Class_Section" Role="tbl_DC_Class_Section" Multiplicity="0..1" />
-          <End Type="DigiChampsModel.tbl_DC_School_Homework" Role="tbl_DC_School_Homework" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_DC_Class_Section">
-              <PropertyRef Name="SectionId" />
-            </Principal>
-            <Dependent Role="tbl_DC_School_Homework">
               <PropertyRef Name="SectionId" />
             </Dependent>
           </ReferentialConstraint>
@@ -8587,18 +8702,6 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tbl_DC_Sc__Class__103C34CB">
-          <End Type="DigiChampsModel.tbl_DC_School_Class" Role="tbl_DC_School_Class" Multiplicity="0..1" />
-          <End Type="DigiChampsModel.tbl_DC_School_Homework" Role="tbl_DC_School_Homework" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_DC_School_Class">
-              <PropertyRef Name="ClassId" />
-            </Principal>
-            <Dependent Role="tbl_DC_School_Homework">
-              <PropertyRef Name="ClassId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__tbl_DC_Sc__ExamT__0C6BA3E7">
           <End Type="DigiChampsModel.tbl_DC_School_ExamType" Role="tbl_DC_School_ExamType" Multiplicity="0..1" />
           <End Type="DigiChampsModel.tbl_DC_School_ExamSchedule" Role="tbl_DC_School_ExamSchedule" Multiplicity="*" />
@@ -8644,30 +8747,6 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
             </Principal>
             <Dependent Role="tbl_DC_School_ExamType">
               <PropertyRef Name="SchoolId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__tbl_DC_Sc__Schoo__0F481092">
-          <End Type="DigiChampsModel.tbl_DC_School_Info" Role="tbl_DC_School_Info" Multiplicity="0..1" />
-          <End Type="DigiChampsModel.tbl_DC_School_Homework" Role="tbl_DC_School_Homework" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_DC_School_Info">
-              <PropertyRef Name="SchoolId" />
-            </Principal>
-            <Dependent Role="tbl_DC_School_Homework">
-              <PropertyRef Name="SchoolId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__tbl_DC_Sc__Subje__12247D3D">
-          <End Type="DigiChampsModel.tbl_DC_School_Subject" Role="tbl_DC_School_Subject" Multiplicity="0..1" />
-          <End Type="DigiChampsModel.tbl_DC_School_Homework" Role="tbl_DC_School_Homework" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_DC_School_Subject">
-              <PropertyRef Name="SubjectId" />
-            </Principal>
-            <Dependent Role="tbl_DC_School_Homework">
-              <PropertyRef Name="SubjectId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8807,7 +8886,172 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <Property Name="Create_Date" Type="DateTime" Precision="3" />
           <Property Name="Modified_Date" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="tbl_DC_Shool_TimeTable" Relationship="DigiChampsModel.FK_tbl_DC_Shool_Period" FromRole="tbl_DC_Period" ToRole="tbl_DC_Shool_TimeTable" />
         </EntityType>
+        <EntityType Name="tbl_DC_Shool_TimeTable">
+          <Key>
+            <PropertyRef Name="TimeTableId" />
+          </Key>
+          <Property Name="TimeTableId" Type="Guid" Nullable="false" />
+          <Property Name="SchoolId" Type="Guid" Nullable="false" />
+          <Property Name="Class_Id" Type="Int32" Nullable="false" />
+          <Property Name="SectionId" Type="Guid" />
+          <Property Name="SubjectId" Type="Guid" />
+          <Property Name="PeriodId" Type="Guid" />
+          <Property Name="Day" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="tbl_DC_Class" Relationship="DigiChampsModel.FK_tbl_DC_Class" FromRole="tbl_DC_Shool_TimeTable" ToRole="tbl_DC_Class" />
+          <NavigationProperty Name="tbl_DC_Class_Section" Relationship="DigiChampsModel.FK_tbl_DC_Section" FromRole="tbl_DC_Shool_TimeTable" ToRole="tbl_DC_Class_Section" />
+          <NavigationProperty Name="tbl_DC_Period" Relationship="DigiChampsModel.FK_tbl_DC_Shool_Period" FromRole="tbl_DC_Shool_TimeTable" ToRole="tbl_DC_Period" />
+          <NavigationProperty Name="tbl_DC_School_Info" Relationship="DigiChampsModel.FK_tbl_DC_Sc_School" FromRole="tbl_DC_Shool_TimeTable" ToRole="tbl_DC_School_Info" />
+          <NavigationProperty Name="tbl_DC_School_Subject" Relationship="DigiChampsModel.FK_tbl_DC_Subject" FromRole="tbl_DC_Shool_TimeTable" ToRole="tbl_DC_School_Subject" />
+          <NavigationProperty Name="tbl_DC_Shool_TimeTable1" Relationship="DigiChampsModel.FK_tbl_DC_Shool_TimeTable_tbl_DC_Shool_TimeTable" FromRole="tbl_DC_Shool_TimeTable" ToRole="tbl_DC_Shool_TimeTable1" />
+          <NavigationProperty Name="tbl_DC_Shool_TimeTable2" Relationship="DigiChampsModel.FK_tbl_DC_Shool_TimeTable_tbl_DC_Shool_TimeTable" FromRole="tbl_DC_Shool_TimeTable1" ToRole="tbl_DC_Shool_TimeTable" />
+        </EntityType>
+        <Association Name="FK_tbl_DC_Class">
+          <End Type="DigiChampsModel.tbl_DC_Class" Role="tbl_DC_Class" Multiplicity="1" />
+          <End Type="DigiChampsModel.tbl_DC_Shool_TimeTable" Role="tbl_DC_Shool_TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_Class">
+              <PropertyRef Name="Class_Id" />
+            </Principal>
+            <Dependent Role="tbl_DC_Shool_TimeTable">
+              <PropertyRef Name="Class_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_DC_Section">
+          <End Type="DigiChampsModel.tbl_DC_Class_Section" Role="tbl_DC_Class_Section" Multiplicity="0..1" />
+          <End Type="DigiChampsModel.tbl_DC_Shool_TimeTable" Role="tbl_DC_Shool_TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_Class_Section">
+              <PropertyRef Name="SectionId" />
+            </Principal>
+            <Dependent Role="tbl_DC_Shool_TimeTable">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_DC_Shool_Period">
+          <End Type="DigiChampsModel.tbl_DC_Period" Role="tbl_DC_Period" Multiplicity="0..1" />
+          <End Type="DigiChampsModel.tbl_DC_Shool_TimeTable" Role="tbl_DC_Shool_TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_Period">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tbl_DC_Shool_TimeTable">
+              <PropertyRef Name="PeriodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_DC_Sc_School">
+          <End Type="DigiChampsModel.tbl_DC_School_Info" Role="tbl_DC_School_Info" Multiplicity="1" />
+          <End Type="DigiChampsModel.tbl_DC_Shool_TimeTable" Role="tbl_DC_Shool_TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_School_Info">
+              <PropertyRef Name="SchoolId" />
+            </Principal>
+            <Dependent Role="tbl_DC_Shool_TimeTable">
+              <PropertyRef Name="SchoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_DC_Subject">
+          <End Type="DigiChampsModel.tbl_DC_School_Subject" Role="tbl_DC_School_Subject" Multiplicity="0..1" />
+          <End Type="DigiChampsModel.tbl_DC_Shool_TimeTable" Role="tbl_DC_Shool_TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_School_Subject">
+              <PropertyRef Name="SubjectId" />
+            </Principal>
+            <Dependent Role="tbl_DC_Shool_TimeTable">
+              <PropertyRef Name="SubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_DC_Shool_TimeTable_tbl_DC_Shool_TimeTable">
+          <End Type="DigiChampsModel.tbl_DC_Shool_TimeTable" Role="tbl_DC_Shool_TimeTable" Multiplicity="1" />
+          <End Type="DigiChampsModel.tbl_DC_Shool_TimeTable" Role="tbl_DC_Shool_TimeTable1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_Shool_TimeTable">
+              <PropertyRef Name="TimeTableId" />
+            </Principal>
+            <Dependent Role="tbl_DC_Shool_TimeTable1">
+              <PropertyRef Name="TimeTableId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tbl_DC_School_Homework">
+          <Key>
+            <PropertyRef Name="HomeworkId" />
+          </Key>
+          <Property Name="HomeworkId" Type="Guid" Nullable="false" />
+          <Property Name="SchoolId" Type="Guid" />
+          <Property Name="Class_Id" Type="Int32" />
+          <Property Name="ClassId" Type="Guid" />
+          <Property Name="SectionId" Type="Guid" />
+          <Property Name="SubjectId" Type="Guid" />
+          <Property Name="HomeworkDetail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PeriodID" Type="Guid" />
+          <Property Name="TimeSlot" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="DateOfHomework" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tbl_DC_Class_Section" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Secti__11305904" FromRole="tbl_DC_School_Homework" ToRole="tbl_DC_Class_Section" />
+          <NavigationProperty Name="tbl_DC_School_Class" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Class__103C34CB" FromRole="tbl_DC_School_Homework" ToRole="tbl_DC_School_Class" />
+          <NavigationProperty Name="tbl_DC_School_Info" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__0F481092" FromRole="tbl_DC_School_Homework" ToRole="tbl_DC_School_Info" />
+          <NavigationProperty Name="tbl_DC_School_Subject" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Subje__12247D3D" FromRole="tbl_DC_School_Homework" ToRole="tbl_DC_School_Subject" />
+        </EntityType>
+        <Association Name="FK__tbl_DC_Sc__Secti__11305904">
+          <End Type="DigiChampsModel.tbl_DC_Class_Section" Role="tbl_DC_Class_Section" Multiplicity="0..1" />
+          <End Type="DigiChampsModel.tbl_DC_School_Homework" Role="tbl_DC_School_Homework" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_Class_Section">
+              <PropertyRef Name="SectionId" />
+            </Principal>
+            <Dependent Role="tbl_DC_School_Homework">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_DC_Sc__Class__103C34CB">
+          <End Type="DigiChampsModel.tbl_DC_School_Class" Role="tbl_DC_School_Class" Multiplicity="0..1" />
+          <End Type="DigiChampsModel.tbl_DC_School_Homework" Role="tbl_DC_School_Homework" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_School_Class">
+              <PropertyRef Name="ClassId" />
+            </Principal>
+            <Dependent Role="tbl_DC_School_Homework">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_DC_Sc__Schoo__0F481092">
+          <End Type="DigiChampsModel.tbl_DC_School_Info" Role="tbl_DC_School_Info" Multiplicity="0..1" />
+          <End Type="DigiChampsModel.tbl_DC_School_Homework" Role="tbl_DC_School_Homework" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_School_Info">
+              <PropertyRef Name="SchoolId" />
+            </Principal>
+            <Dependent Role="tbl_DC_School_Homework">
+              <PropertyRef Name="SchoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_DC_Sc__Subje__12247D3D">
+          <End Type="DigiChampsModel.tbl_DC_School_Subject" Role="tbl_DC_School_Subject" Multiplicity="0..1" />
+          <End Type="DigiChampsModel.tbl_DC_School_Homework" Role="tbl_DC_School_Homework" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_DC_School_Subject">
+              <PropertyRef Name="SubjectId" />
+            </Principal>
+            <Dependent Role="tbl_DC_School_Homework">
+              <PropertyRef Name="SubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9566,6 +9810,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <EntitySetMapping Name="tbl_DC_Banner">
             <EntityTypeMapping TypeName="DigiChampsModel.tbl_DC_Banner">
               <MappingFragment StoreEntitySet="tbl_DC_Banner">
+                <ScalarProperty Name="Banner_Description" ColumnName="Banner_Description" />
                 <ScalarProperty Name="Is_Deleted" ColumnName="Is_Deleted" />
                 <ScalarProperty Name="Is_Active" ColumnName="Is_Active" />
                 <ScalarProperty Name="Modified_By" ColumnName="Modified_By" />
@@ -11510,22 +11755,6 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_DC_School_Homework">
-            <EntityTypeMapping TypeName="DigiChampsModel.tbl_DC_School_Homework">
-              <MappingFragment StoreEntitySet="tbl_DC_School_Homework">
-                <ScalarProperty Name="DateOfHomework" ColumnName="DateOfHomework" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="TimeSlot" ColumnName="TimeSlot" />
-                <ScalarProperty Name="HomeworkDetail" ColumnName="HomeworkDetail" />
-                <ScalarProperty Name="SubjectId" ColumnName="SubjectId" />
-                <ScalarProperty Name="SectionId" ColumnName="SectionId" />
-                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
-                <ScalarProperty Name="SchoolId" ColumnName="SchoolId" />
-                <ScalarProperty Name="HomeworkId" ColumnName="HomeworkId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tbl_DC_School_StudyMaterial">
             <EntityTypeMapping TypeName="DigiChampsModel.tbl_DC_School_StudyMaterial">
               <MappingFragment StoreEntitySet="tbl_DC_School_StudyMaterial">
@@ -11574,6 +11803,41 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
                 <ScalarProperty Name="FromTime" ColumnName="FromTime" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_DC_Shool_TimeTable">
+            <EntityTypeMapping TypeName="DigiChampsModel.tbl_DC_Shool_TimeTable">
+              <MappingFragment StoreEntitySet="tbl_DC_Shool_TimeTable">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Day" ColumnName="Day" />
+                <ScalarProperty Name="PeriodId" ColumnName="PeriodId" />
+                <ScalarProperty Name="SubjectId" ColumnName="SubjectId" />
+                <ScalarProperty Name="SectionId" ColumnName="SectionId" />
+                <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
+                <ScalarProperty Name="SchoolId" ColumnName="SchoolId" />
+                <ScalarProperty Name="TimeTableId" ColumnName="TimeTableId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_DC_School_Homework">
+            <EntityTypeMapping TypeName="DigiChampsModel.tbl_DC_School_Homework">
+              <MappingFragment StoreEntitySet="tbl_DC_School_Homework">
+                <ScalarProperty Name="DateOfHomework" ColumnName="DateOfHomework" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="TimeSlot" ColumnName="TimeSlot" />
+                <ScalarProperty Name="PeriodID" ColumnName="PeriodID" />
+                <ScalarProperty Name="HomeworkDetail" ColumnName="HomeworkDetail" />
+                <ScalarProperty Name="SubjectId" ColumnName="SubjectId" />
+                <ScalarProperty Name="SectionId" ColumnName="SectionId" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
+                <ScalarProperty Name="SchoolId" ColumnName="SchoolId" />
+                <ScalarProperty Name="HomeworkId" ColumnName="HomeworkId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

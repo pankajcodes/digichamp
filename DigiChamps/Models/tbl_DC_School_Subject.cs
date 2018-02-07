@@ -18,8 +18,9 @@ namespace DigiChamps.Models
         {
             this.tbl_DC_School_AssingTeacher = new HashSet<tbl_DC_School_AssingTeacher>();
             this.tbl_DC_School_ExamSchedule = new HashSet<tbl_DC_School_ExamSchedule>();
-            this.tbl_DC_School_Homework = new HashSet<tbl_DC_School_Homework>();
             this.tbl_DC_School_StudyMaterial = new HashSet<tbl_DC_School_StudyMaterial>();
+            this.tbl_DC_Shool_TimeTable = new HashSet<tbl_DC_Shool_TimeTable>();
+            this.tbl_DC_School_Homework = new HashSet<tbl_DC_School_Homework>();
         }
     
         public System.Guid SubjectId { get; set; }
@@ -31,7 +32,8 @@ namespace DigiChamps.Models
         public virtual tbl_DC_School_Info tbl_DC_School_Info { get; set; }
         public virtual ICollection<tbl_DC_School_AssingTeacher> tbl_DC_School_AssingTeacher { get; set; }
         public virtual ICollection<tbl_DC_School_ExamSchedule> tbl_DC_School_ExamSchedule { get; set; }
-        public virtual ICollection<tbl_DC_School_Homework> tbl_DC_School_Homework { get; set; }
         public virtual ICollection<tbl_DC_School_StudyMaterial> tbl_DC_School_StudyMaterial { get; set; }
+        public virtual ICollection<tbl_DC_Shool_TimeTable> tbl_DC_Shool_TimeTable { get; set; }
+        public virtual ICollection<tbl_DC_School_Homework> tbl_DC_School_Homework { get; set; }
     }
 }

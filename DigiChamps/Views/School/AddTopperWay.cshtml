@@ -28,10 +28,16 @@
         styleDisplayValue = "none";
     }
 }
-
+<style>
+    .errorMsg {
+        color: #a94442;
+    }
+</style>
 @using (Html.BeginForm("AddTopperWay", "School", FormMethod.Post, new { @enctype = "multipart/form-data", @class = "form-horizontal", id = "validation-form" }))
 {
-
+    @Html.HiddenFor(x=>x.Id)
+    @Html.HiddenFor(x => x.FileName)
+    @Html.HiddenFor(x => x.path)
     <div class="row">
         <div class="col-md-12">
             <div class="box">
@@ -68,9 +74,10 @@
                         <label for="textfield5" class="col-sm-3  control-label">Select Section<span class="asterisk">*</span></label>
                         <div class="col-sm-9  controls">
                             <select id="sectionDropDown" class="form-control" data_rule_required="true" , data_msg_required="Please Select Class">
-                                <option>---Select Section---</option>
+                                <option value="">---Select Section---</option>
                             </select>
                             @Html.HiddenFor(x => x.SectionId)
+                            <span id="sectionDropDownValidation" class="help-block has-error errorMsg"></span>
 
                         </div>
                     </div>
@@ -82,7 +89,12 @@
                         <label for="textfield5" class="col-sm-3  control-label">Upload File<span class="asterisk"></span></label>
                         <div class="col-sm-9  controls">
 
-                            <input type="file" value="Choose a file" accept="/*" id="path" name="path" />
+                            <input type="file" value="Choose a file" accept="/*" id="fileUpload" name="fileUpload" data_rule_required="true" , data_msg_required="Please select File" />
+                            @if (!string.IsNullOrEmpty(Model.FileName))
+                            {
+                                <a href="#" id="uploadedFile">@Model.FileName</a>
+                            }
+                            <span id="fileUploadValidation" class="help-block has-error errorMsg"></span>
                         </div>
                     </div>
 
@@ -139,7 +151,15 @@
             //});
 
             $("#btnAddTopper").click(function () {
-                $("#SectionId").val($("#sectionDropDown").val());
+                if ($('#sectionDropDown :selected').val()) {
+                    $("#SectionId").val($("#sectionDropDown").val());
+                }
+                else {
+                    $("#SectionId").val("");
+                    $("#sectionDropDownValidation").show();
+                    $("#sectionDropDownValidation").html("Please Select Section.");
+                    return false;
+                }
             });
 
             if ($("#SectionId").val()) {
@@ -158,10 +178,27 @@
                 fileData.append('ClassId', $('#ddlClass :selected').val())
 
                 // fileData.append('SchoolName', $("#txSchoolName").val())
-                if ($("#path").val() != '') {
-                    var fileUpload = $("#path").get(0);
-                    var files = fileUpload.files;
-                    fileData.append('path', files[0])
+                //if ($("#path").val() != '') {
+                //    var fileUpload = $("#path").get(0);
+                //    var files = fileUpload.files;
+                //    fileData.append('path', files[0])
+                //}
+                var imgVal = $('#fileUpload').val();
+                if (imgVal == '') {
+                    if (!$("#uploadedFile").val()) {
+
+                    }
+                    else {
+                        $("#fileUploadValidation").show();
+                        $("#fileUploadValidation").html("Please Select file.");
+                        return false;
+                    }
+
+                }
+               
+                if ($("#validation-form").valid())
+                {
+                    $(".loader-ajax-container").css("display", "block");
                 }
 
 
@@ -170,7 +207,7 @@
 
                 //var status = Validation();
 
-                $(".loader-ajax-container").css("display", "block");
+                
                 //$.ajax({
                 //    type: 'POST',
                 //    url: "/School/AddTopperWay",

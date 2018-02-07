@@ -172,7 +172,10 @@
     <Compile Include="ccavResponseHandler.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Common\CommonHelper.cs" />
     <Compile Include="Common\EmailHelper.cs" />
+    <Compile Include="Common\EnumExtensions.cs" />
+    <Compile Include="Common\EnumHelper.cs" />
     <Compile Include="Common\FileHelper.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AcademicController.cs" />
@@ -200,6 +203,7 @@
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="DigiChampsEnum\EnumValue.cs" />
+    <Compile Include="Enums\WeekDaysEnum.cs" />
     <Compile Include="GetRSA.aspx.cs">
       <DependentUpon>GetRSA.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -600,6 +604,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_DC_Shift_Teacher_Assign.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_DC_Shool_TimeTable.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_DC_Sms_API.cs">
@@ -4517,6 +4524,8 @@
     <Content Include="Views\School\AddPeriod.cshtml" />
     <Content Include="Views\School\AddSubject.cshtml" />
     <Content Include="Views\School\GetPeriodList.cshtml" />
+    <Content Include="Views\School\GetTimeTableList.cshtml" />
+    <Content Include="Views\School\AddTimeTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4924,7 +4933,7 @@
     <Content Include="Views\School\AddSchoolAdmin.cshtml" />
     <Content Include="Views\School\AddSchoolTeacher.cshtml" />
     <Content Include="Views\School\AddSchoolPrincipal.cshtml" />
-    <Content Include="Views\School\CreateOrEditHomeWork.cshtml" />
+    <Content Include="Views\School\AddHomeWork.cshtml" />
     <Content Include="Views\School\CreateOrEditCreateExam.cshtml" />
     <Content Include="Views\School\AddSchoolMessage.cshtml" />
     <Content Include="Views\School\AddStudyMaterial.cshtml" />

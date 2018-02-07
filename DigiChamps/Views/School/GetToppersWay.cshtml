@@ -51,7 +51,9 @@
                                     <th>S No.</th>
                                     <th> ClassName </th>
                                     @*<th>School</th>*@
-                                    <th>Path</th>
+                                    <th>Section</th>
+                                    <th>File</th>
+                                    @*<th>Path</th>*@
                                     
                                     @*<th style="display:none;">SchoolId</th>*@
                                     <th style="display:none;">UserId</th>
@@ -68,14 +70,16 @@
                                         <tr>
                                             <td>@(rowNo += 1)</td>
                                             <td>@item.ClassName</td>
+                                            <td>@item.SectionName</td>
+                                            <td>@item.FileName</td>
                                             @*<td>@item.School</td>*@
-                                            <td>@item.path</td>
+                                            @*<td>@item.path</td>*@
                                             @*<td style="display:none;">@item.sc</td>*@
                                             <td style="display:none;">@item.Id</td>
 
                                             <td>
                                                 @Html.ActionLink(" ", "AddTopperWay", "School", new { id = @item.Id }, new { @class = "btn btn-sm btn-primary fa fa-pencil", @title = "View" })
-                                                @Html.ActionLink(" ", "DeleteTopperWay", "School", new { id = @item.Id }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the role type?')", @data_original_title = "Delete", @title = "Delete" })
+                                                @Html.ActionLink(" ", "DeleteToppersWay", "School", new { id = @item.Id }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the role type?')", @data_original_title = "Delete", @title = "Delete" })
 
 
                                             </td>

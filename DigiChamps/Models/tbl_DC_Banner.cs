@@ -23,5 +23,6 @@ namespace DigiChamps.Models
         public string Modified_By { get; set; }
         public Nullable<bool> Is_Active { get; set; }
         public Nullable<bool> Is_Deleted { get; set; }
+        public string Banner_Description { get; set; }
     }
 }

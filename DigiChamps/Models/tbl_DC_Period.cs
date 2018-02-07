@@ -14,6 +14,11 @@ namespace DigiChamps.Models
     
     public partial class tbl_DC_Period
     {
+        public tbl_DC_Period()
+        {
+            this.tbl_DC_Shool_TimeTable = new HashSet<tbl_DC_Shool_TimeTable>();
+        }
+    
         public System.Guid Id { get; set; }
         public string Title { get; set; }
         public string FromTime { get; set; }
@@ -24,5 +29,7 @@ namespace DigiChamps.Models
         public Nullable<System.DateTime> Create_Date { get; set; }
         public Nullable<System.DateTime> Modified_Date { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
+    
+        public virtual ICollection<tbl_DC_Shool_TimeTable> tbl_DC_Shool_TimeTable { get; set; }
     }
 }

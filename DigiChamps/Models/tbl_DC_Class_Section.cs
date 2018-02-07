@@ -17,6 +17,7 @@ namespace DigiChamps.Models
         public tbl_DC_Class_Section()
         {
             this.tbl_DC_School_AssingTeacher = new HashSet<tbl_DC_School_AssingTeacher>();
+            this.tbl_DC_Shool_TimeTable = new HashSet<tbl_DC_Shool_TimeTable>();
             this.tbl_DC_School_Homework = new HashSet<tbl_DC_School_Homework>();
         }
     
@@ -30,6 +31,7 @@ namespace DigiChamps.Models
     
         public virtual tbl_DC_School_Class tbl_DC_School_Class { get; set; }
         public virtual ICollection<tbl_DC_School_AssingTeacher> tbl_DC_School_AssingTeacher { get; set; }
+        public virtual ICollection<tbl_DC_Shool_TimeTable> tbl_DC_Shool_TimeTable { get; set; }
         public virtual ICollection<tbl_DC_School_Homework> tbl_DC_School_Homework { get; set; }
     }
 }

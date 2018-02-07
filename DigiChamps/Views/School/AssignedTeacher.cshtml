@@ -20,6 +20,11 @@
         styleDisplayValue = "none";
     }
 }
+<style>
+    .errorMsg {
+        color: #a94442;
+    }
+</style>
 <h2>AssignedTeacher</h2>
 
 @using (Html.BeginForm("AssignedTeacher", "School", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form" }))
@@ -71,6 +76,7 @@
                                     <option>---Select Section---</option>
                                 </select>
                                 @Html.HiddenFor(x=>x.SectionId)
+                                <span id="sectionDropDownValidation" class="help-block has-error errorMsg"></span>
                             </div>
                         </div>
 
@@ -147,7 +153,15 @@
         //});
 
         $("#btnAddTeacher").click(function () {
-            $("#SectionId").val($("#sectionDropDown").val());
+            if ($('#sectionDropDown :selected').val()) {
+                $("#SectionId").val($("#sectionDropDown").val());
+            }
+            else {
+                $("#SectionId").val("");
+                $("#sectionDropDownValidation").show();
+                $("#sectionDropDownValidation").html("Please Select Section.");
+                return false;
+            }
         });
 
         if ($("#SectionId").val())

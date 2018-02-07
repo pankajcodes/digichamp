@@ -191,20 +191,15 @@
         <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_AssingTeacher" Width="1.5" PointX="38.625" PointY="3" />
         <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_ExamSchedule" Width="1.5" PointX="39.375" PointY="7.625" />
         <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_ExamType" Width="1.5" PointX="34.125" PointY="15.375" />
-        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_Homework" Width="1.5" PointX="41.625" PointY="6.875" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Secti__02E239AD" />
-        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Secti__11305904" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Class__01EE1574" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__00F9F13B" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Subje__03D65DE6" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Class__0A835B75" />
-        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Class__103C34CB" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__ExamT__0C6BA3E7" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__098F373C" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Subje__0B777FAE" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__06B2CA91" />
-        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__0F481092" />
-        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Subje__12247D3D" />
         <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_StudyMaterial" Width="1.5" PointX="41.375" PointY="2.875" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Teach__3D0EDB42" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Class__2AF02B07" />
@@ -215,6 +210,18 @@
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Class__3C1AB709" />
         <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__3B2692D0" />
         <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Period" Width="1.5" PointX="27.375" PointY="30.75" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_Shool_TimeTable" Width="1.5" PointX="38.625" PointY="15.375" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Class" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Section" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Shool_Period" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Sc_School" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Subject" />
+        <AssociationConnector Association="DigiChampsModel.FK_tbl_DC_Shool_TimeTable_tbl_DC_Shool_TimeTable" />
+        <EntityTypeShape EntityType="DigiChampsModel.tbl_DC_School_Homework" Width="1.5" PointX="41.625" PointY="7.875" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Secti__11305904" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Class__103C34CB" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Schoo__0F481092" />
+        <AssociationConnector Association="DigiChampsModel.FK__tbl_DC_Sc__Subje__12247D3D" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

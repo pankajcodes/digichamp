@@ -51,9 +51,10 @@
                             <thead>
                                 <tr>
                                     <th>S No.</th>
-                                    <th> Name </th>
-                                    <th>StartDate</th>
-                                    <th>SubjectName</th>
+                                    <th> Exam Type </th>
+                                    <th>Exam Date</th>
+                                    <th>Class</th>
+                                    <th>Subject</th>
                                     <th>TimeSlot</th>
                                     <th style="display:none;">SchoolId</th>
                                     <th style="display:none;">UserId</th>
@@ -71,6 +72,7 @@
                                             <td>@(rowNo += 1)</td>
                                             <td>@item.ExamTypeName</td>
                                             <td>@item.StartDate</td>
+                                            <td>@item.ClassName</td>
                                             <td>@item.SubjectName</td>
                                             <td>@item.TimeSlot</td>
                                             <td style="display:none;">@item.Id</td>
@@ -78,7 +80,7 @@
 
                                             <td>
                                                 @Html.ActionLink(" ", "CreateOrEditCreateExam", "School", new { id = @item.Id }, new { @class = "btn btn-sm btn-primary fa fa-pencil", @title = "View" })
-                                                @Html.ActionLink(" ", "DeleteExamType", "School", new { id = @item.Id }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the role type?')", @data_original_title = "Delete", @title = "Delete" })
+                                                @Html.ActionLink(" ", "DeleteExam", "School", new { id = @item.Id }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the role type?')", @data_original_title = "Delete", @title = "Delete" })
 
 
                                             </td>

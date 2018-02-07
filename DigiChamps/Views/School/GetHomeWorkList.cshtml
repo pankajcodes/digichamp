@@ -4,7 +4,22 @@
     ViewBag.Title = "GetSchoolAdminList";
     Layout = "~/Views/Shared/_SchoolLayout.cshtml";
 }
+@{
+    string message = TempData.ContainsKey("Message") ? TempData["Message"].ToString() : string.Empty;
+    string styleDisplayValue = "none";
+    string MessageType = TempData.ContainsKey("MessageType") ? TempData["MessageType"].ToString() : "danger";
+    string mode = "";
 
+    if (!string.IsNullOrEmpty(message))
+    {
+        //MessageType = ViewBag.MessageType.ToString();
+        styleDisplayValue = "block";
+    }
+    else
+    {
+        styleDisplayValue = "none";
+    }
+}
 <form class="form-horizontal" id="validation-form">
 
 
@@ -16,9 +31,16 @@
                 <div class="box-title">
                     <h3><i class="fa fa-file"></i> HomeWork List </h3>
                     <div class="box-tool box-tooll">
-                        <a class="btn btn-primary" href="/School/CreateOrEditHomeWork/"><i class="fa fa-plus"></i><span> Add HomeWork</span></a>
+                        <a class="btn btn-primary" href="/School/AddHomeWork/"><i class="fa fa-plus"></i><span> Add HomeWork</span></a>
                     </div>
                 </div>
+                @if (!string.IsNullOrEmpty(@message))
+                {
+                    <div class="alert alert-dismissable alert-@MessageType" style="display:@styleDisplayValue">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                        @message
+                    </div>
+                }
                 <div class="box-content">
                     <div class="table-responsive">
                         <table class="table table-advance" id="table1">
@@ -48,16 +70,16 @@
                                             <td>@(rowNo += 1)</td>
                                             <td>@item.ClassName</td>
                                             <td>@item.SubjectName</td>
-                                            <td>@item.Description</td>
-                                            <td> @item.Date </td>
-                                            <td> @item.TimeSlot </td>
+                                            <td>@item.HomeworkDetail</td>
+                                            <td> @item.DateOfHomework </td>
+                                            <td> @item.PeriodName </td>
                                             <td style="display:none;">@item.SchoolId</td>
-                                            <td style="display:none;">@item.Id</td>
+                                            <td style="display:none;">@item.HomeworkId</td>
                                             @*<td>@item.EmailAddress</td>
                                             <td>@item.Password</td>*@
                                             <td>
-                                                @Html.ActionLink(" ", "SchoolDashBoard", "School", new { id = @item.SchoolId }, new { @class = "btn btn-sm btn-primary fa fa-pencil", @title = "View" })
-                                                @Html.ActionLink(" ", "DeleteHomeWork", "School", new { id = @item.Id }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the role type?')", @data_original_title = "Delete", @title = "Delete" })
+                                                @Html.ActionLink(" ", "AddHomeWork", "School", new { HomeWorkId = @item.HomeworkId }, new { @class = "btn btn-sm btn-primary fa fa-pencil", @title = "View" })
+                                                @Html.ActionLink(" ", "DeleteHomeWork", "School", new { HomeWorkId = @item.HomeworkId }, new { @class = "btn btn-sm btn-danger show-tooltip fa fa-trash-o", @onclick = "return confirm('Are you sure want to delete the role type?')", @data_original_title = "Delete", @title = "Delete" })
 
 
                                             </td>

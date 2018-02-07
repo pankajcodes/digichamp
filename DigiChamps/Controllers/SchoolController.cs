@@ -10,6 +10,7 @@ using System.Net.Mail;
 using DigiChamps.Common;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
+using DigiChamps.Enums;
 
 namespace DigiChamps.Controllers
 {
@@ -61,7 +62,7 @@ namespace DigiChamps.Controllers
             return View(objOutput.schoolInformation);
         }
 
-        
+
         public ActionResult AddSchool(Guid? Id)
         {
             SchoolModel.SchoolInformation objSchoolInformation = new SchoolModel.SchoolInformation();
@@ -75,7 +76,7 @@ namespace DigiChamps.Controllers
             return View(objSchoolInformation);
         }
 
-        
+
         [HttpPost]
         public ActionResult AddSchool(SchoolModel.SchoolInformation objSchoolInformation)
         {
@@ -203,7 +204,7 @@ namespace DigiChamps.Controllers
                 FileHelper fileHelper = new FileHelper();
                 string browserType = Request.Browser.Browser.ToUpper();
                 UploadFileDetailModel uploadFileDetailModel = fileHelper.UploadDoc(Request.Files, "School", objSchoolAdminOrPrincipleModel.SchoolId.ToString(), "Admin", browserType);
-                objSchoolAdminOrPrincipleModel.Image = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;                
+                objSchoolAdminOrPrincipleModel.Image = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
                 #endregion
                 int result = 0;
                 result = DbContext.SP_DC_SchoolUser(objSchoolAdminOrPrincipleModel.Id, objSchoolAdminOrPrincipleModel.SchoolId, objSchoolAdminOrPrincipleModel.FirstName, objSchoolAdminOrPrincipleModel.LastName, objSchoolAdminOrPrincipleModel.EmailAddress, objSchoolAdminOrPrincipleModel.EmailAddress, objSchoolAdminOrPrincipleModel.Password, objSchoolAdminOrPrincipleModel.Image, "SchoolAdmin", "", DateTime.Now, DateTime.Now, objSchoolAdminOrPrincipleModel.IsActive);
@@ -268,7 +269,7 @@ namespace DigiChamps.Controllers
             }
             return View(objOutput.schoolInformation);
         }
-        
+
         public ActionResult AddSchoolTeacher(Guid? Id)
         {
 
@@ -367,7 +368,7 @@ namespace DigiChamps.Controllers
             }
             return View(objOutput.schoolInformation);
         }
-        
+
         public ActionResult AddSchoolPrincipal(Guid? Id)//CreateOrEditPrincipleProfile
         {
             SchoolModel.SchoolAdminOrPrincipleModel objSchoolAdminOrPrincipleModel = new SchoolModel.SchoolAdminOrPrincipleModel();
@@ -384,7 +385,7 @@ namespace DigiChamps.Controllers
             }
             return View(objSchoolAdminOrPrincipleModel);
         }
-        
+
         [HttpPost]
         public ActionResult AddSchoolPrincipal(SchoolModel.SchoolAdminOrPrincipleModel objSchoolPrincipalModel)
         {
@@ -477,7 +478,7 @@ namespace DigiChamps.Controllers
                 else
                 {
                     //Check subject name already exist
-                    if (DbContext.tbl_DC_School_Subject.Where(x => x.SubjectName.ToLower() == objCreateSubject.SubjectName.ToLower() && x.SchoolId == schoolId).Any())
+                    if (DbContext.tbl_DC_School_Subject.Where(x => x.SubjectName.ToLower() == objCreateSubject.SubjectName.ToLower() && x.SchoolId == schoolId && x.IsActive == true).Any())
                     {
                         TempData["Message"] = "Subject Aready Exist.";
                         return View(objCreateSubject);
@@ -510,6 +511,27 @@ namespace DigiChamps.Controllers
 
         }
 
+        public ActionResult DeleteSubject(Guid id)
+        {
+
+            try
+            {
+                // get data for same id 
+                var result = DbContext.tbl_DC_School_Subject.Where(x => x.SubjectId == id && x.IsActive == true).FirstOrDefault();
+                //                  //Set status false for delete
+                result.IsActive = false;
+                DbContext.SaveChanges();
+                //data = result.UserRole;
+
+            }
+
+            catch (Exception ex)
+            {
+
+            }
+            TempData["Message"] = "Assign Teacher Deleted Successfully.";
+            return RedirectToAction("GetSubjectList", "School");
+        }
         #endregion
 
         #region ExamType
@@ -564,7 +586,7 @@ namespace DigiChamps.Controllers
                     tbl_DC_School_ExamType objExmam = new tbl_DC_School_ExamType();
 
                     //check exam type already exist
-                    if (DbContext.tbl_DC_School_ExamType.Any(x => x.ExamTypeName.ToLower() == objExamType.ExamTypenname.ToLower() && x.SchoolId == schoolId))
+                    if (DbContext.tbl_DC_School_ExamType.Any(x => x.ExamTypeName.ToLower() == objExamType.ExamTypenname.ToLower() && x.SchoolId == schoolId && x.IsActive == true))
                     {
                         TempData["Message"] = "Exam Type Aready Exist.";
                         return View(objExamType);
@@ -633,7 +655,7 @@ namespace DigiChamps.Controllers
         public ActionResult CreateOrEditCreateExam(Guid? Id)
         {
             SchoolModel.CreateExamModel objCreateExamModel = new SchoolModel.CreateExamModel();
-            objCreateExamModel.StartDate = DateTime.Today;
+            objCreateExamModel.DateofExam = DateTime.Today;
             Guid schoolId = new Guid(Session["id"].ToString());
             DbContext = new DigiChampsEntities();
             if (Id != null && Id != Guid.Empty)
@@ -647,7 +669,7 @@ namespace DigiChamps.Controllers
                     objCreateExamModel.SubjectId = (Guid)exam.SubjectId;
                     objCreateExamModel.ExamType = (Guid)exam.ExamTypeId;
                     objCreateExamModel.TimeSlot = exam.TimeSlot;
-                    
+
 
 
                 }
@@ -656,7 +678,7 @@ namespace DigiChamps.Controllers
             ViewBag.Class_Id = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
             ViewBag.ExamType_Id = new SelectList(DbContext.tbl_DC_School_ExamType.Where(x => x.IsActive == true && x.SchoolId == schoolId), "ExamTypeId", "ExamTypeName");
             ViewBag.Subject_Id = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
-
+            ViewBag.Subject_Id = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
             return View(objCreateExamModel);
         }
         [HttpPost]
@@ -758,42 +780,111 @@ namespace DigiChamps.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public ActionResult CreateOrEditHomeWork(string Id = "")
+        public ActionResult AddHomeWork(Guid? HomeWorkId)//CreateOrEditHomeWork
         {
             SchoolModel.HomeWorkModel objHomeWorkModel = new SchoolModel.HomeWorkModel();
-            if (string.IsNullOrEmpty(Id))
+            Guid schoolId = new Guid(Session["id"].ToString());
+            if (HomeWorkId != null && HomeWorkId != Guid.Empty)
             {
-
+                var HomeworkDetail = DbContext.tbl_DC_School_Homework.Where(x => x.HomeworkId == HomeWorkId).SingleOrDefault();
+                objHomeWorkModel.HomeworkId = HomeworkDetail.HomeworkId;
+                objHomeWorkModel.SchoolId = HomeworkDetail.SchoolId;
+                objHomeWorkModel.Class_Id = HomeworkDetail.Class_Id;
+                objHomeWorkModel.SectionId = HomeworkDetail.SectionId;
+                objHomeWorkModel.SubjectId = HomeworkDetail.SubjectId;
+                objHomeWorkModel.HomeworkDetail = HomeworkDetail.HomeworkDetail;
+                objHomeWorkModel.CreatedDate = HomeworkDetail.CreatedDate;
+                objHomeWorkModel.DateOfHomework = HomeworkDetail.DateOfHomework;
+                objHomeWorkModel.PeriodID = HomeworkDetail.PeriodID;
             }
-            ViewBag.Class_Id = new SelectList(DbContext.tbl_DC_School_Class.Where(x => x.IsActive == true), "ClassId", "ClassName");
-            ViewBag.Section_Id = new SelectList(DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true), "SectionId", "SectionName");
-            ViewBag.Subject_Id = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true), "SubjectId", "SubjectName");
+            ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+            ViewBag.SectionList = new SelectList(DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true), "SectionId", "SectionName");
+            ViewBag.SubjectList = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
+            ViewBag.PeriodList = new SelectList(DbContext.tbl_DC_Period.Where(x => x.IsActive == true && x.SchoolId == schoolId), "Id", "Title");
             return View(objHomeWorkModel);
         }
         [HttpPost]
 
-        public ActionResult CreateOrEditHomeWork(SchoolModel.HomeWorkModel objHomeWorkModel)
+        public ActionResult AddHomeWork(SchoolModel.HomeWorkModel objHomeWorkModel)
         {
             try
             {
-                tbl_DC_School_Homework obj = new tbl_DC_School_Homework();
-                obj.HomeworkId = Guid.NewGuid();
-                obj.SchoolId = new Guid(Session["id"].ToString());
-                obj.HomeworkDetail = objHomeWorkModel.Description;
-                obj.IsActive = true;
-                obj.SectionId = objHomeWorkModel.SectionId;
-                obj.CreatedDate = objHomeWorkModel.Date;
-                obj.TimeSlot = objHomeWorkModel.TimeSlot;
-                obj.SubjectId = objHomeWorkModel.SubjectId;
-                obj.ClassId = objHomeWorkModel.ClassId;
-                DbContext.tbl_DC_School_Homework.Add(obj);
-                var id = DbContext.SaveChanges();
+                Guid schoolId = new Guid(Session["id"].ToString());
+                if (objHomeWorkModel.HomeworkId != null && objHomeWorkModel.HomeworkId != Guid.Empty)
+                {
+                    var HomeWorkDetail = DbContext.tbl_DC_School_Homework.Where(x => x.HomeworkId == objHomeWorkModel.HomeworkId).FirstOrDefault();
+                    if (HomeWorkDetail != null)
+                    {
+                        HomeWorkDetail.Class_Id = objHomeWorkModel.Class_Id;
+                        HomeWorkDetail.SectionId = objHomeWorkModel.SectionId;
+                        HomeWorkDetail.SubjectId = objHomeWorkModel.SubjectId;
+                        HomeWorkDetail.DateOfHomework = objHomeWorkModel.DateOfHomework;
+                        HomeWorkDetail.PeriodID = objHomeWorkModel.PeriodID;
+                        HomeWorkDetail.HomeworkDetail = objHomeWorkModel.HomeworkDetail;
+                        
+                        DbContext.SaveChanges();
+                        TempData["Message"] = "Home Work Updated Successfully.";
+                    }
+                }
+                else
+                {
 
+                    //Check duplicate
+                    if (DbContext.tbl_DC_School_Homework.Any(x => x.SchoolId == schoolId && x.SectionId == objHomeWorkModel.SectionId && x.SubjectId == objHomeWorkModel.SubjectId  && x.Class_Id == objHomeWorkModel.Class_Id  && x.PeriodID == objHomeWorkModel.PeriodID))
+                    {
+                        TempData["Message"] = "Home Work Aready Exist.";
+                        ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+                        ViewBag.SectionList = new SelectList(DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true), "SectionId", "SectionName");
+                        ViewBag.SubjectList = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
+                        return View(objHomeWorkModel);
+                    }
+
+                    tbl_DC_School_Homework tblSchoolHomeWork = new tbl_DC_School_Homework();
+                    tblSchoolHomeWork.HomeworkId = Guid.NewGuid();
+                    //assignTeacher.ClassId = assignTeacherModel.ClassId;
+
+                    tblSchoolHomeWork.SchoolId = schoolId;
+                    tblSchoolHomeWork.Class_Id = objHomeWorkModel.Class_Id;
+                    tblSchoolHomeWork.SubjectId = objHomeWorkModel.SubjectId;
+                    tblSchoolHomeWork.SectionId = objHomeWorkModel.SectionId;
+                    tblSchoolHomeWork.DateOfHomework = objHomeWorkModel.DateOfHomework;
+                    tblSchoolHomeWork.PeriodID = objHomeWorkModel.PeriodID;
+                    tblSchoolHomeWork.CreatedDate = DateTime.Now;
+                    tblSchoolHomeWork.IsActive = true;
+                    tblSchoolHomeWork.HomeworkDetail = objHomeWorkModel.HomeworkDetail;
+
+                    DbContext.tbl_DC_School_Homework.Add(tblSchoolHomeWork);
+                    var id = DbContext.SaveChanges();
+                    TempData["Message"] = "Home Work Added Successfully.";
+                }
+                return RedirectToAction("GetHomeWorkList", "School");
             }
             catch (Exception ex)
             {
 
             }
+            return RedirectToAction("GetHomeWorkList", "School");
+        }
+
+        public ActionResult DeleteHomeWork(Guid HomeWorkId)
+        {
+
+            try
+            {
+                // get data for same id 
+                var result = DbContext.tbl_DC_School_Homework.Where(x => x.HomeworkId == HomeWorkId && x.IsActive == true).FirstOrDefault();
+                //                  //Set status false for delete
+                result.IsActive = false;
+                DbContext.SaveChanges();
+                //data = result.UserRole;
+
+            }
+
+            catch (Exception ex)
+            {
+
+            }
+
             return RedirectToAction("GetHomeWorkList", "School");
         }
         #endregion
@@ -1006,6 +1097,7 @@ namespace DigiChamps.Controllers
                     objToppersWayModel.Class_Id = (int)TopperWayDetail.Class_Id;
                     objToppersWayModel.SectionId = (Guid)TopperWayDetail.SectionId;
                     objToppersWayModel.path = TopperWayDetail.FileURL;
+                    objToppersWayModel.FileName = TopperWayDetail.FileType;
                 }
             }
             //ViewBag.Class_Id = new SelectList(DbContext.tbl_DC_School_Class.Where(x => x.IsActive == true), "ClassId", "ClassName");
@@ -1031,17 +1123,28 @@ namespace DigiChamps.Controllers
                     {
                         toppersWayDetail.Class_Id = objToppersWayModel.Class_Id;
                         toppersWayDetail.SectionId = (Guid)objToppersWayModel.SectionId;
+                        toppersWayDetail.FileURL = objToppersWayModel.path;
+                        toppersWayDetail.FileType = objToppersWayModel.FileName;
 
                         #region UploadFile
-                        FileHelper fileHelper = new FileHelper();
-                        string browserType = Request.Browser.Browser.ToUpper();
-                        UploadFileDetailModel uploadFileDetailModel = fileHelper.UploadDoc(Request.Files, "School", schoolId.ToString(), "ToppersWay", browserType);
-                        if (!string.IsNullOrEmpty(uploadFileDetailModel.ImageName) && !string.IsNullOrEmpty(uploadFileDetailModel.ImagePath))
-                            objToppersWayModel.path = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
-                        else
-                            objToppersWayModel.path = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.VideoPath + "/" + uploadFileDetailModel.VideoName : string.Empty;
+                        if (Request.Files[0] != null && Request.Files[0].ContentLength > 0)
+                        {
+                            FileHelper fileHelper = new FileHelper();
+                            string browserType = Request.Browser.Browser.ToUpper();
+                            UploadFileDetailModel uploadFileDetailModel = fileHelper.UploadDoc(Request.Files, "School", schoolId.ToString(), "ToppersWay", browserType);
+                            if (!string.IsNullOrEmpty(uploadFileDetailModel.ImageName) && !string.IsNullOrEmpty(uploadFileDetailModel.ImagePath))
+                            {
+                                toppersWayDetail.FileURL = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
+                                toppersWayDetail.FileType = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImageName : string.Empty;
+                            }
+                            else
+                            {
+                                toppersWayDetail.FileURL = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.VideoPath + "/" + uploadFileDetailModel.VideoName : string.Empty;
+                                toppersWayDetail.FileType = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImageName : string.Empty;
+                            }
+                        }
                         //objToppersWayModel.FileName = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
-                        
+
                         #endregion
 
                         DbContext.SaveChanges();
@@ -1054,9 +1157,10 @@ namespace DigiChamps.Controllers
                 {
                     //Add Case
                     //Check if Topic already exist for same class.
-                    if (DbContext.tbl_DC_ToppersWay.Any(x => x.SchoolId == schoolId && x.Class_Id == objToppersWayModel.Class_Id && x.SectionId == objToppersWayModel.SectionId))
+                    if (DbContext.tbl_DC_ToppersWay.Any(x => x.SchoolId == schoolId && x.Class_Id == objToppersWayModel.Class_Id && x.SectionId == objToppersWayModel.SectionId && x.IsActive == true))
                     {
-                        TempData["Message"] = "Teacher Aready assign to same class and section.";
+                        TempData["Message"] = "Toppers Way Aready Added.";
+                        ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
                         return View(objToppersWayModel);
                     }
 
@@ -1067,13 +1171,22 @@ namespace DigiChamps.Controllers
                     tblTopperWay.SectionId = objToppersWayModel.SectionId;
                     tblTopperWay.IsActive = true;
                     #region UploadFile
-                    FileHelper fileHelper = new FileHelper();
-                    string browserType = Request.Browser.Browser.ToUpper();
-                    UploadFileDetailModel uploadFileDetailModel = fileHelper.UploadDoc(Request.Files, "School", schoolId.ToString(), "StudyMaterial", browserType);
-                    if (!string.IsNullOrEmpty(uploadFileDetailModel.ImageName) && !string.IsNullOrEmpty(uploadFileDetailModel.ImagePath))
-                        tblTopperWay.FileURL = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
-                    else
-                        tblTopperWay.FileURL = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.VideoPath + "/" + uploadFileDetailModel.VideoName : string.Empty;
+                    if (Request.Files[0] != null && Request.Files[0].ContentLength > 0)
+                    {
+                        FileHelper fileHelper = new FileHelper();
+                        string browserType = Request.Browser.Browser.ToUpper();
+                        UploadFileDetailModel uploadFileDetailModel = fileHelper.UploadDoc(Request.Files, "School", schoolId.ToString(), "StudyMaterial", browserType);
+                        if (!string.IsNullOrEmpty(uploadFileDetailModel.ImageName) && !string.IsNullOrEmpty(uploadFileDetailModel.ImagePath))
+                        {
+                            tblTopperWay.FileURL = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
+                            tblTopperWay.FileType = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImageName : string.Empty;
+                        }
+                        else
+                        {
+                            tblTopperWay.FileURL = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.VideoPath + "/" + uploadFileDetailModel.VideoName : string.Empty;
+                            tblTopperWay.FileType = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImageName : string.Empty;
+                        }
+                    }
                     #endregion
 
                     tblTopperWay.CreatedDate = DateTime.Now;
@@ -1108,7 +1221,7 @@ namespace DigiChamps.Controllers
 
             }
 
-            return RedirectToAction("GetMessageList", "School");
+            return RedirectToAction("GetToppersWay", "School");
         }
 
         #endregion
@@ -1237,9 +1350,27 @@ namespace DigiChamps.Controllers
 
             return View();
         }
+
         public ActionResult DeleteAssignTeacher(Guid? AssignTeacherId)
         {
-            return View();
+
+            try
+            {
+                // get data for same id 
+                var result = DbContext.tbl_DC_School_AssingTeacher.Where(x => x.Id == AssignTeacherId && x.IsActive == true).FirstOrDefault();
+                //                  //Set status false for delete
+                result.IsActive = false;
+                DbContext.SaveChanges();
+                //data = result.UserRole;
+
+            }
+
+            catch (Exception ex)
+            {
+
+            }
+            TempData["Message"] = "Assign Teacher Deleted Successfully.";
+            return RedirectToAction("GetAllAssignedTeacherList", "School");
         }
         #endregion
 
@@ -1288,12 +1419,12 @@ namespace DigiChamps.Controllers
                         // MessageDetail.MassageDisplayDate = objMessageCreation.MassageDisplayDate;
                         MessageDetail.MassageText = objMessageCreation.MassageText;
                         MessageDetail.FileName = objMessageCreation.FileName;
-                        MessageDetail.FilePath = objMessageCreation.FilePath;                        
+                        MessageDetail.FilePath = objMessageCreation.FilePath;
                         MessageDetail.IsActive = true;
                         #region UploadFile
                         FileHelper fileHelper = new FileHelper();
                         string browserType = Request.Browser.Browser.ToUpper();
-                        if (Request.Files.Count > 0)
+                        if (Request.Files[0] != null && Request.Files[0].ContentLength > 0)
                         {
                             UploadFileDetailModel uploadFileDetailModel = fileHelper.UploadDoc(Request.Files, "School", schoolId.ToString(), "ToppersWay", browserType);
                             if (!string.IsNullOrEmpty(uploadFileDetailModel.ImageName) && !string.IsNullOrEmpty(uploadFileDetailModel.ImagePath))
@@ -1316,6 +1447,14 @@ namespace DigiChamps.Controllers
                 }
                 else
                 {
+                    //Check duplicate
+                    if (DbContext.tbl_DC_School_MessageCreation.Any(x => x.SchoolId == schoolId && x.SectionId == objMessageCreation.SectionId && x.Class_Id == objMessageCreation.Class_Id ))
+                    {
+                        TempData["Message"] = "Message Aready Exist.";
+                        ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+                        ViewBag.SectionList = new SelectList(DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true), "SectionId", "SectionName");
+                        return View(objMessageCreation);
+                    }
 
                     tbl_DC_School_MessageCreation objmsg = new tbl_DC_School_MessageCreation();
                     objmsg.MessageId = Guid.NewGuid();
@@ -1329,9 +1468,9 @@ namespace DigiChamps.Controllers
                     objmsg.CreatedDate = DateTime.Now;
                     objmsg.IsActive = true;
                     objmsg.IsDeleted = false;
-                    
+
                     #region UploadFile
-                    if (Request.Files.Count > 0)
+                    if (Request.Files[0] != null && Request.Files[0].ContentLength > 0)
                     {
                         FileHelper fileHelper = new FileHelper();
                         string browserType = Request.Browser.Browser.ToUpper();
@@ -1344,7 +1483,7 @@ namespace DigiChamps.Controllers
                         else
                         {
                             objmsg.FilePath = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.VideoPath + "/" + uploadFileDetailModel.VideoName : string.Empty;
-                            objmsg.FileName = uploadFileDetailModel.VideoName;
+                            objmsg.FileName = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.VideoName : string.Empty;
                         }
                     }
                     //objmsg.FileName = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.VideoName : string.Empty;
@@ -1374,13 +1513,13 @@ namespace DigiChamps.Controllers
             return View(objOutput);
         }
 
-        public ActionResult DeleteSchoolMessage(Guid id)
+        public ActionResult DeleteSchoolMessage(Guid MessageId)
         {
 
             try
             {
                 // get data for same id 
-                var result = DbContext.tbl_DC_School_MessageCreation.Where(x => x.MessageId == id && x.IsActive == true).FirstOrDefault();
+                var result = DbContext.tbl_DC_School_MessageCreation.Where(x => x.MessageId == MessageId && x.IsActive == true).FirstOrDefault();
                 //                  //Set status false for delete
                 result.IsActive = false;
                 DbContext.SaveChanges();
@@ -1396,6 +1535,114 @@ namespace DigiChamps.Controllers
             return RedirectToAction("GetMessageList", "School");
         }
 
+        #endregion
+
+        #region TimeTable
+        public ActionResult GetTimeTableList()
+        {
+            List<DigiChamps.Models.SchoolModel.TimeTableModel> timeTableList = new List<SchoolModel.TimeTableModel>();
+            DigiChamps.Models.SchoolModel.TimeTableModel timeTableModel = new DigiChamps.Models.SchoolModel.TimeTableModel();
+            Guid schoolId = new Guid(Session["id"].ToString());
+            var timetableList = DbContext.tbl_DC_Shool_TimeTable.Where(x => x.SchoolId == schoolId).ToList();
+            if (timetableList.Any())
+            {
+                foreach (var item in timetableList)
+                {
+                    timeTableModel = new DigiChamps.Models.SchoolModel.TimeTableModel();
+                    timeTableModel.TimeTableId = item.TimeTableId;
+                    timeTableModel.ClassName = item.Class_Id != null && DbContext.tbl_DC_Class.Where(x => x.Class_Id == item.Class_Id).Any() ? DbContext.tbl_DC_Class.Where(x => x.Class_Id == item.Class_Id).FirstOrDefault().Class_Name : string.Empty;
+                    timeTableModel.SectionName = item.tbl_DC_Class_Section.SectionName;
+                    timeTableModel.SubjectName = item.tbl_DC_School_Subject.SubjectName;
+                    timeTableModel.PeriodName = item.tbl_DC_Period.Title;
+                    timeTableModel.Day = Convert.ToString(EnumHelper<WeekDaysEnum>.ParseEnum(item.Day));
+                    timeTableList.Add(timeTableModel);
+                }
+            }
+
+            return View(timeTableList);
+        }
+        public ActionResult AddTimeTable(Guid? TimeTableId)
+        {
+            DigiChamps.Models.SchoolModel.TimeTableModel timeTableModel = new DigiChamps.Models.SchoolModel.TimeTableModel();
+            Guid schoolId = new Guid(Session["id"].ToString());
+
+            if (TimeTableId != null && TimeTableId != Guid.Empty)
+            {
+                var timeTableDetail = DbContext.tbl_DC_Shool_TimeTable.Where(x => x.TimeTableId == TimeTableId).FirstOrDefault();
+                if (timeTableDetail != null)
+                {
+                    timeTableModel.TimeTableId = timeTableDetail.TimeTableId;
+                    timeTableModel.Class_Id = timeTableDetail.Class_Id;
+                    timeTableModel.SectionId = (Guid)timeTableDetail.SectionId;
+                    timeTableModel.SubjectId = (Guid)timeTableDetail.SubjectId;
+                    timeTableModel.PeriodId = timeTableDetail.PeriodId;
+                    timeTableModel.Day = timeTableDetail.Day;
+                }
+            }
+            ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
+            ViewBag.SectionList = new SelectList(DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true), "SectionId", "SectionName");
+            ViewBag.SubjectList = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
+            ViewBag.PeriodList = new SelectList(DbContext.tbl_DC_Period.Where(x => x.IsActive == true && x.SchoolId == schoolId), "Id", "Title");
+            ViewBag.DayList = new SelectList(CommonHelper.GetEnumToList<WeekDaysEnum>().ToList(), "Key", "Name");
+            return View(timeTableModel);
+        }
+        [HttpPost]
+        public ActionResult AddTimeTable(DigiChamps.Models.SchoolModel.TimeTableModel timeTableModel)
+        {
+            try
+            {
+                Guid schoolId = new Guid(Session["id"].ToString());
+                if (timeTableModel.TimeTableId != null && timeTableModel.TimeTableId != Guid.Empty)
+                {
+                    var timeTableDetail = DbContext.tbl_DC_Shool_TimeTable.Where(x => x.TimeTableId == timeTableModel.TimeTableId).FirstOrDefault();
+                    if (timeTableDetail != null)
+                    {
+                        timeTableDetail.TimeTableId = timeTableModel.TimeTableId;
+                        timeTableDetail.Class_Id = timeTableModel.Class_Id;
+                        timeTableDetail.SectionId = (Guid)timeTableModel.SectionId;
+                        timeTableDetail.SubjectId = (Guid)timeTableModel.SubjectId;
+                        timeTableDetail.PeriodId = timeTableModel.PeriodId;
+                        timeTableDetail.Day = timeTableModel.Day;
+                        DbContext.SaveChanges();
+                        TempData["Message"] = "TimeTable Updated Successfully.";
+                    }
+                }
+                else
+                {
+
+                    //Check duplicate
+                    if (DbContext.tbl_DC_Shool_TimeTable.Any(x => x.SchoolId == schoolId && x.Class_Id == timeTableModel.Class_Id && x.SectionId == timeTableModel.SectionId && x.SubjectId == timeTableModel.SubjectId && x.Day == timeTableModel.Day))
+                    {
+                        TempData["Message"] = "TimeTable already exist.";
+                        return View(timeTableModel);
+                    }
+
+                    tbl_DC_Shool_TimeTable tblDCShoolTimeTable = new tbl_DC_Shool_TimeTable();
+                    tblDCShoolTimeTable.TimeTableId = Guid.NewGuid();
+
+
+                    tblDCShoolTimeTable.SchoolId = schoolId;
+                    tblDCShoolTimeTable.Class_Id = timeTableModel.Class_Id;
+                    tblDCShoolTimeTable.SubjectId = timeTableModel.SubjectId;
+                    tblDCShoolTimeTable.SectionId = timeTableModel.SectionId;
+                    tblDCShoolTimeTable.Day = timeTableModel.Day;
+                    tblDCShoolTimeTable.PeriodId = timeTableModel.PeriodId;
+                    tblDCShoolTimeTable.CreatedDate = DateTime.Now;
+                    tblDCShoolTimeTable.IsActive = true;
+
+                    DbContext.tbl_DC_Shool_TimeTable.Add(tblDCShoolTimeTable);
+                    var id = DbContext.SaveChanges();
+                    TempData["Message"] = "TimeTable Added Successfully.";
+                }
+                return RedirectToAction("GetTimeTableList", "School");
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return View();
+        }
         #endregion
 
         /// <summary>
@@ -2053,53 +2300,13 @@ namespace DigiChamps.Controllers
 
 
 
-        public ActionResult DeleteHomeWork(Guid id)
-        {
-
-            try
-            {
-                // get data for same id 
-                var result = DbContext.tbl_DC_School_Homework.Where(x => x.HomeworkId == id && x.IsActive == true).FirstOrDefault();
-                //                  //Set status false for delete
-                result.IsActive = false;
-                DbContext.SaveChanges();
-                //data = result.UserRole;
-
-            }
-
-            catch (Exception ex)
-            {
-
-            }
-
-            return RedirectToAction("GetHomeWorkList", "School");
-        }
+      
 
 
 
 
 
 
-        public ActionResult DeleteSubject(Guid id)
-        {
 
-            try
-            {
-                // get data for same id 
-                var result = DbContext.tbl_DC_School_Subject.Where(x => x.SubjectId == id && x.IsActive == true).FirstOrDefault();
-                //                  //Set status false for delete
-                result.IsActive = false;
-                DbContext.SaveChanges();
-                //data = result.UserRole;
-
-            }
-
-            catch (Exception ex)
-            {
-
-            }
-
-            return RedirectToAction("GetHomeWorkList", "School");
-        }
     }
 }

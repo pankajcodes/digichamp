@@ -21,6 +21,11 @@
     }
     
 }
+<style>
+    .errorMsg {
+        color: #a94442;
+    }
+</style>
 
 @using (Html.BeginForm("AddSchoolMessage", "School", FormMethod.Post, new { @class = "form-horizontal", id = "validation-form", enctype = "multipart/form-data" }))
 {
@@ -66,9 +71,11 @@
                             <div class="col-sm-9  controls">
 
                                 <select id="sectionDropDown" class="form-control" data_rule_required="true" , data_msg_required="Please Select Class">
-                                    <option>---Select Section---</option>
+                                    <option value="">---Select Section---</option>
                                 </select>
                                 @Html.HiddenFor(x => x.SectionId)
+                                @*@Html.ValidationMessage("sectionDropDown")*@
+                                <span id="sectionDropDownValidation" class="help-block has-error errorMsg"></span>
                             </div>
                         </div>
 
@@ -76,8 +83,8 @@
                             <label for="textfield5" class="col-sm-3  control-label">Message<span class="asterisk">*</span></label>
                             <div class="col-sm-9  controls">
 
-                                @Html.TextAreaFor(x => x.MassageText, new { @class = "form-control" })
-
+                                @Html.TextAreaFor(x => x.MassageText, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter message text" })
+                                @Html.ValidationMessageFor(x => x.MassageText)
                             </div>
                         </div>
 
@@ -130,7 +137,7 @@
                 debugger;
                 $("#sectionDropDown").html("");
                 $("#sectionDropDown").append
-                ($('<option></option>').val(null).html("---Select Section---"));
+                ($('<option></option>').val("").html("---Select Section---"));
                 $.each(result.Result, function (i, section)
                 { $("#sectionDropDown").append($('<option></option>').val(section.SectionId).html(section.SectionName)) });
                 if ($("#SectionId").val()) {
@@ -153,7 +160,15 @@
         //});
 
         $("#btnAddMessage").click(function () {
-            $("#SectionId").val($("#sectionDropDown").val());
+            if($('#sectionDropDown :selected').val()){
+                $("#SectionId").val($("#sectionDropDown").val());
+            }
+            else {
+                $("#SectionId").val("");
+                $("#sectionDropDownValidation").show();
+                $("#sectionDropDownValidation").html("Please Select Section.");
+                return false;
+            }
         });
 
         if ($("#SectionId").val())

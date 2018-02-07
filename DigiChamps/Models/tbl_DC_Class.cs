@@ -25,6 +25,7 @@ namespace DigiChamps.Models
             this.tbl_DC_Registration_Dtl = new HashSet<tbl_DC_Registration_Dtl>();
             this.tbl_DC_Subject = new HashSet<tbl_DC_Subject>();
             this.tbl_DC_Topic = new HashSet<tbl_DC_Topic>();
+            this.tbl_DC_Shool_TimeTable = new HashSet<tbl_DC_Shool_TimeTable>();
         }
     
         public int Class_Id { get; set; }
@@ -47,5 +48,6 @@ namespace DigiChamps.Models
         public virtual ICollection<tbl_DC_Registration_Dtl> tbl_DC_Registration_Dtl { get; set; }
         public virtual ICollection<tbl_DC_Subject> tbl_DC_Subject { get; set; }
         public virtual ICollection<tbl_DC_Topic> tbl_DC_Topic { get; set; }
+        public virtual ICollection<tbl_DC_Shool_TimeTable> tbl_DC_Shool_TimeTable { get; set; }
     }
 }

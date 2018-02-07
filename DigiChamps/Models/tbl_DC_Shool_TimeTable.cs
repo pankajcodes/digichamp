@@ -12,24 +12,26 @@ namespace DigiChamps.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tbl_DC_School_Homework
+    public partial class tbl_DC_Shool_TimeTable
     {
-        public System.Guid HomeworkId { get; set; }
-        public Nullable<System.Guid> SchoolId { get; set; }
-        public Nullable<int> Class_Id { get; set; }
-        public Nullable<System.Guid> ClassId { get; set; }
+        public System.Guid TimeTableId { get; set; }
+        public System.Guid SchoolId { get; set; }
+        public int Class_Id { get; set; }
         public Nullable<System.Guid> SectionId { get; set; }
         public Nullable<System.Guid> SubjectId { get; set; }
-        public string HomeworkDetail { get; set; }
-        public Nullable<System.Guid> PeriodID { get; set; }
-        public string TimeSlot { get; set; }
+        public Nullable<System.Guid> PeriodId { get; set; }
+        public string Day { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<bool> IsActive { get; set; }
-        public Nullable<System.DateTime> DateOfHomework { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
     
+        public virtual tbl_DC_Class tbl_DC_Class { get; set; }
         public virtual tbl_DC_Class_Section tbl_DC_Class_Section { get; set; }
-        public virtual tbl_DC_School_Class tbl_DC_School_Class { get; set; }
+        public virtual tbl_DC_Period tbl_DC_Period { get; set; }
         public virtual tbl_DC_School_Info tbl_DC_School_Info { get; set; }
         public virtual tbl_DC_School_Subject tbl_DC_School_Subject { get; set; }
+        public virtual tbl_DC_Shool_TimeTable tbl_DC_Shool_TimeTable1 { get; set; }
+        public virtual tbl_DC_Shool_TimeTable tbl_DC_Shool_TimeTable2 { get; set; }
     }
 }

@@ -240,9 +240,9 @@ namespace DigiChamps.Controllers
                             if (subject != null)
                             {
                                 SchoolModel.HomeWorkModel objHomeWorkModel = new SchoolModel.HomeWorkModel();
-                                objHomeWorkModel.Description = item.HomeworkDetail;
+                                //objHomeWorkModel.Description = item.HomeworkDetail;
                                 // objHomeWorkModel.SubjectName = subject.SubjectName;
-                                objHomeWorkModel.Date = (DateTime)item.CreatedDate;
+                                //objHomeWorkModel.Date = (DateTime)item.CreatedDate;
                                 objList.Add(objHomeWorkModel);
                             }
 
@@ -454,23 +454,51 @@ namespace DigiChamps.Controllers
                 if ((input.SchoolId != Guid.Empty))
                 {
                     var date = DateTime.Now;
-                    var HomeWorkList = DbContext.tbl_DC_School_Homework.Where(x => x.SchoolId == input.SchoolId && x.IsActive == true).ToList();
+                    var HomeWorkList = DbContext.tbl_DC_School_Homework.Where(x => x.SchoolId == input.SchoolId && x.IsActive == true).OrderByDescending(x=>x.CreatedDate).ToList();
                     if (HomeWorkList != null && HomeWorkList.Count() > 0)
                     {
                         foreach (var item in HomeWorkList)
                         {
                             //var SectionDetail = DbContext.tbl_DC_School_s.Where(x => x.ClassId == item.ClassId && x.IsActive == true).SingleOrDefault();
                             SchoolModel.HomeWorkModel objOutput = new SchoolModel.HomeWorkModel();
-                            var classDetail = DbContext.tbl_DC_School_Class.Where(x => x.ClassId == item.ClassId && x.IsActive == true).SingleOrDefault();
-                            var schoolDetail = DbContext.tbl_DC_School_Subject.Where(x => x.SubjectId == item.SubjectId && x.IsActive == true).SingleOrDefault();
+                            //var classDetail = DbContext.tbl_DC_School_Class.Where(x => x.ClassId == item.ClassId && x.IsActive == true).SingleOrDefault();
+                            //var schoolDetail = DbContext.tbl_DC_School_Subject.Where(x => x.SubjectId == item.SubjectId && x.IsActive == true).SingleOrDefault();
+                            //if (classDetail != null)
+                            //{
+                            //    objOutput.ClassName = classDetail.ClassName;
+
+                            //}
+                            var classDetail = DbContext.tbl_DC_Class.Where(x => x.Class_Id == item.Class_Id && x.Is_Active == true).FirstOrDefault();
                             if (classDetail != null)
                             {
-                                objOutput.ClassName = classDetail.ClassName;
 
+                                objOutput.ClassName = classDetail.Class_Name;
                             }
-                            objOutput.Description = item.HomeworkDetail;
-                            objOutput.Date = (DateTime)item.CreatedDate;
-                            objOutput.Id = item.HomeworkId;
+
+                            var sectionDetail = DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true && x.SectionId == item.SectionId).FirstOrDefault();
+                            if (sectionDetail != null)
+                            {
+                                objOutput.SectionName = sectionDetail.SectionName;
+                            }
+
+                            var schoolDetail = DbContext.tbl_DC_School_Subject.Where(x => x.SubjectId == item.SubjectId && x.SchoolId == input.SchoolId && x.IsActive == true).FirstOrDefault();
+                            if (schoolDetail != null)
+                            {
+                                objOutput.SubjectName = schoolDetail.SubjectName;
+                            }
+                            var PeriodDetail = DbContext.tbl_DC_Period.Where(x => x.Id == item.PeriodID && x.SchoolId == input.SchoolId && x.IsActive == true).FirstOrDefault();
+                            if (PeriodDetail != null)
+                            {
+                                objOutput.PeriodName = PeriodDetail.Title;
+                            }
+                            objOutput.HomeworkId = item.HomeworkId;
+                            objOutput.HomeworkDetail = item.HomeworkDetail;
+                            objOutput.DateOfHomework = item.DateOfHomework;
+                            objOutput.CreatedDate = (DateTime)item.CreatedDate;
+                            objOutput.SectionId = (Guid)item.SectionId;
+                            objOutput.SubjectId = (Guid)item.SubjectId;
+                            objOutput.PeriodID = (Guid)item.PeriodID;
+                            
                             objOutput.SchoolId = (Guid)item.SchoolId;
                             if (schoolDetail != null)
                             {
@@ -829,7 +857,12 @@ namespace DigiChamps.Controllers
                             }
                             objOutput.Id = item.ToppersId;
                             objOutput.path = item.FileURL;
-
+                            objOutput.FileName = item.FileType;
+                            
+                            var sectionDetail = DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true && x.SectionId == item.SectionId).FirstOrDefault();
+                            if (sectionDetail != null) {
+                                objOutput.SectionName = sectionDetail.SectionName;
+                            }
 
                             //var SectionDetail = DbContext.tbl_DC_Class_Section.Where(x => x.SectionId == item.Sec && x.IsActive == true).SingleOrDefault();
                             //if (examType != null)
@@ -887,6 +920,12 @@ namespace DigiChamps.Controllers
                             if (examType != null)
                             {
                                 objOutput.ExamTypeName = examType.ExamTypeName;
+                            }
+                            var classDetail = DbContext.tbl_DC_Class.Where(x => x.Class_Id == item.Class_Id && x.Is_Active == true).FirstOrDefault();
+                            if (classDetail != null)
+                            {
+
+                                objOutput.ClassName = classDetail.Class_Name;
                             }
                             //var SectionDetail = DbContext.tbl_DC_Class_Section.Where(x => x.SectionId == item.Sec && x.IsActive == true).SingleOrDefault();
                             //if (examType != null)

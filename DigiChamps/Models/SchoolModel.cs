@@ -18,6 +18,25 @@ namespace DigiChamps.Models
 
     public class SchoolModel
     {
+        public class TimeTableModel
+        {
+            public System.Guid TimeTableId { get; set; }
+            public System.Guid SchoolId { get; set; }
+            public int Class_Id { get; set; }
+            public Nullable<System.Guid> SectionId { get; set; }
+            public Nullable<System.Guid> SubjectId { get; set; }
+            public Nullable<System.Guid> PeriodId { get; set; }
+            public string Day { get; set; }
+            public Nullable<System.DateTime> CreatedDate { get; set; }
+            public Nullable<System.DateTime> ModifiedDate { get; set; }
+            public Nullable<bool> IsActive { get; set; }
+            public Nullable<bool> IsDeleted { get; set; }
+
+            public string ClassName { get; set; }
+            public string SectionName { get; set; }
+            public string SubjectName { get; set; }
+            public string PeriodName { get; set; }
+        }
         public class CreateClass
         {
             public Guid SchoolId { get; set; }
@@ -84,18 +103,36 @@ namespace DigiChamps.Models
 
         public class HomeWorkModel
         {
-            public List<HomeWorkModel> HomeWork { get; set; }
-            public Guid Id { get; set; }
-            public Guid ClassId { get; set; }
-            public string ClassName { get; set; }
-            public string SubjectName { get; set; }
-            public Guid SectionId { get; set; }
-            public DateTime Date { get; set; }
+            public System.Guid HomeworkId { get; set; }
+            public Nullable<System.Guid> SchoolId { get; set; }
+            public Nullable<System.Guid> ClassId { get; set; }
+            public Nullable<System.Guid> SectionId { get; set; }
+            public Nullable<System.Guid> SubjectId { get; set; }
+            public string HomeworkDetail { get; set; }
             public string TimeSlot { get; set; }
-            public Guid SubjectId { get; set; }
-            public string Description { get; set; }
-            public bool IsActive { get; set; }
-            public Guid SchoolId { get; set; }
+            public Nullable<System.DateTime> CreatedDate { get; set; }
+            public Nullable<bool> IsActive { get; set; }
+            public Nullable<System.DateTime> DateOfHomework { get; set; }
+            public Nullable<int> Class_Id { get; set; }
+            public Nullable<System.Guid> PeriodID { get; set; }
+
+            public string ClassName { get; set; }
+            public string SubjectName { get; set; }            
+            public string SectionName { get; set; }
+            public string PeriodName { get; set; }
+
+            //public List<HomeWorkModel> HomeWork { get; set; }
+            //public Guid Id { get; set; }
+            //public Guid ClassId { get; set; }
+            //public string ClassName { get; set; }
+            //public string SubjectName { get; set; }
+            //public Guid SectionId { get; set; }
+            //public DateTime Date { get; set; }
+            //public string TimeSlot { get; set; }
+            //public Guid SubjectId { get; set; }
+            //public string Description { get; set; }
+            //public bool IsActive { get; set; }
+            //public Guid SchoolId { get; set; }
         }
 
         public class CreateExamModel
@@ -112,10 +149,10 @@ namespace DigiChamps.Models
             public string EndTimeSlot { get; set; }
             public float TotalMarks { get; set; }
             public bool IsActive { get; set; }
-            [Required(ErrorMessage="Please Select Exam Date")]
+            [Required(ErrorMessage = "Please Select Exam Date")]
             public DateTime DateofExam { get; set; }
             public string SubjectName { get; set; }
-
+            public string ClassName { get; set; }
 
             //public string Id { get; set; }
             ////add by am
@@ -164,13 +201,13 @@ namespace DigiChamps.Models
             ////public string Message { get; set; }
             ////public string Image { get; set; }
             ////public bool IsActive { get; set; }
-            
 
 
-            
+
+
             //public string Id { get; set; }
-            
-            
+
+
             //public string Image { get; set; }
 
             public string ClassName { get; set; }
@@ -193,6 +230,8 @@ namespace DigiChamps.Models
             public string Type { get; set; }
             public bool IsActive { get; set; }
             public string ClassName { get; set; }
+            public string SectionName { get; set; }
+            public string FileName { get; set; }
 
         }
 
@@ -303,7 +342,7 @@ namespace DigiChamps.Models
             public string ExamTypeName { get; set; }
             public Guid SchoolId { get; set; }
         }
-      
+
 
         #region  API Model
 
