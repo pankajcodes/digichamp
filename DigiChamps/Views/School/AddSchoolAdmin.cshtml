@@ -30,7 +30,7 @@
     <div id="breadcrumbs">
         
     </div>
-    
+    @Html.HiddenFor(x=>x.Image)
     <div class="page-content-wrap">
         <div class="row">
             <div class="col-md-12">
@@ -155,6 +155,9 @@
             var fileUpload = $("#AdminImage").get(0);
             var files = fileUpload.files;
             fileData.append('Image', files[0])
+        }
+        else {
+            fileData.append('Image', $("#Image").val())
         }
         debugger;
         var email = $('#EmailAddress').val();

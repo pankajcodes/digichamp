@@ -35,7 +35,7 @@
 </style>
 @using (Html.BeginForm("AddTopperWay", "School", FormMethod.Post, new { @enctype = "multipart/form-data", @class = "form-horizontal", id = "validation-form" }))
 {
-    @Html.HiddenFor(x=>x.Id)
+    @Html.HiddenFor(x => x.Id)
     @Html.HiddenFor(x => x.FileName)
     @Html.HiddenFor(x => x.path)
     <div class="row">
@@ -56,17 +56,10 @@
                     <div class="form-group">
                         <label for="textfield5" class="col-sm-3  control-label">Select Class<span class="asterisk">*</span></label>
                         <div class="col-sm-9  controls">
-                            @if (ViewBag.Class_Id != null)
-                            {
-                                @(Html.DropDownListFor(x => x.Class_Id, ViewBag.ClassList as SelectList, "Please Select Class", new { @onchange = "getSectionList()", @class = "form-control", @id = "ddlClass", data_rule_required = "true", data_msg_required = "Please enter class" }))
-                                @Html.HiddenFor(x => x.Class_Id)
-                            }
-                            else
-                            {
-                                @(Html.DropDownListFor(x => x.Class_Id, ViewBag.ClassList as SelectList, "Please Select Class", new { @onchange = "getSectionList()", @class = "form-control", @id = "ddlClass", data_rule_required = "true", data_msg_required = "Please enter class" }))
-                                @Html.ValidationMessageFor(x => x.Class_Id)
-                            }
 
+                            @(Html.DropDownListFor(x => x.Class_Id, ViewBag.ClassList as SelectList, "Please Select Class", new { @onchange = "getSectionList()", @class = "form-control", @id = "ddlClass", data_rule_required = "true", data_msg_required = "Please enter class" }))
+                            @Html.HiddenFor(x => x.Class_Id)
+                            @Html.ValidationMessageFor(x => x.Class_Id)
                         </div>
                     </div>
 
@@ -195,9 +188,8 @@
                     }
 
                 }
-               
-                if ($("#validation-form").valid())
-                {
+
+                if ($("#validation-form").valid()) {
                     $(".loader-ajax-container").css("display", "block");
                 }
 
@@ -207,7 +199,7 @@
 
                 //var status = Validation();
 
-                
+
                 //$.ajax({
                 //    type: 'POST',
                 //    url: "/School/AddTopperWay",

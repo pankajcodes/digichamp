@@ -144,7 +144,7 @@ namespace DigiChamps.Models
             public Guid SectionId { get; set; }
             public DateTime StartDate { get; set; }
             public int Class_Id { get; set; }
-            public string TimeSlot { get; set; }
+            public string TimeSlot { get; set; }            
             public string StartTimeSlot { get; set; }
             public string EndTimeSlot { get; set; }
             public float TotalMarks { get; set; }
@@ -223,7 +223,7 @@ namespace DigiChamps.Models
         {
             public Guid School { get; set; }
             public Guid ClassId { get; set; }
-            public int Class_Id { get; set; }
+            public int Class_Id { get; set; }            
             public Guid Id { get; set; }
             public Guid SectionId { get; set; }
             public string path { get; set; }

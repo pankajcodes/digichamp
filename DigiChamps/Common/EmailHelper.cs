@@ -11,10 +11,9 @@ namespace DigiChamps.Common
     {
         public static void SendEmail(string sendTo, string subject, string msg)
         {
-            string smtpServer = ConfigurationManager.AppSettings["smtpServer365"];
-            int smtpPort = Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort365"]);
-            string smtpUsername = ConfigurationManager.AppSettings["smtpUsername"];
-            string smtpBccUsername = ConfigurationManager.AppSettings["smtpBccUsername"];
+            string smtpServer = ConfigurationManager.AppSettings["smtpServer"];
+            int smtpPort = Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"]);
+            string smtpUsername = ConfigurationManager.AppSettings["smtpUsername"];            
             string smtpPassword = ConfigurationManager.AppSettings["smtpPassword"];
             string smtpDisplayName = ConfigurationManager.AppSettings["smtpDisplayName"];
             SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort)
@@ -27,7 +26,7 @@ namespace DigiChamps.Common
 
 
             MailMessage mailMessage = new MailMessage()
-            {
+            {                
                 Body = msg,
                 Subject = subject,
                 IsBodyHtml = true,
@@ -38,19 +37,20 @@ namespace DigiChamps.Common
 
             mailMessage.From = from;
 
-            string[] toArray = smtpBccUsername.Split(';');
-            foreach (string addr in toArray)
-            {
-                MailAddress to = new MailAddress(addr);
-                mailMessage.To.Add(to);
-            }
+            //string[] toArray = smtpBccUsername.Split(';');
+            //foreach (string addr in toArray)
+            //{
+            //    MailAddress to = new MailAddress(addr);
+            //    mailMessage.To.Add(to);
+            //}
 
-            string[] bccArray = smtpBccUsername.Split(';');
-            foreach (string addr in bccArray)
-            {
-                MailAddress bcc = new MailAddress(addr);
-                mailMessage.Bcc.Add(bcc);
-            }
+            //string[] bccArray = smtpBccUsername.Split(';');
+            //foreach (string addr in bccArray)
+            //{
+            //    MailAddress bcc = new MailAddress(addr);
+            //    mailMessage.Bcc.Add(bcc);
+            //}
+            mailMessage.To.Add(sendTo);
             smtpClient.Send(mailMessage);
         }
     }
