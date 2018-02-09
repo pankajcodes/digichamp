@@ -70,7 +70,8 @@ namespace DigiChamps.Controllers
             if (Id != null)
             {
                 SchoolAPIController schoolApi = new SchoolAPIController();
-                return View(schoolApi.GetSchoolBySchoolId(Id));
+                objSchoolInformation = schoolApi.GetSchoolBySchoolId(Id);
+                return View(objSchoolInformation);
             }
 
             return View(objSchoolInformation);
@@ -107,7 +108,19 @@ namespace DigiChamps.Controllers
             }
             else
             {
-
+                #region UploadFile
+                FileHelper fileHelper = new FileHelper();
+                string browserType = Request.Browser.Browser.ToUpper();
+                UploadFileDetailModel uploadFileDetailModel = fileHelper.UploadDoc(Request.Files, "School", objSchoolInformation.SchoolId.ToString(), "Image", browserType);
+                if (uploadFileDetailModel != null)
+                {
+                    if (uploadFileDetailModel.ImagePath != null && uploadFileDetailModel.ImageName != null)
+                        objSchoolInformation.Logo = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
+                    if (uploadFileDetailModel.VideoPath != null && uploadFileDetailModel.VideoName != null)
+                        objSchoolInformation.DocumentaryVideo = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.VideoPath + "/" + uploadFileDetailModel.VideoName : string.Empty;
+                    //objSchoolInformation.Logo = uploadFileDetailModel.ImageName;
+                }
+                #endregion
 
                 DbContext.Sp_DC_SchoolInfo(objSchoolInformation.SchoolId, objSchoolInformation.SchoolName.Trim(), (!string.IsNullOrEmpty(objSchoolInformation.Information) ? objSchoolInformation.Information.Trim() : objSchoolInformation.Information), objSchoolInformation.Logo, objSchoolInformation.DocumentaryVideo, objSchoolInformation.ThumbnailPath, DateTime.Now, DateTime.Now, objSchoolInformation.IsActive);
                 TempData["Message"] = "School Updated Successfully.";
@@ -934,6 +947,8 @@ namespace DigiChamps.Controllers
                     objStudyMaterialModel.SubjectId = (Guid)StudyMaterialDetail.SubjectId;
                     objStudyMaterialModel.Topic = StudyMaterialDetail.Topic;
                     objStudyMaterialModel.FilePath = StudyMaterialDetail.FilePath;
+                    objStudyMaterialModel.FileType = StudyMaterialDetail.FileType;
+                    objStudyMaterialModel.FileName = !string.IsNullOrEmpty(StudyMaterialDetail.FilePath) ? Path.GetFileName(StudyMaterialDetail.FilePath): "";
                     objStudyMaterialModel.MaterialText = StudyMaterialDetail.StudyMaterialTxt;
                     objStudyMaterialModel.MaterialType = string.IsNullOrEmpty(StudyMaterialDetail.StudyMaterialTxt) ? "file" : "text";
                     objStudyMaterialModel.IsActive = true;
@@ -950,7 +965,6 @@ namespace DigiChamps.Controllers
         [HttpPost]
         public ActionResult AddStudyMaterial(SchoolModel.StudyMaterialModel objStudyMaterialModel)
         {
-
             try
             {
                 Guid schoolId = new Guid(Session["id"].ToString());
@@ -975,16 +989,20 @@ namespace DigiChamps.Controllers
                             string browserType = Request.Browser.Browser.ToUpper();
                             UploadFileDetailModel uploadFileDetailModel = fileHelper.UploadDoc(Request.Files, "School", schoolId.ToString(), "StudyMaterial", browserType);
                             objStudyMaterialModel.FileName = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
-                            objStudyMaterialModel.FilePath = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
+                            objStudyMaterialModel.FilePath = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.VideoPath + "/" + uploadFileDetailModel.VideoName : string.Empty;
 
-                            StudyMaterialDetail.FilePath = objStudyMaterialModel.Image;
-                            string p = objStudyMaterialModel.Image;
+                            if(!string.IsNullOrEmpty(uploadFileDetailModel.ImageName))
+                                StudyMaterialDetail.FilePath = objStudyMaterialModel.FileName;
+                            else
+                                StudyMaterialDetail.FilePath = objStudyMaterialModel.FilePath;
+
+                            string p = StudyMaterialDetail.FilePath;
                             string e = Path.GetExtension(p);
                             StudyMaterialDetail.FileType = e;
                             #endregion
                         }
                         DbContext.SaveChanges();
-                        TempData["Message"] = "Assign Teacher Updated Successfully.";
+                        TempData["Message"] = "Study Material Updated Successfully.";
                     }
 
 
@@ -995,7 +1013,7 @@ namespace DigiChamps.Controllers
                     //Check if Topic already exist for same class.
                     if (DbContext.tbl_DC_School_StudyMaterial.Any(x => x.SchoolId == schoolId && x.Class_Id == objStudyMaterialModel.Class_Id && x.SubjectId == objStudyMaterialModel.SubjectId && x.Topic == objStudyMaterialModel.Topic))
                     {
-                        TempData["Message"] = "Teacher Aready assign to same class and section.";
+                        TempData["Message"] = "Study Material Aready Added";
                         //ViewBag.ClassList = new SelectList(DbContext.tbl_DC_Class.Where(x => x.Is_Active == true && x.Is_Deleted == false), "Class_Id", "Class_Name");
                         ViewBag.ClassList = GetClassListDropDown();
                         ViewBag.Subject_Id = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
@@ -1020,12 +1038,16 @@ namespace DigiChamps.Controllers
                         string browserType = Request.Browser.Browser.ToUpper();
                         UploadFileDetailModel uploadFileDetailModel = fileHelper.UploadDoc(Request.Files, "School", schoolId.ToString(), "StudyMaterial", browserType);
                         objStudyMaterialModel.FileName = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
-                        objStudyMaterialModel.FilePath = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
+                        objStudyMaterialModel.FilePath = !string.IsNullOrEmpty(uploadFileDetailModel.VideoName) ? uploadFileDetailModel.VideoPath + "/" + uploadFileDetailModel.VideoName : string.Empty;
 
-                        objstudy.FilePath = objStudyMaterialModel.Image;
-                        string p = objStudyMaterialModel.Image;
+                        if (!string.IsNullOrEmpty(uploadFileDetailModel.ImageName))
+                            objStudyMaterialModel.FilePath = objStudyMaterialModel.FileName;
+                        else
+                            objStudyMaterialModel.FilePath = objStudyMaterialModel.FilePath;
+
+                        string p = objStudyMaterialModel.FilePath;
                         string e = Path.GetExtension(p);
-                        objstudy.FileType = e;
+                        objStudyMaterialModel.FileType = e;
                         #endregion
                     }
                     objstudy.CreatedDate = DateTime.Now;
@@ -1716,7 +1738,7 @@ namespace DigiChamps.Controllers
 
             return View(objOutput);
         }
-        public ActionResult CreateOrEditClass(int classid = 0)
+        public ActionResult CreateOrEditClass(int classid = 0, string SectionName = null)
         {
             SchoolModel.CreateClass objCreateClass = new SchoolModel.CreateClass();
 
@@ -1776,11 +1798,12 @@ namespace DigiChamps.Controllers
             if (classid > 0)
             {
                 Guid? school_id = new Guid(Session["id"].ToString());
-                var sectionName = DbContext.tbl_DC_Class_Section.Where(x => x.Class_Id == classid && x.School_Id == school_id).ToList();
+                var sectionName = DbContext.tbl_DC_Class_Section.Where(x => x.Class_Id == classid && x.School_Id == school_id).Distinct().ToList();
                 objCreateClass.SectionList = sectionName;
 
                 foreach (var section in sectionName)
                 {
+                    //if (section.SectionName != )
                     objCreateClass.SectionName += section.SectionName + ",";
                 }
                 objCreateClass.SectionName = objCreateClass.SectionName.TrimEnd(',');
@@ -1797,18 +1820,18 @@ namespace DigiChamps.Controllers
         public ActionResult AddClass(SchoolModel.CreateClass input)
         {
             var status = false;
-            if (input.Id != null && input.Id != Guid.Empty)
+            if (input.Class_Id > 0 )
             {
 
-
+                Guid? school_id = new Guid(Session["id"].ToString());
                 var sections = input.SectionName.Split(',');
-
+                sections = sections.Distinct().ToArray();
                 if (sections != null && sections.Length > 0)
                 {
                     for (int sec = 0; sec < sections.Length; sec++)
                     {
                         var sectionName = sections[sec].ToString();
-                        var classSection = DbContext.tbl_DC_Class_Section.Where(x => x.Class_Id == Convert.ToInt32(input.ClassName) && x.SectionName == sectionName).SingleOrDefault();
+                        var classSection = DbContext.tbl_DC_Class_Section.Where(x => x.Class_Id == input.Class_Id && x.SectionName == sectionName && x.School_Id == school_id).FirstOrDefault();
                         if (classSection == null)
                         {
                             tbl_DC_Class_Section objtbl_DC_Class_Section = new tbl_DC_Class_Section();
@@ -1835,7 +1858,7 @@ namespace DigiChamps.Controllers
                     }
                     status = true;
 
-                    var classSectionDlt = DbContext.tbl_DC_Class_Section.Where(x => x.Class_Id == input.Class_Id && x.IsActive == true).ToList();
+                    var classSectionDlt = DbContext.tbl_DC_Class_Section.Where(x => x.Class_Id == input.Class_Id && x.School_Id == school_id && x.IsActive == true).ToList();
                     if (classSectionDlt != null && classSectionDlt.Count > 0)
                     {
                         foreach (var item in classSectionDlt)

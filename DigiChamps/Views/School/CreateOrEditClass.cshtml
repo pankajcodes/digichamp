@@ -46,8 +46,9 @@ else
                     <h3><i class="fa fa-file"></i> Create Class</h3>
                 </div>
                 <div class="box-content">
-                    <input type="hidden" id="hdnsectionName" value="@Model.SectionName">
-                    <input type="hidden" id="hdnClassId" value="@Model.Id">
+                    <input type="hidden" id="hdnsectionName" value="@Model.SectionName" name="SectionName">
+                    <input type="hidden" id="hdnClassId" value="@Model.Class_Id">
+                    
                     <div class="form-group">
                         <label for="textfield5" class="col-sm-3  control-label">Create Class<span class="asterisk">*</span></label>
                         <div class="col-sm-9  controls">
@@ -125,7 +126,7 @@ else
                     fileData.append('ClassName', $("#ddlClassName").val());
                     fileData.append('SectionName', selected.join());
                     fileData.append('EmailAddress', $("#EmailAddress").val());
-                    fileData.append('Id', $("#hdnClassId").val());
+                    fileData.append('Class_Id', $("#hdnClassId").val());
 
                     // fileData.append('LastName', $("#ConfirmPassword").val())
 

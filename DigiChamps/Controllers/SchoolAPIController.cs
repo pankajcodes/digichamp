@@ -1,6 +1,7 @@
 ﻿using DigiChamps.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -795,7 +796,9 @@ namespace DigiChamps.Controllers
                             }
                             objOutput.Id = item.StudyMaterialId;
                             objOutput.Material = item.Topic;
-
+                            objOutput.FilePath = item.FilePath;
+                            objOutput.FileType = item.FileType;
+                            objOutput.FileName = !string.IsNullOrEmpty(item.FilePath) ? Path.GetFileName(item.FilePath) : "";
                             //var SectionDetail = DbContext.tbl_DC_Class_Section.Where(x => x.SectionId == item.Sec && x.IsActive == true).SingleOrDefault();
                             //if (examType != null)
                             //{

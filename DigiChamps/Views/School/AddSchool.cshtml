@@ -82,6 +82,9 @@
                                 <label for="textfield5" class="col-sm-3  control-label">School Logo<span class="asterisk"></span></label>
                                 <div class="col-sm-9  controls">
                                     @Html.TextBoxFor(x => x.ImageFileUpload, new { type = "file", accept = "image/*" })
+                                    @Html.HiddenFor(m => m.Logo)
+                                    @Html.HiddenFor(m => m.ThumbnailPath)
+                                    @Html.HiddenFor(m => m.DocumentaryVideo)
                                     @*<input type="file" value="Chofileose a " accept="image/*" id="ImageUpload" />*@
                                     @if (System.IO.File.Exists(Server.MapPath(Model.Logo)))
                                     {
@@ -89,7 +92,10 @@
                                     }
                                     else
                                     {
-                                        <img src="~/Images/digi1.jpg" style="width:50px;height:50px;" />
+                                        if (Model.SchoolId != Guid.Empty)
+                                        {
+                                            <img src="~/Images/digi1.jpg" style="width:50px;height:50px;" />
+                                        }
                                     }
                                 </div>
                             </div>
@@ -98,12 +104,15 @@
                                 <div class="col-sm-9  controls">
                                     @Html.TextBoxFor(x => x.VideoFileUpload, new { type = "file", accept = "video/*" })
                                     @*<input type="file" value="Choose a file" accept="video/*" id="documentaryvideo" />*@
-                                    @if (Model.DocumentaryVideo!=null && Model.DocumentaryVideo!="" && System.IO.File.Exists(Server.MapPath(Model.DocumentaryVideo)))
+                                    @if (Model.SchoolId != Guid.Empty)
+                                    {
+                                    if (Model.DocumentaryVideo!=null && Model.DocumentaryVideo!="" && System.IO.File.Exists(Server.MapPath(Model.DocumentaryVideo)))
                                     {
                                         @Html.ActionLink(Path.GetFileName(Model.DocumentaryVideo), Server.MapPath(Model.DocumentaryVideo));
                                     }
                                     else{
                                     <div>No Documentary Video found.</div>
+                                    }
                                     }           
                                     
                                 </div>
