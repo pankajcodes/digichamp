@@ -214,16 +214,19 @@ namespace DigiChamps.Controllers
                     TempData["Message"] = "School Admin Updated Successfully.";
                 }
                 #region UploadFile
-                FileHelper fileHelper = new FileHelper();
-                string browserType = Request.Browser.Browser.ToUpper();
-                UploadFileDetailModel uploadFileDetailModel = fileHelper.UploadDoc(Request.Files, "School", objSchoolAdminOrPrincipleModel.SchoolId.ToString(), "Admin", browserType);
-                objSchoolAdminOrPrincipleModel.Image = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
+                if (Request.Files.Count > 0 && Request.Files[0] != null && Request.Files[0].ContentLength > 0)
+                {
+                    FileHelper fileHelper = new FileHelper();
+                    string browserType = Request.Browser.Browser.ToUpper();
+                    UploadFileDetailModel uploadFileDetailModel = fileHelper.UploadDoc(Request.Files, "School", objSchoolAdminOrPrincipleModel.SchoolId.ToString(), "Admin", browserType);
+                    objSchoolAdminOrPrincipleModel.Image = !string.IsNullOrEmpty(uploadFileDetailModel.ImageName) ? uploadFileDetailModel.ImagePath + "/" + uploadFileDetailModel.ImageName : string.Empty;
+                }
                 #endregion
                 int result = 0;
                 result = DbContext.SP_DC_SchoolUser(objSchoolAdminOrPrincipleModel.Id, objSchoolAdminOrPrincipleModel.SchoolId, objSchoolAdminOrPrincipleModel.FirstName, objSchoolAdminOrPrincipleModel.LastName, objSchoolAdminOrPrincipleModel.EmailAddress, objSchoolAdminOrPrincipleModel.EmailAddress, objSchoolAdminOrPrincipleModel.Password, objSchoolAdminOrPrincipleModel.Image, "SchoolAdmin", "", DateTime.Now, DateTime.Now, objSchoolAdminOrPrincipleModel.IsActive);
 
                 //---------------Mail Send functionality------------
-                if (result > 0)
+                if (result > 0 && (objSchoolAdminOrPrincipleModel.Id == Guid.Empty || objSchoolAdminOrPrincipleModel.Id == null))
                 {
                     string emailMsg = "Hi, this is to inform you your school admin credential are Username " + objSchoolAdminOrPrincipleModel.EmailAddress + " password " + objSchoolAdminOrPrincipleModel.Password + ".";
                     EmailHelper.SendEmail(objSchoolAdminOrPrincipleModel.EmailAddress, "Admin Credentials", emailMsg);
