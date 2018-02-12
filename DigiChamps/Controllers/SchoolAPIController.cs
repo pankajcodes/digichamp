@@ -604,6 +604,7 @@ namespace DigiChamps.Controllers
 
                             objOutput.MassageText = item.MassageText;
                             objOutput.MessageId = item.MessageId;
+                            objOutput.Title = item.Title;
                             //objOutput.MassageDisplayDate = (DateTime?)item.MassageDisplayDate;
 
                             //var SectionDetail = DbContext.tbl_DC_Class_Section.Where(x => x.SectionId == item.Sec && x.IsActive == true).SingleOrDefault();
@@ -798,6 +799,7 @@ namespace DigiChamps.Controllers
                             objOutput.Material = item.Topic;
                             objOutput.FilePath = item.FilePath;
                             objOutput.FileType = item.FileType;
+                            objOutput.Title = item.Title;
                             objOutput.FileName = !string.IsNullOrEmpty(item.FilePath) ? Path.GetFileName(item.FilePath) : "";
                             //var SectionDetail = DbContext.tbl_DC_Class_Section.Where(x => x.SectionId == item.Sec && x.IsActive == true).SingleOrDefault();
                             //if (examType != null)

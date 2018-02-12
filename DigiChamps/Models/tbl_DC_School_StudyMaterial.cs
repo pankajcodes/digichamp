@@ -25,6 +25,7 @@ namespace DigiChamps.Models
         public Nullable<bool> IsActive { get; set; }
         public Nullable<int> Class_Id { get; set; }
         public string StudyMaterialTxt { get; set; }
+        public string Title { get; set; }
     
         public virtual tbl_DC_School_Class tbl_DC_School_Class { get; set; }
         public virtual tbl_DC_School_Info tbl_DC_School_Info { get; set; }

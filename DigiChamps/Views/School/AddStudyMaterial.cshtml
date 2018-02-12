@@ -77,6 +77,14 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="textfield5" class="col-sm-3  control-label">Title<span class="asterisk">*</span></label>
+                            <div class="col-sm-9  controls">
+                                <input type="text" name="Title" id="Title" value="@Model.Title" class="form-control" data-rule-required="true" data-msg-required="Please enter title.">
+                                @Html.ValidationMessageFor(x => x.Title)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="textfield5" class="col-sm-3  control-label">Topic<span class="asterisk">*</span></label>
                             <div class="col-sm-9  controls">
 
@@ -140,7 +148,7 @@
 <script src="~/Student_assets/crop/scripts/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            $("[name=toggler]").click(function () {
+           $("[name=toggler]").click(function () {
                 $('.toHide').hide();
                 $("#blk-" + $(this).val()).show('slow');
                 if ($(this).val() == "1") {
@@ -174,13 +182,15 @@
                 $('.toHide').hide();
                 $("#blk-1").show('slow');
                 $("#MaterialType").val("file");
+                $("#rbtUploadMaterial").prop("checked", true);
                 $("#studymaterial").attr("data-rule-required", true);
                 $("#studymaterial").attr("data-msg-required", "Please enter file");
                 
             }
         });
         $('#validation-form').submit(function (e) {
-            return true;
+            var status = true;
+           
             //var fileData = new FormData();
 
             //fileData.append('ClassId', $('#ddlClass :selected').val())
@@ -188,15 +198,28 @@
             //fileData.append('Topic', $("#Topic").val())
             //fileData.append('MaterialText', $("#MaterialText").val())
             //fileData.append('MaterialType', $("#MaterialType").val())
-
-            //if ($("#studymaterial").val() != '') {
-            //    var fileUpload = $("#studymaterial").get(0);
-            //    var files = fileUpload.files;
-            //    fileData.append('File', files[0])
-            //}
-
-
-            //$(".loader-ajax-container").css("display", "block");
+            //alert("SM" + $("#MaterialType").val());
+            if ($("#studymaterial").val() == '' && $("#MaterialType").val() == 'file') {
+                status = false;
+            }
+            if ($("#txtMaterialText").val() == '' && $("#MaterialType").val() == 'text') {
+                status = false;
+            }
+            if ($("#ddlClass").val() == '') {
+                status = false;
+            }
+            if ($("#ddlSubject").val() == '') {
+                status = false;
+            }
+            if ($("#Topic").val() == '') {
+                status = false;
+            }
+            if (status) {
+                $(".loader-ajax-container").css("display", "block");
+            }
+            else {
+                status = false;
+            }
             //$.ajax({
             //    type: 'POST',
             //    url: "/School/AddStudyMaterial",

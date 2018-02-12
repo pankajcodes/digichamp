@@ -1551,6 +1551,7 @@
           </Key>
           <Property Name="MessageId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="SchoolId" Type="uniqueidentifier" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" />
           <Property Name="ClassId" Type="uniqueidentifier" />
           <Property Name="Class_Id" Type="int" />
           <Property Name="SectionId" Type="uniqueidentifier" />
@@ -1569,6 +1570,7 @@
           <Property Name="StudyMaterialId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="SchoolId" Type="uniqueidentifier" />
           <Property Name="Class_Id" Type="int" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" />
           <Property Name="ClassId" Type="uniqueidentifier" />
           <Property Name="SubjectId" Type="uniqueidentifier" />
           <Property Name="Topic" Type="nvarchar(max)" />
@@ -8768,6 +8770,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <NavigationProperty Name="tbl_DC_School_Subject" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Subje__2BE44F40" FromRole="tbl_DC_School_StudyMaterial" ToRole="tbl_DC_School_Subject" />
           <Property Name="Class_Id" Type="Int32" />
           <Property Name="StudyMaterialTxt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK__tbl_DC_Sc__Teach__3D0EDB42">
           <End Type="DigiChampsModel.tbl_DC_SchoolUser" Role="tbl_DC_SchoolUser" Multiplicity="0..1" />
@@ -8847,6 +8850,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="tbl_DC_School_Class" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Class__3C1AB709" FromRole="tbl_DC_School_MessageCreation" ToRole="tbl_DC_School_Class" />
           <NavigationProperty Name="tbl_DC_School_Info" Relationship="DigiChampsModel.FK__tbl_DC_Sc__Schoo__3B2692D0" FromRole="tbl_DC_School_MessageCreation" ToRole="tbl_DC_School_Info" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK__tbl_DC_Sc__Class__3C1AB709">
           <End Type="DigiChampsModel.tbl_DC_School_Class" Role="tbl_DC_School_Class" Multiplicity="0..1" />
@@ -11758,6 +11762,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <EntitySetMapping Name="tbl_DC_School_StudyMaterial">
             <EntityTypeMapping TypeName="DigiChampsModel.tbl_DC_School_StudyMaterial">
               <MappingFragment StoreEntitySet="tbl_DC_School_StudyMaterial">
+                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="StudyMaterialTxt" ColumnName="StudyMaterialTxt" />
                 <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
@@ -11775,6 +11780,7 @@ warning 6002: The table/view 'test_digichamps.dbo.VW_Prebook_Students' does not 
           <EntitySetMapping Name="tbl_DC_School_MessageCreation">
             <EntityTypeMapping TypeName="DigiChampsModel.tbl_DC_School_MessageCreation">
               <MappingFragment StoreEntitySet="tbl_DC_School_MessageCreation">
+                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />

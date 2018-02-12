@@ -187,7 +187,7 @@ namespace DigiChamps.Models
             public string FilePath { get; set; }
             public string FileName { get; set; }
             public Nullable<bool> IsDeleted { get; set; }
-
+            public string Title { get; set; }
             //public Guid MessageId { get; set; }
             //public Guid SchoolId { get; set; }
             //public int ClassId { get; set; }
@@ -290,7 +290,7 @@ namespace DigiChamps.Models
             public string FileName { get; set; }
             public string FilePath { get; set; }
             public string FileType { get; set; }
-
+            public string Title { get; set; }
 
 
         }

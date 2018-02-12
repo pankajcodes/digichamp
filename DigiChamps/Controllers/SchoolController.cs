@@ -226,7 +226,7 @@ namespace DigiChamps.Controllers
                 result = DbContext.SP_DC_SchoolUser(objSchoolAdminOrPrincipleModel.Id, objSchoolAdminOrPrincipleModel.SchoolId, objSchoolAdminOrPrincipleModel.FirstName, objSchoolAdminOrPrincipleModel.LastName, objSchoolAdminOrPrincipleModel.EmailAddress, objSchoolAdminOrPrincipleModel.EmailAddress, objSchoolAdminOrPrincipleModel.Password, objSchoolAdminOrPrincipleModel.Image, "SchoolAdmin", "", DateTime.Now, DateTime.Now, objSchoolAdminOrPrincipleModel.IsActive);
 
                 //---------------Mail Send functionality------------
-                if (result > 0 && (objSchoolAdminOrPrincipleModel.Id == Guid.Empty || objSchoolAdminOrPrincipleModel.Id == null))
+                if (objSchoolAdminOrPrincipleModel.Id == Guid.Empty || objSchoolAdminOrPrincipleModel.Id == null)
                 {
                     string emailMsg = "Hi, this is to inform you your school admin credential are Username " + objSchoolAdminOrPrincipleModel.EmailAddress + " password " + objSchoolAdminOrPrincipleModel.Password + ".";
                     EmailHelper.SendEmail(objSchoolAdminOrPrincipleModel.EmailAddress, "Admin Credentials", emailMsg);
@@ -952,6 +952,7 @@ namespace DigiChamps.Controllers
                     objStudyMaterialModel.Topic = StudyMaterialDetail.Topic;
                     objStudyMaterialModel.FilePath = StudyMaterialDetail.FilePath;
                     objStudyMaterialModel.FileType = StudyMaterialDetail.FileType;
+                    objStudyMaterialModel.Title = StudyMaterialDetail.Title;
                     objStudyMaterialModel.FileName = !string.IsNullOrEmpty(StudyMaterialDetail.FilePath) ? Path.GetFileName(StudyMaterialDetail.FilePath): "";
                     objStudyMaterialModel.MaterialText = StudyMaterialDetail.StudyMaterialTxt;
                     objStudyMaterialModel.MaterialType = string.IsNullOrEmpty(StudyMaterialDetail.StudyMaterialTxt) ? "file" : "text";
@@ -982,6 +983,7 @@ namespace DigiChamps.Controllers
                         StudyMaterialDetail.Class_Id = objStudyMaterialModel.Class_Id;
                         StudyMaterialDetail.SubjectId = objStudyMaterialModel.SubjectId;
                         StudyMaterialDetail.Topic = objStudyMaterialModel.Topic;
+                        StudyMaterialDetail.Title = objStudyMaterialModel.Title;
                         if (!string.IsNullOrEmpty(objStudyMaterialModel.MaterialType) && objStudyMaterialModel.MaterialType == "text")
                         {
                             StudyMaterialDetail.StudyMaterialTxt = objStudyMaterialModel.MaterialText;
@@ -1030,6 +1032,7 @@ namespace DigiChamps.Controllers
                     objstudy.Class_Id = objStudyMaterialModel.Class_Id;
                     objstudy.SubjectId = objStudyMaterialModel.SubjectId;
                     objstudy.Topic = objStudyMaterialModel.Topic;
+                    objstudy.Title = objStudyMaterialModel.Title;
                     objstudy.IsActive = true;
                     if (!string.IsNullOrEmpty(objStudyMaterialModel.MaterialType) && objStudyMaterialModel.MaterialType == "text")
                     {
@@ -1356,6 +1359,16 @@ namespace DigiChamps.Controllers
             try
             {
                 Guid schoolId = new Guid(Session["id"].ToString());
+                //Check duplicate
+                if (DbContext.tbl_DC_School_AssingTeacher.Any(x => x.SchoolId == schoolId && x.SectionId == assignTeacherModel.SectionId && x.SubjectId == assignTeacherModel.SubjectId && x.IsActive == true))
+                {
+                    TempData["Message"] = "Teacher Aready assign to same class and section.";
+                    ViewBag.TeacherList = new SelectList(DbContext.tbl_DC_SchoolUser.Where(x => x.IsActive == true && x.SchoolId == schoolId && x.UserRole == "Teacher"), "UserId", "UserFirstname");
+                    ViewBag.ClassList = new SelectList(GetClassListDropDown(), "Value", "Text");
+                    ViewBag.SectionList = new SelectList(DbContext.tbl_DC_Class_Section.Where(x => x.IsActive == true), "SectionId", "SectionName");
+                    ViewBag.SubjectList = new SelectList(DbContext.tbl_DC_School_Subject.Where(x => x.IsActive == true && x.SchoolId == schoolId), "SubjectId", "SubjectName");
+                    return View(assignTeacherModel);
+                }
                 if (assignTeacherModel.AssignmentId != null && assignTeacherModel.AssignmentId != Guid.Empty)
                 {
                     var AssignTeacherDetail = DbContext.tbl_DC_School_AssingTeacher.Where(x => x.Id == assignTeacherModel.AssignmentId).FirstOrDefault();
@@ -1372,14 +1385,6 @@ namespace DigiChamps.Controllers
                 }
                 else
                 {
-
-                    //Check duplicate
-                    if (DbContext.tbl_DC_School_AssingTeacher.Any(x => x.SchoolId == schoolId && x.SectionId == assignTeacherModel.SectionId && x.SubjectId == assignTeacherModel.SubjectId))
-                    {
-                        TempData["Message"] = "Teacher Aready assign to same class and section.";
-                        return View(assignTeacherModel);
-                    }
-
                     tbl_DC_School_AssingTeacher assignTeacher = new tbl_DC_School_AssingTeacher();
                     assignTeacher.Id = Guid.NewGuid();
                     //assignTeacher.ClassId = assignTeacherModel.ClassId;
@@ -1394,7 +1399,7 @@ namespace DigiChamps.Controllers
 
                     DbContext.tbl_DC_School_AssingTeacher.Add(assignTeacher);
                     var id = DbContext.SaveChanges();
-                    TempData["Message"] = "Exam Added Successfully.";
+                    TempData["Message"] = "Assign Teacher Added Successfully.";
                 }
                 return RedirectToAction("GetAllAssignedTeacherList", "School");
             }
@@ -1447,6 +1452,7 @@ namespace DigiChamps.Controllers
                     objMessageCreation.MassageText = MessageDetail.MassageText;
                     objMessageCreation.FileName = MessageDetail.FileName;
                     objMessageCreation.FilePath = MessageDetail.FilePath;
+                    objMessageCreation.Title = MessageDetail.Title;
                     objMessageCreation.CreatedDate = MessageDetail.CreatedDate;
                     objMessageCreation.IsActive = MessageDetail.IsActive;
                 }
@@ -1476,6 +1482,7 @@ namespace DigiChamps.Controllers
                         MessageDetail.MassageText = objMessageCreation.MassageText;
                         MessageDetail.FileName = objMessageCreation.FileName;
                         MessageDetail.FilePath = objMessageCreation.FilePath;
+                        MessageDetail.Title = objMessageCreation.Title;
                         MessageDetail.IsActive = true;
                         #region UploadFile
                         FileHelper fileHelper = new FileHelper();
@@ -1522,6 +1529,7 @@ namespace DigiChamps.Controllers
                     objmsg.MassageText = objMessageCreation.MassageText;
                     objmsg.FileName = objMessageCreation.FileName;
                     objmsg.FilePath = objMessageCreation.FilePath;
+                    objmsg.Title = objMessageCreation.Title;
                     objmsg.CreatedDate = DateTime.Now;
                     objmsg.IsActive = true;
                     objmsg.IsDeleted = false;

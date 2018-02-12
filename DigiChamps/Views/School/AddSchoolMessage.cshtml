@@ -80,6 +80,15 @@
                         </div>
 
                         <div class="form-group input-cont">
+                            <label for="textfield5" class="col-sm-3  control-label">Message Title<span class="asterisk">*</span></label>
+                            <div class="col-sm-9  controls">
+
+                                @Html.TextAreaFor(x => x.Title, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Please enter message text" })
+                                @Html.ValidationMessageFor(x => x.Title)
+                            </div>
+
+                        </div>
+                        <div class="form-group input-cont">
                             <label for="textfield5" class="col-sm-3  control-label">Message<span class="asterisk">*</span></label>
                             <div class="col-sm-9  controls">
 
